@@ -1,0 +1,15 @@
+//Some _norm textures work when they are normalized in the fragment shader while
+//some work not normalized. I could not figure out why despite all the _norm being
+//the same format/size/bitdepth and all loaded the same way.
+
+works normalized
+concrete
+
+
+works NOT normalized
+brick
+metal
+crate
+cartoonBrick
+tile
+wood2
