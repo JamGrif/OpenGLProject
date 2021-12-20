@@ -25,7 +25,7 @@ public:
 	virtual void	drawPassOne() = 0;
 	virtual void	drawPassTwo() = 0;
 
-	void			setMesh(const char* meshFilePath);
+	void			setMesh(std::string meshFilePath);
 	void			setShaderOne(const char* vertexPath, const char* fragmentPath);
 	void			setShaderTwo(const char* vertexPath, const char* fragmentPath);
 	

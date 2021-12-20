@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "glm/glm.hpp"
+#include <string>
 
 struct Vertex
 {
@@ -19,15 +20,15 @@ public:
 	Mesh();
 	~Mesh();
 
-	bool						loadMesh(const char* filePath);
+	bool						loadMesh(std::string filePath);
 
 	std::vector<Vertex>			getVertices() const;
 	std::vector<unsigned int>	getIndices() const;
-	const char*					getFilePath() const;
+	std::string					getFilePath() const;
 
 private:
 
-	const char*					m_filePath;
+	std::string			m_filePath;
 
 	std::vector<Vertex>			m_vertices;
 	std::vector<unsigned int>	m_indices;
@@ -39,7 +40,7 @@ class MeshManager
 {
 public:
 
-	static Mesh*				loadModel(const char* filePath);
+	static Mesh*				loadModel(std::string filePath);
 
 	static void					clearMeshes();
 

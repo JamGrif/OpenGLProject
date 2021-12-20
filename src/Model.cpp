@@ -35,7 +35,7 @@ Model::~Model()
 /// Loads the specified mesh and creates the VBO and EBO buffers
 /// </summary>
 /// <param name="meshFilePath">Mesh file path</param>
-void Model::setMesh(const char* meshFilePath)
+void Model::setMesh(std::string meshFilePath)
 {
 	m_modelMesh = MeshManager::loadModel(meshFilePath);
 

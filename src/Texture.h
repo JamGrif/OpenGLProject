@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include <vector>
+#include <string>
 
 //Stores texture information and provides a way to load a texture by interfacing with TextureManager
 class Texture
@@ -12,13 +13,13 @@ public:
 	Texture();
 	~Texture();
 
-	bool			loadTexture(const char* filePath);
+	bool			loadTexture(std::string filePath);
 
 	virtual void	Bind(unsigned int slot = 0) const;
 	virtual void	Unbind() const;
 
 
-	const char*		getFilePath() const;
+	std::string		getFilePath() const;
 	GLuint			getTexture() const;
 	
 
@@ -26,7 +27,7 @@ protected:
 
 	GLuint			m_texture;
 
-	const char*		m_filePath;
+	std::string		m_filePath;
 
 	int				m_width, m_height, m_BPP;
 
@@ -66,7 +67,7 @@ class TextureManager
 {
 public:
 
-	static Texture* retrieveTexture(const char* filePath);
+	static Texture* retrieveTexture(std::string filePath);
 	static CubeMap* retrieveCubeMap();
 
 	static void		clearTextures();

@@ -24,14 +24,14 @@ Texture::~Texture()
 /// </summary>
 /// <param name="filePath"></param>
 /// <returns></returns>
-bool Texture::loadTexture(const char* filePath)
+bool Texture::loadTexture(std::string filePath)
 {
 	m_filePath = filePath;
 
 	unsigned char* localBuffer;
 
 	stbi_set_flip_vertically_on_load(1); //Flips texture on Y-Axis
-	localBuffer = stbi_load(filePath, &m_width, &m_height, &m_BPP, 4);
+	localBuffer = stbi_load(filePath.c_str(), &m_width, &m_height, &m_BPP, 4);
 
 	//Check if file loaded successfully
 	if (stbi_failure_reason() == "can't fopen")
@@ -101,7 +101,7 @@ void Texture::Unbind() const
 }
 
 
-const char* Texture::getFilePath() const
+std::string Texture::getFilePath() const
 {
 	return m_filePath;
 }
@@ -116,7 +116,7 @@ GLuint Texture::getTexture() const
 /// </summary>
 /// <param name="filePath"></param>
 /// <returns>Pointer to the created texture</returns>
-Texture* TextureManager::retrieveTexture(const char* filePath)
+Texture* TextureManager::retrieveTexture(std::string filePath)
 {
 	//Check if texture is already loaded
 	for (Texture* t : m_loadedTextures)
