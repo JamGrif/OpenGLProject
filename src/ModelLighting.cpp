@@ -167,6 +167,8 @@ void ModelLighting::drawPassTwo()
 
 
 	//Material properties
+
+
 	m_modelShaderPassTwo->setUniform1i("material.diffuse", 0);
 	m_modelShaderPassTwo->setUniform1i("material.specular", 1);
 	m_modelShaderPassTwo->setUniform1i("material.emission", 2);
@@ -256,11 +258,9 @@ void ModelLighting::drawPassTwo()
 	{
 		m_modelHeightTexture->Unbind();
 	}
+	
+	m_modelShaderPassTwo->Unbind();
 
-	if (m_modelShaderPassTwo != nullptr)
-	{
-		m_modelShaderPassTwo->Unbind();
-	}
 
 	//glActiveTexture(GL_TEXTURE5);
 	//glBindTexture(GL_TEXTURE_2D, 0);
@@ -271,7 +271,7 @@ void ModelLighting::drawPassTwo()
 /// Assigns specified texture to the model to be used for a diffuse map
 /// </summary>
 /// <param name="texturePath"></param>
-void ModelLighting::setDiffuseTexture(const char* texturePath)
+void ModelLighting::setDiffuseTexture(std::string texturePath)
 {
 	m_modelDiffuseTexture = TextureManager::retrieveTexture(texturePath);
 }
@@ -280,7 +280,7 @@ void ModelLighting::setDiffuseTexture(const char* texturePath)
 /// Assigns specified texture to the model to be used for a specular map
 /// </summary>
 /// <param name="texturePath"></param>
-void ModelLighting::setSpecularTexture(const char* texturePath)
+void ModelLighting::setSpecularTexture(std::string texturePath)
 {
 	m_modelSpecularTexture = TextureManager::retrieveTexture(texturePath);
 }
@@ -289,7 +289,7 @@ void ModelLighting::setSpecularTexture(const char* texturePath)
 /// Assigns specified texture to the model to be used for an emission map
 /// </summary>
 /// <param name="texturePath"></param>
-void ModelLighting::setEmissionTexture(const char* texturePath)
+void ModelLighting::setEmissionTexture(std::string texturePath)
 {
 	m_modelEmissionTexture = TextureManager::retrieveTexture(texturePath);
 	m_usingEmission = true;
@@ -300,7 +300,7 @@ void ModelLighting::setEmissionTexture(const char* texturePath)
 /// </summary>
 /// <param name="texturePath"></param>
 /// <param name="normalize">Should the texture be normalized in the fragment shader</param>
-void ModelLighting::setNormalTexture(const char* texturePath, bool normalize)
+void ModelLighting::setNormalTexture(std::string texturePath, bool normalize)
 {
 	m_modelNormalTexture = TextureManager::retrieveTexture(texturePath);
 	m_normalizeTexture = normalize;
@@ -311,7 +311,7 @@ void ModelLighting::setNormalTexture(const char* texturePath, bool normalize)
 /// Assigns specified texture to the model to be used for a height map
 /// </summary>
 /// <param name="texturePath"></param>
-void ModelLighting::setHeightTexture(const char* texturePath, float heightAmount)
+void ModelLighting::setHeightTexture(std::string texturePath, float heightAmount)
 {
 	m_modelHeightTexture = TextureManager::retrieveTexture(texturePath);
 	m_usingHeight = true;
