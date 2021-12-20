@@ -174,4 +174,7 @@
     <None Include="res\shaders\geometry-geometry.glsl" />
     <None Include="res\shaders\geometry-fragment.glsl" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="levelData.txt" />
+  </ItemGroup>
 </Project>

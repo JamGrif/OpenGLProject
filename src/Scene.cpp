@@ -10,7 +10,7 @@
 #include <fstream>
 #include <sstream>
 
-struct Object
+struct templateModelLighting
 {
 	std::string modelType = ""; // ModelLighting, ModelBasic, ModelTerrain etc...
 
@@ -41,10 +41,9 @@ struct Object
 	std::string emissionMap = "";
 };
 
-void applyToObject(Object& o, const std::vector<std::string>& vector);
+void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector);
 
-
-std::vector<Object> completedObjects;
+std::vector<templateModelLighting> completedObjects;
 
 Scene::Scene()
 	:m_sceneCamera(nullptr), m_sceneLightManager(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr), m_mountainsX(nullptr), m_mountainsZ(nullptr),
@@ -112,23 +111,23 @@ void Scene::initScene()
 
 		if (line == "") // Empty line, ignore and move to next line
 		{
-			std::cout << "empty line detected" << std::endl;
+			//std::cout << "empty line detected" << std::endl;
 			continue;
 		}
 
 
 		if (line.at(0) == '#') // Comment, ignore and move to next line
 		{
-			std::cout << "# detected" << std::endl;
+			//std::cout << "# detected" << std::endl;
 			continue;
 		}
 
-		Object object;
+		templateModelLighting object;
 
 		std::string buf;
 		std::stringstream ss(line);
 
-		std::vector<std::string> tokens;
+		std::vector<std::string> tokens; // Full line, vector of individual strings (words)
 
 		/*
 			Reads one line at a time and each line is one vector object and
@@ -138,166 +137,106 @@ void Scene::initScene()
 
 		*/
 
+
 		while (ss >> buf)
 		{
 			tokens.push_back(buf);
 		}
 
-		applyToObject(object, tokens);
+		applyToModelLightingTemplate(object, tokens);
 
-		std::cout << "modelType is " << object.modelType << std::endl;
-
-		std::cout << "PosX is " << object.PosX << std::endl;
-		std::cout << "PosY is " << object.PosY << std::endl;
-		std::cout << "PosZ is " << object.PosZ << std::endl;
-
-		std::cout << "RotX is " << object.RotX << std::endl;
-		std::cout << "RotY is " << object.RotY << std::endl;
-		std::cout << "RotZ is " << object.RotZ << std::endl;
-
-		std::cout << "ScaleX is " << object.ScaleX << std::endl;
-		std::cout << "ScaleY is " << object.ScaleY << std::endl;
-		std::cout << "ScaleZ is " << object.ScaleZ << std::endl;
-
-		std::cout << "mesh is " << object.mesh << std::endl;
-
-		std::cout << "diffuseMap is " << object.diffuseMap << std::endl;
-
-		std::cout << "specularMap is " << object.specularMap << std::endl;
-
-		std::cout << "normalMap is " << object.normalMap << std::endl;
-		std::cout << "normalMapNormalize is " << object.normalMapNormalize << std::endl;
-
-		std::cout << "heightMap is " << object.heightMap << std::endl;
-		std::cout << "heightMapHeight is " << object.heightMapHeight << std::endl;
-
-		std::cout << "emissionMap is " << object.emissionMap << std::endl;
-
-		std::cout << std::endl;
+		//std::cout << "modelType is " << object.modelType << std::endl;
+		//
+		//std::cout << "PosX is " << object.PosX << std::endl;
+		//std::cout << "PosY is " << object.PosY << std::endl;
+		//std::cout << "PosZ is " << object.PosZ << std::endl;
+		//
+		//std::cout << "RotX is " << object.RotX << std::endl;
+		//std::cout << "RotY is " << object.RotY << std::endl;
+		//std::cout << "RotZ is " << object.RotZ << std::endl;
+		//
+		//std::cout << "ScaleX is " << object.ScaleX << std::endl;
+		//std::cout << "ScaleY is " << object.ScaleY << std::endl;
+		//std::cout << "ScaleZ is " << object.ScaleZ << std::endl;
+		//
+		//std::cout << "mesh is " << object.mesh << std::endl;
+		//
+		//std::cout << "diffuseMap is " << object.diffuseMap << std::endl;
+		//
+		//std::cout << "specularMap is " << object.specularMap << std::endl;
+		//
+		//std::cout << "normalMap is " << object.normalMap << std::endl;
+		//std::cout << "normalMapNormalize is " << object.normalMapNormalize << std::endl;
+		//
+		//std::cout << "heightMap is " << object.heightMap << std::endl;
+		//std::cout << "heightMapHeight is " << object.heightMapHeight << std::endl;
+		//
+		//std::cout << "emissionMap is " << object.emissionMap << std::endl;
+		//
+		//std::cout << std::endl;
 
 		completedObjects.push_back(object);
 
-		ModelLighting* model = new ModelLighting(glm::vec3(object.PosX, object.PosY, object.PosZ), glm::vec3(object.RotX, object.RotY, object.RotZ));
-		model->SetXScale(object.ScaleX);
-		model->SetYScale(object.ScaleY);
-		model->SetZScale(object.ScaleZ);
-		model->setMesh(object.mesh.c_str());
-		model->setDiffuseTexture(object.diffuseMap.c_str());
-		model->setSpecularTexture(object.specularMap.c_str());
-		model->setNormalTexture(object.normalMap.c_str(), object.normalMapNormalize);
-		model->setHeightTexture(object.heightMap.c_str(), object.heightMapHeight);
-		model->setEmissionTexture(object.emissionMap.c_str());
-		m_sceneMeshes.push_back(model);
+		
 
 	}
 
-	std::cout << std::endl;
-	std::cout << "There are " << completedObjects.size() << " completed objects" << std::endl;
+	//std::cout << std::endl;
+	//std::cout << "There are " << completedObjects.size() << " completed objects" << std::endl;
+
 
 	for (int i = 0; i < completedObjects.size(); i++)
 	{
-		if (completedObjects.at(i).modelType == "modelLighting")
+		ModelLighting* model = new ModelLighting(glm::vec3(completedObjects.at(i).PosX, completedObjects.at(i).PosY, completedObjects.at(i).PosZ), glm::vec3(completedObjects.at(i).RotX, completedObjects.at(i).RotY, completedObjects.at(i).RotZ));
+		model->SetXScale(completedObjects.at(i).ScaleX);
+		model->SetYScale(completedObjects.at(i).ScaleY);
+		model->SetZScale(completedObjects.at(i).ScaleZ);
+
+
+		model->setMesh(completedObjects.at(i).mesh); 
+		 
+
+		if (completedObjects.at(i).diffuseMap != "null")
 		{
-			//std::cout << "Making a modelLighting object..." << std::endl;
-			
-		}
-		else if (completedObjects.at(i).modelType == "modelBasic")
-		{
-			std::cout << "Making a modelBasic object..." << std::endl;
+			model->setDiffuseTexture(completedObjects.at(i).diffuseMap);
 		}
 		else
 		{
-			std::cout << "modelType not determined: " << completedObjects.at(i).modelType << std::endl;
+			model->setDiffuseTexture("res/textures/blank.png"); // Models have to have a diffuse map
+		}
+		
+		if (completedObjects.at(i).specularMap != "null")
+		{
+			model->setSpecularTexture(completedObjects.at(i).specularMap);
+		}
+		else
+		{
+			model->setSpecularTexture("res/textures/blank.png"); // Models have to have a specular map
+		}
+
+		if (completedObjects.at(i).normalMap != "null")
+		{
+			model->setNormalTexture(completedObjects.at(i).normalMap, completedObjects.at(i).normalMapNormalize);
+		}
+
+		
+		if (completedObjects.at(i).heightMap != "null")
+		{
+			model->setHeightTexture(completedObjects.at(i).heightMap, completedObjects.at(i).heightMapHeight);
+		}
+
+		
+		if (completedObjects.at(i).emissionMap != "null")
+		{
+			model->setEmissionTexture(completedObjects.at(i).emissionMap);
 		}
 
 
-
+		m_sceneMeshes.push_back(model);
 	}
 
+	
 
-
-
-
-
-
-
-
-
-
-	////Grass
-	//std::vector<glm::vec3> GrassPosRot =
-	//{
-	//	//Position							
-	//	glm::vec3(0.0f, -1.5f, 0.0f),
-	//	glm::vec3(6.0f, -1.5f, 0.0f),
-	//	glm::vec3(-6.0f,-1.5f,  0.0f),
-	//	glm::vec3(0.0f, -1.5f, 6.0f),
-	//	glm::vec3(6.0f, -1.5f, 6.0f),
-	//	glm::vec3(-6.0f,-1.5f,  6.0f),
-	//	glm::vec3(0.0f, -1.5f, -6.0f),
-	//	glm::vec3(6.0f, -1.5f, -6.0f),
-	//	glm::vec3(-6.0f,-1.5f,  -6.0f),
-	//
-	//	glm::vec3(-18.0f, -1.5f, 0.0f),
-	//	glm::vec3(-12.0f, -1.5f, 0.0f),
-	//	glm::vec3(-24.0f, -1.5f, 0.0f),
-	//	glm::vec3(-18.0f, -1.5f, 6.0f),
-	//	glm::vec3(-12.0f, -1.5f, 6.0f),
-	//	glm::vec3(-24.0f, -1.5f, 6.0f),
-	//	glm::vec3(-18.0f, -1.5f, -6.0f),
-	//	glm::vec3(-12.0f, -1.5f, -6.0f),
-	//	glm::vec3(-24.0f, -1.5f, -6.0f),
-	//
-	//	glm::vec3(18.0f, -1.5f, 0.0f),
-	//	glm::vec3(12.0f, -1.5f, 0.0f),
-	//	glm::vec3(24.0f, -1.5f, 0.0f),
-	//	glm::vec3(18.0f, -1.5f, 6.0f),
-	//	glm::vec3(12.0f, -1.5f, 6.0f),
-	//	glm::vec3(24.0f, -1.5f, 6.0f),
-	//	glm::vec3(18.0f, -1.5f, -6.0f),
-	//	glm::vec3(12.0f, -1.5f, -6.0f),
-	//	glm::vec3(24.0f, -1.5f, -6.0f),
-	//
-	//	//
-	//	glm::vec3(0.0f, -1.5f, 18.0f),
-	//	glm::vec3(6.0f, -1.5f, 18.0f),
-	//	glm::vec3(-6.0f,-1.5f,  18.0f),
-	//	glm::vec3(0.0f, -1.5f, 24.0f),
-	//	glm::vec3(6.0f, -1.5f, 24.0f),
-	//	glm::vec3(-6.0f,-1.5f,  24.0f),
-	//	glm::vec3(0.0f, -1.5f, 12.0f),
-	//	glm::vec3(6.0f, -1.5f, 12.0f),
-	//	glm::vec3(-6.0f,-1.5f,  12.0f),
-	//
-	//	glm::vec3(-18.0f, -1.5f, 18.0f),
-	//	glm::vec3(-12.0f, -1.5f, 18.0f),
-	//	glm::vec3(-24.0f, -1.5f, 18.0f),
-	//	glm::vec3(-18.0f, -1.5f, 24.0f),
-	//	glm::vec3(-12.0f, -1.5f, 24.0f),
-	//	glm::vec3(-24.0f, -1.5f, 24.0f),
-	//	glm::vec3(-18.0f, -1.5f, 12.0f),
-	//	glm::vec3(-12.0f, -1.5f, 12.0f),
-	//	glm::vec3(-24.0f, -1.5f, 12.0f),
-	//
-	//	glm::vec3(18.0f, -1.5f, 18.0f),
-	//	glm::vec3(12.0f, -1.5f, 18.0f),
-	//	glm::vec3(24.0f, -1.5f, 18.0f),
-	//	glm::vec3(18.0f, -1.5f, 24.0f),
-	//	glm::vec3(12.0f, -1.5f, 24.0f),
-	//	glm::vec3(24.0f, -1.5f, 24.0f),
-	//	glm::vec3(18.0f, -1.5f, 12.0f),
-	//	glm::vec3(12.0f, -1.5f, 12.0f),
-	//	glm::vec3(24.0f, -1.5f, 12.0f),
-	//};
-	//
-	//for (int i = 0; i < GrassPosRot.size(); i++)
-	//{
-	//	ModelLighting* Grass = new ModelLighting(GrassPosRot.at(i));
-	//	Grass->setMesh("res/meshes/plane.obj");
-	//	Grass->setDiffuseTexture("res/textures/grass_diff.png");
-	//	Grass->setSpecularTexture("res/textures/grass_spec.png");
-	//	m_sceneMeshes.push_back(Grass);
-	//}
 
 
 
@@ -387,431 +326,7 @@ void Scene::initScene()
 	//	m_sceneMeshes.push_back(light);
 	//}
 
-	////Carpet Floor
-	//std::vector<glm::vec3> floorPosRot =
-	//{
-	//	//Position	
-	//	glm::vec3(0.0f, 0.0f, 0.0f), 
-	//	glm::vec3(6.0f, 0.0f, 0.0f), 
-	//	glm::vec3(-6.0f, 0.0f, 0.0f), 
-	//	glm::vec3(0.0f, 0.0f, 6.0f), 
-	//	glm::vec3(6.0f, 0.0f, 6.0f), 
-	//	glm::vec3(-6.0f, 0.0f, 6.0f),
-	//	glm::vec3(0.0f, 0.0f, -6.0f), 
-	//	glm::vec3(6.0f, 0.0f, -6.0f), 
-	//	glm::vec3(-6.0f, 0.0f, -6.0f)
-	//};
-	//
-	//for (int i = 0; i < floorPosRot.size(); i ++)
-	//{
-	//	ModelLighting* floor = new ModelLighting(floorPosRot.at(i));
-	//	floor->setMesh("res/meshes/plane.obj");
-	//	floor->setDiffuseTexture("res/textures/carpet_diff.png");
-	//	floor->setSpecularTexture("res/textures/carpet_spec.png");
-	//	floor->setNormalTexture("res/textures/carpet_norm.png", false);
-	//	floor->setHeightTexture("res/textures/carpet_height.png", 0.05f);
-	//	m_sceneMeshes.push_back(floor);
-	//}
 	
-	////Concrete below grass
-	//std::vector<glm::vec3> concreteFloor =
-	//{
-	//	//Position						//Rotation
-	//	glm::vec3(0.0f, -0.8f, 0.0f),	glm::vec3(0.0f, 0.0f, 0.0f),
-	//	glm::vec3(6.0f, -0.8f, 0.0f),	glm::vec3(0.0f, 0.0f, 0.0f),
-	//	glm::vec3(-6.0f, -0.8f, 0.0f),	glm::vec3(0.0f, 0.0f, 0.0f),
-	//	glm::vec3(0.0f, -0.8f, 6.0f),	glm::vec3(0.0f, 0.0f, 0.0f),
-	//	glm::vec3(6.0f, -0.8f, 6.0f),	glm::vec3(0.0f, 0.0f, 0.0f),
-	//	glm::vec3(-6.0f, -0.8f, 6.0f),	glm::vec3(0.0f, 0.0f, 0.0f),
-	//	glm::vec3(0.0f, -0.8f, -6.0f),	glm::vec3(0.0f, 0.0f, 0.0f),
-	//	glm::vec3(6.0f, -0.8f, -6.0f),	glm::vec3(0.0f, 0.0f, 0.0f),
-	//	glm::vec3(-6.0f, -0.8f, -6.0f), glm::vec3(0.0f, 0.0f, 0.0f)
-	//};
-	//
-	//
-	//for (int i = 0; i < concreteFloor.size(); i += 2)
-	//{
-	//	ModelLighting* floor = new ModelLighting(concreteFloor.at(i), concreteFloor.at(i + 1));
-	//	floor->setMesh("res/meshes/slab.obj");
-	//	floor->setDiffuseTexture("res/textures/concreteSlab_diff.png");
-	//	floor->setSpecularTexture("res/textures/concreteSlab_spec.png");
-	//	floor->setNormalTexture("res/textures/concreteSlab_norm.png", false);
-	//	floor->setHeightTexture("res/textures/concreteSlab_height.png", 0.01f);
-	//	m_sceneMeshes.push_back(floor);
-	//}
-	
-	//House wall
-	//std::vector<glm::vec3> sideWallPosRot =
-	//{
-	//	//Position						//Rotation
-	//	glm::vec3(-9.0f, 2.8f, -6.0f),	glm::vec3(90.0f, 0.0f, -90.0f),
-	//	glm::vec3(-9.0f, 2.8f, 0.0f),	glm::vec3(90.0f, 0.0f, -90.0f),
-	//	glm::vec3(-9.0f, 2.8f, 6.0f),	glm::vec3(90.0f, 0.0f, -90.0f),
-	//	glm::vec3(9.0f, 2.8f, -6.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(9.0f, 2.8f, 0.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(9.0f, 2.8f, 6.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(-6.0f, 2.8f, -9.0f),	glm::vec3(90.0f, 0.0f, 0.0f),
-	//	glm::vec3(0.0f, 2.8f, -9.0f),	glm::vec3(90.0f, 0.0f, 0.0f),
-	//	glm::vec3(6.0f, 2.8f, -9.0f),	glm::vec3(90.0f, 0.0f, 0.0f),
-	//	glm::vec3(-6.0f, 2.8f, 9.0f),	glm::vec3(-90.0f, 180.0f, 0.0f),
-	//	glm::vec3(6.0f, 2.8f, 9.0f),	glm::vec3(-90.0f, 180.0f, 0.0f)
-	//};
-	//
-	//for (int i = 0; i < sideWallPosRot.size(); i += 2)
-	//{
-	//	ModelLighting* wall = new ModelLighting(sideWallPosRot.at(i), sideWallPosRot.at(i + 1));
-	//	wall->setMesh("res/meshes/wall.obj");
-	//	wall->setDiffuseTexture("res/textures/woodWall_diff.png");
-	//	wall->setSpecularTexture("res/textures/woodWall_spec.png");
-	//	wall->setNormalTexture("res/textures/woodWall_norm.png", false);
-	//	wall->setHeightTexture("res/textures/woodWall_height.png", 0.04f);
-	//	m_sceneMeshes.push_back(wall);
-	//}
-	
-	////Metal roof
-	//std::vector<glm::vec3> roofPosRot =
-	//{
-	
-	//	//Position						//Rotation
-	//	glm::vec3(0.0f, 5.8f, 0.0f),	glm::vec3(0.0f, 0.0f, 180.0f),
-	//	glm::vec3(6.0f, 5.8f, 0.0f),	glm::vec3(0.0f, 0.0f, 180.0f),
-	//	glm::vec3(-6.0f, 5.8f, 0.0f),	glm::vec3(0.0f, 0.0f, 180.0f),
-	//	glm::vec3(0.0f, 5.8f, 6.0f),	glm::vec3(0.0f, 0.0f, 180.0f),
-	//	glm::vec3(6.0f, 5.8f, 6.0f),	glm::vec3(0.0f, 0.0f, 180.0f),
-	//	glm::vec3(-6.0f, 5.8f, 6.0f),	glm::vec3(0.0f, 0.0f, 180.0f),
-	//	glm::vec3(0.0f, 5.8f, -6.0f),	glm::vec3(0.0f, 0.0f, 180.0f),
-	//	glm::vec3(6.0f, 5.8f, -6.0f),	glm::vec3(0.0f, 0.0f, 180.0f),
-	//	glm::vec3(-6.0f, 5.8f, -6.0f),	glm::vec3(0.0f, 0.0f, 180.0f)
-	//};
-	
-	//for (int i = 0; i < roofPosRot.size(); i += 2)
-	//{
-	//	ModelLighting* Floor = new ModelLighting(roofPosRot.at(i), roofPosRot.at(i + 1));
-	//	Floor->setMesh("res/meshes/wall.obj");
-	//	Floor->setDiffuseTexture("res/textures/metal2_diff.png");
-	//	Floor->setSpecularTexture("res/textures/metal2_spec.png");
-	//	Floor->setNormalTexture("res/textures/metal2_norm.png", false);
-	//	m_sceneMeshes.push_back(Floor);
-	//}
-	
-	//Dresser
-	//ModelLighting* dresser = new ModelLighting(glm::vec3(0.0f, 0.0f, -7.75f), glm::vec3(0.0f, 0.0f, 0.0f));
-	//dresser->setMesh("res/meshes/dresser.obj");
-	//dresser->setDiffuseTexture("res/textures/dresser_diff.png");
-	//dresser->setSpecularTexture("res/textures/dresser_spec.png");
-	//dresser->setNormalTexture("res/textures/dresser_norm.png", false);
-	//m_sceneMeshes.push_back(dresser);
-	
-	
-	//Front Stair
-	//ModelLighting* stair = new ModelLighting(glm::vec3(0.0f, -2.25f, 10.0f), glm::vec3(0.0f, 90.0f, 0.0f));
-	//stair->setMesh("res/meshes/stairs.obj");
-	//stair->setDiffuseTexture("res/textures/stairs_diff.png");
-	//stair->setSpecularTexture("res/textures/stairs_spec.png");
-	//stair->setNormalTexture("res/textures/stairs_norm.png", false);
-	//m_sceneMeshes.push_back(stair);
-
-	////Watchtower
-	//ModelLighting* tower = new ModelLighting(glm::vec3(-32.0f, -1.0f, 32.0f), glm::vec3(0.0f, 90.0f, 0.0f));
-	//tower->setMesh("res/meshes/watchTower.obj");
-	//tower->setDiffuseTexture("res/textures/watchTower_diff.png");
-	//tower->setSpecularTexture("res/textures/watchTower_spec.png");
-	//tower->setNormalTexture("res/textures/watchTower_norm.png", false);
-	//tower->SetXScale(2.5f);
-	//tower->SetYScale(2.5f);
-	//tower->SetZScale(2.5f);
-	//m_sceneMeshes.push_back(tower);
-
-	////Bed
-	//ModelLighting* bed = new ModelLighting(glm::vec3(-7.0f, -0.2f, 6.0f), glm::vec3(0.0f, 180.0f, 0.0f));
-	//bed->setMesh("res/meshes/bed.obj");
-	//bed->setDiffuseTexture("res/textures/bed_diff.png");
-	//bed->setSpecularTexture("res/textures/bed_spec.png");
-	//bed->setNormalTexture("res/textures/bed_norm.png", false);
-	//m_sceneMeshes.push_back(bed);
-
-	////Table
-	//ModelLighting* table = new ModelLighting(glm::vec3(-7.5f, -1.0f, 0.0f), glm::vec3(0.0f, 90.0f, 0.0f));
-	//table->setMesh("res/meshes/table.obj");
-	//table->setDiffuseTexture("res/textures/table_diff.png");
-	//table->setSpecularTexture("res/textures/table_spec.png");
-	//m_sceneMeshes.push_back(table);
-
-	//Knife
-	//ModelLighting* knife = new ModelLighting(glm::vec3(-7.5f, 1.9f, 0.0f), glm::vec3(0.0f, 50.0, 0.0f));
-	//knife->setMesh("res/meshes/knife.obj");
-	//knife->setDiffuseTexture("res/textures/knife_diff.png");
-	//knife->setSpecularTexture("res/textures/knife_spec.png");
-	//knife->setNormalTexture("res/textures/knife_norm.png", false);
-	//knife->SetXScale(1.5f);
-	//knife->SetYScale(1.5f);
-	//knife->SetZScale(1.5f);
-	//m_sceneMeshes.push_back(knife);
-
-	//Crates
-	//std::vector<glm::vec3> cratePosRot =
-	//{
-	//	//Position						//Rotation
-	//	glm::vec3(7.75f, 0.0f, 7.75f),	glm::vec3(0.0f, 0.0f, 0.0f),
-	//	glm::vec3(5.75f, 0.0f, 7.75f),	glm::vec3(0.0f, 0.0f, 0.0f),
-	//	glm::vec3(7.25f, 0.0f, 5.1f),	glm::vec3(0.0f, 30.0f, 0.0f),
-	//	glm::vec3(7.5f, 2.0f, 7.5f),	glm::vec3(0.0f, 60.0f, 0.0f)
-	//};
-	//
-	//for (int i = 0; i < cratePosRot.size(); i+=2)
-	//{
-	//	ModelLighting* crate = new ModelLighting(cratePosRot.at(i), cratePosRot.at(i+1));
-	//	crate->setMesh("res/meshes/crate.obj");
-	//	crate->setDiffuseTexture("res/textures/crate_diff.png");
-	//	crate->setSpecularTexture("res/textures/crate_spec.png");
-	//	crate->setNormalTexture("res/textures/crate_norm.png", false);
-	//	m_sceneMeshes.push_back(crate);
-	//}
-	
-	
-	
-	//Perimeter wall
-	//std::vector<glm::vec3> OutsideWall =
-	//{
-	//	//Position						//Rotation
-	//	glm::vec3(-12.0f, 1.5f, -9.0f), glm::vec3(90.0f, 0.0f, 0.0f),
-	//	glm::vec3(-18.0f, 1.5f, -9.0f), glm::vec3(90.0f, 0.0f, 0.0f),
-	//	glm::vec3(-24.0f, 1.5f, -9.0f), glm::vec3(90.0f, 0.0f, 0.0f),
-	//
-	//	glm::vec3(-27.0f, 1.5f, -6.0f), glm::vec3(90.0f, 0.0f, -90.0f),
-	//	glm::vec3(-27.0f, 1.5f, 0.0f),	glm::vec3(90.0f, 0.0f, -90.0f),
-	//	glm::vec3(-27.0f, 1.5f, 6.0f),	glm::vec3(90.0f, 0.0f, -90.0f),
-	//	glm::vec3(-27.0f, 1.5f, 12.0f), glm::vec3(90.0f, 0.0f, -90.0f),
-	//	glm::vec3(-27.0f, 1.5f, 18.0f), glm::vec3(90.0f, 0.0f, -90.0f),
-	//	glm::vec3(-27.0f, 1.5f, 24.0f), glm::vec3(90.0f, 0.0f, -90.0f),
-	//
-	//	glm::vec3(-24.0f, 1.5f, 27.0f), glm::vec3(-90.0f, 0.0f, 0.0f),
-	//	glm::vec3(-18.0f, 1.5f, 27.0f), glm::vec3(-90.0f, 0.0f, 0.0f),
-	//	glm::vec3(-12.0f, 1.5f, 27.0f), glm::vec3(-90.0f, 0.0f, 0.0f),
-	//	glm::vec3(-6.0f, 1.5f, 27.0f),	glm::vec3(-90.0f, 0.0f, 0.0f),
-	//	glm::vec3(0.0f, 1.5f, 27.0f),	glm::vec3(-90.0f, 0.0f, 0.0f),
-	//	glm::vec3(6.0f, 1.5f, 27.0f),	glm::vec3(-90.0f, 0.0f, 0.0f),
-	//	glm::vec3(12.0f, 1.5f, 27.0f),	glm::vec3(-90.0f, 0.0f, 0.0f),
-	//	glm::vec3(18.0f, 1.5f, 27.0f),	glm::vec3(-90.0f, 0.0f, 0.0f),
-	//	glm::vec3(24.0f, 1.5f, 27.0f),	glm::vec3(-90.0f, 0.0f, 0.0f),
-	//
-	//	glm::vec3(27.0f, 1.5f, 24.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(27.0f, 1.5f, 18.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(27.0f, 1.5f, 12.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(27.0f, 1.5f, 6.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(27.0f, 1.5f, 0.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(27.0f, 1.5f, -6.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//
-	//	glm::vec3(12.0f, 1.5f, -9.0f),	glm::vec3(90.0f, 0.0f, 0.0f),
-	//	glm::vec3(18.0f, 1.5f, -9.0f),	glm::vec3(90.0f, 0.0f, 0.0f),
-	//	glm::vec3(24.0f, 1.5f, -9.0f),	glm::vec3(90.0f, 0.0f, 0.0f),
-	//};
-	//
-	//for (int i = 0; i < OutsideWall.size(); i += 2)
-	//{
-	//	ModelLighting* wall = new ModelLighting(OutsideWall.at(i), OutsideWall.at(i + 1));
-	//	wall->setMesh("res/meshes/plane.obj");
-	//	wall->setDiffuseTexture("res/textures/concreteBrick_diff.png");
-	//	wall->setSpecularTexture("res/textures/concreteBrick_spec.png");
-	//	wall->setNormalTexture("res/textures/concreteBrick_norm.png", false);
-	//	wall->setHeightTexture("res/textures/concreteBrick_height.png", 0.01f);
-	//	m_sceneMeshes.push_back(wall);
-	//}
-
-	//Shed
-	//std::vector<glm::vec3> ShedPos =
-	//{
-	//	//Position							//Rotation
-	//	glm::vec3(-38.0f, 1.0f, 0.0f),		glm::vec3(0.0f, 210.0f, 0.0f),
-	//	glm::vec3(38.0f, 1.0f, 10.0f),		glm::vec3(0.0f, -210.0f, 0.0f),
-	//	glm::vec3(13.0f, 14.0f, -67.0f),	glm::vec3(0.0f, -210.0f, 0.0f)
-	//};
-	//
-	//for (int i = 0; i < ShedPos.size(); i += 2)
-	//{
-	//	ModelLighting* shed = new ModelLighting(ShedPos.at(i), ShedPos.at(i + 1));
-	//	shed->setMesh("res/meshes/shed.obj");
-	//	shed->setDiffuseTexture("res/textures/shed_diff.png");
-	//	shed->setSpecularTexture("res/textures/shed_spec.png");
-	//	shed->setNormalTexture("res/textures/shed_norm.png", false);
-	//	m_sceneMeshes.push_back(shed);
-	//}
-
-	//Cottage
-	//std::vector<glm::vec3> CottagePos =
-	//{
-	//	//Position							//Rotation
-	//	glm::vec3(-23.0f, 0.0f, -20.0f),	glm::vec3(0.0f, 130.0f, 0.0f),
-	//	glm::vec3(20.0f, 1.0f, 37.0f),		glm::vec3(0.0f, 45.0f, 0.0f)
-	//};
-	//
-	//for (int i = 0; i < CottagePos.size(); i += 2)
-	//{
-	//	ModelLighting* cottage = new ModelLighting(CottagePos.at(i), CottagePos.at(i + 1.0));
-	//	cottage->setMesh("res/meshes/cottage.obj");
-	//	cottage->setDiffuseTexture("res/textures/cottage_diff.png");
-	//	cottage->setSpecularTexture("res/textures/cottage_spec.png");
-	//	cottage->setNormalTexture("res/textures/cottage_norm.png", false);
-	//	m_sceneMeshes.push_back(cottage);
-	//}
-
-	//Sign
-	//std::vector<glm::vec3> SignPosRot =
-	//{
-	//	//Position							//Rotation
-	//	glm::vec3(2.0f, -3.0f, 25.75f),		glm::vec3(0.0f, 180.0f, 0.0f),		//Breating barrel 
-	//	glm::vec3(-3.0f, -1.3f, -4.0f),		glm::vec3(0.0f, 30.0f, 0.0f),		//Q and E tessellation shader 
-	//	glm::vec3(7.0f, -1.3f, -4.5f),		glm::vec3(0.0f, -90.0f, 0.0f),		//Fake depth from height / normal 
-	//	glm::vec3(3.0f, -1.3f, -4.0f),		glm::vec3(0.0f, -30.0f, 0.0f),		//Sign text from emission 
-	//	glm::vec3(11.0f, -3.0f, -4.75f),	glm::vec3(0.0f, 30.0f, 0.0f),		//Environment reflect 
-	//	glm::vec3(25.0f, -3.0f, -4.75f),	glm::vec3(0.0f, -30.0f, 0.0f),		//Environment refract 
-	//	glm::vec3(25.0f, -3.0f, 15.0f),		glm::vec3(0.0f, -90.0f, 0.0f),		//Normal vs no normal 
-	//	glm::vec3(-15.0f, -3.0f, -8.25f),	glm::vec3(0.0f, 0.0f, 0.0f),		//Different materials 
-	//	glm::vec3(-26.0f, -3.0f, 17.75f),	glm::vec3(0.0f, 90.0f, 0.0f),		//Colour lighting
-	//	glm::vec3(-23.0f, -3.0f, -8.25f),	glm::vec3(0.0f, 0.0f, 0.0f),		//disable lights to show 
-	//	glm::vec3(0.0f, -1.3f, -4.0f),		glm::vec3(0.0f, 0.0f, 0.0f),		//toggle lights	
-	//	glm::vec3(0.0f, 1.0f, -8.0f),		glm::vec3(0.0f, 0.0f, 0.0f),		//change filters 
-	//};
-	//
-	//std::vector <const char*> SignTex =
-	//{
-	//	"res/textures/signs/sign1_emis.png",
-	//	"res/textures/signs/sign2_emis.png",
-	//	"res/textures/signs/sign3_emis.png",
-	//	"res/textures/signs/sign4_emis.png",
-	//	"res/textures/signs/sign5_emis.png",
-	//	"res/textures/signs/sign6_emis.png",
-	//	"res/textures/signs/sign7_emis.png",
-	//	"res/textures/signs/sign8_emis.png",
-	//	"res/textures/signs/sign9_emis.png",
-	//	"res/textures/signs/sign10_emis.png",
-	//	"res/textures/signs/sign11_emis.png",
-	//	"res/textures/signs/sign12_emis.png"
-	//};
-	//
-	//int signNum = 0;
-	//for (int i = 0; i < SignPosRot.size(); i += 2)
-	//{
-	//	ModelLighting* sign = new ModelLighting(SignPosRot.at(i), SignPosRot.at(i + 1));
-	//	sign->setMesh("res/meshes/signpost.obj");
-	//	sign->setDiffuseTexture("res/textures/sign_diff.png");
-	//	sign->setSpecularTexture("res/textures/sign_spec.png");
-	//	sign->setNormalTexture("res/textures/sign_norm.png", false);
-	//	sign->setEmissionTexture(SignTex.at(signNum));
-	//	sign->SetXScale(0.75);
-	//	sign->SetYScale(0.75);
-	//	sign->SetZScale(0.75);
-	//	m_sceneMeshes.push_back(sign);
-	//	signNum++;
-	//}
-
-	//Material showcase
-	//std::vector<const char*> floorMaterials =
-	//{
-	//	//Diffuse map							//Specular Map							//Emision						//Normal Map 
-	//	"res/textures/metal_diff.png",			"res/textures/metal_spec.png",			"res/textures/blank_emis.png",	"res/textures/metal_norm.png",			//not normalized texture
-	//	"res/textures/tile_diff.png",			"res/textures/tile_spec.png",			"res/textures/blank_emis.png",	"res/textures/tile_norm.png",			//not normalized texture
-	//	"res/textures/sand_diff.png",			"res/textures/sand_spec.png",			"res/textures/blank_emis.png",	"res/textures/sand_norm.png",			//not normalized texture
-	//	"res/textures/lava_diff.png",			"res/textures/lava_spec.png",			"res/textures/lava_emis.png",	"res/textures/lava_norm.png",			//not normalized texture
-	//	"res/textures/hieroglyphs_diff.png",	"res/textures/hieroglyphs_spec.png",	"res/textures/blank_emis.png",	"res/textures/hieroglyphs_norm.png",	//not normalized texture	
-	//	"res/textures/metalHammer_diff.png",	"res/textures/metalHammer_spec.png",	"res/textures/blank_emis.png",	"res/textures/metalHammer_norm.png",	//normalized texture		
-	//	"res/textures/skullGround_diff.png",	"res/textures/skullGround_spec.png",	"res/textures/blank_emis.png",	"res/textures/skullGround_norm.png",	//normalized texture
-	//	"res/textures/rock_diff.png",			"res/textures/rock_spec.png",			"res/textures/blank_emis.png",	"res/textures/rock_norm.png",			//normalized texture
-	//	"res/textures/concrete2_diff.png",		"res/textures/concrete2_spec.png",		"res/textures/blank_emis.png",	"res/textures/concrete2_norm.png",		//normalized texture
-	//};
-	//
-	//std::vector<glm::vec3> floorPos =
-	//{
-	//	//Position
-	//	glm::vec3(-24.0f, -1.25, -4.0),
-	//	glm::vec3(-18.0f, -1.25, -4.0),
-	//	glm::vec3(-12.0f, -1.25, -4.0),
-	//	glm::vec3(-24.0f, -1.25, 2.0),
-	//	glm::vec3(-18.0f, -1.25, 2.0),
-	//	glm::vec3(-18.0f, -1.25, 8.0),
-	//	glm::vec3(-24.0f, -1.25, 8.0),
-	//	glm::vec3(-12.0f, -1.25, 2.0),
-	//	glm::vec3(-12.0f, -1.25, 8.0),
-	//};
-	//
-	//float materialShininess[] =
-	//{
-	//	48.0f,
-	//	48.0f,
-	//	48.0f,
-	//	64.0f,
-	//	48.0f,
-	//	48.0f,
-	//	48.0f,
-	//	48.0f,
-	//	48.0f
-	//};
-	//
-	//int materialNum = 0;
-	//for (int i = 0; i < floorPos.size(); i++)
-	//{
-	//	ModelLighting* floor = new ModelLighting(floorPos.at(i));
-	//	floor->setMesh("res/meshes/plane.obj");
-	//	floor->setDiffuseTexture(floorMaterials.at(materialNum));
-	//	floor->setSpecularTexture(floorMaterials.at(materialNum+1));
-	//	floor->setEmissionTexture(floorMaterials.at(materialNum + 2));
-	//	if (materialNum >= 16) 
-	//	{
-	//		floor->setNormalTexture(floorMaterials.at(materialNum + 3), true);
-	//	}
-	//	else
-	//	{
-	//		floor->setNormalTexture(floorMaterials.at(materialNum + 3), false);
-	//	}
-	//	floor->setSpecularShiniess(materialShininess[i]);
-	//	m_sceneMeshes.push_back(floor);
-	//	materialNum += 4;
-	//}
-	//
-	////Normal vs no normal showcase
-	//std::vector<glm::vec3> planePos =
-	//{
-	//	//Position						//Rotation
-	//	glm::vec3(25.0f, 1.0f, 6.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(25.0f, 1.0f, 12.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(25.0f, 1.0f, 18.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(25.0f, 1.0f, 24.0f),	glm::vec3(90.0f, 0.0f, 90.0f),
-	//	glm::vec3(22.0f, 1.0f, 26.0f),	glm::vec3(90.0f, 0.0f, 180.0f),
-	//	glm::vec3(16.0f, 1.0f, 26.0f),	glm::vec3(90.0f, 0.0f, 180.0f),
-	//};
-	//
-	//ModelLighting * leather = new ModelLighting(planePos.at(0), planePos.at(1));
-	//leather->setMesh("res/meshes/plane.obj");
-	//leather->setDiffuseTexture("res/textures/leather_diff.png");
-	//m_sceneMeshes.push_back(leather);
-	//
-	//ModelLighting* leather2 = new ModelLighting(planePos.at(2), planePos.at(3));
-	//leather2->setMesh("res/meshes/plane.obj");
-	//leather2->setDiffuseTexture("res/textures/leather_diff.png");
-	//leather2->setNormalTexture("res/textures/leather_norm.png", false);
-	//m_sceneMeshes.push_back(leather2);
-	//
-	//ModelLighting* concrete = new ModelLighting(planePos.at(4), planePos.at(5));
-	//concrete->setMesh("res/meshes/plane.obj");
-	//concrete->setDiffuseTexture("res/textures/concreteExample_diff.png");
-	//m_sceneMeshes.push_back(concrete);
-	//
-	//ModelLighting* concrete2 = new ModelLighting(planePos.at(6), planePos.at(7));
-	//concrete2->setMesh("res/meshes/plane.obj");
-	//concrete2->setDiffuseTexture("res/textures/concreteExample_diff.png");
-	//concrete2->setNormalTexture("res/textures/concreteExample_norm.png", false);
-	//m_sceneMeshes.push_back(concrete2);
-	//
-	//ModelLighting* brick = new ModelLighting(planePos.at(8), planePos.at(9));
-	//brick->setMesh("res/meshes/plane.obj");
-	//brick->setDiffuseTexture("res/textures/cartoonBricks_diff.png");
-	//m_sceneMeshes.push_back(brick);
-	//
-	//ModelLighting* brick2 = new ModelLighting(planePos.at(10), planePos.at(11));
-	//brick2->setMesh("res/meshes/plane.obj");
-	//brick2->setDiffuseTexture("res/textures/cartoonBricks_diff.png");
-	//brick2->setNormalTexture("res/textures/cartoonBricks_norm.png", false);
-	//m_sceneMeshes.push_back(brick2);
 	
 }
 
@@ -1111,7 +626,8 @@ void Scene::addSceneLightManager()
 	EngineStatics::setLightManager(m_sceneLightManager);
 }
 
-void applyToObject(Object& o, const std::vector<std::string>& vector)
+
+void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector)
 {
 
 	enum objectInfo
@@ -1190,7 +706,7 @@ void applyToObject(Object& o, const std::vector<std::string>& vector)
 
 	if (vector.at(e_heightMap) == "null")
 	{
-		o.heightMap = "null";
+		o.heightMap = "null"; // Object will use no height map
 	}
 	else
 	{
@@ -1201,7 +717,7 @@ void applyToObject(Object& o, const std::vector<std::string>& vector)
 
 	if (vector.at(e_emissionMap) == "null")
 	{
-		o.emissionMap = "null";
+		o.emissionMap = "null"; // Object will use no emission map
 	}
 	else
 	{

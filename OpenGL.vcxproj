@@ -243,6 +243,9 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)\res /S</Command>
     <None Include="res\shaders\terrain-tessEval.glsl" />
     <None Include="res\shaders\terrain-vertex.glsl" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="levelData.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
