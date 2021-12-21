@@ -16,6 +16,7 @@ public:
 
     void        setShaderTwo(const char* vertexPath, const char* tessellationControlPath, const char* tessellationEvaluationPath, const char* fragmentPath);
 
+    void        setElevation(float value);
     void        alterElevation(float change);
 
 private:

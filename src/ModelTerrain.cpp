@@ -20,14 +20,14 @@ ModelTerrain::~ModelTerrain()
 }
 
 /// <summary>
-/// Overriden method from Model base class - Unused in this class
+/// Overridden method from Model base class - Unused in this class
 /// </summary>
 void ModelTerrain::drawPassOne()
 {
 }
 
 /// <summary>
-/// Overriden method from Model base class - Used to draw surrounding terrain with the tessellation shader
+/// Overridden method from Model base class - Used to draw surrounding terrain with the tessellation shader
 /// </summary>
 void ModelTerrain::drawPassTwo()
 {
@@ -69,6 +69,12 @@ void ModelTerrain::drawPassTwo()
 void ModelTerrain::setShaderTwo(const char* vertexPath, const char* tessellationControlPath, const char* tessellationEvaluationPath, const char* fragmentPath)
 {
 	m_modelShaderPassTwo = ShaderManager::retrieveShader(vertexPath, tessellationControlPath, tessellationEvaluationPath, fragmentPath);
+}
+
+
+void ModelTerrain::setElevation(float value)
+{
+	m_elevation = value;
 }
 
 /// <summary>
