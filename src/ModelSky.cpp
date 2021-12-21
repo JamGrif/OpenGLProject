@@ -21,7 +21,7 @@ ModelSky::~ModelSky()
 }
 
 /// <summary>
-/// Overriden method from Model base class - Unused in this class
+/// Overridden method from Model base class - Unused in this class
 /// </summary>
 void ModelSky::drawPassOne()
 {
@@ -33,7 +33,7 @@ void ModelSky::drawPassOne()
 }
 
 /// <summary>
-/// Overriden method from Model base class - Used to draw the skybox
+/// Overridden method from Model base class - Used to draw the skybox
 /// </summary>
 void ModelSky::drawPassTwo()
 {

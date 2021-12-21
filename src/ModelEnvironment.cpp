@@ -16,7 +16,7 @@ ModelEnvironment::~ModelEnvironment()
 }
 
 /// <summary>
-/// Overriden method from Model base class - Unused in this class
+/// Overridden method from Model base class - Unused in this class
 /// </summary>
 void ModelEnvironment::drawPassOne()
 {
@@ -28,7 +28,7 @@ void ModelEnvironment::drawPassOne()
 }
 
 /// <summary>
-/// Overriden method from Model base class - Used for environment mapping by taking the skybox texture and mapping it to the texture
+/// Overridden method from Model base class - Used for environment mapping by taking the skybox texture and mapping it to the texture
 /// </summary>
 void ModelEnvironment::drawPassTwo()
 {

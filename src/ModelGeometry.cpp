@@ -14,7 +14,7 @@ ModelGeometry::~ModelGeometry()
 }
 
 /// <summary>
-/// Overriden method from Model base class - Unused in this class
+/// Overridden method from Model base class - Unused in this class
 /// </summary>
 void ModelGeometry::drawPassOne()
 {

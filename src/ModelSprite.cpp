@@ -17,7 +17,7 @@ ModelSprite::~ModelSprite()
 }
 
 /// <summary>
-/// Overriden method from Model base class - Unused in this class
+/// Overridden method from Model base class - Unused in this class
 /// </summary>
 void ModelSprite::drawPassOne()
 {
@@ -29,7 +29,7 @@ void ModelSprite::drawPassOne()
 }
 
 /// <summary>
-/// Overriden method from Model base class - Used to draw the sprite in the scene
+/// Overridden method from Model base class - Used to draw the sprite in the scene
 /// </summary>
 void ModelSprite::drawPassTwo()
 {

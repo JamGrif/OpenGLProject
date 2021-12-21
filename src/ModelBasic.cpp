@@ -17,7 +17,7 @@ ModelBasic::~ModelBasic()
 }
 
 /// <summary>
-/// Overriden method from Model base class - Unused in this class
+/// Overridden method from Model base class - Unused in this class
 /// </summary>
 void ModelBasic::drawPassOne()
 {
@@ -29,7 +29,7 @@ void ModelBasic::drawPassOne()
 }
 
 /// <summary>
-/// Overriden method from Model base class - Used to draw a simple object with no lighting applied. Has the option to "copy" the position and colour of a point light
+/// Overridden method from Model base class - Used to draw a simple object with no lighting applied. Has the option to "copy" the position and colour of a point light
 /// </summary>
 void ModelBasic::drawPassTwo()
 {
