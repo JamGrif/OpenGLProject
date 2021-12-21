@@ -209,5 +209,36 @@ modelLighting	0.0		-1.3	-4.0	0.0		0.0		0.0		0.75		0.75		0.75		signpost	sign_diff
 modelLighting	0.0		1.0		-8.0	0.0		0.0		0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					/signs/sign12_emis
 
 
-# modelBasic objects...
+#modelBasic objects...
 #ModelType	    #PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh	#LightToCopy
+modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
+modelBasic		4.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	1
+modelBasic		6.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	2
+modelBasic		8.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	3
+
+#modelTerrain objects...
+#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Elevation
+modelTerrain	0.0		22.0	0.0		180.0	0.0		0.0		150.0		10.0		150.0		3.0
+modelTerrain	125.0	20.0	-30.0	180.0	0.0		0.0		50.0		10.0		200.0		-4.5
+modelTerrain	30.0	20.0	-125.0	180.0	90.0	0.0		50.0		10.0		200.0		-4.5
+
+#modelSprite objects...
+#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Sprite
+modelSprite		4.0		-0.5	13.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
+modelSprite		8.0		-0.5	18.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
+modelSprite		14.0	-0.5	15.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
+modelSprite		19.0	-0.5	-5.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
+modelSprite		23.0	-0.5	10.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
+modelSprite		-4.0	-0.5	13.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
+modelSprite		-8.0	-0.5	18.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
+modelSprite		-14.0	-0.5	15.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
+modelSprite		-19.0	-0.5	17.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
+
+#modelEnvironment objects...
+#ModelType			#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#mesh	#reflection		#refraction
+modelEnvironment	14.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	1.0				0.0
+modelEnvironment	22.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	0.0				1.0
+
+#modelGeometry objects...
+#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#mesh
+modelGeometry	-1.0	-1.5	23.0	0.0		0.0		0.0		1.5			1.5			1.5			barrel

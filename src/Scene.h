@@ -4,13 +4,13 @@
 
 #include "LightManager.h"
 #include "Camera.h"
+#include "Framebuffer.h"
 #include "ModelBasic.h"
 #include "ModelLighting.h"
 #include "ModelSky.h"
 #include "ModelEnvironment.h"
 #include "ModelSprite.h"
-#include "Framebuffer.h"
-#include "Terrain.h"
+#include "ModelTerrain.h"
 #include "ModelGeometry.h"
 
 //Class that contains all the objects of a loaded level. Loops through them every frame, updating and drawing them
@@ -40,8 +40,8 @@ private:
 	Framebuffer*			m_sceneMSAAFrameBuffer;		//Scene is drawn to this buffer with MSAA applied
 	Framebuffer*			m_sceneFilterFramebuffer;	//Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen
 
-	Terrain*				m_mountainsX;				//Adjustable mountain along X axis
-	Terrain*				m_mountainsZ;				//Adjustable mountain along Z axis
+	//Terrain*				m_mountainsX;				//Adjustable mountain along X axis
+	//Terrain*				m_mountainsZ;				//Adjustable mountain along Z axis
 
 	//Light showing materials variables
 	float					m_materialLightMinZ = -5;

@@ -10,6 +10,8 @@
 #include <fstream>
 #include <sstream>
 
+
+
 struct templateModelLighting
 {
 	std::string modelType = ""; // ModelLighting, ModelBasic, ModelTerrain etc...
@@ -41,12 +43,133 @@ struct templateModelLighting
 	std::string emissionMap = "";
 };
 
-void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector);
+struct templateModelBasic
+{
+	std::string modelType = "";
 
-std::vector<templateModelLighting> completedObjects;
+	float PosX;
+	float PosY;
+	float PosZ;
+
+	float RotX;
+	float RotY;
+	float RotZ;
+
+	float ScaleX;
+	float ScaleY;
+	float ScaleZ;
+
+	std::string mesh = "";
+
+	int lightToCopy;
+};
+
+struct templateModelTerrain
+{
+	std::string modelType = "";
+
+	float PosX;
+	float PosY;
+	float PosZ;
+
+	float RotX;
+	float RotY;
+	float RotZ;
+
+	float ScaleX;
+	float ScaleY;
+	float ScaleZ;
+
+	float elevation;
+
+};
+
+struct templateModelSprite
+{
+	std::string modelType = "";
+	
+	float PosX;
+	float PosY;
+	float PosZ;
+
+	float RotX;
+	float RotY;
+	float RotZ;
+
+	float ScaleX;
+	float ScaleY;
+	float ScaleZ;
+
+	std::string sprite;
+};
+
+struct templateModelEnvironment
+{
+	std::string modelType = "";
+
+	float PosX;
+	float PosY;
+	float PosZ;
+
+	float RotX;
+	float RotY;
+	float RotZ;
+
+	float ScaleX;
+	float ScaleY;
+	float ScaleZ;
+
+	std::string mesh;
+
+	bool reflection;
+
+	bool refraction;
+};
+
+struct templateModelGeometry
+{
+	std::string modelType = "";
+
+	float PosX;
+	float PosY;
+	float PosZ;
+
+	float RotX;
+	float RotY;
+	float RotZ;
+
+	float ScaleX;
+	float ScaleY;
+	float ScaleZ;
+
+	std::string mesh;
+};
+
+void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector);
+//void createModelLightingObject(templateModelLighting& o);
+
+void applyToModelBasicTemplate(templateModelBasic& o, const std::vector<std::string>& vector);
+
+void applyToModelTerrainTemplate(templateModelTerrain& o, const std::vector<std::string>& vector);
+
+void applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& vector);
+
+void applyToModelEnvironmentTemplate(templateModelEnvironment& o, const std::vector<std::string>& vector);
+
+void applyToModelGeometryTemplate(templateModelGeometry& o, const std::vector<std::string>& vector);
+
+
+
+
+std::vector<templateModelLighting> completedModelLightObjects;
+std::vector<templateModelBasic> completedModelBasicObjects;
+std::vector<templateModelTerrain> completedModelTerrainObjects;
+std::vector<templateModelSprite> completedModelSpriteObjects;
+std::vector<templateModelEnvironment> completedModelEnvironmentObjects;
+std::vector<templateModelGeometry> completedModelGeometryObjects;
 
 Scene::Scene()
-	:m_sceneCamera(nullptr), m_sceneLightManager(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr), m_mountainsX(nullptr), m_mountainsZ(nullptr),
+	:m_sceneCamera(nullptr), m_sceneLightManager(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr),
 	m_materialLightMinZ(-5.0f), m_materialLightMaxZ(9.0f), m_materialLightMinX(-25.0f), m_materialLightMaxX(-13.0f), m_materialLightIncZ(true),
 	m_materialLightIncX(true), m_normalLightMaxZ(8.0f), m_normalLightMinZ(23.0f), m_normalLightIncZ(true), m_lightR(0.0f), m_lightG(0.0f), m_lightB(0.0f)
 {
@@ -95,6 +218,21 @@ void Scene::initScene()
 
 	m_sceneLightManager->addDirectionalLight(-2.0f, -3.0f, -1.0f, glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0.3f, 0.3f, 0.3f));
 
+	//Point lights
+	std::vector<glm::vec3> lightPosAmbDifSpc =
+	{
+		//Position						//Ambient						//Diffuse						//Specular
+		glm::vec3(0.0f, 3.0f, 0.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),		glm::vec3(0.4f, 0.4f, 0.4f),	//House light
+		glm::vec3(-18.0f, 2.0f, 0.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Material showcase light
+		glm::vec3(18.0f, 2.0f, 14.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Normal showcase light
+		glm::vec3(-20.0f, 2.0f, 20.0f), glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Coloured lighting
+	};
+
+	for (int i = 0; i < lightPosAmbDifSpc.size(); i += 4)
+	{
+		m_sceneLightManager->addPointLight(lightPosAmbDifSpc.at(i).x, lightPosAmbDifSpc.at(i).y, lightPosAmbDifSpc.at(i).z, lightPosAmbDifSpc.at(i + 1), lightPosAmbDifSpc.at(i + 2), lightPosAmbDifSpc.at(i + 3));
+	}
+
 	std::ifstream fileStream("levelData.txt", std::ios::in);
 
 	if (!fileStream)
@@ -104,7 +242,7 @@ void Scene::initScene()
 	}
 
 	std::string line = "";
-
+	int count = 0;
 	while (!fileStream.eof())
 	{
 		std::getline(fileStream, line);
@@ -122,7 +260,7 @@ void Scene::initScene()
 			continue;
 		}
 
-		templateModelLighting object;
+
 
 		std::string buf;
 		std::stringstream ss(line);
@@ -137,187 +275,196 @@ void Scene::initScene()
 
 		*/
 
-
 		while (ss >> buf)
 		{
 			tokens.push_back(buf);
 		}
 
-		applyToModelLightingTemplate(object, tokens);
 
-		//std::cout << "modelType is " << object.modelType << std::endl;
-		//
-		//std::cout << "PosX is " << object.PosX << std::endl;
-		//std::cout << "PosY is " << object.PosY << std::endl;
-		//std::cout << "PosZ is " << object.PosZ << std::endl;
-		//
-		//std::cout << "RotX is " << object.RotX << std::endl;
-		//std::cout << "RotY is " << object.RotY << std::endl;
-		//std::cout << "RotZ is " << object.RotZ << std::endl;
-		//
-		//std::cout << "ScaleX is " << object.ScaleX << std::endl;
-		//std::cout << "ScaleY is " << object.ScaleY << std::endl;
-		//std::cout << "ScaleZ is " << object.ScaleZ << std::endl;
-		//
-		//std::cout << "mesh is " << object.mesh << std::endl;
-		//
-		//std::cout << "diffuseMap is " << object.diffuseMap << std::endl;
-		//
-		//std::cout << "specularMap is " << object.specularMap << std::endl;
-		//
-		//std::cout << "normalMap is " << object.normalMap << std::endl;
-		//std::cout << "normalMapNormalize is " << object.normalMapNormalize << std::endl;
-		//
-		//std::cout << "heightMap is " << object.heightMap << std::endl;
-		//std::cout << "heightMapHeight is " << object.heightMapHeight << std::endl;
-		//
-		//std::cout << "emissionMap is " << object.emissionMap << std::endl;
-		//
-		//std::cout << std::endl;
+		count++;
+		std::cout << count << " number of times through loop" << std::endl;
+		std::cout << "tokens.at(0) is " << tokens.at(0) << std::endl;
 
-		completedObjects.push_back(object);
-
-		
-
-	}
-
-	//std::cout << std::endl;
-	//std::cout << "There are " << completedObjects.size() << " completed objects" << std::endl;
-
-
-	for (int i = 0; i < completedObjects.size(); i++)
-	{
-		ModelLighting* model = new ModelLighting(glm::vec3(completedObjects.at(i).PosX, completedObjects.at(i).PosY, completedObjects.at(i).PosZ), glm::vec3(completedObjects.at(i).RotX, completedObjects.at(i).RotY, completedObjects.at(i).RotZ));
-		model->SetXScale(completedObjects.at(i).ScaleX);
-		model->SetYScale(completedObjects.at(i).ScaleY);
-		model->SetZScale(completedObjects.at(i).ScaleZ);
-
-
-		model->setMesh(completedObjects.at(i).mesh); 
-		 
-
-		if (completedObjects.at(i).diffuseMap != "null")
+		if (tokens.at(0) == "modelLighting") // .at(0) is the first word in the row - ModelType
 		{
-			model->setDiffuseTexture(completedObjects.at(i).diffuseMap);
+			std::cout << "object is a modelLighting" << std::endl;
+			templateModelLighting object;
+			applyToModelLightingTemplate(object, tokens);
+			completedModelLightObjects.push_back(object);
+
+		}
+		else if (tokens.at(0) == "modelBasic")
+		{
+			std::cout << "object is a modelBasic" << std::endl;
+			templateModelBasic object;
+			applyToModelBasicTemplate(object, tokens);
+			completedModelBasicObjects.push_back(object);
+		}
+		else if (tokens.at(0) == "modelTerrain")
+		{
+			std::cout << "object is a modelTerrain" << std::endl;
+			templateModelTerrain object;
+			applyToModelTerrainTemplate(object, tokens);
+			completedModelTerrainObjects.push_back(object);
+		}
+		else if (tokens.at(0) == "modelSprite")
+		{
+			std::cout << "object is a modelSprite" << std::endl;
+			templateModelSprite object;
+			applyToModelSpriteTemplate(object, tokens);
+			completedModelSpriteObjects.push_back(object);
+		}
+		else if (tokens.at(0) == "modelEnvironment")
+		{
+			std::cout << "object is a modelEnvironment" << std::endl;
+			templateModelEnvironment object;
+			applyToModelEnvironmentTemplate(object, tokens);
+			completedModelEnvironmentObjects.push_back(object);
+		}
+		else if (tokens.at(0) == "modelGeometry")
+		{
+			std::cout << "object is a modelGeometry" << std::endl;
+			templateModelGeometry object;
+			applyToModelGeometryTemplate(object, tokens);
+			completedModelGeometryObjects.push_back(object);
+		}
+		else
+		{
+			std::cout << "Could not determine modelType - " << tokens.at(0) << " - FAILURE" << std::endl;
+		}
+
+
+		std::cout << "moving to next line" << std::endl;
+
+	}// end of scene txt file read
+
+	fileStream.close();
+
+	//Now that the scene file has been read, actually create the objects and place into the scene meshes vector
+
+	for (int i = 0; i < completedModelLightObjects.size(); i++) // Create all modelLighting objects
+	{
+		ModelLighting* model = new ModelLighting(glm::vec3(completedModelLightObjects.at(i).PosX, completedModelLightObjects.at(i).PosY, completedModelLightObjects.at(i).PosZ), glm::vec3(completedModelLightObjects.at(i).RotX, completedModelLightObjects.at(i).RotY, completedModelLightObjects.at(i).RotZ));
+
+		model->SetXScale(completedModelLightObjects.at(i).ScaleX);
+		model->SetYScale(completedModelLightObjects.at(i).ScaleY);
+		model->SetZScale(completedModelLightObjects.at(i).ScaleZ);
+
+		model->setMesh(completedModelLightObjects.at(i).mesh);
+
+		if (completedModelLightObjects.at(i).diffuseMap != "null")
+		{
+			model->setDiffuseTexture(completedModelLightObjects.at(i).diffuseMap);
 		}
 		else
 		{
 			model->setDiffuseTexture("res/textures/blank.png"); // Models have to have a diffuse map
 		}
-		
-		if (completedObjects.at(i).specularMap != "null")
+
+		if (completedModelLightObjects.at(i).specularMap != "null")
 		{
-			model->setSpecularTexture(completedObjects.at(i).specularMap);
+			model->setSpecularTexture(completedModelLightObjects.at(i).specularMap);
 		}
 		else
 		{
 			model->setSpecularTexture("res/textures/blank.png"); // Models have to have a specular map
 		}
 
-		if (completedObjects.at(i).normalMap != "null")
+		if (completedModelLightObjects.at(i).normalMap != "null")
 		{
-			model->setNormalTexture(completedObjects.at(i).normalMap, completedObjects.at(i).normalMapNormalize);
+			model->setNormalTexture(completedModelLightObjects.at(i).normalMap, completedModelLightObjects.at(i).normalMapNormalize);
 		}
 
-		
-		if (completedObjects.at(i).heightMap != "null")
+		if (completedModelLightObjects.at(i).heightMap != "null")
 		{
-			model->setHeightTexture(completedObjects.at(i).heightMap, completedObjects.at(i).heightMapHeight);
+			model->setHeightTexture(completedModelLightObjects.at(i).heightMap, completedModelLightObjects.at(i).heightMapHeight);
 		}
 
-		
-		if (completedObjects.at(i).emissionMap != "null")
+		if (completedModelLightObjects.at(i).emissionMap != "null")
 		{
-			model->setEmissionTexture(completedObjects.at(i).emissionMap);
+			model->setEmissionTexture(completedModelLightObjects.at(i).emissionMap);
 		}
 
+		m_sceneMeshes.push_back(model);
+
+	}
+
+	for (int i = 0; i < completedModelBasicObjects.size(); i++)
+	{
+		ModelBasic* model = new ModelBasic(glm::vec3(completedModelBasicObjects.at(i).PosX, completedModelBasicObjects.at(i).PosY, completedModelBasicObjects.at(i).PosZ), glm::vec3(completedModelBasicObjects.at(i).RotX, completedModelBasicObjects.at(i).RotY, completedModelBasicObjects.at(i).RotZ));
+
+		model->SetXScale(completedModelBasicObjects.at(i).ScaleX);
+		model->SetYScale(completedModelBasicObjects.at(i).ScaleY);
+		model->SetZScale(completedModelBasicObjects.at(i).ScaleZ);
+
+		model->setMesh(completedModelBasicObjects.at(i).mesh);
+
+		model->copyPointLight(completedModelBasicObjects.at(i).lightToCopy);
 
 		m_sceneMeshes.push_back(model);
 	}
 
+	for (int i = 0; i < completedModelTerrainObjects.size(); i++)
+	{
+		ModelTerrain* model = new ModelTerrain(glm::vec3(completedModelTerrainObjects.at(i).PosX, completedModelTerrainObjects.at(i).PosY, completedModelTerrainObjects.at(i).PosZ), glm::vec3(completedModelTerrainObjects.at(i).RotX, completedModelTerrainObjects.at(i).RotY, completedModelTerrainObjects.at(i).RotZ), glm::vec3(completedModelTerrainObjects.at(i).ScaleX, completedModelTerrainObjects.at(i).ScaleY, completedModelTerrainObjects.at(i).ScaleZ), completedModelTerrainObjects.at(i).elevation);
+		
+		m_sceneMeshes.push_back(model);
+	}
+
+	for (int i = 0; i < completedModelSpriteObjects.size(); i++)
+	{
+		ModelSprite* model = new ModelSprite(glm::vec3(completedModelSpriteObjects.at(i).PosX, completedModelSpriteObjects.at(i).PosY, completedModelSpriteObjects.at(i).PosZ));
+		model->SetXScale(completedModelSpriteObjects.at(i).ScaleX);
+		model->SetYScale(completedModelSpriteObjects.at(i).ScaleY);
+		model->SetZScale(completedModelSpriteObjects.at(i).ScaleZ);
+		model->setSprite(completedModelSpriteObjects.at(i).sprite);
+		m_sceneMeshes.push_back(model);
+	}
+
+	for (int i = 0; i < completedModelEnvironmentObjects.size(); i++)
+	{
+		ModelEnvironment* model = new ModelEnvironment(glm::vec3(completedModelEnvironmentObjects.at(i).PosX, completedModelEnvironmentObjects.at(i).PosY, completedModelEnvironmentObjects.at(i).PosZ));
+		model->SetXScale(completedModelEnvironmentObjects.at(i).ScaleX);
+		model->SetYScale(completedModelEnvironmentObjects.at(i).ScaleY);
+		model->SetZScale(completedModelEnvironmentObjects.at(i).ScaleZ);
+
+		model->setMesh(completedModelEnvironmentObjects.at(i).mesh);
+
+		model->toggleReflection(completedModelEnvironmentObjects.at(i).reflection);
+		model->toggleRefraction(completedModelEnvironmentObjects.at(i).refraction);
+	
+		m_sceneMeshes.push_back(model);
+	}
+
+	for (int i = 0; i < completedModelGeometryObjects.size(); i++)
+	{
+		ModelGeometry* model = new ModelGeometry(glm::vec3(completedModelGeometryObjects.at(i).PosX, completedModelGeometryObjects.at(i).PosY, completedModelGeometryObjects.at(i).PosZ), glm::vec3(completedModelGeometryObjects.at(i).RotX, completedModelGeometryObjects.at(i).RotY, completedModelGeometryObjects.at(i).RotZ));
+
+		model->SetXScale(completedModelGeometryObjects.at(i).ScaleX);
+		model->SetYScale(completedModelGeometryObjects.at(i).ScaleY);
+		model->SetZScale(completedModelGeometryObjects.at(i).ScaleZ);
+
+		model->setMesh(completedModelGeometryObjects.at(i).mesh);
+
+		m_sceneMeshes.push_back(model);
+	
+	}
+
+
+
+	
 	
 
-
-
-
-	////Terrain
-	//m_sceneMeshes.push_back(new Terrain(glm::vec3(0.0f, 22.0f, 0.0f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(150,10,150), 3.0f)); //Surrounding house
-	//
-	//m_sceneMeshes.push_back(m_mountainsX = new Terrain(glm::vec3(125.0f, 20.0f, -30.0f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(50,10,200), -4.5f)); //Mountain on X axis
-	//m_sceneMeshes.push_back(m_mountainsZ = new Terrain(glm::vec3(30.0f, 20.0f, -125.0f), glm::vec3(180.0f, 90.0f, 0.0f), glm::vec3(50, 10, 200), -4.5f)); //Mountain on Z axis
-	//
-	////Geometry shader object
-	//ModelGeometry* g = new ModelGeometry(glm::vec3(-1.0f, -1.5f, 23.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-	//g->setMesh("res/meshes/barrel.obj");
-	//g->SetXScale(1.5);
-	//g->SetYScale(1.5);
-	//g->SetZScale(1.5);
-	//m_sceneMeshes.push_back(g);
-	//
-	////Reflection environment map object
-	//ModelEnvironment* reflectionModel = new ModelEnvironment(glm::vec3(14.0f, 0.5f, -7.0f));
-	//reflectionModel->toggleReflection(true);
-	//reflectionModel->setMesh("res/meshes/heart.obj");
-	//reflectionModel->SetXScale(1);
-	//reflectionModel->SetYScale(1);
-	//reflectionModel->SetZScale(1);
-	//m_sceneMeshes.push_back(reflectionModel);
-	//
-	////Refraction environment map object
-	//ModelEnvironment* refractionModel = new ModelEnvironment(glm::vec3(22.0f, 0.5f, -7.0f));
-	//refractionModel->toggleRefraction(true);
-	//refractionModel->setMesh("res/meshes/heart.obj");
-	//refractionModel->SetXScale(1);
-	//refractionModel->SetYScale(1);
-	//refractionModel->SetZScale(1);
-	//m_sceneMeshes.push_back(refractionModel);
-
-	////Grass
-	//std::vector<glm::vec3> grassPos =
-	//{
-	//	//Position
-	//	glm::vec3(4.0f, -0.5f, 13.0f),
-	//	glm::vec3(8.0f, -0.5f, 18.0f),
-	//	glm::vec3(14.0f, -0.5f, 15.0f),
-	//	glm::vec3(19.0f, -0.5f, -5.0f),
-	//	glm::vec3(23.0f, -0.5f, 10.0f),
-	//	glm::vec3(-4.0f, -0.5f,  13.0f),
-	//	glm::vec3(-8.0f, -0.5f,  18.0f),
-	//	glm::vec3(-14.0f, -0.5f, 15.0f),
-	//	glm::vec3(-19.0f, -0.5f, 17.0f)
-	//};
-	//
-	//for (int i = 0; i < grassPos.size(); i++)
-	//{
-	//	ModelSprite* grass = new ModelSprite(grassPos.at(i));
-	//	grass->setSprite("res/textures/grass_sprite.png");
-	//	grass->SetXScale(0.4f);
-	//	grass->SetYScale(0.4f);
-	//	grass->SetZScale(0.4f);
-	//	m_sceneMeshes.push_back(grass);
-	//}
+	
 
 	//Lighting
 	
 	//m_sceneLightManager->addSpotLight(0.0f, 0.0f, 0.0f, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.8f,0.8f,0.8f), glm::vec3(1.0f, 1.0f, 1.0f));
 	//m_sceneLightManager->getSpotLight(0)->toggleActive(); //Turns off spotlight by default
 	//
-	////Point lights
-	//std::vector<glm::vec3> lightPosAmbDifSpc =
-	//{
-	//	//Position						//Ambient						//Diffuse						//Specular
-	//	glm::vec3(0.0f, 3.0f, 0.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),		glm::vec3(0.4f, 0.4f, 0.4f),		//House light
-	//	glm::vec3(-18.0f, 2.0f, 0.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),	//Material showcase light
-	//	glm::vec3(18.0f, 2.0f, 14.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),	//Normal showcase light
-	//	glm::vec3(-20.0f, 2.0f, 20.0f), glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),	//Coloured lighting
-	//};
-	//
-	//for (int i = 0; i < lightPosAmbDifSpc.size(); i += 4)
-	//{
-	//	m_sceneLightManager->addPointLight(lightPosAmbDifSpc.at(i).x, lightPosAmbDifSpc.at(i).y, lightPosAmbDifSpc.at(i).z, lightPosAmbDifSpc.at(i + 1), lightPosAmbDifSpc.at(i + 2), lightPosAmbDifSpc.at(i + 3));
-	//}
-	//
-	////Objects that copy lights
+	
+
+	//Objects that copy lights
 	//for (int i = 0; i < m_sceneLightManager->getCurrentPointLights(); i++)
 	//{
 	//	ModelBasic* light = new ModelBasic(lightPosAmbDifSpc.at(i));
@@ -412,60 +559,44 @@ void Scene::updateOnInput()
 	}
 
 	/*
-		Tessellation terrain inputs
-	*/
-
-	//if (Input::getKeyPressedOnce(GLFW_KEY_Q))
-	//{
-	//	m_mountainsX->alterElevation(0.5);
-	//	m_mountainsZ->alterElevation(0.5);
-	//}
-	//
-	//if (Input::getKeyPressedOnce(GLFW_KEY_E))
-	//{
-	//	m_mountainsX->alterElevation(-0.5);
-	//	m_mountainsZ->alterElevation(-0.5);
-	//}
-
-	/*
 		Toggle lights
 	*/
 
-	//if (Input::getKeyPressedOnce(GLFW_KEY_6))
-	//{
-	//	if (m_sceneLightManager->getDirectionalLight(0) != nullptr)
-	//		m_sceneLightManager->getDirectionalLight(0)->toggleActive();
-	//}
-	//
-	//if (Input::getKeyPressedOnce(GLFW_KEY_7))
-	//{
-	//	if (m_sceneLightManager->getSpotLight(0) != nullptr)
-	//		m_sceneLightManager->getSpotLight(0)->toggleActive();
-	//}
-	//
-	//if (Input::getKeyPressedOnce(GLFW_KEY_8))
-	//{
-	//	if (m_sceneLightManager->getPointLight(0) != nullptr)
-	//			m_sceneLightManager->getPointLight(0)->toggleActive();
-	//}
-	//
-	//if (Input::getKeyPressedOnce(GLFW_KEY_9))
-	//{
-	//	if (m_sceneLightManager->getPointLight(1) != nullptr)
-	//		m_sceneLightManager->getPointLight(1)->toggleActive();
-	//}
-	//
-	//if (Input::getKeyPressedOnce(GLFW_KEY_0))
-	//{
-	//	if (m_sceneLightManager->getPointLight(2) != nullptr)
-	//		m_sceneLightManager->getPointLight(2)->toggleActive();
-	//}
-	//
-	//if (Input::getKeyPressedOnce(GLFW_KEY_MINUS))
-	//{
-	//	if (m_sceneLightManager->getPointLight(3) != nullptr)
-	//		m_sceneLightManager->getPointLight(3)->toggleActive();
-	//}
+	if (Input::getKeyPressedOnce(GLFW_KEY_6))
+	{
+		if (m_sceneLightManager->getDirectionalLight(0) != nullptr)
+			m_sceneLightManager->getDirectionalLight(0)->toggleActive();
+	}
+	
+	if (Input::getKeyPressedOnce(GLFW_KEY_7))
+	{
+		if (m_sceneLightManager->getSpotLight(0) != nullptr)
+			m_sceneLightManager->getSpotLight(0)->toggleActive();
+	}
+	
+	if (Input::getKeyPressedOnce(GLFW_KEY_8))
+	{
+		if (m_sceneLightManager->getPointLight(0) != nullptr)
+				m_sceneLightManager->getPointLight(0)->toggleActive();
+	}
+	
+	if (Input::getKeyPressedOnce(GLFW_KEY_9))
+	{
+		if (m_sceneLightManager->getPointLight(1) != nullptr)
+			m_sceneLightManager->getPointLight(1)->toggleActive();
+	}
+	
+	if (Input::getKeyPressedOnce(GLFW_KEY_0))
+	{
+		if (m_sceneLightManager->getPointLight(2) != nullptr)
+			m_sceneLightManager->getPointLight(2)->toggleActive();
+	}
+	
+	if (Input::getKeyPressedOnce(GLFW_KEY_MINUS))
+	{
+		if (m_sceneLightManager->getPointLight(3) != nullptr)
+			m_sceneLightManager->getPointLight(3)->toggleActive();
+	}
 }
 
 /// <summary>
@@ -477,86 +608,86 @@ void Scene::updateSceneLight()
 		Light over material showcase
 	*/
 
-	//if (m_materialLightIncZ)
-	//{
-	//	m_sceneLightManager->getPointLight(1)->Position.z += 0.075f;
-	//	if (m_sceneLightManager->getPointLight(1)->Position.z >= m_materialLightMaxZ)
-	//	{
-	//		m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMaxZ;
-	//		m_materialLightIncZ = false;
-	//	}
-	//}
-	//else
-	//{
-	//	m_sceneLightManager->getPointLight(1)->Position.z -= 0.075f;
-	//	if (m_sceneLightManager->getPointLight(1)->Position.z <= m_materialLightMinZ)
-	//	{
-	//		m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMinZ;
-	//		m_materialLightIncZ = true;
-	//	}
-	//}
-	//
-	//if (m_materialLightIncX)
-	//{
-	//	m_sceneLightManager->getPointLight(1)->Position.x += 0.1f;
-	//	if (m_sceneLightManager->getPointLight(1)->Position.x >= m_materialLightMaxX)
-	//	{
-	//		m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMaxX;
-	//		m_materialLightIncX = false;
-	//	}
-	//}
-	//else
-	//{
-	//	m_sceneLightManager->getPointLight(1)->Position.x -= 0.1f;
-	//	if (m_sceneLightManager->getPointLight(1)->Position.x <= m_materialLightMinX)
-	//	{
-	//		m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMinX;
-	//		m_materialLightIncX = true;
-	//	}
-	//}
+	if (m_materialLightIncZ)
+	{
+		m_sceneLightManager->getPointLight(1)->Position.z += 0.075f;
+		if (m_sceneLightManager->getPointLight(1)->Position.z >= m_materialLightMaxZ)
+		{
+			m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMaxZ;
+			m_materialLightIncZ = false;
+		}
+	}
+	else
+	{
+		m_sceneLightManager->getPointLight(1)->Position.z -= 0.075f;
+		if (m_sceneLightManager->getPointLight(1)->Position.z <= m_materialLightMinZ)
+		{
+			m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMinZ;
+			m_materialLightIncZ = true;
+		}
+	}
 
-	/*
-		Light showing normals
-	*/
+	if (m_materialLightIncX)
+	{
+		m_sceneLightManager->getPointLight(1)->Position.x += 0.1f;
+		if (m_sceneLightManager->getPointLight(1)->Position.x >= m_materialLightMaxX)
+		{
+			m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMaxX;
+			m_materialLightIncX = false;
+		}
+	}
+	else
+	{
+		m_sceneLightManager->getPointLight(1)->Position.x -= 0.1f;
+		if (m_sceneLightManager->getPointLight(1)->Position.x <= m_materialLightMinX)
+		{
+			m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMinX;
+			m_materialLightIncX = true;
+		}
+	}
 
-	//if (m_normalLightIncZ)
-	//{
-	//	m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
-	//	if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMaxZ)
-	//	{
-	//		m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMaxZ;
-	//		m_normalLightIncZ = false;
-	//	}
-	//}
-	//else
-	//{
-	//	m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
-	//	if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMinZ)
-	//	{
-	//		m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMinZ;
-	//		m_normalLightIncZ = true;
-	//	}
-	//}
+
+	//Light showing normals
+
+
+		if (m_normalLightIncZ)
+		{
+			m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
+			if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMaxZ)
+			{
+				m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMaxZ;
+				m_normalLightIncZ = false;
+			}
+		}
+		else
+		{
+			m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
+			if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMinZ)
+			{
+				m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMinZ;
+				m_normalLightIncZ = true;
+			}
+		}
 
 	/*
 		Coloured Lighting
 	*/
 
-	//m_lightR -= 0.001f;
-	//if (m_lightR <= 0.0f)
-	//	m_lightR = 1.0f;
-	//
-	//m_lightG += 0.003f;
-	//if (m_lightG >= 1.0f)
-	//	m_lightG = 0.0f;
-	//
-	//m_lightB += 0.002f;
-	//if (m_lightB >= 1.0f)
-	//	m_lightB = 0.0f;
-	//
-	//m_sceneLightManager->getPointLight(3)->Ambient = glm::vec3(m_lightR,  m_lightG,  m_lightB);
-	//m_sceneLightManager->getPointLight(3)->Diffuse = glm::vec3(m_lightR,  m_lightG,  m_lightB);
-	//m_sceneLightManager->getPointLight(3)->Specular = glm::vec3(m_lightR, m_lightG,  m_lightB);
+	m_lightR -= 0.001f;
+	if (m_lightR <= 0.0f)
+		m_lightR = 1.0f;
+	
+	m_lightG += 0.003f;
+	if (m_lightG >= 1.0f)
+		m_lightG = 0.0f;
+	
+	m_lightB += 0.002f;
+	if (m_lightB >= 1.0f)
+		m_lightB = 0.0f;
+	
+	m_sceneLightManager->getPointLight(3)->Ambient = glm::vec3(m_lightR,  m_lightG,  m_lightB);
+	m_sceneLightManager->getPointLight(3)->Diffuse = glm::vec3(m_lightR,  m_lightG,  m_lightB);
+	m_sceneLightManager->getPointLight(3)->Specular = glm::vec3(m_lightR, m_lightG,  m_lightB);
 }
 
 //UNUSED function used for shadowing - this was to setup the depthMap texture which the scene would be drawn too during the first pass of some models
@@ -629,7 +760,6 @@ void Scene::addSceneLightManager()
 
 void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector)
 {
-
 	enum objectInfo
 	{
 		e_modelType = 0,
@@ -655,7 +785,7 @@ void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<st
 		e_emissionMap = 17
 	};
 
-	o.modelType = vector.at(e_modelType).c_str();
+	o.modelType = vector.at(e_modelType);
 
 	o.PosX = std::stof(vector.at(e_PosX));
 	o.PosY = std::stof(vector.at(e_PosY));
@@ -726,3 +856,210 @@ void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<st
 
 
 }
+
+void applyToModelBasicTemplate(templateModelBasic& o, const std::vector<std::string>& vector)
+{
+	enum objectInfo
+	{
+		e_modelType = 0,
+		e_PosX = 1,
+		e_PosY = 2,
+		e_PosZ = 3,
+
+		e_RotX = 4,
+		e_RotY = 5,
+		e_RotZ = 6,
+
+		e_ScaleX = 7,
+		e_ScaleY = 8,
+		e_ScaleZ = 9,
+
+		e_mesh = 10,
+
+		e_lightToCopy = 11
+	};
+
+	o.modelType = vector.at(e_modelType);
+
+	o.PosX = std::stof(vector.at(e_PosX));
+	o.PosY = std::stof(vector.at(e_PosY));
+	o.PosZ = std::stof(vector.at(e_PosZ));
+
+	o.RotX = std::stof(vector.at(e_RotX));
+	o.RotY = std::stof(vector.at(e_RotY));
+	o.RotZ = std::stof(vector.at(e_RotZ));
+
+	o.ScaleX = std::stof(vector.at(e_ScaleX));
+	o.ScaleY = std::stof(vector.at(e_ScaleY));
+	o.ScaleZ = std::stof(vector.at(e_ScaleZ));
+
+	o.mesh = "res/meshes/" + vector.at(e_mesh) + ".obj";
+
+	o.lightToCopy = std::stof(vector.at(e_lightToCopy));
+
+}
+
+
+void applyToModelTerrainTemplate(templateModelTerrain& o, const std::vector<std::string>& vector)
+{
+	enum objectInfo
+	{
+		e_modelType = 0,
+		e_PosX = 1,
+		e_PosY = 2,
+		e_PosZ = 3,
+
+		e_RotX = 4,
+		e_RotY = 5,
+		e_RotZ = 6,
+
+		e_ScaleX = 7,
+		e_ScaleY = 8,
+		e_ScaleZ = 9,
+
+		e_Elevation = 10
+	};
+
+	o.modelType = vector.at(e_modelType);
+
+	o.PosX = std::stof(vector.at(e_PosX));
+	o.PosY = std::stof(vector.at(e_PosY));
+	o.PosZ = std::stof(vector.at(e_PosZ));
+
+	o.RotX = std::stof(vector.at(e_RotX));
+	o.RotY = std::stof(vector.at(e_RotY));
+	o.RotZ = std::stof(vector.at(e_RotZ));
+
+	o.ScaleX = std::stof(vector.at(e_ScaleX));
+	o.ScaleY = std::stof(vector.at(e_ScaleY));
+	o.ScaleZ = std::stof(vector.at(e_ScaleZ));
+
+	o.elevation = std::stof(vector.at(e_Elevation));
+}
+
+void applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& vector)
+{
+	enum objectInfo
+	{
+		e_modelType = 0,
+		e_PosX = 1,
+		e_PosY = 2,
+		e_PosZ = 3,
+
+		e_RotX = 4,
+		e_RotY = 5,
+		e_RotZ = 6,
+
+		e_ScaleX = 7,
+		e_ScaleY = 8,
+		e_ScaleZ = 9,
+
+		e_Sprite = 10
+	};
+
+	o.modelType = vector.at(e_modelType);
+
+	o.PosX = std::stof(vector.at(e_PosX));
+	o.PosY = std::stof(vector.at(e_PosY));
+	o.PosZ = std::stof(vector.at(e_PosZ));
+
+	o.RotX = std::stof(vector.at(e_RotX));
+	o.RotY = std::stof(vector.at(e_RotY));
+	o.RotZ = std::stof(vector.at(e_RotZ));
+
+	o.ScaleX = std::stof(vector.at(e_ScaleX));
+	o.ScaleY = std::stof(vector.at(e_ScaleY));
+	o.ScaleZ = std::stof(vector.at(e_ScaleZ));
+
+	o.sprite = "res/textures/" + vector.at(e_Sprite) + ".png";
+}
+
+void applyToModelEnvironmentTemplate(templateModelEnvironment& o, const std::vector<std::string>& vector)
+{
+	enum objectInfo
+	{
+		e_modelType = 0,
+		e_PosX = 1,
+		e_PosY = 2,
+		e_PosZ = 3,
+
+		e_RotX = 4,
+		e_RotY = 5,
+		e_RotZ = 6,
+
+		e_ScaleX = 7,
+		e_ScaleY = 8,
+		e_ScaleZ = 9,
+
+		e_mesh = 10,
+
+		e_reflection = 11,
+		
+		e_refraction = 12
+	};
+
+	o.modelType = vector.at(e_modelType);
+
+	o.PosX = std::stof(vector.at(e_PosX));
+	o.PosY = std::stof(vector.at(e_PosY));
+	o.PosZ = std::stof(vector.at(e_PosZ));
+
+	o.RotX = std::stof(vector.at(e_RotX));
+	o.RotY = std::stof(vector.at(e_RotY));
+	o.RotZ = std::stof(vector.at(e_RotZ));
+
+	o.ScaleX = std::stof(vector.at(e_ScaleX));
+	o.ScaleY = std::stof(vector.at(e_ScaleY));
+	o.ScaleZ = std::stof(vector.at(e_ScaleZ));
+
+	o.mesh = "res/meshes/" + vector.at(e_mesh) + ".obj";
+
+	o.reflection = std::stof(vector.at(e_reflection));
+
+	o.refraction = std::stof(vector.at(e_refraction));
+
+
+}
+
+void applyToModelGeometryTemplate(templateModelGeometry& o, const std::vector<std::string>& vector)
+{
+	enum objectInfo
+	{
+		e_modelType = 0,
+		e_PosX = 1,
+		e_PosY = 2,
+		e_PosZ = 3,
+
+		e_RotX = 4,
+		e_RotY = 5,
+		e_RotZ = 6,
+
+		e_ScaleX = 7,
+		e_ScaleY = 8,
+		e_ScaleZ = 9,
+
+		e_mesh = 10,
+
+		e_reflection = 11,
+
+		e_refraction = 12
+	};
+
+	o.modelType = vector.at(e_modelType);
+
+	o.PosX = std::stof(vector.at(e_PosX));
+	o.PosY = std::stof(vector.at(e_PosY));
+	o.PosZ = std::stof(vector.at(e_PosZ));
+
+	o.RotX = std::stof(vector.at(e_RotX));
+	o.RotY = std::stof(vector.at(e_RotY));
+	o.RotZ = std::stof(vector.at(e_RotZ));
+
+	o.ScaleX = std::stof(vector.at(e_ScaleX));
+	o.ScaleY = std::stof(vector.at(e_ScaleY));
+	o.ScaleZ = std::stof(vector.at(e_ScaleZ));
+
+	o.mesh = "res/meshes/" + vector.at(e_mesh) + ".obj";
+
+}
+

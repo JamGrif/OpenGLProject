@@ -3,9 +3,9 @@
 ModelBasic::ModelBasic(glm::vec3 position, glm::vec3 rotation)
 	:Model(position, rotation), m_defaultColour(1.0, 1.0, 1.0), m_pointLightToCopy(-1)
 {
-	m_scale.x = 0.3f;
-	m_scale.y = 0.3f;
-	m_scale.z = 0.3f;
+	//m_scale.x = 0.3f;
+	//m_scale.y = 0.3f;
+	//m_scale.z = 0.3f;
 
 	//setShaderOne--------
 	setShaderTwo("res/shaders/basic-vertex.glsl", "res/shaders/basic-fragment.glsl");

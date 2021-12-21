@@ -13,7 +13,7 @@ public:
     void                    drawPassOne() override;
     void                    drawPassTwo() override;
 
-    void                    setSprite(const char* filePath);
+    void                    setSprite(std::string filePath);
 
 
 private:

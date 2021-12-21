@@ -13,6 +13,8 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtx\transform.hpp>
 
+#include <string>
+
 // Abstract model class - The different classes that derive from Model all have their own implementation of
 // drawing, such as different shader values, attributes and texture map types. Essentially, provides an
 // interface for all drawable objects.
