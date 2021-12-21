@@ -245,6 +245,7 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)\res /S</Command>
   </ItemGroup>
   <ItemGroup>
     <Text Include="levelData.txt" />
+    <Text Include="res\scenes\FMPscene.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

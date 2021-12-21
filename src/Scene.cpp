@@ -168,8 +168,8 @@ std::vector<templateModelSprite> completedModelSpriteObjects;
 std::vector<templateModelEnvironment> completedModelEnvironmentObjects;
 std::vector<templateModelGeometry> completedModelGeometryObjects;
 
-Scene::Scene()
-	:m_sceneCamera(nullptr), m_sceneLightManager(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr),
+Scene::Scene(std::string sceneName)
+	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr),
 	m_materialLightMinZ(-5.0f), m_materialLightMaxZ(9.0f), m_materialLightMinX(-25.0f), m_materialLightMaxX(-13.0f), m_materialLightIncZ(true),
 	m_materialLightIncX(true), m_normalLightMaxZ(8.0f), m_normalLightMinZ(23.0f), m_normalLightIncZ(true), m_lightR(0.0f), m_lightG(0.0f), m_lightB(0.0f)
 {
@@ -203,7 +203,7 @@ Scene::~Scene()
 /// <summary>
 /// Initializes the scene objects and creates the scenes models
 /// </summary>
-void Scene::initScene()
+bool Scene::initScene()
 {
 	// Scene essentials - all scenes must contain these objects
 
@@ -214,11 +214,16 @@ void Scene::initScene()
 	m_sceneFilterFramebuffer = new Framebuffer(false);
 	m_sceneMSAAFrameBuffer = new Framebuffer(true);
 
-
+	/*
+		Directional Light
+	*/
 
 	m_sceneLightManager->addDirectionalLight(-2.0f, -3.0f, -1.0f, glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0.3f, 0.3f, 0.3f));
 
-	//Point lights
+	/*
+		Point Lights
+	*/
+
 	std::vector<glm::vec3> lightPosAmbDifSpc =
 	{
 		//Position						//Ambient						//Diffuse						//Specular
@@ -227,18 +232,25 @@ void Scene::initScene()
 		glm::vec3(18.0f, 2.0f, 14.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Normal showcase light
 		glm::vec3(-20.0f, 2.0f, 20.0f), glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Coloured lighting
 	};
-
+	
 	for (int i = 0; i < lightPosAmbDifSpc.size(); i += 4)
 	{
 		m_sceneLightManager->addPointLight(lightPosAmbDifSpc.at(i).x, lightPosAmbDifSpc.at(i).y, lightPosAmbDifSpc.at(i).z, lightPosAmbDifSpc.at(i + 1), lightPosAmbDifSpc.at(i + 2), lightPosAmbDifSpc.at(i + 3));
 	}
 
-	std::ifstream fileStream("levelData.txt", std::ios::in);
+	/*
+		Spot Light
+	*/
+
+	//m_sceneLightManager->addSpotLight(0.0f, 0.0f, 0.0f, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.8f,0.8f,0.8f), glm::vec3(1.0f, 1.0f, 1.0f));
+	//m_sceneLightManager->getSpotLight(0)->toggleActive(); //Turns off spotlight by default
+
+	std::ifstream fileStream(m_sceneName, std::ios::in);
 
 	if (!fileStream)
 	{
 		std::cout << "File not found" << std::endl;
-		exit(1);
+		return false;
 	}
 
 	std::string line = "";
@@ -247,25 +259,17 @@ void Scene::initScene()
 	{
 		std::getline(fileStream, line);
 
-		if (line == "") // Empty line, ignore and move to next line
+		// Check if line is empty or a comment
+		if (line == "" || line.at(0) == '#') 
 		{
-			//std::cout << "empty line detected" << std::endl;
+			// Skip line
 			continue;
 		}
-
-
-		if (line.at(0) == '#') // Comment, ignore and move to next line
-		{
-			//std::cout << "# detected" << std::endl;
-			continue;
-		}
-
 
 
 		std::string buf;
 		std::stringstream ss(line);
-
-		std::vector<std::string> tokens; // Full line, vector of individual strings (words)
+		std::vector<std::string> textfileLine; // Full line, vector of individual strings (words)
 
 		/*
 			Reads one line at a time and each line is one vector object and
@@ -275,62 +279,63 @@ void Scene::initScene()
 
 		*/
 
+		// Continuously read the textfile line, putting each word individually into the vector
 		while (ss >> buf)
 		{
-			tokens.push_back(buf);
+			textfileLine.push_back(buf);
 		}
 
 
 		count++;
 		std::cout << count << " number of times through loop" << std::endl;
-		std::cout << "tokens.at(0) is " << tokens.at(0) << std::endl;
+		std::cout << "tokens.at(0) is " << textfileLine.at(0) << std::endl;
 
-		if (tokens.at(0) == "modelLighting") // .at(0) is the first word in the row - ModelType
+		if (textfileLine.at(0) == "modelLighting") // .at(0) is the first word in the row - ModelType
 		{
 			std::cout << "object is a modelLighting" << std::endl;
 			templateModelLighting object;
-			applyToModelLightingTemplate(object, tokens);
+			applyToModelLightingTemplate(object, textfileLine);
 			completedModelLightObjects.push_back(object);
 
 		}
-		else if (tokens.at(0) == "modelBasic")
+		else if (textfileLine.at(0) == "modelBasic")
 		{
 			std::cout << "object is a modelBasic" << std::endl;
 			templateModelBasic object;
-			applyToModelBasicTemplate(object, tokens);
+			applyToModelBasicTemplate(object, textfileLine);
 			completedModelBasicObjects.push_back(object);
 		}
-		else if (tokens.at(0) == "modelTerrain")
+		else if (textfileLine.at(0) == "modelTerrain")
 		{
 			std::cout << "object is a modelTerrain" << std::endl;
 			templateModelTerrain object;
-			applyToModelTerrainTemplate(object, tokens);
+			applyToModelTerrainTemplate(object, textfileLine);
 			completedModelTerrainObjects.push_back(object);
 		}
-		else if (tokens.at(0) == "modelSprite")
+		else if (textfileLine.at(0) == "modelSprite")
 		{
 			std::cout << "object is a modelSprite" << std::endl;
 			templateModelSprite object;
-			applyToModelSpriteTemplate(object, tokens);
+			applyToModelSpriteTemplate(object, textfileLine);
 			completedModelSpriteObjects.push_back(object);
 		}
-		else if (tokens.at(0) == "modelEnvironment")
+		else if (textfileLine.at(0) == "modelEnvironment")
 		{
 			std::cout << "object is a modelEnvironment" << std::endl;
 			templateModelEnvironment object;
-			applyToModelEnvironmentTemplate(object, tokens);
+			applyToModelEnvironmentTemplate(object, textfileLine);
 			completedModelEnvironmentObjects.push_back(object);
 		}
-		else if (tokens.at(0) == "modelGeometry")
+		else if (textfileLine.at(0) == "modelGeometry")
 		{
 			std::cout << "object is a modelGeometry" << std::endl;
 			templateModelGeometry object;
-			applyToModelGeometryTemplate(object, tokens);
+			applyToModelGeometryTemplate(object, textfileLine);
 			completedModelGeometryObjects.push_back(object);
 		}
 		else
 		{
-			std::cout << "Could not determine modelType - " << tokens.at(0) << " - FAILURE" << std::endl;
+			std::cout << "Could not determine modelType - " << textfileLine.at(0) << " - FAILURE" << std::endl;
 		}
 
 
@@ -344,7 +349,15 @@ void Scene::initScene()
 
 	for (int i = 0; i < completedModelLightObjects.size(); i++) // Create all modelLighting objects
 	{
-		ModelLighting* model = new ModelLighting(glm::vec3(completedModelLightObjects.at(i).PosX, completedModelLightObjects.at(i).PosY, completedModelLightObjects.at(i).PosZ), glm::vec3(completedModelLightObjects.at(i).RotX, completedModelLightObjects.at(i).RotY, completedModelLightObjects.at(i).RotZ));
+		ModelLighting* model = new ModelLighting();
+
+		model->SetXPos(completedModelLightObjects.at(i).PosX);
+		model->SetYPos(completedModelLightObjects.at(i).PosY);
+		model->SetZPos(completedModelLightObjects.at(i).PosZ);
+		
+		model->SetXRot(completedModelLightObjects.at(i).RotX);
+		model->SetYRot(completedModelLightObjects.at(i).RotY);
+		model->SetZRot(completedModelLightObjects.at(i).RotZ);
 
 		model->SetXScale(completedModelLightObjects.at(i).ScaleX);
 		model->SetYScale(completedModelLightObjects.at(i).ScaleY);
@@ -391,7 +404,15 @@ void Scene::initScene()
 
 	for (int i = 0; i < completedModelBasicObjects.size(); i++)
 	{
-		ModelBasic* model = new ModelBasic(glm::vec3(completedModelBasicObjects.at(i).PosX, completedModelBasicObjects.at(i).PosY, completedModelBasicObjects.at(i).PosZ), glm::vec3(completedModelBasicObjects.at(i).RotX, completedModelBasicObjects.at(i).RotY, completedModelBasicObjects.at(i).RotZ));
+		ModelBasic* model = new ModelBasic();
+		
+		model->SetXPos(completedModelBasicObjects.at(i).PosX);
+		model->SetYPos(completedModelBasicObjects.at(i).PosY);
+		model->SetZPos(completedModelBasicObjects.at(i).PosZ);
+
+		model->SetXRot(completedModelBasicObjects.at(i).RotX);
+		model->SetYRot(completedModelBasicObjects.at(i).RotY);
+		model->SetZRot(completedModelBasicObjects.at(i).RotZ);
 
 		model->SetXScale(completedModelBasicObjects.at(i).ScaleX);
 		model->SetYScale(completedModelBasicObjects.at(i).ScaleY);
@@ -406,24 +427,57 @@ void Scene::initScene()
 
 	for (int i = 0; i < completedModelTerrainObjects.size(); i++)
 	{
-		ModelTerrain* model = new ModelTerrain(glm::vec3(completedModelTerrainObjects.at(i).PosX, completedModelTerrainObjects.at(i).PosY, completedModelTerrainObjects.at(i).PosZ), glm::vec3(completedModelTerrainObjects.at(i).RotX, completedModelTerrainObjects.at(i).RotY, completedModelTerrainObjects.at(i).RotZ), glm::vec3(completedModelTerrainObjects.at(i).ScaleX, completedModelTerrainObjects.at(i).ScaleY, completedModelTerrainObjects.at(i).ScaleZ), completedModelTerrainObjects.at(i).elevation);
+		ModelTerrain* model = new ModelTerrain();
 		
+		model->SetXPos(completedModelTerrainObjects.at(i).PosX);
+		model->SetYPos(completedModelTerrainObjects.at(i).PosY);
+		model->SetZPos(completedModelTerrainObjects.at(i).PosZ);
+
+		model->SetXRot(completedModelTerrainObjects.at(i).RotX);
+		model->SetYRot(completedModelTerrainObjects.at(i).RotY);
+		model->SetZRot(completedModelTerrainObjects.at(i).RotZ);
+
+		model->SetXScale(completedModelTerrainObjects.at(i).ScaleX);
+		model->SetYScale(completedModelTerrainObjects.at(i).ScaleY);
+		model->SetZScale(completedModelTerrainObjects.at(i).ScaleZ);
+
+		model->setElevation(completedModelTerrainObjects.at(i).elevation);
+
 		m_sceneMeshes.push_back(model);
 	}
 
 	for (int i = 0; i < completedModelSpriteObjects.size(); i++)
 	{
-		ModelSprite* model = new ModelSprite(glm::vec3(completedModelSpriteObjects.at(i).PosX, completedModelSpriteObjects.at(i).PosY, completedModelSpriteObjects.at(i).PosZ));
+		ModelSprite* model = new ModelSprite();
+
+		model->SetXPos(completedModelSpriteObjects.at(i).PosX);
+		model->SetYPos(completedModelSpriteObjects.at(i).PosY);
+		model->SetZPos(completedModelSpriteObjects.at(i).PosZ);
+
+		model->SetXRot(completedModelSpriteObjects.at(i).RotX);
+		model->SetYRot(completedModelSpriteObjects.at(i).RotY);
+		model->SetZRot(completedModelSpriteObjects.at(i).RotZ);
+
 		model->SetXScale(completedModelSpriteObjects.at(i).ScaleX);
 		model->SetYScale(completedModelSpriteObjects.at(i).ScaleY);
 		model->SetZScale(completedModelSpriteObjects.at(i).ScaleZ);
+
 		model->setSprite(completedModelSpriteObjects.at(i).sprite);
 		m_sceneMeshes.push_back(model);
 	}
 
 	for (int i = 0; i < completedModelEnvironmentObjects.size(); i++)
 	{
-		ModelEnvironment* model = new ModelEnvironment(glm::vec3(completedModelEnvironmentObjects.at(i).PosX, completedModelEnvironmentObjects.at(i).PosY, completedModelEnvironmentObjects.at(i).PosZ));
+		ModelEnvironment* model = new ModelEnvironment();
+		
+		model->SetXPos(completedModelEnvironmentObjects.at(i).PosX);
+		model->SetYPos(completedModelEnvironmentObjects.at(i).PosY);
+		model->SetZPos(completedModelEnvironmentObjects.at(i).PosZ);
+
+		model->SetXRot(completedModelEnvironmentObjects.at(i).RotX);
+		model->SetYRot(completedModelEnvironmentObjects.at(i).RotY);
+		model->SetZRot(completedModelEnvironmentObjects.at(i).RotZ);
+
 		model->SetXScale(completedModelEnvironmentObjects.at(i).ScaleX);
 		model->SetYScale(completedModelEnvironmentObjects.at(i).ScaleY);
 		model->SetZScale(completedModelEnvironmentObjects.at(i).ScaleZ);
@@ -438,7 +492,15 @@ void Scene::initScene()
 
 	for (int i = 0; i < completedModelGeometryObjects.size(); i++)
 	{
-		ModelGeometry* model = new ModelGeometry(glm::vec3(completedModelGeometryObjects.at(i).PosX, completedModelGeometryObjects.at(i).PosY, completedModelGeometryObjects.at(i).PosZ), glm::vec3(completedModelGeometryObjects.at(i).RotX, completedModelGeometryObjects.at(i).RotY, completedModelGeometryObjects.at(i).RotZ));
+		ModelGeometry* model = new ModelGeometry();
+
+		model->SetXPos(completedModelGeometryObjects.at(i).PosX);
+		model->SetYPos(completedModelGeometryObjects.at(i).PosY);
+		model->SetZPos(completedModelGeometryObjects.at(i).PosZ);
+
+		model->SetXRot(completedModelGeometryObjects.at(i).RotX);
+		model->SetYRot(completedModelGeometryObjects.at(i).RotY);
+		model->SetZRot(completedModelGeometryObjects.at(i).RotZ);
 
 		model->SetXScale(completedModelGeometryObjects.at(i).ScaleX);
 		model->SetYScale(completedModelGeometryObjects.at(i).ScaleY);
@@ -453,28 +515,7 @@ void Scene::initScene()
 
 
 	
-	
-
-	
-
-	//Lighting
-	
-	//m_sceneLightManager->addSpotLight(0.0f, 0.0f, 0.0f, glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.8f,0.8f,0.8f), glm::vec3(1.0f, 1.0f, 1.0f));
-	//m_sceneLightManager->getSpotLight(0)->toggleActive(); //Turns off spotlight by default
-	//
-	
-
-	//Objects that copy lights
-	//for (int i = 0; i < m_sceneLightManager->getCurrentPointLights(); i++)
-	//{
-	//	ModelBasic* light = new ModelBasic(lightPosAmbDifSpc.at(i));
-	//	light->setMesh("res/meshes/cube.obj");
-	//	light->copyPointLight(i);
-	//	m_sceneMeshes.push_back(light);
-	//}
-
-	
-	
+	return true;
 }
 
 /// <summary>
@@ -607,7 +648,7 @@ void Scene::updateSceneLight()
 	/*
 		Light over material showcase
 	*/
-
+	
 	if (m_materialLightIncZ)
 	{
 		m_sceneLightManager->getPointLight(1)->Position.z += 0.075f;
@@ -626,7 +667,7 @@ void Scene::updateSceneLight()
 			m_materialLightIncZ = true;
 		}
 	}
-
+	
 	if (m_materialLightIncX)
 	{
 		m_sceneLightManager->getPointLight(1)->Position.x += 0.1f;
@@ -645,11 +686,11 @@ void Scene::updateSceneLight()
 			m_materialLightIncX = true;
 		}
 	}
-
-
+	
+	
 	//Light showing normals
-
-
+	
+	
 		if (m_normalLightIncZ)
 		{
 			m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
@@ -668,11 +709,11 @@ void Scene::updateSceneLight()
 				m_normalLightIncZ = true;
 			}
 		}
-
+	
 	/*
 		Coloured Lighting
 	*/
-
+	
 	m_lightR -= 0.001f;
 	if (m_lightR <= 0.0f)
 		m_lightR = 1.0f;

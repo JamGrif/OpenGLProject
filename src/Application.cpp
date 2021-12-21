@@ -110,8 +110,11 @@ int Application::appInit()
 	m_input = new Input();
 
 	//Create first scene
-	m_demoScene = new Scene();
-	m_demoScene->initScene();
+	m_demoScene = new Scene("res/scenes/FMPscene.txt");
+	if (!m_demoScene->initScene())
+	{
+		return 1;
+	}
 
 	return 0;
 }

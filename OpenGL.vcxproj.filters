@@ -176,5 +176,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="levelData.txt" />
+    <Text Include="res\scenes\FMPscene.txt" />
   </ItemGroup>
 </Project>

@@ -224,15 +224,15 @@ modelTerrain	30.0	20.0	-125.0	180.0	90.0	0.0		50.0		10.0		200.0		-4.5
 
 #modelSprite objects...
 #ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Sprite
-modelSprite		4.0		-0.5	13.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
-modelSprite		8.0		-0.5	18.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
-modelSprite		14.0	-0.5	15.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
-modelSprite		19.0	-0.5	-5.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
-modelSprite		23.0	-0.5	10.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
-modelSprite		-4.0	-0.5	13.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
-modelSprite		-8.0	-0.5	18.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
-modelSprite		-14.0	-0.5	15.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
-modelSprite		-19.0	-0.5	17.0	0.0		0.0		0.0		0.4			0.4			0.4			grass_sprite
+modelSprite		4.0		-0.5	13.0	90.0	0.0		90.0		0.4			0.4			0.4			grass_sprite
+modelSprite		8.0		-0.5	18.0	90.0	0.0		90.0		0.4			0.4			0.4			grass_sprite
+modelSprite		14.0	-0.5	15.0	90.0	0.0		90.0		0.4			0.4			0.4			grass_sprite
+modelSprite		19.0	-0.5	-5.0	90.0	0.0		90.0		0.4			0.4			0.4			grass_sprite
+modelSprite		23.0	-0.5	10.0	90.0	0.0		90.0		0.4			0.4			0.4			grass_sprite
+modelSprite		-4.0	-0.5	13.0	90.0	0.0		90.0		0.4			0.4			0.4			grass_sprite
+modelSprite		-8.0	-0.5	18.0	90.0	0.0		90.0		0.4			0.4			0.4			grass_sprite
+modelSprite		-14.0	-0.5	15.0	90.0	0.0		90.0		0.4			0.4			0.4			grass_sprite
+modelSprite		-19.0	-0.5	17.0	90.0	0.0		90.0		0.4			0.4			0.4			grass_sprite
 
 #modelEnvironment objects...
 #ModelType			#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#mesh	#reflection		#refraction

@@ -17,10 +17,10 @@
 class Scene
 {
 public:
-	Scene();
+	Scene(std::string sceneName);
 	~Scene();
 
-	void					initScene();
+	bool					initScene();
 	void					updateScene();
 
 private:
@@ -30,6 +30,8 @@ private:
 
 	void					updateOnInput();
 	void					updateSceneLight();
+
+	std::string				m_sceneName;
 
 	std::vector<Model*>		m_sceneMeshes;
 
