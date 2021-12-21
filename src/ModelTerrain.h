@@ -3,13 +3,13 @@
 #include "Model.h"
 
 //Class that uses tessellation shader to draw objects. Provides a way to alter the elevation of created terrain
-class Terrain :
+class ModelTerrain :
     public Model
 {
 public:
 
-    Terrain(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f), float elevation = 2.5);
-    ~Terrain();
+    ModelTerrain(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f), float elevation = 2.5);
+    ~ModelTerrain();
 
     void        drawPassOne() override;
     void        drawPassTwo() override;

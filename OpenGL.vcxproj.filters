@@ -69,7 +69,7 @@
     <ClCompile Include="src\ModelSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Terrain.cpp">
+    <ClCompile Include="src\ModelTerrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ModelGeometry.cpp">
@@ -131,7 +131,7 @@
     <ClInclude Include="src\ModelSprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Terrain.h">
+    <ClInclude Include="src\ModelTerrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ModelGeometry.h">

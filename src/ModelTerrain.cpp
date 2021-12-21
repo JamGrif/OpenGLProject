@@ -1,10 +1,10 @@
-#include "Terrain.h"
+#include "ModelTerrain.h"
 
 
-Terrain::Terrain(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, float elevation)
+ModelTerrain::ModelTerrain(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, float elevation)
 	:Model(position, rotation), m_elevation(elevation), m_minElevation(-8), m_maxElevation(-3)
 {
-	//m_position.y = 22.0f;
+
 	m_scale.x = scale.x;
 	m_scale.y = scale.y;
 	m_scale.z = scale.z;
@@ -15,21 +15,21 @@ Terrain::Terrain(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, float 
 	m_terrainHeight = TextureManager::retrieveTexture("res/textures/terrain_height.png");
 }
 
-Terrain::~Terrain()
+ModelTerrain::~ModelTerrain()
 {
 }
 
 /// <summary>
 /// Overriden method from Model base class - Unused in this class
 /// </summary>
-void Terrain::drawPassOne()
+void ModelTerrain::drawPassOne()
 {
 }
 
 /// <summary>
 /// Overriden method from Model base class - Used to draw surrounding terrain with the tessellation shader
 /// </summary>
-void Terrain::drawPassTwo()
+void ModelTerrain::drawPassTwo()
 {
 	//If no shader attached
 	if (m_modelShaderPassTwo == nullptr)
@@ -66,7 +66,7 @@ void Terrain::drawPassTwo()
 /// <param name="tessellationControlPath"></param>
 /// <param name="tessellationEvaluationPath"></param>
 /// <param name="fragmentPath"></param>
-void Terrain::setShaderTwo(const char* vertexPath, const char* tessellationControlPath, const char* tessellationEvaluationPath, const char* fragmentPath)
+void ModelTerrain::setShaderTwo(const char* vertexPath, const char* tessellationControlPath, const char* tessellationEvaluationPath, const char* fragmentPath)
 {
 	m_modelShaderPassTwo = ShaderManager::retrieveShader(vertexPath, tessellationControlPath, tessellationEvaluationPath, fragmentPath);
 }
@@ -75,7 +75,7 @@ void Terrain::setShaderTwo(const char* vertexPath, const char* tessellationContr
 /// Used to change the elevation of the generated terrain. Limits the elevation to a range
 /// </summary>
 /// <param name="change">Specified change in elevation</param>
-void Terrain::alterElevation(float change)
+void ModelTerrain::alterElevation(float change)
 {
 		m_elevation += change;
 
