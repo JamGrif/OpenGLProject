@@ -1,7 +1,7 @@
 #include "ModelSprite.h"
 
-ModelSprite::ModelSprite(glm::vec3 position, glm::vec3 rotation)
-	:Model(position, glm::vec3(90,0,90)), m_modelSprite(nullptr)
+ModelSprite::ModelSprite()
+	:m_modelSprite(nullptr)
 {
 	
 	setMesh("res/meshes/grass.obj");

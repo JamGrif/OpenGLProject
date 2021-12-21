@@ -1,9 +1,9 @@
 #include "ModelLighting.h"
 
-ModelLighting::ModelLighting(glm::vec3 position, glm::vec3 rotation)
-	:Model(position, rotation), m_modelDiffuseTexture(nullptr), m_modelSpecularTexture(nullptr),
-	m_modelEmissionTexture(nullptr), m_modelNormalTexture(nullptr), m_modelHeightTexture(nullptr), m_shininess(48.0f),
-	m_normalizeTexture(false), m_usingEmission(false), m_usingNormal(false), m_usingHeight(false), m_heightAmount(0.5)
+ModelLighting::ModelLighting()
+	:m_modelDiffuseTexture(nullptr), m_modelSpecularTexture(nullptr), m_modelEmissionTexture(nullptr), 
+	m_modelNormalTexture(nullptr), m_modelHeightTexture(nullptr), m_shininess(48.0f), m_normalizeTexture(false), 
+	m_usingEmission(false), m_usingNormal(false), m_usingHeight(false), m_heightAmount(0.5)
 {
 
 	setShaderOne("res/shaders/lightingPassOne-vertex.glsl", "res/shaders/lightingPassOne-fragment.glsl");

@@ -1,7 +1,7 @@
 #include "ModelEnvironment.h"
 
-ModelEnvironment::ModelEnvironment(glm::vec3 position, glm::vec3 rotation)
-	:Model(position, rotation), m_usingReflection(false), m_usingRefraction(false)
+ModelEnvironment::ModelEnvironment()
+	:m_usingReflection(false), m_usingRefraction(false)
 {
 	//setShaderOne--------
 	setShaderTwo("res/shaders/environmentMapping-vertex.glsl", "res/shaders/environmentMapping-fragment.glsl");

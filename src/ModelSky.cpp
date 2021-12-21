@@ -1,7 +1,6 @@
 #include "ModelSky.h"
 
-ModelSky::ModelSky(glm::vec3 position, glm::vec3 rotation)
-	:Model(position, rotation)
+ModelSky::ModelSky()
 {
 
 	m_skyTexture = TextureManager::retrieveCubeMap();

@@ -1,7 +1,7 @@
 #include "ModelGeometry.h"
 
-ModelGeometry::ModelGeometry(glm::vec3 position, glm::vec3 rotation)
-	:Model(position, rotation), m_inflation(0)
+ModelGeometry::ModelGeometry()
+	:m_inflation(0)
 {
 	setShaderTwo("res/shaders/geometry-vertex.glsl", "res/shaders/geometry-geometry.glsl", "res/shaders/geometry-fragment.glsl");
 

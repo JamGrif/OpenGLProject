@@ -1,13 +1,9 @@
 #include "ModelTerrain.h"
 
 
-ModelTerrain::ModelTerrain(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, float elevation)
-	:Model(position, rotation), m_elevation(elevation), m_minElevation(-8), m_maxElevation(-3)
+ModelTerrain::ModelTerrain()
+	:m_elevation(2.5), m_minElevation(-8), m_maxElevation(-3)
 {
-
-	m_scale.x = scale.x;
-	m_scale.y = scale.y;
-	m_scale.z = scale.z;
 
 	setShaderTwo("res/shaders/terrain-vertex.glsl", "res/shaders/terrain-tessCont.glsl", "res/shaders/terrain-tessEval.glsl", "res/shaders/terrain-fragment.glsl");
 
