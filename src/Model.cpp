@@ -154,11 +154,11 @@ float Model::GetYPos() { return m_position.y; }
 
 float Model::GetZPos() { return m_position.z; }
 
-void Model::SetXRot(float num) { m_position.x = num; }
+void Model::SetXRot(float num) { m_rotation.x = num; }
 
-void Model::SetYRot(float num) { m_position.y = num; }
+void Model::SetYRot(float num) { m_rotation.y = num; }
 
-void Model::SetZRot(float num) { m_position.z = num; }
+void Model::SetZRot(float num) { m_rotation.z = num; }
 
 float Model::GetXRot() { return m_rotation.x; }
 
