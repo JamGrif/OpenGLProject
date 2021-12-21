@@ -10,9 +10,7 @@
 #include <fstream>
 #include <sstream>
 
-
-
-struct templateModelLighting
+struct templateModel
 {
 	std::string modelType = ""; // ModelLighting, ModelBasic, ModelTerrain etc...
 
@@ -27,7 +25,10 @@ struct templateModelLighting
 	float ScaleX = 0.0f;
 	float ScaleY = 0.0f;
 	float ScaleZ = 0.0f;
+};
 
+struct templateModelLighting : public templateModel
+{
 	std::string mesh = "";
 
 	std::string diffuseMap = "";
@@ -43,106 +44,35 @@ struct templateModelLighting
 	std::string emissionMap = "";
 };
 
-struct templateModelBasic
+struct templateModelBasic : public templateModel
 {
-	std::string modelType = "";
-
-	float PosX;
-	float PosY;
-	float PosZ;
-
-	float RotX;
-	float RotY;
-	float RotZ;
-
-	float ScaleX;
-	float ScaleY;
-	float ScaleZ;
-
 	std::string mesh = "";
 
-	int lightToCopy;
+	int lightToCopy = -1;
 };
 
-struct templateModelTerrain
+struct templateModelTerrain : public templateModel
 {
-	std::string modelType = "";
-
-	float PosX;
-	float PosY;
-	float PosZ;
-
-	float RotX;
-	float RotY;
-	float RotZ;
-
-	float ScaleX;
-	float ScaleY;
-	float ScaleZ;
-
-	float elevation;
-
+	float elevation = 0.0f;
 };
 
-struct templateModelSprite
+struct templateModelSprite : public templateModel
 {
-	std::string modelType = "";
-	
-	float PosX;
-	float PosY;
-	float PosZ;
-
-	float RotX;
-	float RotY;
-	float RotZ;
-
-	float ScaleX;
-	float ScaleY;
-	float ScaleZ;
-
-	std::string sprite;
+	std::string sprite = "";
 };
 
-struct templateModelEnvironment
+struct templateModelEnvironment : public templateModel
 {
-	std::string modelType = "";
+	std::string mesh = "";
 
-	float PosX;
-	float PosY;
-	float PosZ;
+	bool reflection = false;
 
-	float RotX;
-	float RotY;
-	float RotZ;
-
-	float ScaleX;
-	float ScaleY;
-	float ScaleZ;
-
-	std::string mesh;
-
-	bool reflection;
-
-	bool refraction;
+	bool refraction = false;
 };
 
-struct templateModelGeometry
+struct templateModelGeometry : public templateModel
 {
-	std::string modelType = "";
-
-	float PosX;
-	float PosY;
-	float PosZ;
-
-	float RotX;
-	float RotY;
-	float RotZ;
-
-	float ScaleX;
-	float ScaleY;
-	float ScaleZ;
-
-	std::string mesh;
+	std::string mesh = "";
 };
 
 void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector);
