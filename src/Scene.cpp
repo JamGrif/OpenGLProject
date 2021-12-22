@@ -723,86 +723,86 @@ void Scene::updateSceneLight()
 		Light over material showcase
 	*/
 	
-	if (m_materialLightIncZ)
-	{
-		m_sceneLightManager->getPointLight(1)->Position.z += 0.075f;
-		if (m_sceneLightManager->getPointLight(1)->Position.z >= m_materialLightMaxZ)
-		{
-			m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMaxZ;
-			m_materialLightIncZ = false;
-		}
-	}
-	else
-	{
-		m_sceneLightManager->getPointLight(1)->Position.z -= 0.075f;
-		if (m_sceneLightManager->getPointLight(1)->Position.z <= m_materialLightMinZ)
-		{
-			m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMinZ;
-			m_materialLightIncZ = true;
-		}
-	}
-	
-	if (m_materialLightIncX)
-	{
-		m_sceneLightManager->getPointLight(1)->Position.x += 0.1f;
-		if (m_sceneLightManager->getPointLight(1)->Position.x >= m_materialLightMaxX)
-		{
-			m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMaxX;
-			m_materialLightIncX = false;
-		}
-	}
-	else
-	{
-		m_sceneLightManager->getPointLight(1)->Position.x -= 0.1f;
-		if (m_sceneLightManager->getPointLight(1)->Position.x <= m_materialLightMinX)
-		{
-			m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMinX;
-			m_materialLightIncX = true;
-		}
-	}
-	
-	
-	//Light showing normals
-	
-	
-		if (m_normalLightIncZ)
-		{
-			m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
-			if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMaxZ)
-			{
-				m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMaxZ;
-				m_normalLightIncZ = false;
-			}
-		}
-		else
-		{
-			m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
-			if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMinZ)
-			{
-				m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMinZ;
-				m_normalLightIncZ = true;
-			}
-		}
-	
-	/*
-		Coloured Lighting
-	*/
-	
-	m_lightR -= 0.001f;
-	if (m_lightR <= 0.0f)
-		m_lightR = 1.0f;
-	
-	m_lightG += 0.003f;
-	if (m_lightG >= 1.0f)
-		m_lightG = 0.0f;
-	
-	m_lightB += 0.002f;
-	if (m_lightB >= 1.0f)
-		m_lightB = 0.0f;
-	
-	m_sceneLightManager->getPointLight(3)->Ambient = glm::vec3(m_lightR,  m_lightG,  m_lightB);
-	m_sceneLightManager->getPointLight(3)->Diffuse = glm::vec3(m_lightR,  m_lightG,  m_lightB);
-	m_sceneLightManager->getPointLight(3)->Specular = glm::vec3(m_lightR, m_lightG,  m_lightB);
+	//if (m_materialLightIncZ)
+	//{
+	//	m_sceneLightManager->getPointLight(1)->Position.z += 0.075f;
+	//	if (m_sceneLightManager->getPointLight(1)->Position.z >= m_materialLightMaxZ)
+	//	{
+	//		m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMaxZ;
+	//		m_materialLightIncZ = false;
+	//	}
+	//}
+	//else
+	//{
+	//	m_sceneLightManager->getPointLight(1)->Position.z -= 0.075f;
+	//	if (m_sceneLightManager->getPointLight(1)->Position.z <= m_materialLightMinZ)
+	//	{
+	//		m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMinZ;
+	//		m_materialLightIncZ = true;
+	//	}
+	//}
+	//
+	//if (m_materialLightIncX)
+	//{
+	//	m_sceneLightManager->getPointLight(1)->Position.x += 0.1f;
+	//	if (m_sceneLightManager->getPointLight(1)->Position.x >= m_materialLightMaxX)
+	//	{
+	//		m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMaxX;
+	//		m_materialLightIncX = false;
+	//	}
+	//}
+	//else
+	//{
+	//	m_sceneLightManager->getPointLight(1)->Position.x -= 0.1f;
+	//	if (m_sceneLightManager->getPointLight(1)->Position.x <= m_materialLightMinX)
+	//	{
+	//		m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMinX;
+	//		m_materialLightIncX = true;
+	//	}
+	//}
+	//
+	//
+	////Light showing normals
+	//
+	//
+	//	if (m_normalLightIncZ)
+	//	{
+	//		m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
+	//		if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMaxZ)
+	//		{
+	//			m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMaxZ;
+	//			m_normalLightIncZ = false;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
+	//		if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMinZ)
+	//		{
+	//			m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMinZ;
+	//			m_normalLightIncZ = true;
+	//		}
+	//	}
+	//
+	///*
+	//	Coloured Lighting
+	//*/
+	//
+	//m_lightR -= 0.001f;
+	//if (m_lightR <= 0.0f)
+	//	m_lightR = 1.0f;
+	//
+	//m_lightG += 0.003f;
+	//if (m_lightG >= 1.0f)
+	//	m_lightG = 0.0f;
+	//
+	//m_lightB += 0.002f;
+	//if (m_lightB >= 1.0f)
+	//	m_lightB = 0.0f;
+	//
+	//m_sceneLightManager->getPointLight(3)->Ambient = glm::vec3(m_lightR,  m_lightG,  m_lightB);
+	//m_sceneLightManager->getPointLight(3)->Diffuse = glm::vec3(m_lightR,  m_lightG,  m_lightB);
+	//m_sceneLightManager->getPointLight(3)->Specular = glm::vec3(m_lightR, m_lightG,  m_lightB);
 }
 
 //UNUSED function used for shadowing - this was to setup the depthMap texture which the scene would be drawn too during the first pass of some models
