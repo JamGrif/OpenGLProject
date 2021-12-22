@@ -51,7 +51,7 @@ int Application::appInit()
 		exit(EXIT_FAILURE);
 	}
 	
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -73,7 +73,7 @@ int Application::appInit()
 	std::cout << glGetString(GL_RENDERER) << std::endl;
 	std::cout << glGetString(GL_VERSION) << std::endl << std::endl;
 
-	//Initalize GLEW
+	//Initialize GLEW
 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
@@ -83,6 +83,24 @@ int Application::appInit()
 
 	glfwSwapInterval(1);
 	glClearColor(0.0, 0.0, 0.0, 1.0); //Sets clear colour
+
+	/*
+		IMGUI
+	*/
+
+
+	IMGUI_CHECKVERSION(); // Check the version
+
+	ImGui::CreateContext();	// Creating the imgui context
+	ImGuiIO& io = ImGui::GetIO();
+	(void)io;
+
+	ImGui_ImplGlfw_InitForOpenGL(m_appWindow, true); // Connect imgui to glfw window
+	ImGui_ImplOpenGL3_Init("#version 430");
+
+	ImGui::StyleColorsDark(); 
+
+
 
 	//Build projection matrix
 	glfwGetFramebufferSize(m_appWindow, &m_currentWindowWidth, &m_currentWindowHeight);
@@ -109,12 +127,18 @@ int Application::appInit()
 	//Create Input object
 	m_input = new Input();
 
+	
+
+
+
 	//Create first scene
 	m_demoScene = new Scene("res/scenes/FMPscene.txt");
 	if (!m_demoScene->initScene())
 	{
 		return 1;
 	}
+
+
 
 	return 0;
 }
@@ -130,6 +154,10 @@ void Application::appLoop()
 
 	while (!glfwWindowShouldClose(m_appWindow))
 	{
+		// imgui
+
+
+
 		//Delta time
 		currentFrame = glfwGetTime();
 		m_deltaTime = currentFrame - m_lastFrame;
