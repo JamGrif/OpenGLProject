@@ -13,14 +13,14 @@ public:
 	Texture();
 	~Texture();
 
-	bool			loadTexture(std::string filePath);
+	bool			loadTexture(const std::string& filePath);
 
 	virtual void	Bind(unsigned int slot = 0) const;
 	virtual void	Unbind() const;
 
 
-	std::string		getFilePath() const;
-	GLuint			getTexture() const;
+	const std::string&		getFilePath() const;
+	const GLuint			getTexture() const;
 	
 
 protected:
@@ -33,7 +33,7 @@ protected:
 
 };
 
-//Stores cubemap information and provides a way to load a cubemap by interfacing with TextureManager. Only used for skybox with fixed values for them
+//Stores cubemap information and provides a way to load a cubemap by interfacing with TextureManager. Only used for Skybox with fixed values for them
 class CubeMap :
 	public Texture
 	
@@ -49,7 +49,7 @@ public:
 
 private:
 
-	//Overwrite these files to import custom skybox
+	//Overwrite these files to import custom Skybox
 	std::vector<const char*> m_skyFaces =
 	{ 
 		"res/textures/sky/right.png" ,
@@ -67,7 +67,7 @@ class TextureManager
 {
 public:
 
-	static Texture* retrieveTexture(std::string filePath);
+	static Texture* retrieveTexture(const std::string& filePath);
 	static CubeMap* retrieveCubeMap();
 
 	static void		clearTextures();
@@ -78,6 +78,6 @@ private:
 	static std::vector<Texture*> m_loadedTextures;
 	static std::vector<CubeMap*> m_loadedCubemaps;
 
-	TextureManager(); //Private so a class of this can't be initalized
+	TextureManager(); //Private so a class of this can't be initialized
 };
 

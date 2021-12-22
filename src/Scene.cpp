@@ -76,7 +76,7 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes)
 
 		if (textfileLine.at(0) == "modelLighting") // .at(0) is the first word in the row - ModelType
 		{
-			std::cout << "object is a modelLighting" << std::endl;
+			//std::cout << "object is a modelLighting" << std::endl;
 			templateModelLighting object;
 			applyToModelLightingTemplate(object, textfileLine);
 			completedModelLightObjects.push_back(object);
@@ -84,35 +84,35 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes)
 		}
 		else if (textfileLine.at(0) == "modelBasic")
 		{
-			std::cout << "object is a modelBasic" << std::endl;
+			//std::cout << "object is a modelBasic" << std::endl;
 			templateModelBasic object;
 			applyToModelBasicTemplate(object, textfileLine);
 			completedModelBasicObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "modelTerrain")
 		{
-			std::cout << "object is a modelTerrain" << std::endl;
+			//std::cout << "object is a modelTerrain" << std::endl;
 			templateModelTerrain object;
 			applyToModelTerrainTemplate(object, textfileLine);
 			completedModelTerrainObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "modelSprite")
 		{
-			std::cout << "object is a modelSprite" << std::endl;
+			//std::cout << "object is a modelSprite" << std::endl;
 			templateModelSprite object;
 			applyToModelSpriteTemplate(object, textfileLine);
 			completedModelSpriteObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "modelEnvironment")
 		{
-			std::cout << "object is a modelEnvironment" << std::endl;
+			//std::cout << "object is a modelEnvironment" << std::endl;
 			templateModelEnvironment object;
 			applyToModelEnvironmentTemplate(object, textfileLine);
 			completedModelEnvironmentObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "modelGeometry")
 		{
-			std::cout << "object is a modelGeometry" << std::endl;
+			//std::cout << "object is a modelGeometry" << std::endl;
 			templateModelGeometry object;
 			applyToModelGeometryTemplate(object, textfileLine);
 			completedModelGeometryObjects.push_back(object);

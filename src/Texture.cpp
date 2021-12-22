@@ -24,7 +24,7 @@ Texture::~Texture()
 /// </summary>
 /// <param name="filePath"></param>
 /// <returns></returns>
-bool Texture::loadTexture(std::string filePath)
+bool Texture::loadTexture(const std::string& filePath)
 {
 	m_filePath = filePath;
 
@@ -101,12 +101,12 @@ void Texture::Unbind() const
 }
 
 
-std::string Texture::getFilePath() const
+const std::string& Texture::getFilePath() const
 {
 	return m_filePath;
 }
 
-GLuint Texture::getTexture() const
+const GLuint Texture::getTexture() const
 {
 	return m_texture;
 }
@@ -116,7 +116,7 @@ GLuint Texture::getTexture() const
 /// </summary>
 /// <param name="filePath"></param>
 /// <returns>Pointer to the created texture</returns>
-Texture* TextureManager::retrieveTexture(std::string filePath)
+Texture* TextureManager::retrieveTexture(const std::string& filePath)
 {
 	//Check if texture is already loaded
 	for (Texture* t : m_loadedTextures)
@@ -241,7 +241,7 @@ bool CubeMap::loadCubeMap()
 		stbi_image_free(localBuffer);
 	}
 
-	//Specify what happens if texture is renderered on a different sized surface
+	//Specify what happens if texture is rendered on a different sized surface
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

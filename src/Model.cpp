@@ -35,7 +35,7 @@ Model::~Model()
 /// Loads the specified mesh and creates the VBO and EBO buffers
 /// </summary>
 /// <param name="meshFilePath">Mesh file path</param>
-void Model::setMesh(std::string meshFilePath)
+void Model::setMesh(const std::string& meshFilePath)
 {
 	m_modelMesh = MeshManager::loadModel(meshFilePath);
 
@@ -148,11 +148,11 @@ void Model::SetYPos(float num) { m_position.y = num; }
 
 void Model::SetZPos(float num) { m_position.z = num; }
 
-float Model::GetXPos() { return m_position.x; }
+const float Model::GetXPos() const { return m_position.x; }
 
-float Model::GetYPos() { return m_position.y; }
+const float Model::GetYPos() const { return m_position.y; }
 
-float Model::GetZPos() { return m_position.z; }
+const float Model::GetZPos() const { return m_position.z; }
 
 void Model::SetXRot(float num) { m_rotation.x = num; }
 
@@ -160,11 +160,11 @@ void Model::SetYRot(float num) { m_rotation.y = num; }
 
 void Model::SetZRot(float num) { m_rotation.z = num; }
 
-float Model::GetXRot() { return m_rotation.x; }
+const float Model::GetXRot() const { return m_rotation.x; }
 
-float Model::GetYRot() { return m_rotation.y; }
+const float Model::GetYRot() const { return m_rotation.y; }
 
-float Model::GetZRot() { return m_rotation.z; }
+const float Model::GetZRot() const { return m_rotation.z; }
 
 void Model::SetXScale(float num) { m_scale.x = num; }
 
@@ -172,11 +172,11 @@ void Model::SetYScale(float num) { m_scale.y = num; }
 
 void Model::SetZScale(float num) { m_scale.z = num; }
 
-float Model::GetXScale() { return m_scale.x; }
+const float Model::GetXScale() const { return m_scale.x; }
 
-float Model::GetYScale() { return m_scale.y; }
+const float Model::GetYScale() const { return m_scale.y; }
 
-float Model::GetZScale() { return m_scale.z; }
+const float Model::GetZScale() const { return m_scale.z; }
 
 void Model::IncXPos(float num) { m_position.x += num; }
 

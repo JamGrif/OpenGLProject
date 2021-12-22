@@ -67,7 +67,10 @@ void ModelTerrain::setShaderTwo(const char* vertexPath, const char* tessellation
 	m_modelShaderPassTwo = ShaderManager::retrieveShader(vertexPath, tessellationControlPath, tessellationEvaluationPath, fragmentPath);
 }
 
-
+/// <summary>
+/// Sets the elevation of the terrain to a specified value
+/// </summary>
+/// <param name="value">Specified value to set elevation to</param>
 void ModelTerrain::setElevation(float value)
 {
 	m_elevation = value;

@@ -27,18 +27,18 @@ public:
 	virtual void	drawPassOne() = 0;
 	virtual void	drawPassTwo() = 0;
 
-	void			setMesh(std::string meshFilePath);
+	void			setMesh(const std::string& meshFilePath);
 	void			setShaderOne(const char* vertexPath, const char* fragmentPath);
 	void			setShaderTwo(const char* vertexPath, const char* fragmentPath);
 	
 	void			SetXPos(float num), SetYPos(float num), SetZPos(float num);
-	float			GetXPos(), GetYPos(), GetZPos();
+	const float		GetXPos() const, GetYPos() const, GetZPos() const;
 
 	void			SetXRot(float num), SetYRot(float num), SetZRot(float num);
-	float			GetXRot(), GetYRot(), GetZRot();
+	const float		GetXRot() const, GetYRot() const, GetZRot() const;
 
 	void			SetXScale(float num), SetYScale(float num), SetZScale(float num);
-	float			GetXScale(), GetYScale(), GetZScale();
+	const float		GetXScale() const, GetYScale() const, GetZScale() const;
 
 	void			IncXPos(float num), IncYPos(float num), IncZPos(float num);
 	void			DecXPos(float num), DecYPos(float num), DecZPos(float num);

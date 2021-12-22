@@ -17,7 +17,7 @@ Mesh::~Mesh()
 {
 }
 
-bool Mesh::loadMesh(std::string filePath)
+bool Mesh::loadMesh(const std::string& filePath)
 {
 	m_filePath = filePath;
 	Assimp::Importer import;
@@ -86,17 +86,17 @@ bool Mesh::loadMesh(std::string filePath)
 }
 
 
-std::vector<Vertex> Mesh::getVertices() const
+const std::vector<Vertex>& Mesh::getVertices() const
 {
 	return m_vertices;
 }
 
-std::vector<unsigned int> Mesh::getIndices() const
+const std::vector<unsigned int>& Mesh::getIndices() const
 {
 	return m_indices;
 }
 
-std::string Mesh::getFilePath() const
+const std::string& Mesh::getFilePath() const
 {
 	return m_filePath;
 }
@@ -106,7 +106,7 @@ std::string Mesh::getFilePath() const
 /// </summary>
 /// <param name="filePath">Mesh file path</param>
 /// <returns>Pointer to the loaded mesh</returns>
-Mesh* MeshManager::loadModel(std::string filePath)
+Mesh* MeshManager::loadModel(const std::string& filePath)
 {
 	//Check if model is already loaded loaded
 	for (Mesh* im : m_loadedModels)

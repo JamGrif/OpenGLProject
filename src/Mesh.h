@@ -20,15 +20,15 @@ public:
 	Mesh();
 	~Mesh();
 
-	bool						loadMesh(std::string filePath);
+	bool								loadMesh(const std::string& filePath);
 
-	std::vector<Vertex>			getVertices() const;
-	std::vector<unsigned int>	getIndices() const;
-	std::string					getFilePath() const;
+	const std::vector<Vertex>&			getVertices() const;
+	const std::vector<unsigned int>&	getIndices() const;
+	const std::string&					getFilePath() const;
 
 private:
 
-	std::string			m_filePath;
+	std::string					m_filePath;
 
 	std::vector<Vertex>			m_vertices;
 	std::vector<unsigned int>	m_indices;
@@ -40,7 +40,7 @@ class MeshManager
 {
 public:
 
-	static Mesh*				loadModel(std::string filePath);
+	static Mesh*				loadModel(const std::string& filePath);
 
 	static void					clearMeshes();
 
@@ -48,6 +48,6 @@ private:
 
 	static std::vector<Mesh*>	m_loadedModels;
 
-	MeshManager(); //Private so a class of this can't be initalized
+	MeshManager(); //Private so a class of this can't be initialized
 };
 

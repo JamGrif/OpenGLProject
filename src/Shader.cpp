@@ -465,7 +465,7 @@ void Shader::setUniformMatrix3fv(const std::string& name, const glm::mat3& v0)
 	glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(v0));
 }
 
-GLuint Shader::getProgram() const
+const GLuint Shader::getProgram() const
 {
 	return m_shaderProgram;
 }
@@ -500,7 +500,7 @@ const GLchar* Shader::getGeometryPath() const
 /// </summary>
 /// <param name="name">Name of the uniform in shader</param>
 /// <returns>Location of the uniform value</returns>
-int Shader::getUniformLocation(const std::string& name) 
+const int Shader::getUniformLocation(const std::string& name) 
 {
 	if (m_locationCache.find(name) != m_locationCache.end())
 	{

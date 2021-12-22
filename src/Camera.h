@@ -15,10 +15,10 @@ enum Camera_Movement
 };
 
 //Default camera values
-const GLfloat YAW = -90.0f;
-const GLfloat PITCH = 0.0f;
-const GLfloat SPEED = 14.0f;
-const GLfloat SENSITIVTY = 0.25f;
+constexpr GLfloat YAW = -90.0f;
+constexpr GLfloat PITCH = 0.0f;
+constexpr GLfloat SPEED = 14.0f;
+constexpr GLfloat SENSITIVTY = 0.25f;
 
 //Camera class used to provide view matrix and allows input to alter position
 class Camera
@@ -55,8 +55,5 @@ private:
     GLfloat         m_movementSpeed;
     GLfloat         m_mouseSensitivity;
     GLfloat         m_zoom;
-
-    
-
 
 };

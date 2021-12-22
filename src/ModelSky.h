@@ -19,7 +19,7 @@ private:
     CubeMap* m_skyTexture;
 
     //Skybox uses a custom cube that is inside out
-    float m_skyboxVertices[216] = {
+    const float m_skyboxVertices[216] = {
         // positions          
         -1.0f,  1.0f, -1.0f,
         -1.0f, -1.0f, -1.0f,

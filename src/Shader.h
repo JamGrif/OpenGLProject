@@ -31,7 +31,7 @@ public:
 	void					setUniformMatrix4fv(const std::string& name, const glm::mat4& v0);
 	void					setUniformMatrix3fv(const std::string& name, const glm::mat3& v0);
 
-	GLuint					getProgram() const;
+	const GLuint			getProgram() const;
 	const GLchar*			getVertexPath() const;
 	const GLchar*			getFragmentPath() const;
 	const GLchar*			getTessellationControlPath() const;
@@ -40,7 +40,7 @@ public:
 
 private:
 
-	int						getUniformLocation(const std::string& name);
+	const int				getUniformLocation(const std::string& name);
 
 	GLuint					m_shaderProgram;
 
@@ -53,8 +53,6 @@ private:
 	//Cache for uniforms
 	std::unordered_map<std::string, int>	m_locationCache;
 	
-
-
 };
 
 //Stores current loaded shaders ensuring only one of each shaders gets loaded. Provides a way to load a shader from a file
@@ -72,5 +70,5 @@ private:
 
 	static std::vector<Shader*> m_loadedShaders;
 
-	ShaderManager(); //Private so a class of this can't be initalized
+	ShaderManager(); //Private so a class of this can't be initialized
 };

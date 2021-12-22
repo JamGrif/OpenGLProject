@@ -13,11 +13,11 @@ public:
     void                    drawPassOne() override;
     void                    drawPassTwo() override;
 
-    void                    setDiffuseTexture(std::string texturePath);
-    void                    setSpecularTexture(std::string texturePath);
-    void                    setEmissionTexture(std::string texturePath);
-    void                    setNormalTexture(std::string texturePath, bool normalize);
-    void                    setHeightTexture(std::string texturePath, float heightAmount);
+    void                    setDiffuseTexture(const std::string& texturePath);
+    void                    setSpecularTexture(const std::string& texturePath);
+    void                    setEmissionTexture(const std::string& texturePath);
+    void                    setNormalTexture(const std::string& texturePath, bool normalize);
+    void                    setHeightTexture(const std::string& texturePath, float heightAmount);
 
     void                    setSpecularShiniess(float value);
 
