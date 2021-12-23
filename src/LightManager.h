@@ -7,12 +7,10 @@
 struct Light
 {
 	Light(glm::vec3 ambient = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 diffuse = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f))
-		:Ambient(ambient), Diffuse(diffuse), Specular(specular)
+		:Ambient(ambient), Diffuse(diffuse), Specular(specular), lightActive(true)
 	{
-		Ambient = ambient;
-		Diffuse = diffuse;
-		Specular = specular;
 	}
+
 	void toggleActive()
 	{
 		lightActive = lightActive == true ? false : true;
@@ -21,7 +19,7 @@ struct Light
 	glm::vec3	Ambient;
 	glm::vec3	Diffuse;
 	glm::vec3	Specular;
-	bool		lightActive = false;
+	bool		lightActive;
 };
 
 struct PointLight
@@ -30,7 +28,7 @@ struct PointLight
 	PointLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f))
 		:Light(ambient, diffuse, specular), Position(position)
 	{
-		lightActive = true;
+		//lightActive = true;
 	}
 
 	glm::vec3	Position;
@@ -47,7 +45,7 @@ struct DirectionalLight
 	DirectionalLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction = glm::vec3(0.0f, 0.0f, 0.0f))
 		:Light(ambient, diffuse, specular), Direction(direction)
 	{
-		lightActive = true;
+		//lightActive = true;
 	}
 
 	glm::vec3	Direction;
@@ -63,7 +61,7 @@ struct SpotLight
 		Direction.y = 0.0f;
 		Direction.z = 0.0f;
 
-		lightActive = true;
+		//lightActive = true;
 	}
 
 	glm::vec3	Position;

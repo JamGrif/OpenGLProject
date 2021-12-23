@@ -1,7 +1,7 @@
 #include "ModelBasic.h"
 
 ModelBasic::ModelBasic()
-	:m_defaultColour(1.0, 1.0, 1.0), m_pointLightToCopy(-1)
+	:m_defaultColour(1.0, 1.0, 1.0), NOT_COPYING_LIGHT(-1), m_pointLightToCopy(NOT_COPYING_LIGHT)
 {
 
 	//setShaderOne--------
@@ -39,9 +39,9 @@ void ModelBasic::drawPassTwo()
 	//Bind shader
 	m_modelShaderPassTwo->Bind();
 
-	if (m_pointLightToCopy >= 0) //Copying light
+	if (m_pointLightToCopy != NOT_COPYING_LIGHT) //Check if copying light
 	{
-		if (!m_localLightManager->getPointLight(m_pointLightToCopy)->lightActive) //If light is not active, leave draw function
+		if (!m_localLightManager->getPointLight(m_pointLightToCopy)->lightActive) //If light is not active, leave draw function 
 			return;
 
 		m_position = m_localLightManager->getPointLight(m_pointLightToCopy)->Position;
@@ -72,9 +72,13 @@ void ModelBasic::drawPassTwo()
 /// <param name="index">The index of the point light in the point light vector that will be copied</param>
 void ModelBasic::copyPointLight(int index)
 {
+	if (m_localLightManager->getPointLight(index) == nullptr) // If pointlight at specified index does not exist, ignore and return
+	{
+		return;
+	}
+
 	if (index <= m_localLightManager->getCurrentPointLights() && m_localLightManager->getCurrentPointLights() != 0)
 	{
 		m_pointLightToCopy = index;
-	}
-		
+	}		
 }

@@ -15,15 +15,12 @@ SceneTextReader::SceneTextReader(const std::string& filename)
 	std::cout << "SceneTextReader constructor" << std::endl;
 	
 	m_filename = filename;
-
 }
 
 SceneTextReader::~SceneTextReader()
 {
 	std::cout << "SceneTextReader destructor" << std::endl;
-
 }
-
 
 bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager)
 {
@@ -69,87 +66,26 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, Light
 			textfileLine.push_back(buf);
 		}
 
-
-		//count++;
-		//std::cout << count << " number of times through loop" << std::endl;
-		//std::cout << "tokens.at(0) is " << textfileLine.at(0) << std::endl;
 		if (textfileLine.at(0) == "directionalLight")
 		{
-			//std::cout << "in .at(0) == directionalLight" << std::endl;
 			templateDirectionalLight object;
-
 			applyToDirectionalLight(object, textfileLine);
-
-			//std::cout << object.Ambient.x << std::endl;
-			//std::cout << object.Ambient.y << std::endl;
-			//std::cout << object.Ambient.z << std::endl;
-			//
-			//std::cout << object.Diffuse.x << std::endl;
-			//std::cout << object.Diffuse.y << std::endl;
-			//std::cout << object.Diffuse.z << std::endl;
-			//
-			//std::cout << object.Specular.x << std::endl;
-			//std::cout << object.Specular.y << std::endl;
-			//std::cout << object.Specular.z << std::endl;
-			//
-			//std::cout << object.Direction.x << std::endl;
-			//std::cout << object.Direction.y << std::endl;
-			//std::cout << object.Direction.z << std::endl;
-
 			completedDirectionalLightObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "pointLight")
 		{
-			//std::cout << "in .at(0) == pointLight" << std::endl;
 			templatePointLight object;
-
 			applyToPointLight(object, textfileLine);
-
-			//std::cout << object.Ambient.x << std::endl;
-			//std::cout << object.Ambient.y << std::endl;
-			//std::cout << object.Ambient.z << std::endl;
-			//
-			//std::cout << object.Diffuse.x << std::endl;
-			//std::cout << object.Diffuse.y << std::endl;
-			//std::cout << object.Diffuse.z << std::endl;
-			//
-			//std::cout << object.Specular.x << std::endl;
-			//std::cout << object.Specular.y << std::endl;
-			//std::cout << object.Specular.z << std::endl;
-			//
-			//std::cout << object.Position.x << std::endl;
-			//std::cout << object.Position.y << std::endl;
-			//std::cout << object.Position.z << std::endl;
-
 			completedPointLightObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "spotLight")
 		{
 			templateSpotLight object;
-
 			applyToSpotLight(object, textfileLine);
-
-			//std::cout << object.Ambient.x << std::endl;
-			//std::cout << object.Ambient.y << std::endl;
-			//std::cout << object.Ambient.z << std::endl;
-			//
-			//std::cout << object.Diffuse.x << std::endl;
-			//std::cout << object.Diffuse.y << std::endl;
-			//std::cout << object.Diffuse.z << std::endl;
-			//
-			//std::cout << object.Specular.x << std::endl;
-			//std::cout << object.Specular.y << std::endl;
-			//std::cout << object.Specular.z << std::endl;
-			//
-			//std::cout << object.Position.x << std::endl;
-			//std::cout << object.Position.y << std::endl;
-			//std::cout << object.Position.z << std::endl;
-
 			completedSpotLightObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "modelLighting") // .at(0) is the first word in the row - ObjectType
 		{
-			//std::cout << "object is a modelLighting" << std::endl;
 			templateModelLighting object;
 			applyToModelLightingTemplate(object, textfileLine);
 			completedModelLightObjects.push_back(object);
@@ -157,35 +93,30 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, Light
 		}
 		else if (textfileLine.at(0) == "modelBasic")
 		{
-			//std::cout << "object is a modelBasic" << std::endl;
 			templateModelBasic object;
 			applyToModelBasicTemplate(object, textfileLine);
 			completedModelBasicObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "modelTerrain")
 		{
-			//std::cout << "object is a modelTerrain" << std::endl;
 			templateModelTerrain object;
 			applyToModelTerrainTemplate(object, textfileLine);
 			completedModelTerrainObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "modelSprite")
 		{
-			//std::cout << "object is a modelSprite" << std::endl;
 			templateModelSprite object;
 			applyToModelSpriteTemplate(object, textfileLine);
 			completedModelSpriteObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "modelEnvironment")
 		{
-			//std::cout << "object is a modelEnvironment" << std::endl;
 			templateModelEnvironment object;
 			applyToModelEnvironmentTemplate(object, textfileLine);
 			completedModelEnvironmentObjects.push_back(object);
 		}
 		else if (textfileLine.at(0) == "modelGeometry")
 		{
-			//std::cout << "object is a modelGeometry" << std::endl;
 			templateModelGeometry object;
 			applyToModelGeometryTemplate(object, textfileLine);
 			completedModelGeometryObjects.push_back(object);
@@ -195,9 +126,6 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, Light
 			std::cout << "Could not determine objectType - " << textfileLine.at(0) << " - FAILURE" << std::endl;
 		}
 
-
-		//std::cout << "moving to next line" << std::endl;
-
 	}// end of scene txt file read
 
 	fileStream.close();
@@ -206,7 +134,6 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, Light
 
 	for (int i = 0; i < completedDirectionalLightObjects.size(); i++)
 	{
-		//m_sceneLightManager->addDirectionalLight(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0.3f, 0.3f, 0.3f), -2.0f, -3.0f, -1.0f);
 		sceneLightManager->addDirectionalLight(
 			completedDirectionalLightObjects.at(i).Ambient,
 			completedDirectionalLightObjects.at(i).Diffuse,
@@ -218,7 +145,6 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, Light
 
 	for (int i = 0; i < completedPointLightObjects.size(); i++)
 	{
-		//m_sceneLightManager->addPointLight(lightPosAmbDifSpc.at(i).x, lightPosAmbDifSpc.at(i).y, lightPosAmbDifSpc.at(i).z, lightPosAmbDifSpc.at(i + 1), lightPosAmbDifSpc.at(i + 2), lightPosAmbDifSpc.at(i + 3));
 		sceneLightManager->addPointLight(
 			completedPointLightObjects.at(i).Ambient,
 			completedPointLightObjects.at(i).Diffuse,
@@ -289,7 +215,6 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, Light
 		}
 
 		sceneMeshes.push_back(model);
-
 	}
 
 	for (int i = 0; i < completedModelBasicObjects.size(); i++)
@@ -915,86 +840,109 @@ void Scene::updateSceneLight()
 		Light over material showcase
 	*/
 	
-	//if (m_materialLightIncZ)
-	//{
-	//	m_sceneLightManager->getPointLight(1)->Position.z += 0.075f;
-	//	if (m_sceneLightManager->getPointLight(1)->Position.z >= m_materialLightMaxZ)
-	//	{
-	//		m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMaxZ;
-	//		m_materialLightIncZ = false;
-	//	}
-	//}
-	//else
-	//{
-	//	m_sceneLightManager->getPointLight(1)->Position.z -= 0.075f;
-	//	if (m_sceneLightManager->getPointLight(1)->Position.z <= m_materialLightMinZ)
-	//	{
-	//		m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMinZ;
-	//		m_materialLightIncZ = true;
-	//	}
-	//}
-	//
-	//if (m_materialLightIncX)
-	//{
-	//	m_sceneLightManager->getPointLight(1)->Position.x += 0.1f;
-	//	if (m_sceneLightManager->getPointLight(1)->Position.x >= m_materialLightMaxX)
-	//	{
-	//		m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMaxX;
-	//		m_materialLightIncX = false;
-	//	}
-	//}
-	//else
-	//{
-	//	m_sceneLightManager->getPointLight(1)->Position.x -= 0.1f;
-	//	if (m_sceneLightManager->getPointLight(1)->Position.x <= m_materialLightMinX)
-	//	{
-	//		m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMinX;
-	//		m_materialLightIncX = true;
-	//	}
-	//}
-	//
-	//
-	////Light showing normals
-	//
-	//
-	//	if (m_normalLightIncZ)
-	//	{
-	//		m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
-	//		if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMaxZ)
-	//		{
-	//			m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMaxZ;
-	//			m_normalLightIncZ = false;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
-	//		if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMinZ)
-	//		{
-	//			m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMinZ;
-	//			m_normalLightIncZ = true;
-	//		}
-	//	}
-	//
-	///*
-	//	Coloured Lighting
-	//*/
-	//
-	//m_lightR -= 0.001f;
-	//if (m_lightR <= 0.0f)
-	//	m_lightR = 1.0f;
-	//
-	//m_lightG += 0.003f;
-	//if (m_lightG >= 1.0f)
-	//	m_lightG = 0.0f;
-	//
-	//m_lightB += 0.002f;
-	//if (m_lightB >= 1.0f)
-	//	m_lightB = 0.0f;
-	//
-	//m_sceneLightManager->getPointLight(3)->Ambient = glm::vec3(m_lightR,  m_lightG,  m_lightB);
-	//m_sceneLightManager->getPointLight(3)->Diffuse = glm::vec3(m_lightR,  m_lightG,  m_lightB);
-	//m_sceneLightManager->getPointLight(3)->Specular = glm::vec3(m_lightR, m_lightG,  m_lightB);
+	if (m_materialLightIncZ)
+	{
+		if (m_sceneLightManager->getPointLight(1) != nullptr)
+		{
+			m_sceneLightManager->getPointLight(1)->Position.z += 0.075f;
+			if (m_sceneLightManager->getPointLight(1)->Position.z >= m_materialLightMaxZ)
+			{
+				m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMaxZ;
+				m_materialLightIncZ = false;
+			}
+		}
+		
+	}
+	else
+	{
+		if (m_sceneLightManager->getPointLight(1) != nullptr)
+		{
+			m_sceneLightManager->getPointLight(1)->Position.z -= 0.075f;
+			if (m_sceneLightManager->getPointLight(1)->Position.z <= m_materialLightMinZ)
+			{
+				m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMinZ;
+				m_materialLightIncZ = true;
+			}
+		}
+	}
+	
+	if (m_materialLightIncX)
+	{
+		if (m_sceneLightManager->getPointLight(1) != nullptr)
+		{
+			m_sceneLightManager->getPointLight(1)->Position.x += 0.1f;
+			if (m_sceneLightManager->getPointLight(1)->Position.x >= m_materialLightMaxX)
+			{
+				m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMaxX;
+				m_materialLightIncX = false;
+			}
+		}
+	}
+	else
+	{
+		if (m_sceneLightManager->getPointLight(1) != nullptr)
+		{
+			m_sceneLightManager->getPointLight(1)->Position.x -= 0.1f;
+			if (m_sceneLightManager->getPointLight(1)->Position.x <= m_materialLightMinX)
+			{
+				m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMinX;
+				m_materialLightIncX = true;
+			}
+		}
+	}
+	
+	
+	//Light showing normals
+	
+	
+	if (m_normalLightIncZ)
+	{
+		if (m_sceneLightManager->getPointLight(2) != nullptr)
+		{
+			m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
+			if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMaxZ)
+			{
+				m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMaxZ;
+				m_normalLightIncZ = false;
+			}
+		}
+	}
+	else
+	{
+		if (m_sceneLightManager->getPointLight(2) != nullptr)
+		{
+			m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
+			if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMinZ)
+			{
+				m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMinZ;
+				m_normalLightIncZ = true;
+			}
+		}
+	}
+	
+	/*
+		Coloured Lighting
+	*/
+	
+	m_lightR -= 0.001f;
+	if (m_lightR <= 0.0f)
+		m_lightR = 1.0f;
+	
+	m_lightG += 0.003f;
+	if (m_lightG >= 1.0f)
+		m_lightG = 0.0f;
+	
+	m_lightB += 0.002f;
+	if (m_lightB >= 1.0f)
+		m_lightB = 0.0f;
+	
+	if (m_sceneLightManager->getPointLight(3) != nullptr)
+	{
+		m_sceneLightManager->getPointLight(3)->Ambient = glm::vec3(m_lightR, m_lightG, m_lightB);
+		m_sceneLightManager->getPointLight(3)->Diffuse = glm::vec3(m_lightR, m_lightG, m_lightB);
+		m_sceneLightManager->getPointLight(3)->Specular = glm::vec3(m_lightR, m_lightG, m_lightB);
+	}
+	
 }
 
 //UNUSED function used for shadowing - this was to setup the depthMap texture which the scene would be drawn too during the first pass of some models

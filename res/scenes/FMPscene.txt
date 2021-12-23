@@ -6,10 +6,10 @@ directionalLight	0.2		0.2		0.2		0.4		0.4		0.4		0.3		0.3		0.3		-2.0	-3.0	-1.0
 
 #pointLight objects...
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
-pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		0.0		3.0		0.0
-pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-18.0	2.0		0.0
-pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		18.0	2.0		14.0
-pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-20.0	2.0		20.0
+#pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		0.0		3.0		0.0
+#pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-20.0	2.0		0.0
+#pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		22.0	2.0		22.0
+#pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-20.0	2.0		20.0
 
 #spotLight objects...
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
@@ -191,12 +191,12 @@ modelLighting	-7.5	-1.0	0.0		0.0		90.0	0.0		1.0			1.0			1.0			table		table_diff	
 modelLighting	-7.5	1.9		0.0		0.0		50.0	0.0		1.5			1.5			1.5			knife		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
 
 #Normal vs no normal showcase
-modelLighting	25.0	1.0		6.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		leather_diff			null					null					0.0						null					0.0					null											
-modelLighting	25.0	1.0		12.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		leather_diff			null					leather_norm			0.0						null					0.0					null											
-modelLighting	25.0	1.0		18.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteExample_diff	null					null					0.0						null					0.0					null											
-modelLighting	25.0	1.0		24.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteExample_diff	null					concreteExample_norm	0.0						null					0.0					null											
-modelLighting	22.0	1.0		26.0	90.0	0.0		180.0	1.0			1.0			1.0			plane		cartoonBricks_diff		null					null					0.0						null					0.0					null											
-modelLighting	16.0	1.0		26.0	90.0	0.0		180.0	1.0			1.0			1.0			plane		cartoonBricks_diff		null					cartoonBricks_norm		0.0						null					0.0					null											
+modelLighting	25.0	1.0		6.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		leather_diff			leather_spec					leather_norm			0.0						null					0.0					null											
+modelLighting	25.0	1.0		12.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		leather_diff			leather_spec			null					0.0						null					0.0					null											
+modelLighting	25.0	1.0		18.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteExample_diff	concreteExample_spec	concreteExample_norm	0.0						null					0.0					null											
+modelLighting	25.0	1.0		24.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteExample_diff	concreteExample_spec	null					0.0						null					0.0					null											
+modelLighting	22.0	1.0		26.0	90.0	0.0		180.0	1.0			1.0			1.0			plane		cartoonBricks_diff		cartoonBricks_spec		cartoonBricks_norm		0.0						null					0.0					null											
+modelLighting	16.0	1.0		26.0	90.0	0.0		180.0	1.0			1.0			1.0			plane		cartoonBricks_diff		cartoonBricks_spec		null					0.0						null					0.0					null											
 
 #Material showcase
 modelLighting	-24.0	-1.25	-4.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null
@@ -225,9 +225,9 @@ modelLighting	0.0		1.0		-8.0	0.0		0.0		0.0		0.75		0.75		0.75		signpost	sign_diff
 
 #modelBasic objects...
 #objectType	    #PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh	#LightToCopy
-modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
-modelBasic		4.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	1
-modelBasic		6.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	2
+#modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
+#modelBasic		4.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	1
+#modelBasic		6.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	2
 modelBasic		8.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	3
 
 #modelTerrain objects...
@@ -250,9 +250,9 @@ modelSprite		-19.0	-0.5	17.0	90.0	0.0		90.0		0.4			0.4			0.4			grass_sprite
 
 #modelEnvironment objects...
 #ObjectType			#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#mesh	#reflection		#refraction
-modelEnvironment	14.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	1.0				0.0
-modelEnvironment	22.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	0.0				1.0
+#modelEnvironment	14.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	1.0				0.0
+#modelEnvironment	22.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	0.0				1.0
 
 #modelGeometry objects...
 #ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#mesh
-modelGeometry	-1.0	-1.5	23.0	0.0		0.0		0.0		1.5			1.5			1.5			barrel
+#modelGeometry	-1.0	-1.5	23.0	0.0		0.0		0.0		1.5			1.5			1.5			barrel

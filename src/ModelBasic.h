@@ -19,6 +19,9 @@ private:
 
     glm::vec3   m_defaultColour;
 
+    const int   NOT_COPYING_LIGHT;
+
     int         m_pointLightToCopy;
+
 };
 
