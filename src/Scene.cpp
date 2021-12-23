@@ -10,7 +10,7 @@
 #include <fstream>
 #include <sstream>
 
-SceneTextReader::SceneTextReader(std::string filename)
+SceneTextReader::SceneTextReader(const std::string& filename)
 {
 	std::cout << "SceneTextReader constructor" << std::endl;
 	
@@ -25,7 +25,7 @@ SceneTextReader::~SceneTextReader()
 }
 
 
-bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes)
+bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager)
 {
 	std::cout << "SceneTextReader runSceneTextReader" << std::endl;
 
@@ -73,8 +73,81 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes)
 		//count++;
 		//std::cout << count << " number of times through loop" << std::endl;
 		//std::cout << "tokens.at(0) is " << textfileLine.at(0) << std::endl;
+		if (textfileLine.at(0) == "directionalLight")
+		{
+			//std::cout << "in .at(0) == directionalLight" << std::endl;
+			templateDirectionalLight object;
 
-		if (textfileLine.at(0) == "modelLighting") // .at(0) is the first word in the row - ModelType
+			applyToDirectionalLight(object, textfileLine);
+
+			//std::cout << object.Ambient.x << std::endl;
+			//std::cout << object.Ambient.y << std::endl;
+			//std::cout << object.Ambient.z << std::endl;
+			//
+			//std::cout << object.Diffuse.x << std::endl;
+			//std::cout << object.Diffuse.y << std::endl;
+			//std::cout << object.Diffuse.z << std::endl;
+			//
+			//std::cout << object.Specular.x << std::endl;
+			//std::cout << object.Specular.y << std::endl;
+			//std::cout << object.Specular.z << std::endl;
+			//
+			//std::cout << object.Direction.x << std::endl;
+			//std::cout << object.Direction.y << std::endl;
+			//std::cout << object.Direction.z << std::endl;
+
+			completedDirectionalLightObjects.push_back(object);
+		}
+		else if (textfileLine.at(0) == "pointLight")
+		{
+			//std::cout << "in .at(0) == pointLight" << std::endl;
+			templatePointLight object;
+
+			applyToPointLight(object, textfileLine);
+
+			//std::cout << object.Ambient.x << std::endl;
+			//std::cout << object.Ambient.y << std::endl;
+			//std::cout << object.Ambient.z << std::endl;
+			//
+			//std::cout << object.Diffuse.x << std::endl;
+			//std::cout << object.Diffuse.y << std::endl;
+			//std::cout << object.Diffuse.z << std::endl;
+			//
+			//std::cout << object.Specular.x << std::endl;
+			//std::cout << object.Specular.y << std::endl;
+			//std::cout << object.Specular.z << std::endl;
+			//
+			//std::cout << object.Position.x << std::endl;
+			//std::cout << object.Position.y << std::endl;
+			//std::cout << object.Position.z << std::endl;
+
+			completedPointLightObjects.push_back(object);
+		}
+		else if (textfileLine.at(0) == "spotLight")
+		{
+			templateSpotLight object;
+
+			applyToSpotLight(object, textfileLine);
+
+			//std::cout << object.Ambient.x << std::endl;
+			//std::cout << object.Ambient.y << std::endl;
+			//std::cout << object.Ambient.z << std::endl;
+			//
+			//std::cout << object.Diffuse.x << std::endl;
+			//std::cout << object.Diffuse.y << std::endl;
+			//std::cout << object.Diffuse.z << std::endl;
+			//
+			//std::cout << object.Specular.x << std::endl;
+			//std::cout << object.Specular.y << std::endl;
+			//std::cout << object.Specular.z << std::endl;
+			//
+			//std::cout << object.Position.x << std::endl;
+			//std::cout << object.Position.y << std::endl;
+			//std::cout << object.Position.z << std::endl;
+
+			completedSpotLightObjects.push_back(object);
+		}
+		else if (textfileLine.at(0) == "modelLighting") // .at(0) is the first word in the row - ObjectType
 		{
 			//std::cout << "object is a modelLighting" << std::endl;
 			templateModelLighting object;
@@ -119,7 +192,7 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes)
 		}
 		else
 		{
-			std::cout << "Could not determine modelType - " << textfileLine.at(0) << " - FAILURE" << std::endl;
+			std::cout << "Could not determine objectType - " << textfileLine.at(0) << " - FAILURE" << std::endl;
 		}
 
 
@@ -130,6 +203,39 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes)
 	fileStream.close();
 
 	//Now that the scene file has been read, actually create the objects and place into the scene meshes vector
+
+	for (int i = 0; i < completedDirectionalLightObjects.size(); i++)
+	{
+		//m_sceneLightManager->addDirectionalLight(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0.3f, 0.3f, 0.3f), -2.0f, -3.0f, -1.0f);
+		sceneLightManager->addDirectionalLight(
+			completedDirectionalLightObjects.at(i).Ambient,
+			completedDirectionalLightObjects.at(i).Diffuse,
+			completedDirectionalLightObjects.at(i).Specular,
+			completedDirectionalLightObjects.at(i).Direction
+		);
+		
+	}
+
+	for (int i = 0; i < completedPointLightObjects.size(); i++)
+	{
+		//m_sceneLightManager->addPointLight(lightPosAmbDifSpc.at(i).x, lightPosAmbDifSpc.at(i).y, lightPosAmbDifSpc.at(i).z, lightPosAmbDifSpc.at(i + 1), lightPosAmbDifSpc.at(i + 2), lightPosAmbDifSpc.at(i + 3));
+		sceneLightManager->addPointLight(
+			completedPointLightObjects.at(i).Ambient,
+			completedPointLightObjects.at(i).Diffuse,
+			completedPointLightObjects.at(i).Specular,
+			completedPointLightObjects.at(i).Position
+		);
+	}
+
+	for (int i = 0; i < completedSpotLightObjects.size(); i++)
+	{
+		sceneLightManager->addSpotLight(
+			completedSpotLightObjects.at(i).Ambient,
+			completedSpotLightObjects.at(i).Diffuse,
+			completedSpotLightObjects.at(i).Specular,
+			completedSpotLightObjects.at(i).Position
+		);
+	}
 
 	for (int i = 0; i < completedModelLightObjects.size(); i++) // Create all modelLighting objects
 	{
@@ -299,11 +405,97 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes)
 	return true;
 }
 
+
+void SceneTextReader::applyToLight(templateLight& l, const std::vector<std::string>& vector)
+{
+	enum objectInfo
+	{
+		e_objectType = 0,
+
+		e_AmbR = 1,
+		e_AmbG = 2,
+		e_ambB = 3,
+
+		e_DiffR = 4,
+		e_DiffG = 5,
+		e_DiffB = 6,
+
+		e_SpecR = 7,
+		e_SpecG = 8,
+		e_specB = 9
+	};
+
+	l.modelType = vector.at(e_objectType);
+
+	l.Ambient.r = std::stof(vector.at(e_AmbR));
+	l.Ambient.g = std::stof(vector.at(e_AmbG));
+	l.Ambient.b = std::stof(vector.at(e_ambB));
+
+	l.Diffuse.r = std::stof(vector.at(e_DiffR));
+	l.Diffuse.g = std::stof(vector.at(e_DiffG));
+	l.Diffuse.b = std::stof(vector.at(e_DiffB));
+
+	l.Specular.r = std::stof(vector.at(e_SpecR));
+	l.Specular.g = std::stof(vector.at(e_SpecG));
+	l.Specular.b = std::stof(vector.at(e_specB));
+}
+
+
+void SceneTextReader::applyToPointLight(templatePointLight& l, const std::vector<std::string>& vector)
+{
+	applyToLight(l, vector);
+
+	enum objectInfo
+	{
+		e_PositionX = 10,
+		e_PositionY = 11,
+		e_PositionZ = 12
+	};
+
+	l.Position.x = std::stof(vector.at(e_PositionX));
+	l.Position.y = std::stof(vector.at(e_PositionY));
+	l.Position.z = std::stof(vector.at(e_PositionZ));
+}
+
+
+void SceneTextReader::applyToDirectionalLight(templateDirectionalLight& l, const std::vector<std::string>& vector)
+{
+	applyToLight(l, vector);
+
+	enum objectInfo
+	{
+		e_DirectionX = 10,
+		e_DirectionY = 11,
+		e_DirectionZ = 12
+	};
+
+	l.Direction.x = std::stof(vector.at(e_DirectionX));
+	l.Direction.y = std::stof(vector.at(e_DirectionY));
+	l.Direction.z = std::stof(vector.at(e_DirectionZ));
+}
+
+
+void SceneTextReader::applyToSpotLight(templateSpotLight& l, const std::vector<std::string>& vector)
+{
+	applyToLight(l, vector);
+
+	enum objectInfo
+	{
+		e_PositionX = 10,
+		e_PositionY = 11,
+		e_PositionZ = 12
+	};
+
+	l.Position.x = std::stof(vector.at(e_PositionX));
+	l.Position.y = std::stof(vector.at(e_PositionY));
+	l.Position.z = std::stof(vector.at(e_PositionZ));
+}
+
 void SceneTextReader::applyToModel(templateModel& o, const std::vector<std::string>& vector)
 {
 	enum objectInfo
 	{
-		e_modelType = 0,
+		e_objectType = 0,
 		e_PosX = 1,
 		e_PosY = 2,
 		e_PosZ = 3,
@@ -317,7 +509,7 @@ void SceneTextReader::applyToModel(templateModel& o, const std::vector<std::stri
 		e_ScaleZ = 9,
 	};
 
-	o.modelType = vector.at(e_modelType);
+	o.objectType = vector.at(e_objectType);
 
 	o.PosX = std::stof(vector.at(e_PosX));
 	o.PosY = std::stof(vector.at(e_PosY));
@@ -541,25 +733,25 @@ bool Scene::initScene()
 		Directional Light
 	*/
 
-	m_sceneLightManager->addDirectionalLight(-2.0f, -3.0f, -1.0f, glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0.3f, 0.3f, 0.3f));
+	//m_sceneLightManager->addDirectionalLight(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0.3f, 0.3f, 0.3f), -2.0f, -3.0f, -1.0f);
 
 	/*
 		Point Lights
 	*/
 
-	std::vector<glm::vec3> lightPosAmbDifSpc =
-	{
-		//Position						//Ambient						//Diffuse						//Specular
-		glm::vec3(0.0f, 3.0f, 0.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),		glm::vec3(0.4f, 0.4f, 0.4f),	//House light
-		glm::vec3(-18.0f, 2.0f, 0.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Material showcase light
-		glm::vec3(18.0f, 2.0f, 14.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Normal showcase light
-		glm::vec3(-20.0f, 2.0f, 20.0f), glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Coloured lighting
-	};
-	
-	for (int i = 0; i < lightPosAmbDifSpc.size(); i += 4)
-	{
-		m_sceneLightManager->addPointLight(lightPosAmbDifSpc.at(i).x, lightPosAmbDifSpc.at(i).y, lightPosAmbDifSpc.at(i).z, lightPosAmbDifSpc.at(i + 1), lightPosAmbDifSpc.at(i + 2), lightPosAmbDifSpc.at(i + 3));
-	}
+	//std::vector<glm::vec3> lightPosAmbDifSpc =
+	//{
+	//	//Position						//Ambient						//Diffuse						//Specular
+	//	glm::vec3(0.0f, 3.0f, 0.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),	//House light
+	//	glm::vec3(-18.0f, 2.0f, 0.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Material showcase light
+	//	glm::vec3(18.0f, 2.0f, 14.0f),	glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Normal showcase light
+	//	glm::vec3(-20.0f, 2.0f, 20.0f), glm::vec3(0.2f, 0.2f, 0.2f),	glm::vec3(1.0f, 1.0f, 1.0f),	glm::vec3(0.4f, 0.4f, 0.4f),		//Coloured lighting
+	//};
+	//
+	//for (int i = 0; i < lightPosAmbDifSpc.size(); i += 4)
+	//{
+	//	m_sceneLightManager->addPointLight(lightPosAmbDifSpc.at(i).x, lightPosAmbDifSpc.at(i).y, lightPosAmbDifSpc.at(i).z, lightPosAmbDifSpc.at(i + 1), lightPosAmbDifSpc.at(i + 2), lightPosAmbDifSpc.at(i + 3));
+	//}
 
 	/*
 		Spot Light
@@ -578,7 +770,7 @@ bool Scene::initScene()
 		Run scene reader, giving it the scene objects vector to fill out
 	*/
 
-	txtReader->runSceneTextReader(m_sceneMeshes);
+	txtReader->runSceneTextReader(m_sceneMeshes, m_sceneLightManager);
 
 	/*
 		Clean up object

@@ -18,20 +18,57 @@ class SceneTextReader
 {
 public:
 
-	SceneTextReader(std::string filename);
+	SceneTextReader(const std::string& filename);
 	~SceneTextReader();
 
-	bool runSceneTextReader(std::vector<Model*>& sceneMeshes);
+	bool runSceneTextReader(std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager);
 
 
 	//void createModelLightingObject(templateModelLighting& o);
 
-
 private:
+	std::string m_filename;
+private:
+
+	struct templateLight
+	{
+		std::string modelType;
+
+		glm::vec3	Ambient;
+		glm::vec3	Diffuse;
+		glm::vec3	Specular;
+		bool		lightActive = false;
+	};
+	struct templatePointLight : public templateLight
+	{
+		glm::vec3	Position;
+	};
+	struct templateDirectionalLight : public templateLight
+	{
+		glm::vec3	Direction;
+	};
+	struct templateSpotLight : public templateLight
+	{
+		glm::vec3	Position;
+		glm::vec3	Direction;
+	};
+
+	std::vector<templatePointLight> completedPointLightObjects;
+	std::vector<templateDirectionalLight> completedDirectionalLightObjects;
+	std::vector<templateSpotLight> completedSpotLightObjects;
+
+	void applyToLight(templateLight& l, const std::vector<std::string>& vector);
+
+	void applyToPointLight(templatePointLight& l, const std::vector<std::string>& vector);
+	void applyToDirectionalLight(templateDirectionalLight& l, const std::vector<std::string>& vector);
+	void applyToSpotLight(templateSpotLight& l, const std::vector<std::string>& vector);
+
+
+
 
 	struct templateModel
 	{
-		std::string modelType = ""; // ModelLighting, ModelBasic, ModelTerrain etc...
+		std::string objectType = ""; // ModelLighting, ModelBasic, ModelTerrain etc...
 
 		float PosX = 0.0f;
 		float PosY = 0.0f;
@@ -87,8 +124,7 @@ private:
 	{
 		std::string mesh = "";
 	};
-	
-	std::string m_filename;
+
 
 	std::vector<templateModelLighting> completedModelLightObjects;
 	std::vector<templateModelBasic> completedModelBasicObjects;

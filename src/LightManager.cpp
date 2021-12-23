@@ -58,16 +58,16 @@ void LightManager::setDirectionalLight(float x, float y, float z, int index)
 /// <param name="x"></param>
 /// <param name="y"></param>
 /// <param name="z"></param>
-void LightManager::addDirectionalLight(float x, float y, float z, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
+void LightManager::addDirectionalLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction)
 {
 	//Ensure new directional lights don't exceed the maximum amount allowed
 	if (m_currentDirectionalLights < m_maxDirectionalLights)
 	{
-		DirectionalLight* direction = new DirectionalLight(x, y, z, ambient, diffuse, specular);
-		m_sceneDirectionalLights.push_back(direction);
+		DirectionalLight* dl = new DirectionalLight(ambient, diffuse, specular, direction);
+		m_sceneDirectionalLights.push_back(dl);
 		m_currentDirectionalLights++;
 
-		std::cout << "LIGHTMANAGER->New directional light created with direction " << x << " " << y << " " << z << std::endl;
+		std::cout << "LIGHTMANAGER->New directional light created with direction " << direction.x << " " << direction.y << " " << direction.z << std::endl;
 	}
 }
 
@@ -123,16 +123,16 @@ void LightManager::setPointLight(float x, float y, float z, int index)
 /// <param name="x"></param>
 /// <param name="y"></param>
 /// <param name="z"></param>
-void LightManager::addPointLight(float x, float y, float z, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
+void LightManager::addPointLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position)
 {
 	//Ensure new point lights don't exceed the maximum amount allowed
 	if (m_currentPointLights < m_maxPointLights)
 	{
-		PointLight* point = new PointLight(x, y, z, ambient, diffuse, specular);
+		PointLight* point = new PointLight(ambient, diffuse, specular, position);
 		m_scenePointLights.push_back(point);
 		m_currentPointLights++;
 		
-		std::cout << "LIGHTMANAGER->New point light created at " << x << " " << y << " " << z << std::endl;
+		std::cout << "LIGHTMANAGER->New point light created at " << position.x << " " << position.y << " " << position.z << std::endl;
 	}
 }
 
@@ -188,16 +188,16 @@ void LightManager::setSpotLight(float x, float y, float z, int index)
 /// <param name="x"></param>
 /// <param name="y"></param>
 /// <param name="z"></param>
-void LightManager::addSpotLight(float x, float y, float z, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
+void LightManager::addSpotLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position)
 {
 	//Ensure new point lights don't exceed the maximum amount allowed
 	if (m_currentSpotLights < m_maxSpotLights)
 	{
-		SpotLight* spot = new SpotLight(x, y, z, ambient, diffuse, specular);
+		SpotLight* spot = new SpotLight(ambient, diffuse, specular, position);
 		m_sceneSpotLights.push_back(spot);
 		m_currentSpotLights++;
 
-		std::cout << "LIGHTMANAGER->New spot light created at " << x << " " << y << " " << z << std::endl;
+		std::cout << "LIGHTMANAGER->New spot light created at " << position.x << " " << position.y << " " << position.z << std::endl;
 	}
 }
 

@@ -13,3 +13,7 @@ modelLighting	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff	
 modelLighting	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				grass_spec				null					0.0						null					0.0					null
 modelLighting	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				grass_spec				null					0.0						null					0.0					null
 
+#directionalLight		1.0		1.0		1.0		1.0		1.0		1.0		1.0		1.0		1.0		0.0		0.0		0.0
+#spotLight				1.0		1.0		1.0		1.0		1.0		1.0		1.0		1.0		1.0		0.0		0.0		0.0
+pointLight				1.0		1.0		1.0		1.0		1.0		1.0		1.0		1.0		1.0		-3.0		0.0		0.0
+

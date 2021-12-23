@@ -6,7 +6,8 @@
 //Base class for all 3 lights - provides utility functions they all can use
 struct Light
 {
-	Light(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
+	Light(glm::vec3 ambient = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 diffuse = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f))
+		:Ambient(ambient), Diffuse(diffuse), Specular(specular)
 	{
 		Ambient = ambient;
 		Diffuse = diffuse;
@@ -26,18 +27,15 @@ struct Light
 struct PointLight
 	:public Light
 {
-	PointLight(float x = 0.0f, float y = 0.0f, float z = 0.0f, glm::vec3 ambient = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 diffuse = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f))
-		:Light(ambient, diffuse, specular)
+	PointLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f))
+		:Light(ambient, diffuse, specular), Position(position)
 	{
-		Position.x = x;
-		Position.y = y;
-		Position.z = z;
-
 		lightActive = true;
 	}
 
 	glm::vec3	Position;
 
+	// Point light attenuation
 	float		Constant = 1.0f;
 	float		Linear = 0.07f;
 	float		Quadratic = 0.017f;
@@ -46,13 +44,9 @@ struct PointLight
 struct DirectionalLight
 	:public Light
 {
-	DirectionalLight(float x = 0.0f, float y = 0.0f, float z = 0.0f, glm::vec3 ambient = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 diffuse = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f))
-		:Light(ambient, diffuse, specular)
+	DirectionalLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction = glm::vec3(0.0f, 0.0f, 0.0f))
+		:Light(ambient, diffuse, specular), Direction(direction)
 	{
-		Direction.x = x;
-		Direction.y = y;
-		Direction.z = z;
-
 		lightActive = true;
 	}
 
@@ -62,12 +56,9 @@ struct DirectionalLight
 struct SpotLight
 	:public Light
 {
-	SpotLight(float x = 0.0f, float y = 0.0f, float z = 0.0f, glm::vec3 ambient = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 diffuse = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f))
-		:Light(ambient, diffuse, specular)
+	SpotLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f))
+		:Light(ambient, diffuse, specular), Position(position)
 	{
-		Position.x = x;
-		Position.y = y;
-		Position.z = z;
 		Direction.x = 0.0f;
 		Direction.y = 0.0f;
 		Direction.z = 0.0f;
@@ -77,9 +68,12 @@ struct SpotLight
 
 	glm::vec3	Position;
 	glm::vec3	Direction;
+
+	// Spot light spot edge
 	float		cutOff = 4.5f;
 	float		outerCutOff = 25.5f;
 
+	// Spot light attenuation
 	float		Constant = 1.0f;
 	float		Linear = 0.09f;
 	float		Quadratic = 0.032f;
@@ -94,21 +88,21 @@ public:
 
 	//Directional Lights
 	void							setDirectionalLight(float x, float y, float z, int index = 0);
-	void							addDirectionalLight(float x, float y, float z, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
+	void							addDirectionalLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction);
 	DirectionalLight*				getDirectionalLight(int index = 0) const;
 
 	int								getCurrentDirectionalLights() const;
 
 	//Point Lights
 	void							setPointLight(float x, float y, float z, int index = 0);
-	void							addPointLight(float x, float y, float z, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
+	void							addPointLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position);
 	PointLight*						getPointLight(int index = 0) const;
 
 	int								getCurrentPointLights() const;
 
 	//Spot Lights
 	void							setSpotLight(float x, float y, float z, int index = 0);
-	void							addSpotLight(float x, float y, float z, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
+	void							addSpotLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position);
 	SpotLight*						getSpotLight(int index = 0) const;
 
 	int								getCurrentSpotLights() const;

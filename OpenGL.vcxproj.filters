@@ -221,5 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\scenes\FMPscene.txt" />
+    <Text Include="res\scenes\jamieTest.txt" />
   </ItemGroup>
 </Project>

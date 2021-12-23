@@ -27,9 +27,9 @@ Application::~Application()
 
 	glDeleteVertexArrays(1, &m_appVAO);
 
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
+	//ImGui_ImplOpenGL3_Shutdown();
+	//ImGui_ImplGlfw_Shutdown();
+	//ImGui::DestroyContext();
 
 	EngineStatics::setAppWindow(nullptr);
 	glfwDestroyWindow(m_appWindow);
@@ -93,16 +93,16 @@ int Application::appInit()
 	*/
 
 
-	IMGUI_CHECKVERSION(); // Check the version
-
-	ImGui::CreateContext();	// Creating the imgui context
-	ImGuiIO& io = ImGui::GetIO();
-	(void)io;
-
-	ImGui_ImplGlfw_InitForOpenGL(m_appWindow, true); // Connect imgui to glfw window
-	ImGui_ImplOpenGL3_Init("#version 430");
-
-	ImGui::StyleColorsDark(); 
+	//IMGUI_CHECKVERSION(); // Check the version
+	//
+	//ImGui::CreateContext();	// Creating the imgui context
+	//ImGuiIO& io = ImGui::GetIO();
+	//(void)io;
+	//
+	//ImGui_ImplGlfw_InitForOpenGL(m_appWindow, true); // Connect imgui to glfw window
+	//ImGui_ImplOpenGL3_Init("#version 430");
+	//
+	//ImGui::StyleColorsDark(); 
 
 
 
@@ -159,9 +159,9 @@ void Application::appLoop()
 	while (!glfwWindowShouldClose(m_appWindow))
 	{
 		// imgui
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		//ImGui_ImplOpenGL3_NewFrame();
+		//ImGui_ImplGlfw_NewFrame();
+		//ImGui::NewFrame();
 
 		//Delta time
 		currentFrame = glfwGetTime();
@@ -187,12 +187,12 @@ void Application::appLoop()
 
 		m_demoScene->updateScene();
 
-		ImGui::Begin("Hello from begin");
-		ImGui::Text("Hello from text");
-		ImGui::End();
+		//ImGui::Begin("Hello from begin");
+		//ImGui::Text("Hello from text");
+		//ImGui::End();
 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		//ImGui::Render();
+		//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(m_appWindow);
 

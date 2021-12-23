@@ -260,6 +260,7 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)\res /S</Command>
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\scenes\FMPscene.txt" />
+    <Text Include="res\scenes\jamieTest.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
