@@ -26,6 +26,8 @@ public:
 
 private:
 
+	bool		changeScene(const std::string newSceneName);
+
 	//Window
 	const int	m_defaultWindowWidth;
 	const int	m_defaultWindowHeight;
@@ -43,7 +45,7 @@ private:
 
 	//Objects
 
-	Scene*		m_demoScene;
+	Scene*		m_loadedScene;
 
 	Input*		m_input;
 

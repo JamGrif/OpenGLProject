@@ -6,10 +6,10 @@ directionalLight	0.2		0.2		0.2		0.4		0.4		0.4		0.3		0.3		0.3		-2.0	-3.0	-1.0
 
 #pointLight objects...
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
-#pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		0.0		3.0		0.0
-#pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-20.0	2.0		0.0
-#pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		22.0	2.0		22.0
-#pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-20.0	2.0		20.0
+pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		0.0		3.0		0.0
+pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-20.0	2.0		0.0
+pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		22.0	2.0		22.0
+pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-20.0	2.0		20.0
 
 #spotLight objects...
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
@@ -76,18 +76,18 @@ modelLighting	12.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff	
 modelLighting	24.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
 modelLighting	18.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
 modelLighting	12.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
-modelLighting	24.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	24.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				shed_norm				0.0						null					0.0					null
 
 #Shed
 modelLighting	-38.0	1.0		0.0		0.0		210.0	0.0		1.0			1.0			1.0			shed		shed_diff				shed_spec				shed_norm				0.0						null					0.0					null
 modelLighting	38.0	1.0		10.0	0.0		-210.0	0.0		1.0			1.0			1.0			shed		shed_diff				shed_spec				shed_norm				0.0						null					0.0					null
 modelLighting	13.0	14.0	-67.0	0.0		-210.0	0.0		1.0			1.0			1.0			shed		shed_diff				shed_spec				shed_norm				0.0						null					0.0					null
 
-#Cottage
+##Cottage
 modelLighting	-23.0	0.0		-20.0	0.0		130.0	0.0		1.0			1.0			1.0			cottage		cottage_diff			cottage_spec			cottage_norm			0.0						null					0.0					null
 modelLighting	20.0	1.0		37.0	0.0		45.0	0.0		1.0			1.0			1.0			cottage		cottage_diff			cottage_spec			cottage_norm			0.0						null					0.0					null
 
-#Carpet
+##Carpet
 modelLighting	0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null						
 modelLighting	6.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null
 modelLighting	-6.0	0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null
@@ -98,13 +98,13 @@ modelLighting	0.0		0.0		-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff
 modelLighting	6.0		0.0		-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null						
 modelLighting	-6.0	0.0		-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null						
 
-#Crates
+##Crates
 modelLighting	7.75	0.0		7.75	0.0		0.0		0.0		1.0			1.0			1.0			crate		crate_diff				crate_spec				crate_norm				0.0						null					0.0					null					
 modelLighting	5.75	0.0		7.75	0.0		0.0		0.0		1.0			1.0			1.0			crate		crate_diff				crate_spec				crate_norm				0.0						null					0.0					null					
 modelLighting	7.25	0.0		5.1		0.0		30.0	0.0		1.0			1.0			1.0			crate		crate_diff				crate_spec				crate_norm				0.0						null					0.0					null					
 modelLighting	7.5		2.0		7.5		0.0		60.0	0.0		1.0			1.0			1.0			crate		crate_diff				crate_spec				crate_norm				0.0						null					0.0					null					
 
-#House wall
+##House wall
 modelLighting	-9.0	2.8		-6.0	90.0	0.0		-90.0	1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null
 modelLighting	-9.0	2.8		0.0		90.0	0.0		-90.0	1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null
 modelLighting	-9.0	2.8		6.0		90.0	0.0		-90.0	1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null
@@ -191,7 +191,7 @@ modelLighting	-7.5	-1.0	0.0		0.0		90.0	0.0		1.0			1.0			1.0			table		table_diff	
 modelLighting	-7.5	1.9		0.0		0.0		50.0	0.0		1.5			1.5			1.5			knife		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
 
 #Normal vs no normal showcase
-modelLighting	25.0	1.0		6.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		leather_diff			leather_spec					leather_norm			0.0						null					0.0					null											
+modelLighting	25.0	1.0		6.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		leather_diff			leather_spec			leather_norm			0.0						null					0.0					null											
 modelLighting	25.0	1.0		12.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		leather_diff			leather_spec			null					0.0						null					0.0					null											
 modelLighting	25.0	1.0		18.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteExample_diff	concreteExample_spec	concreteExample_norm	0.0						null					0.0					null											
 modelLighting	25.0	1.0		24.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteExample_diff	concreteExample_spec	null					0.0						null					0.0					null											
@@ -225,9 +225,9 @@ modelLighting	0.0		1.0		-8.0	0.0		0.0		0.0		0.75		0.75		0.75		signpost	sign_diff
 
 #modelBasic objects...
 #objectType	    #PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh	#LightToCopy
-#modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
-#modelBasic		4.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	1
-#modelBasic		6.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	2
+modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
+modelBasic		4.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	1
+modelBasic		6.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	2
 modelBasic		8.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	3
 
 #modelTerrain objects...

@@ -222,14 +222,14 @@ void ModelLighting::drawPassTwo()
 		Bind VBOs and vertex attributes
 	*/
 
-	if (m_modelNormalTexture != nullptr)
-	{
-		setVBOAttrib(true, true, true, true, true); 
-	}
-	else
-	{
-		setVBOAttrib(true, true, true, false, false); //No use for tangents / bitangents if no normal map
-	}
+	setVBOAttrib(true, true, true, true, true); 
+	//if (m_modelNormalTexture != nullptr)
+	//{
+	//}
+	//else
+	//{
+	//	setVBOAttrib(true, true, true, false, false); //No use for tangents / bitangents if no normal map
+	//}
 	
 	//Draw
 	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);

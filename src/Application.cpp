@@ -8,7 +8,7 @@
 
 Application::Application()
 	:m_defaultWindowWidth(1280), m_defaultWindowHeight(720), m_currentWindowWidth(0), m_currentWindowHeight(0), m_aspectRatio(0.0),
-	m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_demoScene(nullptr), m_input(nullptr),
+	m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_loadedScene(nullptr), m_input(nullptr),
 	m_deltaTime(0.0f), m_lastFrame(0.0f)
 
 {
@@ -19,8 +19,8 @@ Application::~Application()
 {
 	EngineStatics::setProjectionMatrix(nullptr);
 
-	delete m_demoScene;
-	m_demoScene = nullptr;
+	delete m_loadedScene;
+	m_loadedScene = nullptr;
 
 	delete m_input;
 	m_input = nullptr;
@@ -43,12 +43,12 @@ Application::~Application()
 }
 
 /// <summary>
-/// Initalizes OpenGL libraries, creates the window, enables rendering options and creates class objects
+/// Initializes OpenGL libraries, creates the window, enables rendering options and creates class objects
 /// </summary>
 /// <returns>Returns success or failure of initialization</returns>
 int Application::appInit()
 {
-	//Initalize GLFW
+	//Initialize GLFW
 
 	if (!glfwInit())
 	{
@@ -64,7 +64,7 @@ int Application::appInit()
 
 	//Set Icon
 	GLFWimage images[1];
-	images[0].pixels = stbi_load("res/icon/Icon.jpg", &images[0].width, &images[0].height, 0, 4); //rgba channels 
+	images[0].pixels = stbi_load("res/icon/Icon.jpg", &images[0].width, &images[0].height, 0, 4); // RGBA channels 
 	glfwSetWindowIcon(m_appWindow, 1, images);
 	stbi_image_free(images[0].pixels);
 
@@ -131,18 +131,7 @@ int Application::appInit()
 	//Create Input object
 	m_input = new Input();
 
-	
-
-
-
-	//Create first scene
-	m_demoScene = new Scene("res/scenes/FMPscene.txt");
-	if (!m_demoScene->initScene())
-	{
-		return 1;
-	}
-
-
+	changeScene("res/scenes/jamieTest.txt");
 
 	return 0;
 }
@@ -162,6 +151,15 @@ void Application::appLoop()
 		//ImGui_ImplOpenGL3_NewFrame();
 		//ImGui_ImplGlfw_NewFrame();
 		//ImGui::NewFrame();
+
+		if (Input::getKeyPressedOnce(GLFW_KEY_1))
+		{
+			changeScene("res/scenes/FMPscene.txt");
+		}
+		if (Input::getKeyPressedOnce(GLFW_KEY_2))
+		{
+			changeScene("res/scenes/jamieTest.txt");
+		}
 
 		//Delta time
 		currentFrame = glfwGetTime();
@@ -185,7 +183,7 @@ void Application::appLoop()
 		glClear(GL_DEPTH_BUFFER_BIT); //Clears the screen buffers
 		glfwPollEvents();
 
-		m_demoScene->updateScene();
+		m_loadedScene->updateScene();
 
 		//ImGui::Begin("Hello from begin");
 		//ImGui::Text("Hello from text");
@@ -200,7 +198,7 @@ void Application::appLoop()
 }
 
 /// <summary>
-/// Function is called everytime the window is resized
+/// Function is called every time the window is resized
 /// </summary>
 /// <param name="window">The resized window</param>
 /// <param name="newWidth">New width of the window after resizing</param>
@@ -208,4 +206,35 @@ void Application::appLoop()
 void Application::windowResizeCALLBACK(GLFWwindow* window, int newWidth, int newHeight)
 {
 
+}
+
+bool Application::changeScene(const std::string newSceneName)
+{
+
+	if (m_loadedScene != nullptr)
+	{
+		if (newSceneName == m_loadedScene->getSceneName())
+		{
+			// Scene is already loaded
+			std::cout << "scene is already loaded" << std::endl;
+			return false;
+		}
+		// A scene is already loaded, so delete it
+		delete m_loadedScene;
+		m_loadedScene = nullptr;
+	}
+
+
+	m_loadedScene = new Scene(newSceneName);
+
+	if (m_loadedScene->loadScene())
+	{
+		// Scene successfully loaded
+		std::cout << "loaded scene loaded good" << std::endl;
+		return true;
+	}
+
+	// Scene failed to load
+	std::cout << "scene failed to load" << std::endl;
+	return false;
 }
