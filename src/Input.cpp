@@ -44,6 +44,7 @@ void Input::keyCALLBACK(GLFWwindow* window, int key, int scancode, int action, i
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, GL_TRUE);
+        return;
     }
     if (key >= 0 && key < 1024)
     {

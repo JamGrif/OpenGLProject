@@ -9,17 +9,18 @@
 
 #include <glm\gtc\matrix_transform.hpp>
 
+#include "OpenGLWindow.h"
 #include "Input.h"
 #include "Scene.h"
 
-//Abstracts the program out of main, encapsulating the entire program
+// Abstracts the program out of main, encapsulating the entire program
 class Application
 {
 public:
 	Application();
 	~Application();
 
-	int			appInit();
+	bool		appInit();
 	void		appLoop();
 
 	static void windowResizeCALLBACK(GLFWwindow* window, int newWidth, int newHeight);
@@ -30,16 +31,7 @@ private:
 
 	void		calculateDeltaTime();
 
-	//Window
-	const int	m_defaultWindowWidth;
-	const int	m_defaultWindowHeight;
-	int			m_currentWindowWidth;
-	int			m_currentWindowHeight;
-
-	float		m_aspectRatio;
-
-	// OpenGL
-	GLFWwindow* m_appWindow;
+	OpenGLWindow* m_appWindow;
 
 	glm::mat4	m_projMatrix;
 
@@ -47,13 +39,13 @@ private:
 
 	// Objects
 
+	Input*		m_input;
+	
 	Scene*		m_loadedScene;
 
-	Input*		m_input;
-
 	// Delta time
-	GLfloat		m_deltaTime;
-	GLfloat		m_lastFrame;
+	double		m_deltaTime;
+	double		m_lastFrame;
 
 	double		m_previousTime;
 	int			m_frameCount;

@@ -14,7 +14,5 @@ glm::mat4* EngineStatics::m_lightSpaceMatrix	= nullptr;
 
 LightManager* EngineStatics::m_lightManager		= nullptr;
 
-unsigned int* EngineStatics::m_depthMap			= 0;
-
-GLfloat EngineStatics::m_deltaTime				= 0;
+double EngineStatics::m_deltaTime				= 0;
 

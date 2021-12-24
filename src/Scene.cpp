@@ -82,8 +82,6 @@ bool Scene::loadScene()
 	delete txtReader;
 	txtReader = nullptr;
 	
-
-	
 	return true;
 }
 

@@ -191,6 +191,7 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\ModelTerrain.cpp" />
+    <ClCompile Include="src\OpenGLWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
@@ -214,6 +215,7 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\ModelTerrain.h" />
+    <ClInclude Include="src\OpenGLWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\icon\Icon.ico" />

@@ -29,11 +29,8 @@ public:
 	static LightManager*	getLightManager() { return m_lightManager; }
 	static void				setLightManager(LightManager* lm) { m_lightManager = lm; }
 
-	static unsigned int*	getDepthMap() { return m_depthMap; }
-	static void				setDepthMap(unsigned int* dm) { m_depthMap = dm; }
-
 	static GLfloat			getDeltaTime() { return m_deltaTime; }
-	static void				setDeltaTime(float dt) { m_deltaTime = dt; }
+	static void				setDeltaTime(double dt) { m_deltaTime = dt; }
 
 
 private:
@@ -52,9 +49,7 @@ private:
 
 	static LightManager*	m_lightManager;
 
-	static unsigned int*	m_depthMap;
-
-	static GLfloat			m_deltaTime;
+	static double			m_deltaTime;
 
 };
 

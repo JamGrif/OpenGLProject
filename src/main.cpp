@@ -5,7 +5,7 @@ int main()
 	
 	Application* app = new Application();
 
-	if (app->appInit() == 0)
+	if (app->appInit())
 	{
 		app->appLoop();
 	}

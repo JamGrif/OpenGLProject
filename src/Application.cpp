@@ -7,12 +7,9 @@
 #include "EngineStatics.h"
 
 Application::Application()
-	:m_defaultWindowWidth(1280), m_defaultWindowHeight(720), m_currentWindowWidth(0), m_currentWindowHeight(0), m_aspectRatio(0.0),
-	m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_loadedScene(nullptr), m_input(nullptr),
+	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_loadedScene(nullptr), m_input(nullptr),
 	m_deltaTime(0.0f), m_lastFrame(0.0f), m_previousTime(0.0), m_frameCount(0), m_currentFrame(0.0)
-
 {
-	std::cout << "Application Initialized" << std::endl;
 }
 
 Application::~Application()
@@ -25,73 +22,87 @@ Application::~Application()
 	delete m_input;
 	m_input = nullptr;
 
-	glDeleteVertexArrays(1, &m_appVAO);
+	if (m_appVAO != 0)
+	{
+		glDeleteVertexArrays(1, &m_appVAO);
+	}
+	
 
 	//ImGui_ImplOpenGL3_Shutdown();
 	//ImGui_ImplGlfw_Shutdown();
 	//ImGui::DestroyContext();
 
-	EngineStatics::setAppWindow(nullptr);
-	glfwDestroyWindow(m_appWindow);
+	delete m_appWindow;
+	m_appWindow = nullptr;
+
 	glfwTerminate();
 
-	
-
-	std::cout << "Application Destroyed" << std::endl;
-
-	
+	//std::cout << "Application Destroyed" << std::endl;
 }
 
 /// <summary>
 /// Initializes OpenGL libraries, creates the window, enables rendering options and creates class objects
 /// </summary>
 /// <returns>Returns success or failure of initialization</returns>
-int Application::appInit()
+bool Application::appInit()
 {
-	// Initialize GLFW
+	/*
+		Initialize GLFW
+	*/
 
 	if (!glfwInit())
 	{
-		exit(EXIT_FAILURE);
+		std::cout << "GLFW failed to initialize" << std::endl;
+		return false;
 	}
-	
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	glfwWindowHint(GLFW_SAMPLES, 4);
-	m_appWindow = glfwCreateWindow(m_defaultWindowWidth, m_defaultWindowHeight, "OpenGL - Jamie", NULL, NULL);
 
-	// Set Icon
-	GLFWimage images[1];
-	images[0].pixels = stbi_load("res/icon/Icon.jpg", &images[0].width, &images[0].height, 0, 4); // RGBA channels 
-	glfwSetWindowIcon(m_appWindow, 1, images);
-	stbi_image_free(images[0].pixels);
+	/*
+		Initialize Window
+	*/
 
-	glfwMakeContextCurrent(m_appWindow);
-	EngineStatics::setAppWindow(m_appWindow);
-	EngineStatics::setScreenWidth(m_defaultWindowWidth);
-	EngineStatics::setScreenHeight(m_defaultWindowHeight);
+	m_appWindow = new OpenGLWindow(1280, 720, "OpenGL - Jamie");
+	if (!m_appWindow->getWindowStatus())
+	{
+		std::cout << "Window failed to initialize" << std::endl;
+		return false;
+	}
 
-	std::cout << glGetString(GL_VENDOR) << std::endl;
-	std::cout << glGetString(GL_RENDERER) << std::endl;
-	std::cout << glGetString(GL_VERSION) << std::endl << std::endl;
-
-	// Initialize GLEW
+	/*
+		Initialize GLEW
+	*/
 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
-		exit(EXIT_FAILURE);
+		std::cout << "GLFW failed to initialize" << std::endl;
+		return false;
 	}
 
-	glfwSwapInterval(1);
-	glClearColor(0.0, 0.0, 0.0, 1.0); //Sets clear colour
+	std::cout << "Vendor is " << glGetString(GL_VENDOR) << std::endl;
+	std::cout << "Renderer is " << glGetString(GL_RENDERER) << std::endl;
+	std::cout << "Version is " << glGetString(GL_VERSION) << std::endl << std::endl;
+	//std::cout << "Application Initialized" << std::endl;
+
+	/*
+		Set OpenGL Context Settings
+	*/
+
+	// Depth Buffer
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+
+	// Backface Culling
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
+	glCullFace(GL_BACK);
+
+	// Multisampling
+	glEnable(GL_MULTISAMPLE);
+
 
 	/*
 		IMGUI
 	*/
-
 
 	//IMGUI_CHECKVERSION(); // Check the version
 	//
@@ -104,36 +115,30 @@ int Application::appInit()
 	//
 	//ImGui::StyleColorsDark(); 
 
-
-
-	// Build projection matrix
-	glfwGetFramebufferSize(m_appWindow, &m_currentWindowWidth, &m_currentWindowHeight);
-	glViewport(0, 0, m_currentWindowWidth, m_currentWindowHeight);
-	m_aspectRatio = (float)m_currentWindowWidth / (float)m_currentWindowHeight;
-	m_projMatrix = glm::perspective(1.0472f, m_aspectRatio, 0.01f, 1000.0f); //1.0472 = 60 degrees
+	// Build applications projection matrix
+	constexpr float SixtyDegrees = 1.0472f; //1.0472 = 60 degrees
+	m_projMatrix = glm::perspective(SixtyDegrees, m_appWindow->getAspectRatio(), 0.01f, 1000.0f); 
 	EngineStatics::setProjectionMatrix(&m_projMatrix);
 
-	// VAO
+	// Build applications VAO
 	glGenVertexArrays(1, &m_appVAO);
 	glBindVertexArray(m_appVAO);
 
-	// Depth Buffer
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
+	/*
+		Create applications objects
+	*/
 
-	// Backface Culling
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CCW);
-	glCullFace(GL_BACK);
-
-	glEnable(GL_MULTISAMPLE);
-
-	//Create Input object
+	// Create Input object
 	m_input = new Input();
 
+	// Create UI object
+	// ----------------
+	
+	// Create scene object
 	changeScene("res/scenes/materialTest.txt");
 
-	return 0;
+	
+	return true;
 }
 
 /// <summary>
@@ -145,7 +150,7 @@ void Application::appLoop()
 	m_frameCount = 0;
 	m_currentFrame = 0;
 
-	while (!glfwWindowShouldClose(m_appWindow))
+	while (!glfwWindowShouldClose(m_appWindow->getWindow()))
 	{
 		// imgui
 		//ImGui_ImplOpenGL3_NewFrame();
@@ -179,7 +184,7 @@ void Application::appLoop()
 		//ImGui::Render();
 		//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		glfwSwapBuffers(m_appWindow);
+		glfwSwapBuffers(m_appWindow->getWindow());
 
 	}
 }
@@ -192,7 +197,7 @@ void Application::appLoop()
 /// <param name="newHeight">New height of the window after resizing</param>
 void Application::windowResizeCALLBACK(GLFWwindow* window, int newWidth, int newHeight)
 {
-
+	std::cout << "called windowResizeCALLBACK function" << std::endl;
 }
 
 bool Application::changeScene(const std::string newSceneName)
@@ -223,7 +228,7 @@ bool Application::changeScene(const std::string newSceneName)
 
 void Application::calculateDeltaTime()
 {
-	//Delta time
+	// Delta time
 	m_currentFrame = glfwGetTime();
 	m_deltaTime = m_currentFrame - m_lastFrame;
 	m_lastFrame = m_currentFrame;
@@ -234,7 +239,7 @@ void Application::calculateDeltaTime()
 	if (m_currentFrame - m_previousTime >= 1.0)
 	{
 		// Display the frame count here any way you want.
-		glfwSetWindowTitle(m_appWindow, std::to_string(m_frameCount).c_str());
+		m_appWindow->setWindowTitle(std::to_string(m_frameCount));
 
 		m_frameCount = 0;
 		m_previousTime = m_currentFrame;
