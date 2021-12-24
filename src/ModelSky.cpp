@@ -36,13 +36,18 @@ void ModelSky::drawPassOne()
 /// </summary>
 void ModelSky::drawPassTwo()
 {
-	//If no valid model or shader attached
+	// If no valid model or shader attached
 	if (m_modelShaderPassTwo == nullptr)
 	{
 		return;
 	}
 
+	// Bind shader
 	m_modelShaderPassTwo->Bind();
+
+	/*
+		Bind Vertex values
+	*/
 
 	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", glm::mat4(glm::mat3(EngineStatics::getCamera()->getViewMatrix())));
 	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *EngineStatics::getProjectionMatrix());
@@ -50,17 +55,30 @@ void ModelSky::drawPassTwo()
 
 	m_skyTexture->Bind();
 
+	/*
+		Bind VBOs and vertex attributes	
+	*/
+
 	glBindBuffer(GL_ARRAY_BUFFER, m_skyboxVBO);
 
-	//Position
+	// Position
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-	//Draw - disables writing to the depth buffer
+	/*
+		Draw
+	*/
+
+	// Disables writing to the depth buffer
 	glDepthFunc(GL_LEQUAL);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glDepthFunc(GL_LESS);
 
+	/*
+		Post-draw cleanup
+	*/
+
 	m_modelShaderPassTwo->Unbind();
 	m_skyTexture->Unbind();
+
 }

@@ -43,7 +43,7 @@ ModelLighting::~ModelLighting()
 /// </summary>
 void ModelLighting::drawPassOne()
 {
-	//If no valid model or shader attached
+	// If no valid model or shader attached
 	if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
 	{
 		return;
@@ -55,7 +55,7 @@ void ModelLighting::drawPassOne()
 
 	setVBOAttrib(true, false, false, false, false);
 
-	//Draw
+	// Draw
 	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
 
 	m_modelShaderPassOne->Unbind();
@@ -67,16 +67,19 @@ void ModelLighting::drawPassOne()
 /// </summary>
 void ModelLighting::drawPassTwo()
 {
-	//If no valid model or shader attached
+	// If no valid model or shader attached
 	if (m_modelMesh == nullptr || m_modelShaderPassTwo == nullptr)
 	{
 		return;
 	}
 
-	//Bind shader
+	// Bind shader
 	m_modelShaderPassTwo->Bind();
 
-	//Set Vertex values
+	/*
+		Set Vertex values
+	*/
+
 	m_modelShaderPassTwo->setUniformMatrix4fv("m_matrix", m_mMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", m_vMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *EngineStatics::getProjectionMatrix());
@@ -85,8 +88,7 @@ void ModelLighting::drawPassTwo()
 		Set Fragment values
 	*/
 
-	
-	//Ensure a directional light exists
+	// Ensure a directional light exists
 	if (m_localLightManager->getCurrentDirectionalLights() > 0)
 	{
 		m_modelShaderPassTwo->setUniform3f("dLight.ambient", m_localLightManager->getDirectionalLight(0)->Ambient);
@@ -96,7 +98,7 @@ void ModelLighting::drawPassTwo()
 		m_modelShaderPassTwo->setUniform1i("dLight.lightActive", m_localLightManager->getDirectionalLight(0)->lightActive);
 	}
 
-	//Ensure a point light exists
+	// Ensure a point light exists
 	if (m_localLightManager->getCurrentPointLights() > 0)
 	{
 		//Point lights - (I know a better way of this can be done, but when I tried doing it in a for loop by converting and combining the index to a string I encountered performance issues when launching project)
@@ -149,7 +151,7 @@ void ModelLighting::drawPassTwo()
 		}
 	}
 
-	//Ensure a spot light exists
+	// Ensure a spot light exists
 	if (m_localLightManager->getCurrentSpotLights() > 0)
 	{
 		m_modelShaderPassTwo->setUniform3f("sLight.ambient", m_localLightManager->getSpotLight(0)->Ambient);
@@ -165,16 +167,12 @@ void ModelLighting::drawPassTwo()
 		m_modelShaderPassTwo->setUniform1i("sLight.lightActive", m_localLightManager->getSpotLight(0)->lightActive);
 	}
 
-
-	//Material properties
-
-
+	// Material properties
 	m_modelShaderPassTwo->setUniform1i("material.diffuse", 0);
 	m_modelShaderPassTwo->setUniform1i("material.specular", 1);
 	m_modelShaderPassTwo->setUniform1i("material.emission", 2);
 	m_modelShaderPassTwo->setUniform1i("material.normal", 3);
 	m_modelShaderPassTwo->setUniform1i("material.height", 4);
-	//m_modelShaderPassTwo->setUniform1i("material.depthMap", 5); //depthMap contains shows depth information of scene for shadowing
 	m_modelShaderPassTwo->setUniform1f("material.shininess", m_shininess);
 
 	m_modelShaderPassTwo->setUniform1i("material.normalizeTex", m_normalizeTexture);
@@ -183,12 +181,13 @@ void ModelLighting::drawPassTwo()
 	m_modelShaderPassTwo->setUniform1i("material.usingHeight", m_usingHeight);
 	m_modelShaderPassTwo->setUniform1f("material.heightAmount", m_heightAmount);
 
-	//Camera Position
+	// Camera Position
 	m_modelShaderPassTwo->setUniform3f("viewPos", EngineStatics::getCamera()->getPosition());
-	//m_modelShaderPassTwo->setUniformMatrix4fv("lightSpaceMatrix", *EngineStatics::getLightSpaceMatrix()); //Used for shadowing and is used to find the location of the light in fragment shader
+	
+	/*
+		Bind textures to pipeline
+	*/
 
-
-	//Bind textures to pipeline
 	if (m_modelDiffuseTexture != nullptr)
 	{
 		m_modelDiffuseTexture->Bind(0);
@@ -214,10 +213,6 @@ void ModelLighting::drawPassTwo()
 		m_modelHeightTexture->Bind(4);
 	}
 
-	//Unused depthmap which gets sent to shader
-	//glActiveTexture(GL_TEXTURE0+5);
-	//glBindTexture(GL_TEXTURE_2D, *EngineStatics::getDepthMap());
-
 	/*
 		Bind VBOs and vertex attributes
 	*/
@@ -231,8 +226,15 @@ void ModelLighting::drawPassTwo()
 	//	setVBOAttrib(true, true, true, false, false); //No use for tangents / bitangents if no normal map
 	//}
 	
-	//Draw
+	/*
+		Draw
+	*/
+
 	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
+
+	/*
+		Post-draw cleanup
+	*/
 
 	if (m_modelDiffuseTexture != nullptr)
 	{
@@ -260,10 +262,6 @@ void ModelLighting::drawPassTwo()
 	}
 	
 	m_modelShaderPassTwo->Unbind();
-
-
-	//glActiveTexture(GL_TEXTURE5);
-	//glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
@@ -318,6 +316,10 @@ void ModelLighting::setHeightTexture(const std::string& texturePath, float heigh
 	m_heightAmount = heightAmount;
 }
 
+/// <summary>
+/// Sets the specular maps shininess in the fragment shader
+/// </summary>
+/// <param name="value"></param>
 void ModelLighting::setSpecularShiniess(float value)
 {
 	m_shininess = value;

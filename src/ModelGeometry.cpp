@@ -29,10 +29,11 @@ void ModelGeometry::drawPassTwo()
 		return;
 	}
 
-	//Bind shader
+	// Bind shader
 	m_modelShaderPassTwo->Bind();
 	m_GeometryTexture->Bind();
 
+	// Determine change of mesh inflation
 	if (m_increasing)
 	{
 		m_inflation += 0.025f * EngineStatics::getDeltaTime();
@@ -52,17 +53,31 @@ void ModelGeometry::drawPassTwo()
 		}
 	}
 		
-	//Set Vertex values
+	/*
+		Set Vertex values
+	*/
+
 	m_modelShaderPassTwo->setUniformMatrix4fv("m_matrix", m_mMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", m_vMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *EngineStatics::getProjectionMatrix());
 	m_modelShaderPassTwo->setUniform1f("inflation", m_inflation);
 	m_modelShaderPassTwo->setUniform1i("texture_color", 0);
 
+	/*
+		Bind VBOs and vertex attributes
+	*/
+
 	setVBOAttrib(true, true, true, false, false);
 
-	//Draw
+	/*
+		Draw
+	*/
+
 	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
+
+	/*
+		Post-draw cleanup
+	*/
 
 	m_modelShaderPassTwo->Unbind();
 	m_GeometryTexture->Unbind();

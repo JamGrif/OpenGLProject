@@ -33,28 +33,42 @@ void ModelSprite::drawPassOne()
 /// </summary>
 void ModelSprite::drawPassTwo()
 {
-	//If no valid model or shader attached
+	// If no valid model or shader attached
 	if (m_modelMesh == nullptr || m_modelShaderPassTwo == nullptr)
 	{
 		return;
 	}
 
+	// Bind shader
 	m_modelShaderPassTwo->Bind();
 
-	//Set Vertex values
+	/*
+		Set Vertex values
+	*/
 	m_modelShaderPassTwo->setUniformMatrix4fv("m_matrix", m_mMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", m_vMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *EngineStatics::getProjectionMatrix());
-
 	m_modelShaderPassTwo->setUniform1i("sprite", 0);
+
 	m_modelSprite->Bind(0);
+
+	/*
+		Bind VBOs and vertex attributes
+	*/
 
 	setVBOAttrib(true, false, true, false, false);
 
+	/*
+		Draw
+	*/
+
 	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
 
-	m_modelSprite->Unbind();
+	/*
+		Post-draw cleanup
+	*/
 
+	m_modelSprite->Unbind();
 
 }
 

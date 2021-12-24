@@ -27,13 +27,18 @@ void ModelTerrain::drawPassOne()
 /// </summary>
 void ModelTerrain::drawPassTwo()
 {
-	//If no shader attached
+	// If no shader attached
 	if (m_modelShaderPassTwo == nullptr)
 	{
 		return;
 	}
 
+	// Bind shaders
 	m_modelShaderPassTwo->Bind(); 
+
+	/*
+		Set Vertex / Tessellation / Fragment values
+	*/
 
 	glm::mat4 mMVP = *EngineStatics::getProjectionMatrix() * m_vMat * m_mMat;
 
@@ -44,10 +49,17 @@ void ModelTerrain::drawPassTwo()
 
 	m_terrainTexture->Bind(0);
 	m_terrainHeight->Bind(1);
+
+	/*
+		Draw
+	*/
 	
 	glPatchParameteri(GL_PATCH_VERTICES, 16);
 	glDrawArrays(GL_PATCHES, 0, 16);
 
+	/*
+		Post-draw cleanup
+	*/
 
 	m_modelShaderPassTwo->Unbind();
 	m_terrainTexture->Unbind();

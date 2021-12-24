@@ -40,9 +40,6 @@ private:
 	Framebuffer*			m_sceneMSAAFrameBuffer;		//Scene is drawn to this buffer with MSAA applied
 	Framebuffer*			m_sceneFilterFramebuffer;	//Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen
 
-	//Terrain*				m_mountainsX;				//Adjustable mountain along X axis
-	//Terrain*				m_mountainsZ;				//Adjustable mountain along Z axis
-
 	//Light showing materials variables
 	float					m_materialLightMinZ = -5;
 	float					m_materialLightMaxZ = 9;
@@ -50,6 +47,17 @@ private:
 	float					m_materialLightMaxX = -13;
 	bool					m_materialLightIncZ = true;
 	bool					m_materialLightIncX = true;
+
+	//Light showing materials variables
+	float					m_materialtestLightMinZ = -9;
+	float					m_materialtestLightMaxZ = 9;
+	float					m_materialtestLightMinX = -9;
+	float					m_materialtestLightMaxX = 9;
+	bool					m_materialtestLightIncZ = true;
+	bool					m_materialtestLightIncX = true;
+	float					m_materialtestlightR = 0.0f;
+	float					m_materialtestlightG = 0.0f;
+	float					m_materialtestlightB = 0.0f;
 
 	//Light showing normal maps variables
 	float					m_normalLightMaxZ = 8;
@@ -60,15 +68,6 @@ private:
 	float					m_lightR = 0.0f;
 	float					m_lightG = 0.0f;
 	float					m_lightB = 0.0f;
-
-	//UNUSED variables for shadowing
-	//void					setupShadowStuff();
-	 
-	//unsigned int			depthMapFBO;
-	//unsigned int			depthMap;
-	//glm::mat4				lightProjection = glm::mat4(1.0f);
-	//glm::mat4				lightView = glm::mat4(1.0f);
-	//glm::mat4				lightSpaceMatrix = glm::mat4(1.0f);
 
 };
 

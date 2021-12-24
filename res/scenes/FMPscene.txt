@@ -76,7 +76,7 @@ modelLighting	12.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff	
 modelLighting	24.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
 modelLighting	18.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
 modelLighting	12.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
-modelLighting	24.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				shed_norm				0.0						null					0.0					null
+modelLighting	24.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
 
 #Shed
 modelLighting	-38.0	1.0		0.0		0.0		210.0	0.0		1.0			1.0			1.0			shed		shed_diff				shed_spec				shed_norm				0.0						null					0.0					null

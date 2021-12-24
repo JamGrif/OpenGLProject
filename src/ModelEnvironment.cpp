@@ -32,25 +32,32 @@ void ModelEnvironment::drawPassOne()
 /// </summary>
 void ModelEnvironment::drawPassTwo()
 {
-	//If no valid model or shader attached
+	// If no valid model or shader attached
 	if (m_modelMesh == nullptr || m_modelShaderPassTwo == nullptr)
 	{
 		return;
 	}
 
-	//If not using either environment mapping types, stop drawing object
+	// If not using either environment mapping types, stop drawing object
 	if (!m_usingReflection && !m_usingRefraction)
 	{
 		return;
 	}
 
-	//Bind shader
+	// Bind shader
 	m_modelShaderPassTwo->Bind();
 
-	//Set Vertex values
+	/*
+		Set Vertex values
+	*/
+	
 	m_modelShaderPassTwo->setUniformMatrix4fv("m_matrix", m_mMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", m_vMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *EngineStatics::getProjectionMatrix());
+
+	/*
+		Set Fragment values
+	*/
 
 	m_modelShaderPassTwo->setUniform3f("viewPos", EngineStatics::getCamera()->getPosition());
 	m_modelShaderPassTwo->setUniform1i("sky", 0);
@@ -59,13 +66,25 @@ void ModelEnvironment::drawPassTwo()
 
 	m_skyTexture->Bind();
 
+	/*
+		Bind VBOs and vertex attributes
+	*/
+
 	setVBOAttrib(true, true, false, false, false);
 
-	//Draw
+	/*
+		Draw
+	*/
+
 	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
+
+	/*
+		Post-draw cleanup
+	*/
 
 	m_modelShaderPassTwo->Unbind();
 	m_skyTexture->Unbind();
+
 }
 
 void ModelEnvironment::toggleReflection(bool value)

@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-//Static functions allows the checking of key presses anywhere in the program
+// Static functions allows the checking of key presses anywhere in the program
 class Input
 {
 public:
@@ -19,16 +19,15 @@ public:
 
 private:
 
-	//Keyboard
+	// Keyboard
 	static bool		m_keys[1024];
 	static int		m_lastKey;
 
-	//Mouse
+	// Mouse
 	static double	m_lastX;
 	static double	m_lastY;
 	static bool		m_firstMouse;
 	static double	m_xOffset;
 	static double	m_yOffset;
-
 };
 

@@ -28,6 +28,8 @@ private:
 
 	bool		changeScene(const std::string newSceneName);
 
+	void		calculateDeltaTime();
+
 	//Window
 	const int	m_defaultWindowWidth;
 	const int	m_defaultWindowHeight;
@@ -36,21 +38,25 @@ private:
 
 	float		m_aspectRatio;
 
-	//OpenGL
+	// OpenGL
 	GLFWwindow* m_appWindow;
 
 	glm::mat4	m_projMatrix;
 
 	GLuint		m_appVAO;
 
-	//Objects
+	// Objects
 
 	Scene*		m_loadedScene;
 
 	Input*		m_input;
 
-	//Delta time
+	// Delta time
 	GLfloat		m_deltaTime;
 	GLfloat		m_lastFrame;
+
+	double		m_previousTime;
+	int			m_frameCount;
+	double		m_currentFrame;
 };
 

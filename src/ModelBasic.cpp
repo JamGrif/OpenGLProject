@@ -18,7 +18,7 @@ ModelBasic::~ModelBasic()
 /// </summary>
 void ModelBasic::drawPassOne()
 {
-	//If no valid model or shader attached
+	// If no valid model or shader attached
 	if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
 	{
 		return;
@@ -30,14 +30,27 @@ void ModelBasic::drawPassOne()
 /// </summary>
 void ModelBasic::drawPassTwo()
 {
-	//If no valid model or shader attached
+	// If no valid model or shader attached
 	if (m_modelMesh == nullptr || m_modelShaderPassTwo == nullptr)
 	{
 		return;
 	}
 	
-	//Bind shader
+	// Bind shader
 	m_modelShaderPassTwo->Bind();
+
+	
+	/*
+		Set Vertex values
+	*/
+
+	m_modelShaderPassTwo->setUniformMatrix4fv("m_matrix", m_mMat);
+	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", m_vMat);
+	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *EngineStatics::getProjectionMatrix());
+
+	/*
+		Set Fragment values
+	*/
 
 	if (m_pointLightToCopy != NOT_COPYING_LIGHT) //Check if copying light
 	{
@@ -52,15 +65,21 @@ void ModelBasic::drawPassTwo()
 		m_modelShaderPassTwo->setUniform3f("blockColour", m_defaultColour);
 	}
 
-	//Set Vertex values
-	m_modelShaderPassTwo->setUniformMatrix4fv("m_matrix", m_mMat);
-	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", m_vMat);
-	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *EngineStatics::getProjectionMatrix());
+	/*
+		Bind VBOs and vertex attributes
+	*/
 
 	setVBOAttrib(true, false, false, false, false);
 
-	//Draw
+	/*
+		Draw
+	*/
+
 	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
+
+	/*
+		Post-draw cleanup
+	*/
 
 	m_modelShaderPassTwo->Unbind();
 	
@@ -77,7 +96,7 @@ void ModelBasic::copyPointLight(int index)
 		return;
 	}
 
-	if (index <= m_localLightManager->getCurrentPointLights() && m_localLightManager->getCurrentPointLights() != 0)
+	if (index <= m_localLightManager->getCurrentPointLights() && m_localLightManager->getCurrentPointLights() != 0) // Ensure index is within the range of created point lights
 	{
 		m_pointLightToCopy = index;
 	}		

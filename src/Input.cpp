@@ -4,17 +4,16 @@
 
 #include "EngineStatics.h"
 
-//Keyboard
+// Keyboard
 bool Input::m_keys[1024];
 int Input::m_lastKey = 0;
 
-//Mouse
+// Mouse
 double Input::m_lastX = 0;
 double Input::m_lastY = 0;
 bool Input::m_firstMouse = true;
 double Input::m_xOffset = 0;
 double Input::m_yOffset = 0;
-
 
 Input::Input()
 {
@@ -33,7 +32,7 @@ Input::~Input()
 }
 
 /// <summary>
-/// Function is called everytime application detects keyboard input
+/// Function is called every time application detects keyboard input
 /// </summary>
 /// <param name="window">The window that has input</param>
 /// <param name="key">Key pressed</param>
@@ -70,7 +69,6 @@ bool Input::getKeyPressed(int key)
 {
     if (m_keys[key])
     {
-        
         return true;
     }
 	return false;
@@ -78,29 +76,29 @@ bool Input::getKeyPressed(int key)
 
 bool Input::getKeyPressedOnce(int key)
 {
-    if (m_keys[key] && key != m_lastKey)
-    {
-        m_lastKey = key;
-        return true;
-    }
+	if (key != m_lastKey && m_keys[key]) // Key is not same as last key and key was pressed
+	{
+		m_lastKey = key;
+		return true;
+	}
     return false;
 }
 
 /// <summary>
-/// Function is called everytime application detects mouse input
+/// Function is called every time application detects mouse input
 /// </summary>
 /// <param name="window">The window that has input</param>
 /// <param name="xPos">New mouse X position</param>
 /// <param name="yPos">New mouse Y position</param>
 void Input::mouseCALLBACK(GLFWwindow* window, double xPos, double yPos)
 {
-    //std::cout << "mousecallback" << std::endl;
     if (m_firstMouse)
     {
         m_lastX = xPos;
         m_lastY = yPos;
         m_firstMouse = false;
     }
+
     m_xOffset = xPos - m_lastX;
     m_yOffset = m_lastY - yPos; //Reversed as Y coordinates go from bottom to left
 

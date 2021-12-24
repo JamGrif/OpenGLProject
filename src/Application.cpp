@@ -9,7 +9,7 @@
 Application::Application()
 	:m_defaultWindowWidth(1280), m_defaultWindowHeight(720), m_currentWindowWidth(0), m_currentWindowHeight(0), m_aspectRatio(0.0),
 	m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_loadedScene(nullptr), m_input(nullptr),
-	m_deltaTime(0.0f), m_lastFrame(0.0f)
+	m_deltaTime(0.0f), m_lastFrame(0.0f), m_previousTime(0.0), m_frameCount(0), m_currentFrame(0.0)
 
 {
 	std::cout << "Application Initialized" << std::endl;
@@ -48,7 +48,7 @@ Application::~Application()
 /// <returns>Returns success or failure of initialization</returns>
 int Application::appInit()
 {
-	//Initialize GLFW
+	// Initialize GLFW
 
 	if (!glfwInit())
 	{
@@ -62,7 +62,7 @@ int Application::appInit()
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	m_appWindow = glfwCreateWindow(m_defaultWindowWidth, m_defaultWindowHeight, "OpenGL - Jamie", NULL, NULL);
 
-	//Set Icon
+	// Set Icon
 	GLFWimage images[1];
 	images[0].pixels = stbi_load("res/icon/Icon.jpg", &images[0].width, &images[0].height, 0, 4); // RGBA channels 
 	glfwSetWindowIcon(m_appWindow, 1, images);
@@ -77,7 +77,7 @@ int Application::appInit()
 	std::cout << glGetString(GL_RENDERER) << std::endl;
 	std::cout << glGetString(GL_VERSION) << std::endl << std::endl;
 
-	//Initialize GLEW
+	// Initialize GLEW
 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
@@ -106,22 +106,22 @@ int Application::appInit()
 
 
 
-	//Build projection matrix
+	// Build projection matrix
 	glfwGetFramebufferSize(m_appWindow, &m_currentWindowWidth, &m_currentWindowHeight);
 	glViewport(0, 0, m_currentWindowWidth, m_currentWindowHeight);
 	m_aspectRatio = (float)m_currentWindowWidth / (float)m_currentWindowHeight;
 	m_projMatrix = glm::perspective(1.0472f, m_aspectRatio, 0.01f, 1000.0f); //1.0472 = 60 degrees
 	EngineStatics::setProjectionMatrix(&m_projMatrix);
 
-	//VAO
+	// VAO
 	glGenVertexArrays(1, &m_appVAO);
 	glBindVertexArray(m_appVAO);
 
-	//Depth Buffer
+	// Depth Buffer
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 
-	//Backface Culling
+	// Backface Culling
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
@@ -131,7 +131,7 @@ int Application::appInit()
 	//Create Input object
 	m_input = new Input();
 
-	changeScene("res/scenes/jamieTest.txt");
+	changeScene("res/scenes/materialTest.txt");
 
 	return 0;
 }
@@ -141,9 +141,9 @@ int Application::appInit()
 /// </summary>
 void Application::appLoop()
 {
-	double previousTime = glfwGetTime();
-	int frameCount = 0;
-	double currentFrame;
+	m_previousTime = glfwGetTime();
+	m_frameCount = 0;
+	m_currentFrame = 0;
 
 	while (!glfwWindowShouldClose(m_appWindow))
 	{
@@ -152,36 +152,23 @@ void Application::appLoop()
 		//ImGui_ImplGlfw_NewFrame();
 		//ImGui::NewFrame();
 
-		if (Input::getKeyPressedOnce(GLFW_KEY_1))
-		{
-			changeScene("res/scenes/FMPscene.txt");
-		}
-		if (Input::getKeyPressedOnce(GLFW_KEY_2))
-		{
-			changeScene("res/scenes/jamieTest.txt");
-		}
-
-		//Delta time
-		currentFrame = glfwGetTime();
-		m_deltaTime = currentFrame - m_lastFrame;
-		m_lastFrame = currentFrame;
-		 
-		// Calculate framecount
-		frameCount++;
-		// If a second has passed.
-		if (currentFrame - previousTime >= 1.0)
-		{
-			// Display the frame count here any way you want.
-			glfwSetWindowTitle(m_appWindow, std::to_string(frameCount).c_str());
-
-			frameCount = 0;
-			previousTime = currentFrame;
-		}
-
-		EngineStatics::setDeltaTime(m_deltaTime);
+		calculateDeltaTime();
 
 		glClear(GL_DEPTH_BUFFER_BIT); //Clears the screen buffers
 		glfwPollEvents();
+
+		if (Input::getKeyPressedOnce(GLFW_KEY_F1))
+		{
+			changeScene("res/scenes/FMPscene.txt");
+		}
+		if (Input::getKeyPressedOnce(GLFW_KEY_F2))
+		{
+			changeScene("res/scenes/jamieTest.txt");
+		}
+		if (Input::getKeyPressedOnce(GLFW_KEY_F3))
+		{
+			changeScene("res/scenes/materialTest.txt");
+		}
 
 		m_loadedScene->updateScene();
 
@@ -210,13 +197,11 @@ void Application::windowResizeCALLBACK(GLFWwindow* window, int newWidth, int new
 
 bool Application::changeScene(const std::string newSceneName)
 {
-
 	if (m_loadedScene != nullptr)
 	{
 		if (newSceneName == m_loadedScene->getSceneName())
 		{
 			// Scene is already loaded
-			std::cout << "scene is already loaded" << std::endl;
 			return false;
 		}
 		// A scene is already loaded, so delete it
@@ -224,17 +209,35 @@ bool Application::changeScene(const std::string newSceneName)
 		m_loadedScene = nullptr;
 	}
 
-
 	m_loadedScene = new Scene(newSceneName);
 
 	if (m_loadedScene->loadScene())
 	{
 		// Scene successfully loaded
-		std::cout << "loaded scene loaded good" << std::endl;
 		return true;
 	}
 
 	// Scene failed to load
-	std::cout << "scene failed to load" << std::endl;
 	return false;
+}
+
+void Application::calculateDeltaTime()
+{
+	//Delta time
+	m_currentFrame = glfwGetTime();
+	m_deltaTime = m_currentFrame - m_lastFrame;
+	m_lastFrame = m_currentFrame;
+
+	// Calculate framecount
+	m_frameCount++;
+	// If a second has passed.
+	if (m_currentFrame - m_previousTime >= 1.0)
+	{
+		// Display the frame count here any way you want.
+		glfwSetWindowTitle(m_appWindow, std::to_string(m_frameCount).c_str());
+
+		m_frameCount = 0;
+		m_previousTime = m_currentFrame;
+	}
+	EngineStatics::setDeltaTime(m_deltaTime);
 }
