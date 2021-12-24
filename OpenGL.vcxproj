@@ -170,13 +170,6 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dependencies\imgui\imgui.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_tables.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="dependencies\stb_image\stb_image.cpp" />
     <ClCompile Include="src\ModelGeometry.cpp" />
     <ClCompile Include="src\ModelSprite.cpp" />
@@ -200,14 +193,6 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     <ClCompile Include="src\ModelTerrain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dependencies\imgui\imconfig.h" />
-    <ClInclude Include="dependencies\imgui\imgui.h" />
-    <ClInclude Include="dependencies\imgui\imgui_impl_glfw.h" />
-    <ClInclude Include="dependencies\imgui\imgui_impl_opengl3.h" />
-    <ClInclude Include="dependencies\imgui\imgui_internal.h" />
-    <ClInclude Include="dependencies\imgui\imstb_rectpack.h" />
-    <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
-    <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
     <ClInclude Include="src\ModelGeometry.h" />
     <ClInclude Include="src\ModelSprite.h" />
