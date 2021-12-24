@@ -141,8 +141,8 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d $(ProjectDir)dependencies\assimp\lib\assimp-vc140-mt.dll $(TargetDir)
-mkdir $(TargetDir)\res 
-xcopy /y /d $(ProjectDir)res $(TargetDir)\res /S</Command>
+mkdir $(TargetDir)res 
+xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,8 +165,8 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)\res /S</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d $(ProjectDir)dependencies\assimp\lib\assimp-vc140-mt.dll $(TargetDir)
-mkdir $(TargetDir)\res 
-xcopy /y /d $(ProjectDir)res $(TargetDir)\res /S</Command>
+mkdir $(TargetDir)res 
+xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -194,6 +194,7 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)\res /S</Command>
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\SceneTextReader.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\ModelTerrain.cpp" />
@@ -224,6 +225,7 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)\res /S</Command>
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\SceneTextReader.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\ModelTerrain.h" />
