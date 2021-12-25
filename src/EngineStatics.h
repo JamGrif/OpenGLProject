@@ -29,7 +29,7 @@ public:
 	static LightManager*	getLightManager() { return m_lightManager; }
 	static void				setLightManager(LightManager* lm) { m_lightManager = lm; }
 
-	static GLfloat			getDeltaTime() { return m_deltaTime; }
+	static double			getDeltaTime() { return m_deltaTime; }
 	static void				setDeltaTime(double dt) { m_deltaTime = dt; }
 
 

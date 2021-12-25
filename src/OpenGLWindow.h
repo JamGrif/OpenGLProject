@@ -8,14 +8,14 @@
 class OpenGLWindow
 {
 public:
-	OpenGLWindow(int windowWidth, int windowHeight, std::string windowTitle);
+	OpenGLWindow(int windowWidth, int windowHeight, std::string windowTitle, bool fullScreen);
 	~OpenGLWindow();
 
 	bool getWindowStatus();
 	GLFWwindow* getWindow();
 
-	void setWindowIcon(std::string iconPath);
-	void setWindowTitle(std::string newTitle);
+	void setWindowIcon(const std::string& iconPath);
+	void setWindowTitle(const std::string& newTitle);
 
 	int		getWindowWidth();
 	int		getWindowHeight();

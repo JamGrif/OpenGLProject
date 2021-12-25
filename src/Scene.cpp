@@ -13,6 +13,9 @@ Scene::Scene(const std::string& sceneName)
 	m_materialLightIncX(true), m_normalLightMaxZ(8.0f), m_normalLightMinZ(23.0f), m_normalLightIncZ(true), m_lightR(0.0f), m_lightG(0.0f), m_lightB(0.0f)
 {
 	std::cout << "Scene Initialized" << std::endl;
+
+	m_cachedScreenWidth = EngineStatics::getScreenWidth();
+	m_cachedScreenHeight = EngineStatics::getScreenHeight();
 }
  
 Scene::~Scene()
@@ -107,7 +110,7 @@ void Scene::updateScene()
 	// Reads from the MSAA buffer and writes it to the Filter buffer
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_sceneMSAAFrameBuffer->getFBO());
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_sceneFilterFramebuffer->getFBO());
-	glBlitFramebuffer(0, 0, 1280, 720, 0, 0, 1280, 720, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	glBlitFramebuffer(0, 0, m_cachedScreenWidth, m_cachedScreenHeight, 0, 0, m_cachedScreenWidth, m_cachedScreenHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	m_sceneMSAAFrameBuffer->unbindFramebuffer();
 
 	// Draw screen filter to buffer
@@ -169,7 +172,7 @@ void Scene::updateOnInput()
 			m_sceneLightManager->getDirectionalLight(0)->toggleActive();
 	}
 	
-	if (Input::getKeyPressedOnce(GLFW_KEY_7))
+	if (Input::getKeyPressedOnce(GLFW_KEY_F))
 	{
 		if (m_sceneLightManager->getSpotLight(0) != nullptr)
 			m_sceneLightManager->getSpotLight(0)->toggleActive();

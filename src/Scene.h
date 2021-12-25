@@ -69,5 +69,9 @@ private:
 	float					m_lightG = 0.0f;
 	float					m_lightB = 0.0f;
 
+	//Cached screen size
+	int m_cachedScreenWidth;
+	int m_cachedScreenHeight;
+
 };
 

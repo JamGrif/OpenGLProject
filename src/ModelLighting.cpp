@@ -113,7 +113,6 @@ void ModelLighting::drawPassTwo()
 			m_modelShaderPassTwo->setUniform1f("pLight[0].quadratic", m_localLightManager->getPointLight(0)->Quadratic);
 			m_modelShaderPassTwo->setUniform1i("pLight[0].lightActive", m_localLightManager->getPointLight(0)->lightActive);
 		}
-
 		if (m_localLightManager->getCurrentPointLights() >= 2)
 		{
 			m_modelShaderPassTwo->setUniform3f("pLight[1].ambient", m_localLightManager->getPointLight(1)->Ambient);
