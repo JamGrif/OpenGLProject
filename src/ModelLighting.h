@@ -39,5 +39,14 @@ private:
     std::vector<glm::vec3>  m_tangents;
     std::vector<glm::vec3>  m_bitangents;
 
+    enum textureSlotNumber
+    {
+        e_diffuseTextureSlot    = 0,
+        e_specularTextureSlot   = 1,
+        e_emissionTextureSlot   = 2,
+        e_normalTextureSlot     = 3,
+        e_heightTextureSlot     = 4
+    };
+
 };
 

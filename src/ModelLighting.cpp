@@ -14,26 +14,31 @@ ModelLighting::~ModelLighting()
 {
 	if (m_modelDiffuseTexture != nullptr)
 	{
+		m_modelDiffuseTexture->Unbind(e_diffuseTextureSlot);
 		m_modelDiffuseTexture = nullptr;
 	}
 
 	if (m_modelSpecularTexture != nullptr)
 	{
+		m_modelSpecularTexture->Unbind(e_specularTextureSlot);
 		m_modelSpecularTexture = nullptr;
 	}
 
 	if (m_modelEmissionTexture != nullptr)
 	{
+		m_modelEmissionTexture->Unbind(e_emissionTextureSlot);
 		m_modelEmissionTexture = nullptr;
 	}
 
 	if (m_modelNormalTexture != nullptr)
 	{
+		m_modelNormalTexture->Unbind(e_normalTextureSlot);
 		m_modelNormalTexture = nullptr;
 	}
 
 	if (m_modelHeightTexture != nullptr)
 	{
+		m_modelHeightTexture->Unbind(e_heightTextureSlot);
 		m_modelHeightTexture = nullptr;
 	}
 }
@@ -56,7 +61,7 @@ void ModelLighting::drawPassOne()
 	setVBOAttrib(true, false, false, false, false);
 
 	// Draw
-	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_modelMesh->getIndices().size()), GL_UNSIGNED_INT, 0);
 
 	m_modelShaderPassOne->Unbind();
 
@@ -189,27 +194,27 @@ void ModelLighting::drawPassTwo()
 
 	if (m_modelDiffuseTexture != nullptr)
 	{
-		m_modelDiffuseTexture->Bind(0);
+		m_modelDiffuseTexture->Bind(e_diffuseTextureSlot);
 	}
 
 	if (m_modelSpecularTexture != nullptr)
 	{
-		m_modelSpecularTexture->Bind(1);
+		m_modelSpecularTexture->Bind(e_specularTextureSlot);
 	}
 
 	if (m_modelEmissionTexture != nullptr)
 	{
-		m_modelEmissionTexture->Bind(2);
+		m_modelEmissionTexture->Bind(e_emissionTextureSlot);
 	}
 
 	if (m_modelNormalTexture != nullptr)
 	{
-		m_modelNormalTexture->Bind(3);
+		m_modelNormalTexture->Bind(e_normalTextureSlot);
 	}
 
 	if (m_modelHeightTexture != nullptr)
 	{
-		m_modelHeightTexture->Bind(4);
+		m_modelHeightTexture->Bind(e_heightTextureSlot);
 	}
 
 	/*
@@ -229,7 +234,7 @@ void ModelLighting::drawPassTwo()
 		Draw
 	*/
 
-	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_modelMesh->getIndices().size()), GL_UNSIGNED_INT, 0);
 
 	/*
 		Post-draw cleanup
@@ -237,27 +242,27 @@ void ModelLighting::drawPassTwo()
 
 	if (m_modelDiffuseTexture != nullptr)
 	{
-		m_modelDiffuseTexture->Unbind();
+		m_modelDiffuseTexture->Unbind(e_diffuseTextureSlot);
 	}
 
 	if (m_modelSpecularTexture != nullptr)
 	{
-		m_modelSpecularTexture->Unbind();
+		m_modelSpecularTexture->Unbind(e_specularTextureSlot);
 	}
 
 	if (m_modelEmissionTexture != nullptr)
 	{
-		m_modelEmissionTexture->Unbind();
+		m_modelEmissionTexture->Unbind(e_emissionTextureSlot);
 	}
 
 	if (m_modelNormalTexture != nullptr)
 	{
-		m_modelNormalTexture->Unbind();
+		m_modelNormalTexture->Unbind(e_normalTextureSlot);
 	}
 
 	if (m_modelHeightTexture != nullptr)
 	{
-		m_modelHeightTexture->Unbind();
+		m_modelHeightTexture->Unbind(e_heightTextureSlot);
 	}
 	
 	m_modelShaderPassTwo->Unbind();
