@@ -24,7 +24,7 @@ Camera::~Camera()
 /// Updates the camera depending on input from the keyboard or mouse
 /// </summary>
 /// <param name="deltaTime"></param>
-void Camera::Update(GLfloat deltaTime)
+void Camera::Update(double deltaTime)
 {
     if (Input::getKeyPressed(GLFW_KEY_W)) { processKeyboard(FORWARD, deltaTime); }
     if (Input::getKeyPressed(GLFW_KEY_S)) { processKeyboard(BACKWARD, deltaTime); }
@@ -39,7 +39,7 @@ void Camera::Update(GLfloat deltaTime)
     //Get mouse movement
     double x, y;
     Input::getMouseMoved(x,y);
-    processMouse(x, y);
+    processMouse(static_cast<float>(x), static_cast<float>(y));
 }
 
 glm::mat4 Camera::getViewMatrix() const
@@ -62,10 +62,10 @@ glm::vec3 Camera::getFront() const
 /// </summary>
 /// <param name="direction">Direction the camera is moving</param>
 /// <param name="deltaTime"></param>
-void Camera::processKeyboard(Camera_Movement direction, GLfloat deltaTime)
+void Camera::processKeyboard(Camera_Movement direction, double deltaTime)
 {
     //std::cout << "process keyboard" << std::endl;
-	GLfloat velocity = m_movementSpeed * deltaTime;
+	float velocity = m_movementSpeed * static_cast<float>(deltaTime);
 
 
     //Multiple if statements to allow multiple keys pressed down
@@ -96,7 +96,7 @@ void Camera::processKeyboard(Camera_Movement direction, GLfloat deltaTime)
 /// <param name="xOffset"></param>
 /// <param name="yOffset"></param>
 /// <param name="constrainPitch">Decides if the camera should loop around when reaching maximum pitch</param>
-void Camera::processMouse(GLfloat xOffset, GLfloat yOffset, GLboolean constrainPitch)
+void Camera::processMouse(float xOffset, float yOffset, bool constrainPitch)
 {
     if (xOffset > 100 && xOffset > 0)
         xOffset = 100;
@@ -115,7 +115,7 @@ void Camera::processMouse(GLfloat xOffset, GLfloat yOffset, GLboolean constrainP
     m_yaw += xOffset;
     m_pitch += yOffset;
     
-    //Make sure that when pitch is out of bounds, screen doesnt get flipped
+    //Make sure that when pitch is out of bounds, screen doesn't get flipped
     if (constrainPitch)
     {
         if (m_pitch > 89.0f)
@@ -128,8 +128,8 @@ void Camera::processMouse(GLfloat xOffset, GLfloat yOffset, GLboolean constrainP
         }
     }
     
-    //Update Front, Right and Up vectors using the updated eular angles
-    this->updateCameraVectors();
+    //Update Front, Right and Up vectors using the updated Eular angles
+    updateCameraVectors();
 
 }
 

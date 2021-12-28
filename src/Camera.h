@@ -27,14 +27,14 @@ public:
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw = YAW, GLfloat pitch = PITCH);
     ~Camera();
 
-    void            Update(GLfloat deltaTime);
+    void            Update(double deltaTime);
 
     glm::mat4       getViewMatrix() const;
     glm::vec3       getPosition() const;
     glm::vec3       getFront() const;
     
-    void            processKeyboard(Camera_Movement direction, GLfloat deltaTime);
-    void            processMouse(GLfloat xOffset, GLfloat yOffset, GLboolean constrainPitch = true);
+    void            processKeyboard(Camera_Movement direction, double deltaTime);
+    void            processMouse(float xOffset, float yOffset, bool constrainPitch = true);
 
 private:
 
@@ -47,13 +47,12 @@ private:
     glm::vec3       m_right;
     glm::vec3       m_worldUp;
 
-    //Eular Angles
-    GLfloat         m_yaw;
-    GLfloat         m_pitch;
+    //Euler Angles
+    float         m_yaw;
+    float         m_pitch;
 
     //Camera Options
-    GLfloat         m_movementSpeed;
-    GLfloat         m_mouseSensitivity;
-    GLfloat         m_zoom;
-
+	float         m_movementSpeed;
+	float         m_mouseSensitivity;
+	float         m_zoom;
 };

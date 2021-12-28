@@ -23,7 +23,6 @@ Input::Input()
 	glfwSetCursorPosCallback(EngineStatics::getAppWindow(), mouseCALLBACK);
 
     glfwSetInputMode(EngineStatics::getAppWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); //Hide cursor during runtime
-
 }
 
 Input::~Input()
@@ -93,12 +92,12 @@ bool Input::getKeyPressedOnce(int key)
 /// <param name="yPos">New mouse Y position</param>
 void Input::mouseCALLBACK(GLFWwindow* window, double xPos, double yPos)
 {
-    if (m_firstMouse)
-    {
-        m_lastX = xPos;
-        m_lastY = yPos;
-        m_firstMouse = false;
-    }
+	if (m_firstMouse)
+	{
+		m_lastX = xPos;
+		m_lastY = yPos;
+		m_firstMouse = false;
+	}
 
     m_xOffset = xPos - m_lastX;
     m_yOffset = m_lastY - yPos; //Reversed as Y coordinates go from bottom to left
@@ -114,11 +113,10 @@ void Input::mouseCALLBACK(GLFWwindow* window, double xPos, double yPos)
 /// <param name="yMouse"></param>
 void Input::getMouseMoved(double& xMouse, double& yMouse)
 {
-    xMouse = m_xOffset;
-    yMouse = m_yOffset;
+	xMouse = m_xOffset;
+	yMouse = m_yOffset;
 
-    m_xOffset = 0;
-    m_yOffset = 0;
-
+	m_xOffset = 0;
+	m_yOffset = 0;
 }
 
