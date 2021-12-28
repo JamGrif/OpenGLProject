@@ -148,11 +148,11 @@ void Model::SetYPos(float num) { m_position.y = num; }
 
 void Model::SetZPos(float num) { m_position.z = num; }
 
-const float Model::GetXPos() const { return m_position.x; }
+float Model::GetXPos() const { return m_position.x; }
 
-const float Model::GetYPos() const { return m_position.y; }
+float Model::GetYPos() const { return m_position.y; }
 
-const float Model::GetZPos() const { return m_position.z; }
+float Model::GetZPos() const { return m_position.z; }
 
 void Model::SetXRot(float num) { m_rotation.x = num; }
 
@@ -160,11 +160,11 @@ void Model::SetYRot(float num) { m_rotation.y = num; }
 
 void Model::SetZRot(float num) { m_rotation.z = num; }
 
-const float Model::GetXRot() const { return m_rotation.x; }
+float Model::GetXRot() const { return m_rotation.x; }
 
-const float Model::GetYRot() const { return m_rotation.y; }
+float Model::GetYRot() const { return m_rotation.y; }
 
-const float Model::GetZRot() const { return m_rotation.z; }
+float Model::GetZRot() const { return m_rotation.z; }
 
 void Model::SetXScale(float num) { m_scale.x = num; }
 
@@ -172,11 +172,11 @@ void Model::SetYScale(float num) { m_scale.y = num; }
 
 void Model::SetZScale(float num) { m_scale.z = num; }
 
-const float Model::GetXScale() const { return m_scale.x; }
+float Model::GetXScale() const { return m_scale.x; }
 
-const float Model::GetYScale() const { return m_scale.y; }
+float Model::GetYScale() const { return m_scale.y; }
 
-const float Model::GetZScale() const { return m_scale.z; }
+float Model::GetZScale() const { return m_scale.z; }
 
 void Model::IncXPos(float num) { m_position.x += num; }
 

@@ -32,13 +32,13 @@ public:
 	void			setShaderTwo(const char* vertexPath, const char* fragmentPath);
 	
 	void			SetXPos(float num), SetYPos(float num), SetZPos(float num);
-	const float		GetXPos() const, GetYPos() const, GetZPos() const;
+	float			GetXPos() const, GetYPos() const, GetZPos() const;
 
 	void			SetXRot(float num), SetYRot(float num), SetZRot(float num);
-	const float		GetXRot() const, GetYRot() const, GetZRot() const;
+	float			GetXRot() const, GetYRot() const, GetZRot() const;
 
 	void			SetXScale(float num), SetYScale(float num), SetZScale(float num);
-	const float		GetXScale() const, GetYScale() const, GetZScale() const;
+	float			GetXScale() const, GetYScale() const, GetZScale() const;
 
 	void			IncXPos(float num), IncYPos(float num), IncZPos(float num);
 	void			DecXPos(float num), DecYPos(float num), DecZPos(float num);
