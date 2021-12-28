@@ -60,8 +60,8 @@ bool Application::appInit()
 		Initialize Window
 	*/
 
-	//m_appWindow = new OpenGLWindow(1280, 720, "OpenGL - Jamie", false);
-	m_appWindow = new OpenGLWindow(1920, 1080, "OpenGL - Jamie", true);
+	m_appWindow = new OpenGLWindow(1920, 1080, "OpenGL - Jamie", false);
+	//m_appWindow = new OpenGLWindow(1920, 1080, "OpenGL - Jamie", true);
 	if (!m_appWindow->getWindowStatus())
 	{
 		std::cout << "Window failed to initialize" << std::endl;
@@ -118,7 +118,7 @@ bool Application::appInit()
 
 	// Build applications projection matrix
 	constexpr float SixtyDegrees = 1.0472f; //1.0472 = 60 degrees
-	m_projMatrix = glm::perspective(SixtyDegrees, m_appWindow->getAspectRatio(), 0.01f, 1000.0f); 
+	m_projMatrix = glm::perspective(glm::radians(75.0f), m_appWindow->getAspectRatio(), 0.01f, 1000.0f);
 	EngineStatics::setProjectionMatrix(&m_projMatrix);
 
 	// Build applications VAO

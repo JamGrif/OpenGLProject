@@ -21,7 +21,6 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, std::string window
 	}
 	else
 	{
-
 		m_Window = glfwCreateWindow(m_currentWindowWidth, m_currentWindowHeight, windowTitle.c_str(), NULL, NULL);
 	}
 	

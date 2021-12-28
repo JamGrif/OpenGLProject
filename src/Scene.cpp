@@ -37,10 +37,10 @@ Scene::~Scene()
 	/*
 		By not deleting all the scenes assets, it allows for quicker scene change after the content has been initially loaded
 	*/
-	//TextureManager::clearTextures();
-	//TextureManager::clearCubemaps();
-	//MeshManager::clearMeshes();
-	//ShaderManager::clearShaders();
+	TextureManager::clearTextures();
+	TextureManager::clearCubemaps();
+	MeshManager::clearMeshes();
+	ShaderManager::clearShaders();
 
 	delete m_sceneFilterFramebuffer;
 	m_sceneFilterFramebuffer = nullptr;
@@ -212,7 +212,7 @@ void Scene::updateSceneLight()
 		Light over material showcase
 	*/
 
-	if (m_sceneName == "res/scenes/FMPscene.txt");
+	if (m_sceneName == "res/scenes/FMPscene.txt")
 	{
 		if (m_materialLightIncZ)
 		{
@@ -299,16 +299,22 @@ void Scene::updateSceneLight()
 
 		m_lightR -= 0.001f;
 		if (m_lightR <= 0.0f)
+		{
 			m_lightR = 1.0f;
-
+		}
+			
 		m_lightG += 0.003f;
 		if (m_lightG >= 1.0f)
+		{
 			m_lightG = 0.0f;
+		}
 
 		m_lightB += 0.002f;
 		if (m_lightB >= 1.0f)
+		{
 			m_lightB = 0.0f;
-
+		}
+			
 		if (m_sceneLightManager->getPointLight(3) != nullptr)
 		{
 			m_sceneLightManager->getPointLight(3)->Ambient = glm::vec3(m_lightR, m_lightG, m_lightB);
@@ -316,6 +322,7 @@ void Scene::updateSceneLight()
 			m_sceneLightManager->getPointLight(3)->Specular = glm::vec3(m_lightR, m_lightG, m_lightB);
 		}
 	}
+
 
 	if (m_sceneName == "res/scenes/materialTest.txt")
 	{
@@ -394,6 +401,7 @@ void Scene::updateSceneLight()
 			}
 		}
 	}
+
 }
 
 /// <summary>
