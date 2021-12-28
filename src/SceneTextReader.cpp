@@ -8,19 +8,19 @@
 
 SceneTextReader::SceneTextReader(const std::string& filename)
 {
-	std::cout << "SceneTextReader constructor" << std::endl;
+	//std::cout << "SceneTextReader constructor" << std::endl;
 
 	m_filename = filename;
 }
 
 SceneTextReader::~SceneTextReader()
 {
-	std::cout << "SceneTextReader destructor" << std::endl;
+	//std::cout << "SceneTextReader destructor" << std::endl;
 }
 
 bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager)
 {
-	std::cout << "SceneTextReader runSceneTextReader" << std::endl;
+	//std::cout << "SceneTextReader runSceneTextReader" << std::endl;
 
 	std::ifstream fileStream(m_filename, std::ios::in);
 
@@ -526,7 +526,7 @@ void SceneTextReader::applyToModelBasicTemplate(templateModelBasic& o, const std
 
 	o.mesh = "res/meshes/" + vector.at(e_mesh) + ".obj";
 
-	o.lightToCopy = std::stof(vector.at(e_lightToCopy));
+	o.lightToCopy = std::stoi(vector.at(e_lightToCopy));
 }
 
 
