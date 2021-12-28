@@ -17,6 +17,7 @@ public:
 
 	virtual void	Bind(unsigned int slot = 0) const;
 	virtual void	Unbind() const;
+	void	Unbind(unsigned int slot) const;
 
 
 	const std::string&		getFilePath() const;

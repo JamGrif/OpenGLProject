@@ -16,6 +16,8 @@ Texture::Texture()
 Texture::~Texture()
 {
 	//std::cout << "deleted texture" << std::endl;
+	//Unbind();
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glDeleteTextures(1, &m_texture);
 }
 
@@ -97,6 +99,15 @@ void Texture::Bind(unsigned int slot) const
 /// </summary>
 void Texture::Unbind() const
 {
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+/// <summary>
+/// Unbinds texture from the pipeline
+/// </summary>
+void Texture::Unbind(unsigned int slot) const
+{
+	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
