@@ -36,7 +36,7 @@ void ModelGeometry::drawPassTwo()
 	// Determine change of mesh inflation
 	if (m_increasing)
 	{
-		m_inflation += 0.025f * EngineStatics::getDeltaTime();
+		m_inflation += 0.025f * static_cast<float>(EngineStatics::getDeltaTime());
 		if (m_inflation > 0.2f)
 		{
 			m_inflation = 0.2f;
@@ -45,7 +45,7 @@ void ModelGeometry::drawPassTwo()
 	}
 	else
 	{
-		m_inflation -= 0.025f * EngineStatics::getDeltaTime();
+		m_inflation -= 0.025f * static_cast<float>(EngineStatics::getDeltaTime());
 		if (m_inflation < -0.2f)
 		{
 			m_inflation = -0.2f;
@@ -73,7 +73,7 @@ void ModelGeometry::drawPassTwo()
 		Draw
 	*/
 
-	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_modelMesh->getIndices().size()), GL_UNSIGNED_INT, 0);
 
 	/*
 		Post-draw cleanup

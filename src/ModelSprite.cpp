@@ -62,7 +62,7 @@ void ModelSprite::drawPassTwo()
 		Draw
 	*/
 
-	glDrawElements(GL_TRIANGLES, m_modelMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_modelMesh->getIndices().size()), GL_UNSIGNED_INT, 0);
 
 	/*
 		Post-draw cleanup
