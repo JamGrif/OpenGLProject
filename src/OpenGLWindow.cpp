@@ -13,8 +13,8 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, std::string window
 	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_DECORATED, NULL); // borderless window
 
-	// glfwWindowHint(GLFW_DECORATED, NULL); // windowed borderless
 	if (fullScreen)
 	{
 		m_Window = glfwCreateWindow(m_currentWindowWidth, m_currentWindowHeight, windowTitle.c_str(), glfwGetPrimaryMonitor(), NULL);
@@ -42,13 +42,7 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, std::string window
 	glfwSwapInterval(1);
 	glClearColor(0.0, 0.0, 0.0, 1.0); //Sets clear colour
 
-	std::cout << m_currentWindowWidth << std::endl;
-	std::cout << m_currentWindowHeight << std::endl;
-
 	glfwGetFramebufferSize(m_Window, &m_currentWindowWidth, &m_currentWindowHeight);
-
-	std::cout << m_currentWindowWidth << std::endl;
-	std::cout << m_currentWindowHeight << std::endl;
 
 	glViewport(0, 0, m_currentWindowWidth, m_currentWindowHeight);
 	m_aspectRatio = (float)m_currentWindowWidth / (float)m_currentWindowHeight;
