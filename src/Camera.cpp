@@ -26,10 +26,10 @@ Camera::~Camera()
 /// <param name="deltaTime"></param>
 void Camera::Update(double deltaTime)
 {
-    if (Input::getKeyPressed(GLFW_KEY_W)) { processKeyboard(FORWARD, deltaTime); }
-    if (Input::getKeyPressed(GLFW_KEY_S)) { processKeyboard(BACKWARD, deltaTime); }
-    if (Input::getKeyPressed(GLFW_KEY_A)) { processKeyboard(LEFT, deltaTime); }
-    if (Input::getKeyPressed(GLFW_KEY_D)) { processKeyboard(RIGHT, deltaTime); }
+    if (Input::getKeyPressed(GLFW_KEY_W)) { processKeyboard(e_FORWARD, deltaTime); }
+    if (Input::getKeyPressed(GLFW_KEY_S)) { processKeyboard(e_BACKWARD, deltaTime); }
+    if (Input::getKeyPressed(GLFW_KEY_A)) { processKeyboard(e_LEFT, deltaTime); }
+    if (Input::getKeyPressed(GLFW_KEY_D)) { processKeyboard(e_RIGHT, deltaTime); }
 
     if (Input::getKeyPressed(GLFW_KEY_R))
     {
@@ -69,22 +69,22 @@ void Camera::processKeyboard(Camera_Movement direction, double deltaTime)
 
 
     //Multiple if statements to allow multiple keys pressed down
-    if (direction == FORWARD)
+    if (direction == e_FORWARD)
     {
         m_position += m_front * velocity;
     }
 
-    if (direction == BACKWARD)
+    if (direction == e_BACKWARD)
     {
         m_position -= m_front * velocity;
     }
 
-    if (direction == LEFT)
+    if (direction == e_LEFT)
     {
         m_position -= m_right * velocity;
     }
 
-    if (direction == RIGHT)
+    if (direction == e_RIGHT)
     {
         m_position += m_right * velocity;
     }

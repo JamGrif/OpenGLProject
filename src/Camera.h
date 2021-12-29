@@ -8,10 +8,10 @@
 
 enum Camera_Movement
 {
-    FORWARD,
-    BACKWARD,
-    LEFT,
-    RIGHT
+	e_FORWARD,
+	e_BACKWARD,
+	e_LEFT,
+	e_RIGHT
 };
 
 //Default camera values
