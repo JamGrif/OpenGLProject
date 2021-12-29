@@ -1,11 +1,11 @@
 #include "Scene.h"
 
-#include "EngineStatics.h"
-
-#include "Input.h"
-
 #include <iostream>
 #include <string>
+
+#include "EngineStatics.h"
+#include "Input.h"
+#include "SceneTextReader.h"
 
 Scene::Scene(const std::string& sceneName)
 	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr),

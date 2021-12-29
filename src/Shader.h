@@ -1,13 +1,13 @@
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <vector>
-
 #include <GL/glew.h>
 
 #include <glm\glm.hpp>
 #include <glm\gtc\type_ptr.hpp>
+
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 //Stores shader information and provides a way to load a shader by interfacing with ShaderManager. 
 //Can load vertex shader, fragment shader, Tessellation Control shader, Tessellation Evaluation shader & Geometry shader

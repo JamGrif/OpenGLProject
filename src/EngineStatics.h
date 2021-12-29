@@ -1,5 +1,8 @@
 #pragma once
+
 #include <glm\glm.hpp>
+
+#include "OpenGLWindow.h"
 #include "Camera.h"
 #include "LightManager.h"
 
@@ -8,8 +11,8 @@ class EngineStatics
 {
 public:
 
-	static GLFWwindow*		getAppWindow() { return m_appWindow; }
-	static void				setAppWindow(GLFWwindow* w) { m_appWindow = w; }
+	static OpenGLWindow*	getAppWindow() { return m_appWindow; }
+	static void				setAppWindow(OpenGLWindow* w) { m_appWindow = w; }
 
 	static int				getScreenWidth() { return m_screenWidth; }
 	static void				setScreenWidth(int width) { m_screenWidth = width; }
@@ -35,7 +38,7 @@ public:
 
 private:
 
-	static GLFWwindow*		m_appWindow;
+	static OpenGLWindow*		m_appWindow;
 
 	static int				m_screenWidth;
 

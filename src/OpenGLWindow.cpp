@@ -1,8 +1,9 @@
 #include "OpenGLWindow.h"
 
+#include <iostream>
+
 #include "stb_image.h"
 #include "EngineStatics.h"
-#include <iostream>
 
 OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, std::string windowTitle, bool fullScreen)
 	:m_status(false), m_currentWindowWidth(windowWidth), m_currentWindowHeight(windowHeight), m_aspectRatio(0), m_Window(nullptr)
@@ -34,7 +35,7 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, std::string window
 	setWindowIcon("res/icon/Icon.jpg");
 	
 	glfwMakeContextCurrent(m_Window);
-	EngineStatics::setAppWindow(m_Window);
+	EngineStatics::setAppWindow(this);
 	EngineStatics::setScreenWidth(m_currentWindowWidth);
 	EngineStatics::setScreenHeight(m_currentWindowHeight);
 

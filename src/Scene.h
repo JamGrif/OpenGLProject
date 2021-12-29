@@ -7,7 +7,7 @@
 
 #include "ModelSky.h"
 
-#include "SceneTextReader.h"
+
 
 //Class that contains all the objects of a loaded level. Loops through them every frame, updating and drawing them
 class Scene

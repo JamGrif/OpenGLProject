@@ -1,10 +1,5 @@
 #pragma once
 
-#include "Mesh.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "EngineStatics.h"
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -14,6 +9,11 @@
 #include <glm\gtx\transform.hpp>
 
 #include <string>
+
+#include "Mesh.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "EngineStatics.h"
 
 // Abstract model class - The different classes that derive from Model all have their own implementation of
 // drawing, such as different shader values, attributes and texture map types. Essentially, provides an

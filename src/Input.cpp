@@ -19,10 +19,10 @@ Input::Input()
 {
 	std::cout << "Input Initialized" << std::endl;
 	 
-	glfwSetKeyCallback(EngineStatics::getAppWindow(), keyCALLBACK);
-	glfwSetCursorPosCallback(EngineStatics::getAppWindow(), mouseCALLBACK);
+	glfwSetKeyCallback(EngineStatics::getAppWindow()->getWindow(), keyCALLBACK);
+	glfwSetCursorPosCallback(EngineStatics::getAppWindow()->getWindow(), mouseCALLBACK);
 
-    glfwSetInputMode(EngineStatics::getAppWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); //Hide cursor during runtime
+    glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); //Hide cursor during runtime
 }
 
 Input::~Input()

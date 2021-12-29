@@ -1,6 +1,6 @@
 #include "EngineStatics.h"
 
-GLFWwindow* EngineStatics::m_appWindow			= nullptr;
+OpenGLWindow* EngineStatics::m_appWindow			= nullptr;
 
 int EngineStatics::m_screenWidth				= 0;
 

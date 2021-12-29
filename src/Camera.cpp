@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Input.h"
+
 Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
     : m_front(glm::vec3(0.0f, 0.0f, -1.0f)), m_movementSpeed(SPEED), m_mouseSensitivity(SENSITIVTY),
       m_position(position), m_worldUp(up), m_yaw(yaw), m_pitch(pitch)
