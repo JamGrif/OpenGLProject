@@ -30,302 +30,302 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, Light
 		return false;
 	}
 
-	std::string line = "";
-	int count = 0;
+	/*
+		1. Read the text file, determining all the objectTypes present in the scene and fill out temp objects
+		   to be used in there construction in the next part
+	*/
+
 	while (!fileStream.eof())
 	{
-		std::getline(fileStream, line);
+		std::string textFileLine = "";
+		std::getline(fileStream, textFileLine);
 
 		// Check if line is empty or a comment
-		if (line == "" || line.at(0) == '#')
+		if (textFileLine == "" || textFileLine.at(0) == '#')
 		{
 			// Skip line
 			continue;
 		}
 
-
 		std::string buf;
-		std::stringstream ss(line);
-		std::vector<std::string> textfileLine; // Full line, vector of individual strings (words)
-
-		/*
-			Reads one line at a time and each line is one vector object and
-			each collection of text separated by a space is its own string object
-			Then the vector full of strings is sent to the applyToObject function where each word
-			is applied to the corresponding attribute of the object
-
-		*/
+		std::stringstream ss(textFileLine);
+		std::vector<std::string> fullLine; // Full line, with each word as separate strings
 
 		// Continuously read the textfile line, putting each word individually into the vector
 		while (ss >> buf)
 		{
-			textfileLine.push_back(buf);
+			fullLine.push_back(buf);
 		}
 
-		if (textfileLine.at(0) == "directionalLight")
+		/*
+			Determine what objectType the textfile line is and create and fill out a temp template type for that objectType
+			which will be used to actually create the objects later on
+		*/
+
+		if (fullLine.at(0) == "directionalLight")
 		{
 			templateDirectionalLight object;
-			applyToDirectionalLight(object, textfileLine);
+			applyToDirectionalLight(object, fullLine);
 			completedDirectionalLightObjects.push_back(object);
 		}
-		else if (textfileLine.at(0) == "pointLight")
+		else if (fullLine.at(0) == "pointLight")
 		{
 			templatePointLight object;
-			applyToPointLight(object, textfileLine);
+			applyToPointLight(object, fullLine);
 			completedPointLightObjects.push_back(object);
 		}
-		else if (textfileLine.at(0) == "spotLight")
+		else if (fullLine.at(0) == "spotLight")
 		{
 			templateSpotLight object;
-			applyToSpotLight(object, textfileLine);
+			applyToSpotLight(object, fullLine);
 			completedSpotLightObjects.push_back(object);
 		}
-		else if (textfileLine.at(0) == "modelLighting") // .at(0) is the first word in the row - ObjectType
+		else if (fullLine.at(0) == "modelLighting") // .at(0) is the first word in the row - ObjectType
 		{
 			templateModelLighting object;
-			applyToModelLightingTemplate(object, textfileLine);
-			completedModelLightObjects.push_back(object);
-
+			applyToModelLightingTemplate(object, fullLine);
+			completedModelLightObjects.emplace_back(object);
 		}
-		else if (textfileLine.at(0) == "modelBasic")
+		else if (fullLine.at(0) == "modelBasic")
 		{
 			templateModelBasic object;
-			applyToModelBasicTemplate(object, textfileLine);
+			applyToModelBasicTemplate(object, fullLine);
 			completedModelBasicObjects.push_back(object);
 		}
-		else if (textfileLine.at(0) == "modelTerrain")
+		else if (fullLine.at(0) == "modelTerrain")
 		{
 			templateModelTerrain object;
-			applyToModelTerrainTemplate(object, textfileLine);
+			applyToModelTerrainTemplate(object, fullLine);
 			completedModelTerrainObjects.push_back(object);
 		}
-		else if (textfileLine.at(0) == "modelSprite")
+		else if (fullLine.at(0) == "modelSprite")
 		{
 			templateModelSprite object;
-			applyToModelSpriteTemplate(object, textfileLine);
+			applyToModelSpriteTemplate(object, fullLine);
 			completedModelSpriteObjects.push_back(object);
 		}
-		else if (textfileLine.at(0) == "modelEnvironment")
+		else if (fullLine.at(0) == "modelEnvironment")
 		{
 			templateModelEnvironment object;
-			applyToModelEnvironmentTemplate(object, textfileLine);
+			applyToModelEnvironmentTemplate(object, fullLine);
 			completedModelEnvironmentObjects.push_back(object);
 		}
-		else if (textfileLine.at(0) == "modelGeometry")
+		else if (fullLine.at(0) == "modelGeometry")
 		{
 			templateModelGeometry object;
-			applyToModelGeometryTemplate(object, textfileLine);
+			applyToModelGeometryTemplate(object, fullLine);
 			completedModelGeometryObjects.push_back(object);
 		}
 		else
 		{
-			std::cout << "Could not determine objectType - " << textfileLine.at(0) << " - FAILURE" << std::endl;
+			std::cout << "Could not determine objectType - " << fullLine.at(0) << " - FAILURE" << std::endl;
 		}
 
 	}// end of scene txt file read
 
 	fileStream.close();
 
-	//Now that the scene file has been read, actually create the objects and place into the scene meshes vector
+	/*
+		2. Use the temp objects to create and fill out the attributes of all the required objects in the scene
+		   and add it to the scene vector
+	*/
 
-	for (int i = 0; i < completedDirectionalLightObjects.size(); i++)
+	for (const auto& o : completedDirectionalLightObjects)
 	{
 		sceneLightManager->addDirectionalLight(
-			completedDirectionalLightObjects.at(i).Ambient,
-			completedDirectionalLightObjects.at(i).Diffuse,
-			completedDirectionalLightObjects.at(i).Specular,
-			completedDirectionalLightObjects.at(i).Direction
+			o.Ambient,
+			o.Diffuse,
+			o.Specular,
+			o.Direction
 		);
-
 	}
 
-	for (int i = 0; i < completedPointLightObjects.size(); i++)
+	for (const auto& o : completedPointLightObjects)
 	{
 		sceneLightManager->addPointLight(
-			completedPointLightObjects.at(i).Ambient,
-			completedPointLightObjects.at(i).Diffuse,
-			completedPointLightObjects.at(i).Specular,
-			completedPointLightObjects.at(i).Position
+			o.Ambient,
+			o.Diffuse,
+			o.Specular,
+			o.Position
 		);
 	}
 
-	for (int i = 0; i < completedSpotLightObjects.size(); i++)
+	for (const auto& o : completedSpotLightObjects)
 	{
 		sceneLightManager->addSpotLight(
-			completedSpotLightObjects.at(i).Ambient,
-			completedSpotLightObjects.at(i).Diffuse,
-			completedSpotLightObjects.at(i).Specular,
-			completedSpotLightObjects.at(i).Position
+			o.Ambient,
+			o.Diffuse,
+			o.Specular,
+			o.Position
 		);
 	}
 
-	for (int i = 0; i < completedModelLightObjects.size(); i++) // Create all modelLighting objects
+	for (const auto& o : completedModelLightObjects)
 	{
 		ModelLighting* model = new ModelLighting();
 
-		model->SetXPos(completedModelLightObjects.at(i).PosX);
-		model->SetYPos(completedModelLightObjects.at(i).PosY);
-		model->SetZPos(completedModelLightObjects.at(i).PosZ);
+		model->SetXPos(o.PosX);
+		model->SetYPos(o.PosY);
+		model->SetZPos(o.PosZ);
 
-		model->SetXRot(completedModelLightObjects.at(i).RotX);
-		model->SetYRot(completedModelLightObjects.at(i).RotY);
-		model->SetZRot(completedModelLightObjects.at(i).RotZ);
+		model->SetXRot(o.RotX);
+		model->SetYRot(o.RotY);
+		model->SetZRot(o.RotZ);
 
-		model->SetXScale(completedModelLightObjects.at(i).ScaleX);
-		model->SetYScale(completedModelLightObjects.at(i).ScaleY);
-		model->SetZScale(completedModelLightObjects.at(i).ScaleZ);
+		model->SetXScale(o.ScaleX);
+		model->SetYScale(o.ScaleY);
+		model->SetZScale(o.ScaleZ);
 
-		model->setMesh(completedModelLightObjects.at(i).mesh);
+		model->setMesh(o.mesh);
 
-		if (completedModelLightObjects.at(i).diffuseMap != "null")
+		if (o.diffuseMap != "null")
 		{
-			model->setDiffuseTexture(completedModelLightObjects.at(i).diffuseMap);
+			model->setDiffuseTexture(o.diffuseMap);
 		}
 		else
 		{
 			model->setDiffuseTexture("res/textures/blank.png"); // Models have to have a diffuse map
 		}
 
-		if (completedModelLightObjects.at(i).specularMap != "null")
+		if (o.specularMap != "null")
 		{
-			model->setSpecularTexture(completedModelLightObjects.at(i).specularMap);
+			model->setSpecularTexture(o.specularMap);
 		}
 		else
 		{
 			model->setSpecularTexture("res/textures/blank.png"); // Models have to have a specular map
 		}
 
-		if (completedModelLightObjects.at(i).normalMap != "null")
+		if (o.normalMap != "null")
 		{
-			model->setNormalTexture(completedModelLightObjects.at(i).normalMap, completedModelLightObjects.at(i).normalMapNormalize);
+			model->setNormalTexture(o.normalMap, o.normalMapNormalize);
 		}
 
-		if (completedModelLightObjects.at(i).heightMap != "null")
+		if (o.heightMap != "null")
 		{
-			model->setHeightTexture(completedModelLightObjects.at(i).heightMap, completedModelLightObjects.at(i).heightMapHeight);
+			model->setHeightTexture(o.heightMap, o.heightMapHeight);
 		}
 
-		if (completedModelLightObjects.at(i).emissionMap != "null")
+		if (o.emissionMap != "null")
 		{
-			model->setEmissionTexture(completedModelLightObjects.at(i).emissionMap);
+			model->setEmissionTexture(o.emissionMap);
 		}
 
 		sceneMeshes.push_back(model);
 	}
 
-	for (int i = 0; i < completedModelBasicObjects.size(); i++)
+	for (const auto& o : completedModelBasicObjects)
 	{
 		ModelBasic* model = new ModelBasic();
 
-		model->SetXPos(completedModelBasicObjects.at(i).PosX);
-		model->SetYPos(completedModelBasicObjects.at(i).PosY);
-		model->SetZPos(completedModelBasicObjects.at(i).PosZ);
+		model->SetXPos(o.PosX);
+		model->SetYPos(o.PosY);
+		model->SetZPos(o.PosZ);
 
-		model->SetXRot(completedModelBasicObjects.at(i).RotX);
-		model->SetYRot(completedModelBasicObjects.at(i).RotY);
-		model->SetZRot(completedModelBasicObjects.at(i).RotZ);
+		model->SetXRot(o.RotX);
+		model->SetYRot(o.RotY);
+		model->SetZRot(o.RotZ);
 
-		model->SetXScale(completedModelBasicObjects.at(i).ScaleX);
-		model->SetYScale(completedModelBasicObjects.at(i).ScaleY);
-		model->SetZScale(completedModelBasicObjects.at(i).ScaleZ);
+		model->SetXScale(o.ScaleX);
+		model->SetYScale(o.ScaleY);
+		model->SetZScale(o.ScaleZ);
 
-		model->setMesh(completedModelBasicObjects.at(i).mesh);
+		model->setMesh(o.mesh);
 
-		model->copyPointLight(completedModelBasicObjects.at(i).lightToCopy);
+		model->copyPointLight(o.lightToCopy);
 
 		sceneMeshes.push_back(model);
 	}
 
-	for (int i = 0; i < completedModelTerrainObjects.size(); i++)
+	for (const auto& o : completedModelTerrainObjects)
 	{
 		ModelTerrain* model = new ModelTerrain();
 
-		model->SetXPos(completedModelTerrainObjects.at(i).PosX);
-		model->SetYPos(completedModelTerrainObjects.at(i).PosY);
-		model->SetZPos(completedModelTerrainObjects.at(i).PosZ);
+		model->SetXPos(o.PosX);
+		model->SetYPos(o.PosY);
+		model->SetZPos(o.PosZ);
 
-		model->SetXRot(completedModelTerrainObjects.at(i).RotX);
-		model->SetYRot(completedModelTerrainObjects.at(i).RotY);
-		model->SetZRot(completedModelTerrainObjects.at(i).RotZ);
+		model->SetXRot(o.RotX);
+		model->SetYRot(o.RotY);
+		model->SetZRot(o.RotZ);
 
-		model->SetXScale(completedModelTerrainObjects.at(i).ScaleX);
-		model->SetYScale(completedModelTerrainObjects.at(i).ScaleY);
-		model->SetZScale(completedModelTerrainObjects.at(i).ScaleZ);
+		model->SetXScale(o.ScaleX);
+		model->SetYScale(o.ScaleY);
+		model->SetZScale(o.ScaleZ);
 
-		model->setElevation(completedModelTerrainObjects.at(i).elevation);
+		model->setElevation(o.elevation);
 
 		sceneMeshes.push_back(model);
 	}
 
-	for (int i = 0; i < completedModelSpriteObjects.size(); i++)
+	for (const auto& o : completedModelSpriteObjects)
 	{
 		ModelSprite* model = new ModelSprite();
 
-		model->SetXPos(completedModelSpriteObjects.at(i).PosX);
-		model->SetYPos(completedModelSpriteObjects.at(i).PosY);
-		model->SetZPos(completedModelSpriteObjects.at(i).PosZ);
+		model->SetXPos(o.PosX);
+		model->SetYPos(o.PosY);
+		model->SetZPos(o.PosZ);
 
-		model->SetXRot(completedModelSpriteObjects.at(i).RotX);
-		model->SetYRot(completedModelSpriteObjects.at(i).RotY);
-		model->SetZRot(completedModelSpriteObjects.at(i).RotZ);
+		model->SetXRot(o.RotX);
+		model->SetYRot(o.RotY);
+		model->SetZRot(o.RotZ);
 
-		model->SetXScale(completedModelSpriteObjects.at(i).ScaleX);
-		model->SetYScale(completedModelSpriteObjects.at(i).ScaleY);
-		model->SetZScale(completedModelSpriteObjects.at(i).ScaleZ);
+		model->SetXScale(o.ScaleX);
+		model->SetYScale(o.ScaleY);
+		model->SetZScale(o.ScaleZ);
 
-		model->setSprite(completedModelSpriteObjects.at(i).sprite);
+		model->setSprite(o.sprite);
 		sceneMeshes.push_back(model);
 	}
 
-	for (int i = 0; i < completedModelEnvironmentObjects.size(); i++)
+	for (const auto& o : completedModelEnvironmentObjects)
 	{
 		ModelEnvironment* model = new ModelEnvironment();
 
-		model->SetXPos(completedModelEnvironmentObjects.at(i).PosX);
-		model->SetYPos(completedModelEnvironmentObjects.at(i).PosY);
-		model->SetZPos(completedModelEnvironmentObjects.at(i).PosZ);
+		model->SetXPos(o.PosX);
+		model->SetYPos(o.PosY);
+		model->SetZPos(o.PosZ);
 
-		model->SetXRot(completedModelEnvironmentObjects.at(i).RotX);
-		model->SetYRot(completedModelEnvironmentObjects.at(i).RotY);
-		model->SetZRot(completedModelEnvironmentObjects.at(i).RotZ);
+		model->SetXRot(o.RotX);
+		model->SetYRot(o.RotY);
+		model->SetZRot(o.RotZ);
 
-		model->SetXScale(completedModelEnvironmentObjects.at(i).ScaleX);
-		model->SetYScale(completedModelEnvironmentObjects.at(i).ScaleY);
-		model->SetZScale(completedModelEnvironmentObjects.at(i).ScaleZ);
+		model->SetXScale(o.ScaleX);
+		model->SetYScale(o.ScaleY);
+		model->SetZScale(o.ScaleZ);
 
-		model->setMesh(completedModelEnvironmentObjects.at(i).mesh);
+		model->setMesh(o.mesh);
 
-		model->toggleReflection(completedModelEnvironmentObjects.at(i).reflection);
-		model->toggleRefraction(completedModelEnvironmentObjects.at(i).refraction);
+		model->toggleReflection(o.reflection);
+		model->toggleRefraction(o.refraction);
 
 		sceneMeshes.push_back(model);
 	}
 
-	for (int i = 0; i < completedModelGeometryObjects.size(); i++)
+	for (const auto& o : completedModelGeometryObjects)
 	{
 		ModelGeometry* model = new ModelGeometry();
 
-		model->SetXPos(completedModelGeometryObjects.at(i).PosX);
-		model->SetYPos(completedModelGeometryObjects.at(i).PosY);
-		model->SetZPos(completedModelGeometryObjects.at(i).PosZ);
+		model->SetXPos(o.PosX);
+		model->SetYPos(o.PosY);
+		model->SetZPos(o.PosZ);
 
-		model->SetXRot(completedModelGeometryObjects.at(i).RotX);
-		model->SetYRot(completedModelGeometryObjects.at(i).RotY);
-		model->SetZRot(completedModelGeometryObjects.at(i).RotZ);
+		model->SetXRot(o.RotX);
+		model->SetYRot(o.RotY);
+		model->SetZRot(o.RotZ);
 
-		model->SetXScale(completedModelGeometryObjects.at(i).ScaleX);
-		model->SetYScale(completedModelGeometryObjects.at(i).ScaleY);
-		model->SetZScale(completedModelGeometryObjects.at(i).ScaleZ);
+		model->SetXScale(o.ScaleX);
+		model->SetYScale(o.ScaleY);
+		model->SetZScale(o.ScaleZ);
 
-		model->setMesh(completedModelGeometryObjects.at(i).mesh);
+		model->setMesh(o.mesh);
 
 		sceneMeshes.push_back(model);
-
 	}
 
 	return true;
-}
 
+}
 
 void SceneTextReader::applyToLight(templateLight& l, const std::vector<std::string>& vector)
 {
