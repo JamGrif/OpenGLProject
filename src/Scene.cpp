@@ -67,23 +67,17 @@ bool Scene::loadScene()
 
 
 	/*
-		Create scene reader object
-	*/
-	
-	SceneTextReader* txtReader = new SceneTextReader(m_sceneName);
-	
-	/*
-		Run scene reader, giving it the scene objects vector to fill out
+		Run scene reader, giving it the scene objects vector and light manager to fill out
 	*/
 
-	txtReader->runSceneTextReader(m_sceneMeshes, m_sceneLightManager);
+	SceneTextReader txtReader(m_sceneName, m_sceneMeshes, m_sceneLightManager);
 
-	/*
-		Clean up object
-	*/
+	if (!txtReader.getStatus()) // Ensure textfile was read correctly
+	{
+		return false;
+	}
 
-	delete txtReader;
-	txtReader = nullptr;
+
 	
 	return true;
 }

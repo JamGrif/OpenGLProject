@@ -6,28 +6,16 @@
 #include <fstream>
 #include <sstream>
 
-SceneTextReader::SceneTextReader(const std::string& filename)
+SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager)
+	:m_filename(filename), m_status(false)
 {
-	//std::cout << "SceneTextReader constructor" << std::endl;
-
-	m_filename = filename;
-}
-
-SceneTextReader::~SceneTextReader()
-{
-	//std::cout << "SceneTextReader destructor" << std::endl;
-}
-
-bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager)
-{
-	//std::cout << "SceneTextReader runSceneTextReader" << std::endl;
-
 	std::ifstream fileStream(m_filename, std::ios::in);
 
-	if (!fileStream)
+	if (!fileStream) // Check if file opened correctly
 	{
-		std::cout << "File not found" << std::endl;
-		return false;
+		std::cout << "Scene textfile not found - " << filename << std::endl;
+		m_status = false;
+		return;
 	}
 
 	/*
@@ -323,8 +311,17 @@ bool SceneTextReader::runSceneTextReader(std::vector<Model*>& sceneMeshes, Light
 		sceneMeshes.push_back(model);
 	}
 
-	return true;
+	m_status = true;
 
+}
+
+SceneTextReader::~SceneTextReader()
+{
+}
+
+bool SceneTextReader::getStatus()
+{
+	return m_status;
 }
 
 void SceneTextReader::applyToLight(templateLight& l, const std::vector<std::string>& vector)

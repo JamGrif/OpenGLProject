@@ -14,17 +14,20 @@ class SceneTextReader
 {
 public:
 
-	SceneTextReader(const std::string& filename);
+	SceneTextReader(const std::string& filename, std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager);
 	~SceneTextReader();
 
-	bool runSceneTextReader(std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager);
-
-
-	//void createModelLightingObject(templateModelLighting& o);
+	bool getStatus();
 
 private:
 	std::string m_filename;
+
+	bool m_status;
 private:
+
+	/*
+		Light Objects
+	*/
 
 	struct templateLight
 	{
@@ -59,7 +62,9 @@ private:
 	void applyToDirectionalLight(templateDirectionalLight& l, const std::vector<std::string>& vector);
 	void applyToSpotLight(templateSpotLight& l, const std::vector<std::string>& vector);
 
-
+	/*
+		Model Objects
+	*/
 
 
 	struct templateModel
@@ -137,6 +142,5 @@ private:
 	void applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& vector);
 	void applyToModelEnvironmentTemplate(templateModelEnvironment& o, const std::vector<std::string>& vector);
 	void applyToModelGeometryTemplate(templateModelGeometry& o, const std::vector<std::string>& vector);
-
 
 };

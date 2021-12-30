@@ -136,9 +136,11 @@ bool Application::appInit()
 	// ----------------
 	
 	// Create scene object
-	changeScene("res/scenes/materialTest.txt");
+	if (!changeScene("res/scenes/materialTest.txt")) // Ensure scene loaded successfully
+	{
+		return false;
+	}
 
-	
 	return true;
 }
 
