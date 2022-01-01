@@ -65,7 +65,6 @@ bool Scene::loadScene()
 	m_sceneFilterFramebuffer = new Framebuffer(false);
 	m_sceneMSAAFrameBuffer = new Framebuffer(true);
 
-
 	/*
 		Run scene reader, giving it the scene objects vector and light manager to fill out
 	*/
@@ -77,8 +76,6 @@ bool Scene::loadScene()
 		return false;
 	}
 
-
-	
 	return true;
 }
 

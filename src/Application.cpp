@@ -5,10 +5,10 @@
 
 #include "stb_image.h"
 #include "EngineStatics.h"
+#include "GameTimer.h"
 
 Application::Application()
-	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_loadedScene(nullptr), m_input(nullptr),
-	m_deltaTime(0.0f), m_lastFrame(0.0f), m_previousTime(0.0), m_frameCount(0), m_currentFrame(0.0)
+	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_loadedScene(nullptr), m_input(nullptr)
 {
 }
 
@@ -136,7 +136,7 @@ bool Application::appInit()
 	// ----------------
 	
 	// Create scene object
-	if (!changeScene("res/scenes/lightTest.txt")) // Ensure scene loaded successfully
+	if (!changeScene("res/scenes/FMPscene.txt")) // Ensure scene loaded successfully
 	{
 		return false;
 	}
@@ -149,9 +149,8 @@ bool Application::appInit()
 /// </summary>
 void Application::appLoop()
 {
-	m_previousTime = glfwGetTime();
-	m_frameCount = 0;
-	m_currentFrame = 0;
+	GameTimer gt;
+	gt.startGameTimer();
 
 	while (!glfwWindowShouldClose(m_appWindow->getWindow()))
 	{
@@ -160,7 +159,9 @@ void Application::appLoop()
 		//ImGui_ImplGlfw_NewFrame();
 		//ImGui::NewFrame();
 
-		calculateDeltaTime();
+		gt.updateGameTimer();
+
+		//calculateDeltaTime();
 
 		glClear(GL_DEPTH_BUFFER_BIT); //Clears the screen buffers
 		glfwPollEvents();
@@ -190,6 +191,8 @@ void Application::appLoop()
 		glfwSwapBuffers(m_appWindow->getWindow());
 
 	}
+
+	gt.stopGameTimer();
 }
 
 /// <summary>
@@ -229,23 +232,3 @@ bool Application::changeScene(const std::string newSceneName)
 	return false;
 }
 
-void Application::calculateDeltaTime()
-{
-	// Delta time
-	m_currentFrame = glfwGetTime();
-	m_deltaTime = m_currentFrame - m_lastFrame;
-	m_lastFrame = m_currentFrame;
-
-	// Calculate framecount
-	m_frameCount++;
-	// If a second has passed.
-	if (m_currentFrame - m_previousTime >= 1.0)
-	{
-		// Display the frame count here any way you want.
-		m_appWindow->setWindowTitle(std::to_string(m_frameCount));
-
-		m_frameCount = 0;
-		m_previousTime = m_currentFrame;
-	}
-	EngineStatics::setDeltaTime(m_deltaTime);
-}

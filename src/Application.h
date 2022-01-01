@@ -13,6 +13,8 @@
 #include "Input.h"
 #include "Scene.h"
 
+
+
 // Abstracts the program out of main, encapsulating the entire program
 class Application
 {
@@ -29,8 +31,6 @@ private:
 
 	bool		changeScene(const std::string newSceneName);
 
-	void		calculateDeltaTime();
-
 	OpenGLWindow* m_appWindow;
 
 	glm::mat4	m_projMatrix;
@@ -43,12 +43,5 @@ private:
 	
 	Scene*		m_loadedScene;
 
-	// Delta time
-	double		m_deltaTime;
-	double		m_lastFrame;
-
-	double		m_previousTime;
-	int			m_frameCount;
-	double		m_currentFrame;
 };
 
