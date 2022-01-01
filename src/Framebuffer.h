@@ -24,6 +24,9 @@ public:
 	void			bindFramebuffer();
 	void			unbindFramebuffer();
 
+	void			bindReadFramebuffer();
+	void			bindWriteFramebuffer();
+
 	void			setFrameFilter(int index);
 
 	unsigned int getFBO();

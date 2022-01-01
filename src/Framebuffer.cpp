@@ -125,6 +125,19 @@ void Framebuffer::unbindFramebuffer()
 	glDisable(GL_DEPTH_TEST);
 }
 
+
+
+void Framebuffer::bindReadFramebuffer()
+{
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FBO);
+}
+
+
+void Framebuffer::bindWriteFramebuffer()
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_FBO);
+}
+
 /// <summary>
 /// Specifies which filter will be used when presenting buffer to the screen (see enum in Framebuffer.h)
 /// </summary>
