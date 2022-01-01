@@ -5,7 +5,6 @@ ModelLighting::ModelLighting()
 	m_modelNormalTexture(nullptr), m_modelHeightTexture(nullptr), m_shininess(48.0f), m_normalizeTexture(false), 
 	m_usingEmission(false), m_usingNormal(false), m_usingHeight(false), m_heightAmount(0.5)
 {
-
 	setShaderOne("res/shaders/lightingPassOne-vertex.glsl", "res/shaders/lightingPassOne-fragment.glsl");
 	setShaderTwo("res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
 }
@@ -48,23 +47,22 @@ ModelLighting::~ModelLighting()
 /// </summary>
 void ModelLighting::drawPassOne()
 {
-	// If no valid model or shader attached
-	if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
-	{
-		return;
-	}
-
-	m_modelShaderPassOne->Bind();
-	m_modelShaderPassOne->setUniformMatrix4fv("lightSpaceMatrix", *EngineStatics::getLightSpaceMatrix());
-	m_modelShaderPassOne->setUniformMatrix4fv("model", m_mMat);
-
-	setVBOAttrib(true, false, false, false, false);
-
-	// Draw
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_modelMesh->getIndices().size()), GL_UNSIGNED_INT, 0);
-
-	m_modelShaderPassOne->Unbind();
-
+	//// If no valid model or shader attached
+	//if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
+	//{
+	//	return;
+	//}
+	//
+	//m_modelShaderPassOne->Bind();
+	////m_modelShaderPassOne->setUniformMatrix4fv("lightSpaceMatrix", *EngineStatics::getLightSpaceMatrix());
+	//m_modelShaderPassOne->setUniformMatrix4fv("model", m_mMat);
+	//
+	//setVBOAttrib(true, false, false, false, false);
+	//
+	//// Draw
+	//glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_modelMesh->getIndices().size()), GL_UNSIGNED_INT, 0);
+	//
+	//m_modelShaderPassOne->Unbind();
 }
 
 /// <summary>
@@ -234,7 +232,6 @@ void ModelLighting::drawPassTwo()
 	}
 	
 	m_modelShaderPassTwo->Unbind();
-
 }
 
 /// <summary>

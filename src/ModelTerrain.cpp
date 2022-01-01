@@ -4,7 +4,6 @@
 ModelTerrain::ModelTerrain()
 	:m_elevation(2.5), m_minElevation(-8), m_maxElevation(-3)
 {
-
 	setShaderTwo("res/shaders/terrain-vertex.glsl", "res/shaders/terrain-tessCont.glsl", "res/shaders/terrain-tessEval.glsl", "res/shaders/terrain-fragment.glsl");
 
 	m_terrainTexture = TextureManager::retrieveTexture("res/textures/terrain_diff.png");
@@ -64,7 +63,6 @@ void ModelTerrain::drawPassTwo()
 	m_modelShaderPassTwo->Unbind();
 	m_terrainTexture->Unbind();
 	m_terrainHeight->Unbind();
-
 }
 
 /// <summary>
@@ -101,6 +99,4 @@ void ModelTerrain::alterElevation(float change)
 
 		if (m_elevation > m_maxElevation)
 				m_elevation = m_maxElevation;
-
-	
 }

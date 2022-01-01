@@ -3,14 +3,12 @@
 ModelBasic::ModelBasic()
 	:m_defaultColour(1.0, 1.0, 1.0), NOT_COPYING_LIGHT(-1), m_pointLightToCopy(NOT_COPYING_LIGHT)
 {
-
 	//setShaderOne--------
 	setShaderTwo("res/shaders/basic-vertex.glsl", "res/shaders/basic-fragment.glsl");
 }
 
 ModelBasic::~ModelBasic()
 {
-
 }
 
 /// <summary>
@@ -18,11 +16,11 @@ ModelBasic::~ModelBasic()
 /// </summary>
 void ModelBasic::drawPassOne()
 {
-	// If no valid model or shader attached
-	if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
-	{
-		return;
-	}
+	//// If no valid model or shader attached
+	//if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
+	//{
+	//	return;
+	//}
 }
 
 /// <summary>
@@ -82,7 +80,6 @@ void ModelBasic::drawPassTwo()
 	*/
 
 	m_modelShaderPassTwo->Unbind();
-	
 }
 
 /// <summary>

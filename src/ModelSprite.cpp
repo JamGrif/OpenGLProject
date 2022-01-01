@@ -3,7 +3,6 @@
 ModelSprite::ModelSprite()
 	:m_modelSprite(nullptr)
 {
-	
 	setMesh("res/meshes/grass.obj");
 
 	setShaderTwo("res/shaders/blendingSprite-vertex.glsl", "res/shaders/blendingSprite-fragment.glsl");
@@ -21,11 +20,11 @@ ModelSprite::~ModelSprite()
 /// </summary>
 void ModelSprite::drawPassOne()
 {
-	//If no valid model or shader attached
-	if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
-	{
-		return;
-	}
+	////If no valid model or shader attached
+	//if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
+	//{
+	//	return;
+	//}
 }
 
 /// <summary>
@@ -69,7 +68,6 @@ void ModelSprite::drawPassTwo()
 	*/
 
 	m_modelSprite->Unbind();
-
 }
 
 void ModelSprite::setSprite(const std::string& filePath)

@@ -7,7 +7,6 @@ ModelEnvironment::ModelEnvironment()
 	setShaderTwo("res/shaders/environmentMapping-vertex.glsl", "res/shaders/environmentMapping-fragment.glsl");
 
 	m_skyTexture = TextureManager::retrieveCubeMap();
-	//setMesh("res/meshes/heart.obj");
 }
 
 ModelEnvironment::~ModelEnvironment()
@@ -20,11 +19,11 @@ ModelEnvironment::~ModelEnvironment()
 /// </summary>
 void ModelEnvironment::drawPassOne()
 {
-	//If no valid model or shader attached
-	if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
-	{
-		return;
-	}
+	////If no valid model or shader attached
+	//if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
+	//{
+	//	return;
+	//}
 }
 
 /// <summary>
@@ -84,7 +83,6 @@ void ModelEnvironment::drawPassTwo()
 
 	m_modelShaderPassTwo->Unbind();
 	m_skyTexture->Unbind();
-
 }
 
 void ModelEnvironment::toggleReflection(bool value)

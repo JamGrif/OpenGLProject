@@ -2,7 +2,6 @@
 
 ModelSky::ModelSky()
 {
-
 	m_skyTexture = TextureManager::retrieveCubeMap();
 
 	//setShaderOne--------
@@ -24,11 +23,11 @@ ModelSky::~ModelSky()
 /// </summary>
 void ModelSky::drawPassOne()
 {
-	//If no valid model or shader attached
-	if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
-	{
-		return;
-	}
+	////If no valid model or shader attached
+	//if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
+	//{
+	//	return;
+	//}
 }
 
 /// <summary>
@@ -80,5 +79,4 @@ void ModelSky::drawPassTwo()
 
 	m_modelShaderPassTwo->Unbind();
 	m_skyTexture->Unbind();
-
 }

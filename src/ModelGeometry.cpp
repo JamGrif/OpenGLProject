@@ -20,7 +20,6 @@ void ModelGeometry::drawPassOne()
 {
 }
 
-
 void ModelGeometry::drawPassTwo()
 {
 	//If no shader attached
