@@ -161,23 +161,10 @@ void Application::appLoop()
 
 		gt.updateGameTimer();
 
-		//calculateDeltaTime();
-
 		glClear(GL_DEPTH_BUFFER_BIT); //Clears the screen buffers
 		glfwPollEvents();
 
-		if (Input::getKeyPressedOnce(GLFW_KEY_F1))
-		{
-			changeScene("res/scenes/FMPscene.txt");
-		}
-		if (Input::getKeyPressedOnce(GLFW_KEY_F2))
-		{
-			changeScene("res/scenes/jamieTest.txt");
-		}
-		if (Input::getKeyPressedOnce(GLFW_KEY_F3))
-		{
-			changeScene("res/scenes/materialTest.txt");
-		}
+		checkForSceneChange();
 
 		m_loadedScene->updateScene();
 
@@ -204,6 +191,27 @@ void Application::appLoop()
 void Application::windowResizeCALLBACK(GLFWwindow* window, int newWidth, int newHeight)
 {
 	std::cout << "called windowResizeCALLBACK function" << std::endl;
+}
+
+
+void Application::checkForSceneChange()
+{
+	if (Input::getKeyPressedOnce(GLFW_KEY_F1))
+	{
+		changeScene("res/scenes/FMPscene.txt");
+	}
+	if (Input::getKeyPressedOnce(GLFW_KEY_F2))
+	{
+		changeScene("res/scenes/jamieTest.txt");
+	}
+	if (Input::getKeyPressedOnce(GLFW_KEY_F3))
+	{
+		changeScene("res/scenes/materialTest.txt");
+	}
+	if (Input::getKeyPressedOnce(GLFW_KEY_F4))
+	{
+		changeScene("res/scenes/lightTest.txt");
+	}
 }
 
 bool Application::changeScene(const std::string newSceneName)

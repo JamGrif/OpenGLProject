@@ -29,6 +29,7 @@ public:
 
 private:
 
+	void		checkForSceneChange();
 	bool		changeScene(const std::string newSceneName);
 
 	OpenGLWindow* m_appWindow;
