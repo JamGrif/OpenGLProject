@@ -6,7 +6,7 @@
 #include "Camera.h"
 #include "LightManager.h"
 
-//Used to allow classes to easily access required values created in other parts of the program
+// Used to allow classes to easily access required values created in other parts of the program
 class EngineStatics
 {
 public:
@@ -26,9 +26,6 @@ public:
 	static glm::mat4*		getProjectionMatrix() { return m_projectionMatrix; }
 	static void				setProjectionMatrix(glm::mat4* pm) { m_projectionMatrix = pm; }
 
-	static glm::mat4*		getLightSpaceMatrix() { return m_lightSpaceMatrix; }
-	static void				setLightSpaceMatrix(glm::mat4* lsm) { m_lightSpaceMatrix = lsm; }
-
 	static LightManager*	getLightManager() { return m_lightManager; }
 	static void				setLightManager(LightManager* lm) { m_lightManager = lm; }
 
@@ -38,7 +35,7 @@ public:
 
 private:
 
-	static OpenGLWindow*		m_appWindow;
+	static OpenGLWindow*	m_appWindow;
 
 	static int				m_screenWidth;
 
@@ -47,8 +44,6 @@ private:
 	static Camera*			m_camera;
 
 	static glm::mat4*		m_projectionMatrix;
-
-	static glm::mat4*		m_lightSpaceMatrix;
 
 	static LightManager*	m_lightManager;
 

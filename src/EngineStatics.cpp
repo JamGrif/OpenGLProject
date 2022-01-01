@@ -10,8 +10,6 @@ Camera* EngineStatics::m_camera					= nullptr;
 
 glm::mat4* EngineStatics::m_projectionMatrix	= nullptr;
 
-glm::mat4* EngineStatics::m_lightSpaceMatrix	= nullptr;
-
 LightManager* EngineStatics::m_lightManager		= nullptr;
 
 double EngineStatics::m_deltaTime				= 0;
