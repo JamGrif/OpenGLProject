@@ -99,8 +99,8 @@ void Scene::updateScene()
 	}
 	
 	// Reads from the MSAA buffer and writes it to the Filter buffer
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_sceneMSAAFrameBuffer->getFBO());
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_sceneFilterFramebuffer->getFBO());
+	m_sceneMSAAFrameBuffer->bindReadFramebuffer();
+	m_sceneFilterFramebuffer->bindWriteFramebuffer();
 	glBlitFramebuffer(0, 0, m_cachedScreenWidth, m_cachedScreenHeight, 0, 0, m_cachedScreenWidth, m_cachedScreenHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	m_sceneMSAAFrameBuffer->unbindFramebuffer();
 
