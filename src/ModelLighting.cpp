@@ -104,9 +104,9 @@ void ModelLighting::drawPassTwo()
 	// Apply point light(s) values to shader
 	if (m_localLightManager->getCurrentPointLights() > 0) // Ensure a point light exists
 	{
-		int x = m_localLightManager->getCurrentPointLights();
+		unsigned int x = m_localLightManager->getCurrentPointLights();
 
-		for (int i = 0; i < m_localLightManager->getCurrentPointLights(); i++) // Loop through all scene point lights available
+		for (unsigned int i = 0; i < m_localLightManager->getCurrentPointLights(); i++) // Loop through all scene point lights available
 		{
 			std::string s = std::to_string(i);
 

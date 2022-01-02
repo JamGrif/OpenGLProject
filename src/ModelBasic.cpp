@@ -86,7 +86,7 @@ void ModelBasic::drawPassTwo()
 /// Indicates that this model will copy the values of a created scene pointlight (specifically its position and colour)
 /// </summary>
 /// <param name="index">The index of the point light in the point light vector that will be copied</param>
-void ModelBasic::copyPointLight(int index)
+void ModelBasic::copyPointLight(unsigned int index)
 {
 	if (m_localLightManager->getPointLight(index) == nullptr) // If pointlight at specified index does not exist, ignore and return
 	{

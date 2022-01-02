@@ -13,7 +13,7 @@ public:
     void        drawPassOne() override;
     void        drawPassTwo() override;
 
-    void        copyPointLight(int index);
+    void        copyPointLight(unsigned int index);
 
 private:
 

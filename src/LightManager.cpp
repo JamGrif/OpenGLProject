@@ -47,9 +47,12 @@ LightManager::~LightManager()
 /// <param name="index">Index of the light within the directional light vector</param>
 void LightManager::setDirectionalLight(float x, float y, float z, int index)
 {
-	m_sceneDirectionalLights.at(index)->Direction.x = x;
-	m_sceneDirectionalLights.at(index)->Direction.y = y;
-	m_sceneDirectionalLights.at(index)->Direction.z = z;
+	if (m_sceneDirectionalLights.at(index) != nullptr)
+	{
+		m_sceneDirectionalLights.at(index)->Direction.x = x;
+		m_sceneDirectionalLights.at(index)->Direction.y = y;
+		m_sceneDirectionalLights.at(index)->Direction.z = z;
+	}
 }
 
 /// <summary>
@@ -60,7 +63,7 @@ void LightManager::setDirectionalLight(float x, float y, float z, int index)
 /// <param name="z"></param>
 void LightManager::addDirectionalLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction)
 {
-	//Ensure new directional lights don't exceed the maximum amount allowed
+	// Ensure new directional lights don't exceed the maximum amount allowed
 	if (m_currentDirectionalLights < m_maxDirectionalLights)
 	{
 		DirectionalLight* dl = new DirectionalLight(ambient, diffuse, specular, direction);
@@ -78,13 +81,13 @@ void LightManager::addDirectionalLight(glm::vec3 ambient, glm::vec3 diffuse, glm
 /// <returns></returns>
 DirectionalLight* LightManager::getDirectionalLight(int index) const
 {
-	//No directional lights exists
+	// No directional lights exists
 	if (m_currentDirectionalLights == 0)
 	{
 		return nullptr;
 	}
 
-	//Ensure index number is valid
+	// Ensure index number is valid
 	if (index <= m_sceneDirectionalLights.size())
 	{
 		return m_sceneDirectionalLights.at(index);
@@ -98,7 +101,7 @@ DirectionalLight* LightManager::getDirectionalLight(int index) const
 /// Returns the amount of directional lights active in scene
 /// </summary>
 /// <returns></returns>
-int LightManager::getCurrentDirectionalLights() const
+unsigned int LightManager::getCurrentDirectionalLights() const
 {
 	return m_currentDirectionalLights;
 }
@@ -112,9 +115,12 @@ int LightManager::getCurrentDirectionalLights() const
 /// <param name="index">Index of the light within the point light vector</param>
 void LightManager::setPointLight(float x, float y, float z, int index)
 {
-	m_scenePointLights.at(index)->Position.x = x;
-	m_scenePointLights.at(index)->Position.y = y;
-	m_scenePointLights.at(index)->Position.z = z;
+	if (m_scenePointLights.at(index) != nullptr)
+	{
+		m_scenePointLights.at(index)->Position.x = x;
+		m_scenePointLights.at(index)->Position.y = y;
+		m_scenePointLights.at(index)->Position.z = z;
+	}
 }
 
 /// <summary>
@@ -163,7 +169,7 @@ PointLight* LightManager::getPointLight(int index) const
 /// Returns the amount of point lights active in scene
 /// </summary>
 /// <returns></returns>
-int LightManager::getCurrentPointLights() const
+unsigned int LightManager::getCurrentPointLights() const
 {
 	return m_currentPointLights;
 }
@@ -177,9 +183,12 @@ int LightManager::getCurrentPointLights() const
 /// <param name="index">Index of the light within the spot light vector</param>
 void LightManager::setSpotLight(float x, float y, float z, int index)
 {
-	m_sceneSpotLights.at(index)->Position.x = x;
-	m_sceneSpotLights.at(index)->Position.y = y;
-	m_sceneSpotLights.at(index)->Position.z = z;
+	if (m_sceneSpotLights.at(index) != nullptr)
+	{
+		m_sceneSpotLights.at(index)->Position.x = x;
+		m_sceneSpotLights.at(index)->Position.y = y;
+		m_sceneSpotLights.at(index)->Position.z = z;
+	}
 }
 
 /// <summary>
@@ -208,13 +217,13 @@ void LightManager::addSpotLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 
 /// <returns></returns>
 SpotLight* LightManager::getSpotLight(int index) const
 {
-	//No point lights exists
+	// No point lights exists
 	if (m_currentSpotLights == 0)
 	{
 		return nullptr;
 	}
 
-	//Ensure index number is valid
+	// Ensure index number is valid
 	if (index <= m_sceneSpotLights.size())
 	{
 		return m_sceneSpotLights.at(index);
@@ -227,7 +236,7 @@ SpotLight* LightManager::getSpotLight(int index) const
 /// Returns the amount of spot lights active in scene
 /// </summary>
 /// <returns></returns>
-int LightManager::getCurrentSpotLights() const
+unsigned int LightManager::getCurrentSpotLights() const
 {
 	return m_currentSpotLights;
 }
