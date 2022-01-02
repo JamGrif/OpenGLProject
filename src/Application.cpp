@@ -136,7 +136,7 @@ bool Application::appInit()
 	// ----------------
 	
 	// Create scene object
-	if (!changeScene("res/scenes/FMPscene.txt")) // Ensure scene loaded successfully
+	if (!changeScene("res/scenes/lightTest.txt")) // Ensure scene loaded successfully
 	{
 		return false;
 	}
