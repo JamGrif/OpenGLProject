@@ -10,17 +10,22 @@ pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		0.0		3.0		0.0
 #objectType	    #PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh	#LightToCopy
 modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
 
+#spotLight objects...
+#ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
+spotLight			0.0		0.0		0.0		0.8		0.8		0.8		1.0		1.0		1.0		0.0		0.0		0.0
+
+
 # modelLighting objects...
 #ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap
-modelLighting	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null
+modelLighting	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null
+modelLighting	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null
+modelLighting	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null
+modelLighting	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null
+modelLighting	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null
+modelLighting	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null
+modelLighting	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null
+modelLighting	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null
+modelLighting	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null
 
 
 
