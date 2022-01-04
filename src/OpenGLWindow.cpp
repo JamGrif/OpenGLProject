@@ -11,10 +11,10 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, std::string window
 	// Window options
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Required for MacOS
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
-	glfwWindowHint(GLFW_DECORATED, NULL); // borderless window
+	glfwWindowHint(GLFW_DECORATED, NULL); // Borderless window
 
 	if (fullScreen)
 	{
@@ -25,6 +25,7 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, std::string window
 		m_Window = glfwCreateWindow(m_currentWindowWidth, m_currentWindowHeight, windowTitle.c_str(), NULL, NULL);
 	}
 	
+	// Check if window was made successfully
 	if (m_Window == nullptr)
 	{
 		m_status = false;
@@ -35,14 +36,16 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, std::string window
 	setWindowIcon("res/icon/Icon.jpg");
 	
 	glfwMakeContextCurrent(m_Window);
+
+	// Set EngineStatics values
 	EngineStatics::setAppWindow(this);
 	EngineStatics::setScreenWidth(m_currentWindowWidth);
 	EngineStatics::setScreenHeight(m_currentWindowHeight);
 
-	glfwSwapInterval(1);
-	glClearColor(0.0, 0.0, 0.0, 1.0); //Sets clear colour
+	glfwSwapInterval(1); // Double buffering
+	glClearColor(0.0, 0.0, 0.0, 1.0); // Sets clear colour
 
-	glfwGetFramebufferSize(m_Window, &m_currentWindowWidth, &m_currentWindowHeight);
+	//glfwGetFramebufferSize(m_Window, &m_currentWindowWidth, &m_currentWindowHeight);
 
 	glViewport(0, 0, m_currentWindowWidth, m_currentWindowHeight);
 	m_aspectRatio = (float)m_currentWindowWidth / (float)m_currentWindowHeight;
@@ -52,22 +55,25 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, std::string window
 
 OpenGLWindow::~OpenGLWindow()
 {
+	// Clear EngineStatics values
 	EngineStatics::setAppWindow(nullptr);
 	EngineStatics::setScreenWidth(0);
 	EngineStatics::setScreenHeight(0);
+
 	glfwDestroyWindow(m_Window);
 }
 
-bool OpenGLWindow::getWindowStatus()
-{
-	return m_status;
-}
-
+/// <summary>
+/// Returns the pointer to the actual GLFWwindow variable
+/// </summary>
 GLFWwindow* OpenGLWindow::getWindow()
 {
 	return m_Window;
 }
 
+/// <summary>
+/// Sets this window to the specified picture at iconPath
+/// </summary>
 void OpenGLWindow::setWindowIcon(const std::string& iconPath)
 {
 	GLFWimage images[1];
@@ -76,22 +82,43 @@ void OpenGLWindow::setWindowIcon(const std::string& iconPath)
 	stbi_image_free(images[0].pixels);
 }
 
+/// <summary>
+/// Sets the window title to the specified string text
+/// </summary>
 void OpenGLWindow::setWindowTitle(const std::string& newTitle)
 {
 	glfwSetWindowTitle(m_Window, newTitle.c_str());
 }
 
+/// <summary>
+/// Returns the windows width
+/// </summary>
 int OpenGLWindow::getWindowWidth()
 {
 	return m_currentWindowWidth;
 }
 
+/// <summary>
+/// Returns the windows height
+/// </summary>
 int OpenGLWindow::getWindowHeight()
 {
 	return m_currentWindowHeight;
 }
 
+/// <summary>
+/// Returns the aspect ratio of the window
+/// </summary>
 float OpenGLWindow::getAspectRatio()
 {
 	return m_aspectRatio;
+}
+
+/// <summary>
+/// Returns the status of the window
+/// </summary>
+/// <returns>"true" if window is alright, "false" if window is in an error state and should not be used</returns>
+bool OpenGLWindow::getWindowStatus()
+{
+	return m_status;
 }
