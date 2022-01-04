@@ -33,7 +33,7 @@
     <ClCompile Include="src\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Model.cpp">
+    <ClCompile Include="src\models\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\EngineStatics.cpp">
@@ -48,28 +48,28 @@
     <ClCompile Include="src\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ModelBasic.cpp">
+    <ClCompile Include="src\models\ModelBasic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ModelLighting.cpp">
+    <ClCompile Include="src\models\ModelLighting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ModelSky.cpp">
+    <ClCompile Include="src\models\ModelSky.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ModelEnvironment.cpp">
+    <ClCompile Include="src\models\ModelEnvironment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Framebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ModelSprite.cpp">
+    <ClCompile Include="src\models\ModelSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ModelTerrain.cpp">
+    <ClCompile Include="src\models\ModelTerrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ModelGeometry.cpp">
+    <ClCompile Include="src\models\ModelGeometry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\SceneTextReader.cpp">
@@ -104,7 +104,7 @@
     <ClInclude Include="src\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Model.h">
+    <ClInclude Include="src\models\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\EngineStatics.h">
@@ -119,28 +119,28 @@
     <ClInclude Include="res\icon\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModelBasic.h">
+    <ClInclude Include="src\models\ModelBasic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModelLighting.h">
+    <ClInclude Include="src\models\ModelLighting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModelSky.h">
+    <ClInclude Include="src\models\ModelSky.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModelEnvironment.h">
+    <ClInclude Include="src\models\ModelEnvironment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModelSprite.h">
+    <ClInclude Include="src\models\ModelSprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModelTerrain.h">
+    <ClInclude Include="src\models\ModelTerrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModelGeometry.h">
+    <ClInclude Include="src\models\ModelGeometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\SceneTextReader.h">

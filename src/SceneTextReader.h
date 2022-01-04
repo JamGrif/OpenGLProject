@@ -2,12 +2,12 @@
 
 
 #include "LightManager.h"
-#include "ModelBasic.h"
-#include "ModelLighting.h"
-#include "ModelEnvironment.h"
-#include "ModelSprite.h"
-#include "ModelTerrain.h"
-#include "ModelGeometry.h"
+#include "models/ModelBasic.h"
+#include "models/ModelLighting.h"
+#include "models/ModelEnvironment.h"
+#include "models/ModelSprite.h"
+#include "models/ModelTerrain.h"
+#include "models/ModelGeometry.h"
 
 //Class that reads from a scene text file, feeding the scene models vectors with created objects from the text file
 class SceneTextReader

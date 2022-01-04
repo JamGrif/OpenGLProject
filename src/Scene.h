@@ -5,7 +5,7 @@
 #include "Camera.h"
 #include "Framebuffer.h"
 
-#include "ModelSky.h"
+#include "models/ModelSky.h"
 
 
 
