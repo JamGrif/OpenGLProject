@@ -74,7 +74,7 @@ GLFWwindow* OpenGLWindow::getWindow()
 /// <summary>
 /// Sets this window to the specified picture at iconPath
 /// </summary>
-void OpenGLWindow::setWindowIcon(const std::string& iconPath)
+void OpenGLWindow::setWindowIcon(const std::string& iconPath) const
 {
 	GLFWimage images[1];
 	images[0].pixels = stbi_load(iconPath.c_str(), &images[0].width, &images[0].height, 0, 4); // RGBA channels 
@@ -85,7 +85,7 @@ void OpenGLWindow::setWindowIcon(const std::string& iconPath)
 /// <summary>
 /// Sets the window title to the specified string text
 /// </summary>
-void OpenGLWindow::setWindowTitle(const std::string& newTitle)
+void OpenGLWindow::setWindowTitle(const std::string& newTitle) const
 {
 	glfwSetWindowTitle(m_Window, newTitle.c_str());
 }
@@ -93,7 +93,7 @@ void OpenGLWindow::setWindowTitle(const std::string& newTitle)
 /// <summary>
 /// Returns the windows width
 /// </summary>
-int OpenGLWindow::getWindowWidth()
+int OpenGLWindow::getWindowWidth() const
 {
 	return m_currentWindowWidth;
 }
@@ -101,7 +101,7 @@ int OpenGLWindow::getWindowWidth()
 /// <summary>
 /// Returns the windows height
 /// </summary>
-int OpenGLWindow::getWindowHeight()
+int OpenGLWindow::getWindowHeight() const
 {
 	return m_currentWindowHeight;
 }
@@ -109,7 +109,7 @@ int OpenGLWindow::getWindowHeight()
 /// <summary>
 /// Returns the aspect ratio of the window
 /// </summary>
-float OpenGLWindow::getAspectRatio()
+float OpenGLWindow::getAspectRatio() const
 {
 	return m_aspectRatio;
 }
@@ -118,7 +118,7 @@ float OpenGLWindow::getAspectRatio()
 /// Returns the status of the window
 /// </summary>
 /// <returns>"true" if window is alright, "false" if window is in an error state and should not be used</returns>
-bool OpenGLWindow::getWindowStatus()
+bool OpenGLWindow::getWindowStatus() const
 {
 	return m_status;
 }

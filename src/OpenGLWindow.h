@@ -17,13 +17,13 @@ public:
 
 	GLFWwindow* getWindow();
 
-	void		setWindowIcon(const std::string& iconPath);
-	void		setWindowTitle(const std::string& newTitle);
+	void		setWindowIcon(const std::string& iconPath) const;
+	void		setWindowTitle(const std::string& newTitle) const;
 
-	int			getWindowWidth();
-	int			getWindowHeight();
-	float		getAspectRatio();
-	bool		getWindowStatus();
+	int			getWindowWidth() const;
+	int			getWindowHeight() const;
+	float		getAspectRatio() const;
+	bool		getWindowStatus() const;
 
 private:
 
