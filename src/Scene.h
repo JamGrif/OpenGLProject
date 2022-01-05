@@ -40,7 +40,11 @@ private:
 	Framebuffer*			m_sceneMSAAFrameBuffer;		//Scene is drawn to this buffer with MSAA applied
 	Framebuffer*			m_sceneFilterFramebuffer;	//Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen
 
-	//Light showing materials variables
+	/*
+		FMPscene.txt exclusive variables
+	*/
+
+	// Light showing materials variables
 	float					m_materialLightMinZ = -5;
 	float					m_materialLightMaxZ = 9;
 	float					m_materialLightMinX = -25;
@@ -48,7 +52,11 @@ private:
 	bool					m_materialLightIncZ = true;
 	bool					m_materialLightIncX = true;
 
-	//Light showing materials variables
+	/*
+		lightTest.txt exclusive variables
+	*/
+
+	// Light showing materials variables
 	float					m_materialtestLightMinZ = -9;
 	float					m_materialtestLightMaxZ = 9;
 	float					m_materialtestLightMinX = -9;
@@ -59,12 +67,12 @@ private:
 	float					m_materialtestlightG = 0.0f;
 	float					m_materialtestlightB = 0.0f;
 
-	//Light showing normal maps variables
+	// Light showing normal maps variables
 	float					m_normalLightMaxZ = 8;
 	float					m_normalLightMinZ = 23;
 	bool					m_normalLightIncZ = true;
 
-	//Light showing coloured lighting variables
+	// Light showing coloured lighting variables
 	float					m_lightR = 0.0f;
 	float					m_lightG = 0.0f;
 	float					m_lightB = 0.0f;
@@ -72,6 +80,5 @@ private:
 	//Cached screen size
 	int m_cachedScreenWidth;
 	int m_cachedScreenHeight;
-
 };
 

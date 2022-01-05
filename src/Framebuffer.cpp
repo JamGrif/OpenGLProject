@@ -8,34 +8,34 @@ Framebuffer::Framebuffer(bool multisampled)
 	:m_FBO(0), m_frameColourTexture(0), m_RBO(0), m_quadVBO(0),
 	m_screenFilter(1), m_screenShader(nullptr)
 {
-
 	glGenFramebuffers(1, &m_FBO);
 	glGenRenderbuffers(1, &m_RBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO); //By binding to a GL_FRAMEBUFFER, all read and write framebuffer operations will be on newly bounded framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO); // By binding to a GL_FRAMEBUFFER, all read and write framebuffer operations will be on newly bounded framebuffer
 	glBindRenderbuffer(GL_RENDERBUFFER, m_RBO);
+
 	glGenTextures(1, &m_frameColourTexture);
 
 	int width = EngineStatics::getScreenWidth();
 	int height = EngineStatics::getScreenHeight();
 
-	//If specified create a framebuffer that can handle multiple samples in the same texel
+	// If specified create a framebuffer that can handle multiple samples in the same texel
 	if (multisampled)
 	{
-		//Create multisampled frame texture
+		// Create multisampled frame texture
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_frameColourTexture);
 		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, width, height, GL_TRUE);
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_frameColourTexture, 0);
 
-		//Create render buffer object
+		// Create render buffer object
 		glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, width, height);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
 
 	}
-	//Otherwise, create a normal framebuffer
+	// Otherwise, create a normal framebuffer
 	else
 	{
-		//Create frame texture
+		// Create frame texture
 		glBindTexture(GL_TEXTURE_2D, m_frameColourTexture);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -43,25 +43,25 @@ Framebuffer::Framebuffer(bool multisampled)
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_frameColourTexture, 0);
 
-		//Create render buffer object
+		// Create render buffer object
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
 	}
 	
-	//Check status of newly created framebuffer
+	// Check status of newly created framebuffer
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		std::cout << "Problem creating framebuffer!" << std::endl;
 	}
 
-	//Unbind all
+	// Unbind all
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-	//Set framebuffer shader
+	// Set framebuffer shader
 	m_screenShader = ShaderManager::retrieveShader("res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
 
-	//Create the VBO object the screen will be drawn to
+	// Create the VBO object the screen will be drawn to
 	glGenBuffers(1, &m_quadVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_quadVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(m_quadVertices), &m_quadVertices, GL_STATIC_DRAW);
@@ -73,18 +73,18 @@ Framebuffer::~Framebuffer()
 }
 
 /// <summary>
-/// Draws the framebuffers content onto a quad which gets drawn on screen
+/// Draws the framebuffer content onto a quad which gets drawn on screen
 /// </summary>
 void Framebuffer::draw()
 {
-	if (m_screenShader == nullptr)
+	if (m_screenShader == nullptr) // No shader attached
 	{
 		return;
 	}
 
 	m_screenShader->Bind();
 
-	//Sets shader values, texture and vertex attributes
+	// Sets shader values, texture and vertex attributes
 	m_screenShader->setUniform1i("screenTexture", 0);
 	m_screenShader->setUniform1i("screenFilter", m_screenFilter);
 
@@ -125,14 +125,17 @@ void Framebuffer::unbindFramebuffer()
 	glDisable(GL_DEPTH_TEST);
 }
 
-
-
+/// <summary>
+/// Binds the framebuffer to only read from draw calls
+/// </summary>
 void Framebuffer::bindReadFramebuffer()
 {
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FBO);
 }
 
-
+/// <summary>
+/// Binds the framebuffer to only write to framebuffer to draw calls
+/// </summary>
 void Framebuffer::bindWriteFramebuffer()
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_FBO);
@@ -152,7 +155,10 @@ void Framebuffer::setFrameFilter(int index)
 	m_screenFilter = index;
 }
 
-
+/// <summary>
+/// Returns the Framebuffer Object (FBO)
+/// </summary>
+/// <returns></returns>
 unsigned int Framebuffer::getFBO()
 {
 	return m_FBO;

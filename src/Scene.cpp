@@ -20,7 +20,7 @@ Scene::Scene(const std::string& sceneName)
  
 Scene::~Scene()
 {
-	for (Model* m : m_sceneMeshes)
+	for (Model*& m : m_sceneMeshes)
 	{
 		delete m;
 	}
@@ -92,7 +92,7 @@ void Scene::updateScene()
 	m_sceneMSAAFrameBuffer->bindFramebuffer();
 
 	// Draw second pass of all models
-	for (Model* m : m_sceneMeshes)
+	for (Model*& m : m_sceneMeshes)
 	{
 		m->setMatrixValues();
 		m->drawPassTwo();
@@ -108,6 +108,10 @@ void Scene::updateScene()
 	m_sceneFilterFramebuffer->draw();
 }
 
+/// <summary>
+/// Returns the scenes text file name
+/// </summary>
+/// <returns></returns>
 const std::string& Scene::getSceneName()
 {
 	return m_sceneName;
