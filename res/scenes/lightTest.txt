@@ -2,13 +2,17 @@
 
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
 pointLight			0.3		0.0		0.0		1.0		0.0		0.0		0.6		0.0		0.0		-12.0	3.0		0.0
-pointLight			0.0		0.3		0.0		0.0		1.0		0.0		0.0		0.6		0.0		-12.0	3.0		5.0
-pointLight			0.0		0.0		0.3		0.0		0.0		1.0		0.0		0.0		0.6		-12.0	3.0		-5.0
+#pointLight			0.0		0.3		0.0		0.0		1.0		0.0		0.0		0.6		0.0		-12.0	3.0		5.0
+#pointLight			0.0		0.0		0.3		0.0		0.0		1.0		0.0		0.0		0.6		-12.0	3.0		-5.0
+
+#spotLight objects...
+#ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
+#spotLight			0.0		0.0		0.0		0.8		0.8		0.8		1.0		1.0		1.0		0.0		0.0		0.0
 
 #objectType	    #PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh	#LightToCopy
 modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			sphere	0
-modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			sphere	1
-modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			sphere	2
+#modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			sphere	1
+#modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			sphere	2
 
 # modelLighting objects...
 #ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap

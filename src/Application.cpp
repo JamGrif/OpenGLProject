@@ -101,20 +101,7 @@ bool Application::appInit()
 	glEnable(GL_MULTISAMPLE);
 
 
-	/*
-		IMGUI
-	*/
-
-	//IMGUI_CHECKVERSION(); // Check the version
-	//
-	//ImGui::CreateContext();	// Creating the imgui context
-	//ImGuiIO& io = ImGui::GetIO();
-	//(void)io;
-	//
-	//ImGui_ImplGlfw_InitForOpenGL(m_appWindow, true); // Connect imgui to glfw window
-	//ImGui_ImplOpenGL3_Init("#version 430");
-	//
-	//ImGui::StyleColorsDark(); 
+	
 
 	// Build applications projection matrix
 	constexpr float SixtyDegrees = 1.0472f; //1.0472 = 60 degrees
@@ -133,7 +120,7 @@ bool Application::appInit()
 	m_input = new Input();
 
 	// Create UI object
-	// ----------------
+	m_UI = new UI();
 	
 	// Create scene object
 	if (!changeScene("res/scenes/lightTest.txt")) // Ensure scene loaded successfully
@@ -154,11 +141,6 @@ void Application::appLoop()
 
 	while (!glfwWindowShouldClose(m_appWindow->getWindow()))
 	{
-		// imgui
-		//ImGui_ImplOpenGL3_NewFrame();
-		//ImGui_ImplGlfw_NewFrame();
-		//ImGui::NewFrame();
-
 		gt.updateGameTimer();
 
 		glClear(GL_DEPTH_BUFFER_BIT); //Clears the screen buffers
@@ -166,14 +148,16 @@ void Application::appLoop()
 
 		checkForSceneChange();
 
+		if (Input::getKeyPressedOnce(GLFW_KEY_Q))
+		{
+			m_UI->toggleUI();
+		}
+
+		m_UI->startOfFrame();
+
 		m_loadedScene->updateScene();
 
-		//ImGui::Begin("Hello from begin");
-		//ImGui::Text("Hello from text");
-		//ImGui::End();
-
-		//ImGui::Render();
-		//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		m_UI->drawInFrame();
 
 		glfwSwapBuffers(m_appWindow->getWindow());
 
@@ -214,7 +198,7 @@ void Application::checkForSceneChange()
 	}
 }
 
-bool Application::changeScene(const std::string newSceneName)
+bool Application::changeScene(const std::string& newSceneName)
 {
 	if (m_loadedScene != nullptr)
 	{

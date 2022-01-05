@@ -1,8 +1,5 @@
 #pragma once
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -12,8 +9,7 @@
 #include "OpenGLWindow.h"
 #include "Input.h"
 #include "Scene.h"
-
-
+#include "UI.h"
 
 // Abstracts the program out of main, encapsulating the entire program
 class Application
@@ -30,7 +26,7 @@ public:
 private:
 
 	void		checkForSceneChange();
-	bool		changeScene(const std::string newSceneName);
+	bool		changeScene(const std::string& newSceneName);
 
 	OpenGLWindow* m_appWindow;
 
@@ -41,6 +37,8 @@ private:
 	// Objects
 
 	Input*		m_input;
+
+	UI*			m_UI;
 	
 	Scene*		m_loadedScene;
 

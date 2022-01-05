@@ -170,6 +170,13 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dependencies\imgui\imgui.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_tables.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="dependencies\stb_image\stb_image.cpp" />
     <ClCompile Include="src\GameTimer.cpp" />
     <ClCompile Include="src\models\ModelGeometry.cpp" />
@@ -193,8 +200,17 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\models\ModelTerrain.cpp" />
     <ClCompile Include="src\OpenGLWindow.cpp" />
+    <ClCompile Include="src\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dependencies\imgui\imconfig.h" />
+    <ClInclude Include="dependencies\imgui\imgui.h" />
+    <ClInclude Include="dependencies\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="dependencies\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="dependencies\imgui\imgui_internal.h" />
+    <ClInclude Include="dependencies\imgui\imstb_rectpack.h" />
+    <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
+    <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
     <ClInclude Include="src\GameTimer.h" />
     <ClInclude Include="src\models\ModelGeometry.h" />
@@ -218,6 +234,7 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\models\ModelTerrain.h" />
     <ClInclude Include="src\OpenGLWindow.h" />
+    <ClInclude Include="src\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\icon\Icon.ico" />
