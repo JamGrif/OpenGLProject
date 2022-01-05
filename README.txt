@@ -1,8 +1,7 @@
 This project is a continuation of my final year project for university where I created a 3D renderer using OpenGL 
 which included a large variety of different graphic features.
 
-I have been further developing this project in my own time for fun by continuing to adstract away parts of the program, fix bugs and issues 
-and add new features such as the ability to load scenes from textfiles and be able to switch between them during runtime. 
+I have been further developing this project in my own time for fun by continuing to adstract away parts of the program, fix bugs and issues and add new features such as the ability to load scenes from textfiles and be able to switch between them during runtime. 
 
 Renderer Showcase Video - https://www.youtube.com/watch?v=QOnscYxgrNQ
 
