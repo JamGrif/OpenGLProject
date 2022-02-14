@@ -1,6 +1,8 @@
+![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner1.jpg?raw=true)
+
 # OpenGL Project
 
-This project is a continuation of my final year project for university where I created a 3D renderer using OpenGL which included a large variety of different graphical features.
+This project is a continuation of my Final Year Project for University where I created a 3D renderer using OpenGL which included a large variety of graphical features.
 
 I have been further developing this project in my own time for fun by continuing to abstract away parts of the program, fix bugs and issues and add new features such as the ability to load scenes from textfiles, be able to switch between them during runtime and implementing a UI. 
 
@@ -50,11 +52,6 @@ The project should be able to be built straight out of the box as the repository
 
 [stb_image](https://github.com/nothings/stb)
 
+![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner2.jpg?raw=true)
 
-
-
-
-
-
-
-
+![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner3.jpg?raw=true)
