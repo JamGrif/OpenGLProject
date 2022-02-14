@@ -17,7 +17,7 @@ UI::UI()
 	
 	ImGui::CreateContext();	// Creating the imgui context
 	ImGuiIO& io = ImGui::GetIO();
-	(void)io;
+	//(void)io;
 	
 	ImGui_ImplGlfw_InitForOpenGL(EngineStatics::getAppWindow()->getWindow(), true); // Connect imgui to glfw window
 	ImGui_ImplOpenGL3_Init("#version 430");

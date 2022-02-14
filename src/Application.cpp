@@ -155,6 +155,8 @@ void Application::appLoop()
 
 		m_UI->startOfFrame();
 
+		
+
 		m_loadedScene->updateScene();
 
 		m_UI->drawInFrame();
