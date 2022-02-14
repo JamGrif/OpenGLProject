@@ -1,0 +1,60 @@
+# OpenGL Project
+
+This project is a continuation of my final year project for university where I created a 3D renderer using OpenGL which included a large variety of different graphical features.
+
+I have been further developing this project in my own time for fun by continuing to abstract away parts of the program, fix bugs and issues and add new features such as the ability to load scenes from textfiles, be able to switch between them during runtime and implementing a UI. 
+
+This project is mainly a fun way for me to experiment and test my OpenGL and C++ ability. 
+
+**OLD** Renderer Showcase Video - https://www.youtube.com/watch?v=QOnscYxgrNQ
+
+# Features
+
+ADS Blinn-Phong Light Reflection Model, Diffuse Map, Specular Map, Emission Map, Height Map, Normal Map, scene textfile loading,
+skybox cubemap, Reflection Environment Map, Refraction Environment Map, Mountains via Height Map with Tessellation shaders, 
+Model inflation via Geometry shader, post-processing screen filters, coloured lighting, Directional/Point/Spot light, load external 3D models,
+load external textures, load external shaders, Parallax mapping, sprite blending, mouse + keyboard input, camera movement on all 3 axis
+
+# Controls
+
+W/A/S/D to move around the camera
+Moving the mouse moves the front facing vector of the camera
+1/2/3/4/5 changes the screen filter applied to the drawn frame
+	1 Normal 
+	2 Inverse
+	3 Greyscale
+	4 Edge detection
+	5 ???
+6 toggles the scenes directional light on and off ( if included in scene )
+7 toggles the scenes spotlight on and off ( if included in scene )
+8/9/0/- toggles the scenes point lights on and off ( if included in scene )
+
+# Building
+
+Built exe is available at (ProjectDirectory)->bin->x64->Release/Debug->OpenGL.exe
+Program can only be compiled in 64bit mode in Visual Studio.
+The Release version is recommended as while both versions are visually the same, the Release version has superior performance and loading times.
+The project should be able to be built straight out of the box as the repository contains the required dependencies
+
+This OpenGL Project is dependant on:
+
+[assimp](https://github.com/assimp/assimp)
+
+[GLEW](https://github.com/nigels-com/glew)
+
+[GLFW](https://github.com/glfw/glfw)
+
+[glm](https://github.com/g-truc/glm)
+
+[imgui](https://github.com/ocornut/imgui)
+
+[stb_image](https://github.com/nothings/stb)
+
+
+
+
+
+
+
+
+
