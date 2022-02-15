@@ -66,7 +66,7 @@ OpenGLWindow::~OpenGLWindow()
 /// <summary>
 /// Returns the pointer to the actual GLFWwindow variable
 /// </summary>
-GLFWwindow* OpenGLWindow::getWindow()
+GLFWwindow* OpenGLWindow::getWindow() const
 {
 	return m_Window;
 }

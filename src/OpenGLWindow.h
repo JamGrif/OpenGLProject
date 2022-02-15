@@ -15,7 +15,7 @@ public:
 	OpenGLWindow(int windowWidth, int windowHeight, std::string windowTitle, bool fullScreen);
 	~OpenGLWindow();
 
-	GLFWwindow* getWindow();
+	GLFWwindow* getWindow() const;
 
 	void		setWindowIcon(const std::string& iconPath) const;
 	void		setWindowTitle(const std::string& newTitle) const;

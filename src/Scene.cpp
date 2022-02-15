@@ -16,6 +16,8 @@ Scene::Scene(const std::string& sceneName)
 
 	m_cachedScreenWidth = EngineStatics::getScreenWidth();
 	m_cachedScreenHeight = EngineStatics::getScreenHeight();
+
+	m_sceneMeshes.reserve(50);
 }
  
 Scene::~Scene()
@@ -319,83 +321,83 @@ void Scene::updateSceneLight()
 	}
 
 
-	if (m_sceneName == "res/scenes/materialTest.txt")
-	{
-		/*
-			Coloured Lighting
-		*/
-
-		m_materialtestlightR -= 0.001f;
-		if (m_materialtestlightR <= 0.0f)
-			m_materialtestlightR = 1.0f;
-
-		m_materialtestlightG += 0.003f;
-		if (m_materialtestlightG >= 1.0f)
-			m_materialtestlightG = 0.0f;
-
-		m_materialtestlightB += 0.002f;
-		if (m_materialtestlightB >= 1.0f)
-			m_materialtestlightB = 0.0f;
-
-		if (m_sceneLightManager->getPointLight(0) != nullptr)
-		{
-			m_sceneLightManager->getPointLight(0)->Ambient = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
-			m_sceneLightManager->getPointLight(0)->Diffuse = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
-			m_sceneLightManager->getPointLight(0)->Specular = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
-		}
-
-		if (m_materialtestLightIncZ)
-		{
-			if (m_sceneLightManager->getPointLight(0) != nullptr)
-			{
-				m_sceneLightManager->getPointLight(0)->Position.z += 0.075f;
-				if (m_sceneLightManager->getPointLight(0)->Position.z >= m_materialtestLightMaxZ)
-				{
-					m_sceneLightManager->getPointLight(0)->Position.z = m_materialtestLightMaxZ;
-					m_materialtestLightIncZ = false;
-				}
-			}
-		
-		}
-		else
-		{
-			if (m_sceneLightManager->getPointLight(0) != nullptr)
-			{
-				m_sceneLightManager->getPointLight(0)->Position.z -= 0.075f;
-				if (m_sceneLightManager->getPointLight(0)->Position.z <= m_materialtestLightMinZ)
-				{
-					m_sceneLightManager->getPointLight(0)->Position.z = m_materialtestLightMinZ;
-					m_materialtestLightIncZ = true;
-				}
-			}
-		}
-		
-		
-		if (m_materialtestLightIncX)
-		{
-			if (m_sceneLightManager->getPointLight(0) != nullptr)
-			{
-				m_sceneLightManager->getPointLight(0)->Position.x += 0.1f;
-				if (m_sceneLightManager->getPointLight(0)->Position.x >= m_materialtestLightMaxX)
-				{
-					m_sceneLightManager->getPointLight(0)->Position.x = m_materialtestLightMaxX;
-					m_materialtestLightIncX = false;
-				}
-			}
-		}
-		else
-		{
-			if (m_sceneLightManager->getPointLight(0) != nullptr)
-			{
-				m_sceneLightManager->getPointLight(0)->Position.x -= 0.1f;
-				if (m_sceneLightManager->getPointLight(0)->Position.x <= m_materialtestLightMinX)
-				{
-					m_sceneLightManager->getPointLight(0)->Position.x = m_materialtestLightMinX;
-					m_materialtestLightIncX = true;
-				}
-			}
-		}
-	}
+	//if (m_sceneName == "res/scenes/materialTest.txt")
+	//{
+	//	/*
+	//		Coloured Lighting
+	//	*/
+	//
+	//	m_materialtestlightR -= 0.001f;
+	//	if (m_materialtestlightR <= 0.0f)
+	//		m_materialtestlightR = 1.0f;
+	//
+	//	m_materialtestlightG += 0.003f;
+	//	if (m_materialtestlightG >= 1.0f)
+	//		m_materialtestlightG = 0.0f;
+	//
+	//	m_materialtestlightB += 0.002f;
+	//	if (m_materialtestlightB >= 1.0f)
+	//		m_materialtestlightB = 0.0f;
+	//
+	//	if (m_sceneLightManager->getPointLight(0) != nullptr)
+	//	{
+	//		m_sceneLightManager->getPointLight(0)->Ambient = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+	//		m_sceneLightManager->getPointLight(0)->Diffuse = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+	//		m_sceneLightManager->getPointLight(0)->Specular = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+	//	}
+	//
+	//	if (m_materialtestLightIncZ)
+	//	{
+	//		if (m_sceneLightManager->getPointLight(0) != nullptr)
+	//		{
+	//			m_sceneLightManager->getPointLight(0)->Position.z += 0.075f;
+	//			if (m_sceneLightManager->getPointLight(0)->Position.z >= m_materialtestLightMaxZ)
+	//			{
+	//				m_sceneLightManager->getPointLight(0)->Position.z = m_materialtestLightMaxZ;
+	//				m_materialtestLightIncZ = false;
+	//			}
+	//		}
+	//	
+	//	}
+	//	else
+	//	{
+	//		if (m_sceneLightManager->getPointLight(0) != nullptr)
+	//		{
+	//			m_sceneLightManager->getPointLight(0)->Position.z -= 0.075f;
+	//			if (m_sceneLightManager->getPointLight(0)->Position.z <= m_materialtestLightMinZ)
+	//			{
+	//				m_sceneLightManager->getPointLight(0)->Position.z = m_materialtestLightMinZ;
+	//				m_materialtestLightIncZ = true;
+	//			}
+	//		}
+	//	}
+	//	
+	//	
+	//	if (m_materialtestLightIncX)
+	//	{
+	//		if (m_sceneLightManager->getPointLight(0) != nullptr)
+	//		{
+	//			m_sceneLightManager->getPointLight(0)->Position.x += 0.1f;
+	//			if (m_sceneLightManager->getPointLight(0)->Position.x >= m_materialtestLightMaxX)
+	//			{
+	//				m_sceneLightManager->getPointLight(0)->Position.x = m_materialtestLightMaxX;
+	//				m_materialtestLightIncX = false;
+	//			}
+	//		}
+	//	}
+	//	else
+	//	{
+	//		if (m_sceneLightManager->getPointLight(0) != nullptr)
+	//		{
+	//			m_sceneLightManager->getPointLight(0)->Position.x -= 0.1f;
+	//			if (m_sceneLightManager->getPointLight(0)->Position.x <= m_materialtestLightMinX)
+	//			{
+	//				m_sceneLightManager->getPointLight(0)->Position.x = m_materialtestLightMinX;
+	//				m_materialtestLightIncX = true;
+	//			}
+	//		}
+	//	}
+	//}
 
 }
 

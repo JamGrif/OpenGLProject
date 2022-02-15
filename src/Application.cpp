@@ -120,10 +120,10 @@ bool Application::appInit()
 	m_input = new Input();
 
 	// Create UI object
-	m_UI = new UI();
+	//m_UI = new UI();
 	
 	// Create scene object
-	if (!changeScene("res/scenes/lightTest.txt")) // Ensure scene loaded successfully
+	if (!changeScene("res/scenes/shadowTest.txt")) // Ensure scene loaded successfully
 	{
 		return false;
 	}
@@ -150,16 +150,18 @@ void Application::appLoop()
 
 		if (Input::getKeyPressedOnce(GLFW_KEY_Q))
 		{
-			m_UI->toggleUI();
+			if (m_UI)
+				m_UI->toggleUI();
 		}
 
-		m_UI->startOfFrame();
-
+		if (m_UI)
+			m_UI->startOfFrame();
 		
 
 		m_loadedScene->updateScene();
 
-		m_UI->drawInFrame();
+		if (m_UI)
+			m_UI->drawInFrame();
 
 		glfwSwapBuffers(m_appWindow->getWindow());
 

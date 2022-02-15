@@ -1,0 +1,55 @@
+# Jamie Map File
+#
+#directionalLight objects...
+#ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#DirX	#DirY	#DirZ
+directionalLight	0.2		0.2		0.2		0.5		0.5		0.5		0.3		0.3		0.3		-2.0	-2.0	-1.0
+
+# modelLighting objects...
+#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap
+#Inner Ring
+modelLighting	3.0		-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	-3.0	-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	3.0		-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	-3.0	-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	9.0		-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	9.0		-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	9.0		-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	9.0		-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	3.0		-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	-3.0	-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	-9.0	-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	3.0		-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	-3.0	-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	-9.0	-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	-9.0	-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	-9.0	-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+
+
+#Outer Ring
+modelLighting	-15.0	-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	-15.0	-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	-15.0	-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	-15.0	-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	-15.0	-1.5	15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	15.0	-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	15.0	-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	15.0	-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	15.0	-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	15.0	-1.5	15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	3.0		-1.5	15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	9.0		-1.5	15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	-3.0	-1.5	15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	-9.0	-1.5	15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	3.0		-1.5	-15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	9.0		-1.5	-15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	15.0	-1.5	-15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	-15.0	-1.5	-15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	-9.0	-1.5	-15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+modelLighting	-3.0	-1.5	-15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+
+
+#Crate
+modelLighting	0.0		-1.5		0.0		0.0		0.0		0.0		1.0			1.0			1.0		crate		crate_diff				crate_spec				crate_norm				0.0						null					0.0					null
+
+
+
