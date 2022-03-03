@@ -2,7 +2,7 @@
 
 ModelSky::ModelSky()
 {
-	m_skyTexture = TextureManager::retrieveCubeMap();
+	//m_skyTexture = TextureManager::retrieveCubeMap("default");
 
 	//setShaderOne--------
 	setShaderTwo("res/shaders/sky-vertex.glsl", "res/shaders/sky-fragment.glsl");
@@ -79,4 +79,9 @@ void ModelSky::drawPassTwo()
 
 	m_modelShaderPassTwo->Unbind();
 	m_skyTexture->Unbind();
+}
+
+void ModelSky::setSkyboxTexture(const std::string& texturePath)
+{
+	m_skyTexture = TextureManager::retrieveCubeMap(texturePath);
 }

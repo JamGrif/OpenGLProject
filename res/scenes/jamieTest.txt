@@ -7,6 +7,10 @@ directionalLight	0.2		0.2		0.2		0.4		0.4		0.4		0.3		0.3		0.3		-2.0	-3.0	-1.0
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
 pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		0.0		3.0		0.0
 
+#Skybox objects...
+#ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#SkyboxTexture
+modelSky		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			basic
+
 #objectType	    #PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh	#LightToCopy
 modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
 

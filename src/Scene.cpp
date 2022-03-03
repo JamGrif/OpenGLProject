@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "models/ModelSky.h"
+//#include "models/ModelSky.h"
 
 #include "Camera.h"
 #include "Framebuffer.h"
@@ -67,7 +67,7 @@ bool Scene::loadScene()
 
 	addSceneCamera(0.0f, 2.0f, 0.0f);
 	addSceneLightManager();
-	m_sceneMeshes.push_back(new ModelSky()); // Skybox
+	//m_sceneMeshes.push_back(new ModelSky()); // Skybox
 
 	m_sceneFilterFramebuffer = new Framebuffer(false);
 	m_sceneMSAAFrameBuffer = new Framebuffer(true);
@@ -80,6 +80,7 @@ bool Scene::loadScene()
 
 	if (!txtReader.getStatus()) // Ensure textfile was read correctly
 	{
+		// Scene failed to load
 		return false;
 	}
 

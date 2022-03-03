@@ -14,6 +14,8 @@ public:
     void drawPassOne() override;
     void drawPassTwo() override;
 
+    void setSkyboxTexture(const std::string& texturePath);
+
 private:
 
     CubeMap* m_skyTexture;

@@ -106,6 +106,12 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 			applyToModelGeometryTemplate(object, fullLine);
 			completedModelGeometryObjects.push_back(object);
 		}
+		else if (fullLine.at(0) == "modelSky")
+		{
+			templateModelSky object;
+			applyToModelSkyTemplate(object, fullLine);
+			completedModelSkyObjects.push_back(object);
+		}
 		else
 		{
 			std::cout << "Could not determine objectType - " << fullLine.at(0) << " - FAILURE" << std::endl;
@@ -309,6 +315,27 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 		model->SetZScale(o.ScaleZ);
 
 		model->setMesh(o.mesh);
+
+		sceneMeshes.push_back(model);
+	}
+
+	for (const auto& o : completedModelSkyObjects)
+	{
+		ModelSky* model = new ModelSky();
+
+		model->SetXPos(o.PosX);
+		model->SetYPos(o.PosY);
+		model->SetZPos(o.PosZ);
+
+		model->SetXRot(o.RotX);
+		model->SetYRot(o.RotY);
+		model->SetZRot(o.RotZ);
+
+		model->SetXScale(o.ScaleX);
+		model->SetYScale(o.ScaleY);
+		model->SetZScale(o.ScaleZ);
+
+		model->setSkyboxTexture(o.skyboxTexture);
 
 		sceneMeshes.push_back(model);
 	}
@@ -587,4 +614,17 @@ void SceneTextReader::applyToModelGeometryTemplate(templateModelGeometry& o, con
 	applyToModel(o, vector);
 
 	o.mesh = "res/meshes/" + vector.at(e_mesh) + ".obj";
+}
+
+void SceneTextReader::applyToModelSkyTemplate(templateModelSky& o, const std::vector<std::string>& vector)
+{
+	enum objectInfo
+	{
+		e_skyboxTexture = 10
+	};
+
+	applyToModel(o, vector);
+
+	o.skyboxTexture = vector.at(e_skyboxTexture);
+
 }

@@ -46,20 +46,12 @@ public:
 	void			Bind(unsigned int slot = 0) const override;
 	void			Unbind() const override;
 
-	bool			loadCubeMap();
+	bool			loadCubeMap(const std::string& filePath);
 
 private:
 
 	//Overwrite these files to import custom Skybox
-	std::vector<const char*> m_skyFaces =
-	{ 
-		"res/textures/sky/default_right.png" ,
-		"res/textures/sky/default_left.png",
-		"res/textures/sky/default_top.png",
-		"res/textures/sky/default_bottom.png",
-		"res/textures/sky/default_front.png",
-		"res/textures/sky/default_back.png"
-	};
+	std::vector<std::string> m_skyFaces;
 
 };
 
@@ -69,7 +61,7 @@ class TextureManager
 public:
 
 	static Texture* retrieveTexture(const std::string& filePath);
-	static CubeMap* retrieveCubeMap();
+	static CubeMap* retrieveCubeMap(const std::string& filePath);
 
 	static void		clearTextures();
 	static void		clearCubemaps();

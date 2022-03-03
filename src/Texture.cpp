@@ -10,13 +10,10 @@ std::vector<CubeMap*> TextureManager::m_loadedCubemaps;
 Texture::Texture()
 	:m_texture(0), m_width(0), m_height(0), m_BPP(0), m_filePath("")
 {
-	
 }
 
 Texture::~Texture()
 {
-	//std::cout << "deleted texture" << std::endl;
-	//Unbind();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDeleteTextures(1, &m_texture);
 }
@@ -32,15 +29,13 @@ bool Texture::loadTexture(const std::string& filePath)
 
 	unsigned char* localBuffer;
 
-	stbi_set_flip_vertically_on_load(1); //Flips texture on Y-Axis
+	stbi_set_flip_vertically_on_load(1); // Flips texture on Y-Axis
 	localBuffer = stbi_load(filePath.c_str(), &m_width, &m_height, &m_BPP, 4);
 
-	//Check if file loaded successfully
+	// Check if file loaded successfully
 	if (stbi_failure_reason() == "can't fopen")
 	{
 		std::cout << "TEXTURE->" << m_filePath << " failed to load, loading default texture - FAILURE" << std::endl;
-		//localBuffer = stbi_load("res/textures/missingtexture.png", &m_width, &m_height, &m_BPP, 4);
-		//m_filePath = "res/textures/missingtexture.png";
 		return false;
 	}
 	else
@@ -48,20 +43,20 @@ bool Texture::loadTexture(const std::string& filePath)
 		std::cout << "TEXTURE->" << m_filePath << " successfully loaded - SUCCESS" << std::endl;
 	}
 
-	//Generate texture buffer
+	// Generate texture buffer
 	glGenTextures(1, &m_texture);
 
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 
-	//Specify what happens if texture is renderered on a different sized surface
+	// Specify what happens if texture is rendered on a different sized surface
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	//Specify what happens to texCoords outside 0-1 range
+	// Specify what happens to texCoords outside 0-1 range
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
-	//Anisotropic filtering
+	// Anisotropic filtering
 	if (glewIsSupported("GL_EXT_texture_filter_anisotropic")) //Ensure supported
 	{
 		GLfloat anisoSetting = 0.0f;
@@ -69,11 +64,11 @@ bool Texture::loadTexture(const std::string& filePath)
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisoSetting); //Apply Anisotropic Filtering
 	}
 
-	//Define the texture
+	// Define the texture
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localBuffer);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	//Unbind
+	// Unbind
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	if (localBuffer)
@@ -129,7 +124,7 @@ const GLuint Texture::getTexture() const
 /// <returns>Pointer to the created texture</returns>
 Texture* TextureManager::retrieveTexture(const std::string& filePath)
 {
-	//Check if texture is already loaded
+	// Check if texture is already loaded
 	for (Texture* t : m_loadedTextures)
 	{
 		if (t->getFilePath() == filePath)
@@ -138,12 +133,12 @@ Texture* TextureManager::retrieveTexture(const std::string& filePath)
 		}
 	}
 
-	//Otherwise, create new texture
+	//  Otherwise, create new texture
 	Texture* newTexture = new Texture;
 
 	if (!newTexture->loadTexture(filePath)) //Attempt to load texture
 	{
-		//Texture failed to load so check if missing texture texture is already loaded and then return it
+		// Texture failed to load so check if missing texture texture is already loaded and then return it
 		for (Texture* t : m_loadedTextures)
 		{
 			if (t->getFilePath() == "res/textures/missingtexture.png")
@@ -155,7 +150,7 @@ Texture* TextureManager::retrieveTexture(const std::string& filePath)
 			}
 		}
 
-		//The missing texture texture has not already been made so make it
+		// The missing texture texture has not already been made so make it
 		newTexture->loadTexture("res/textures/missingtexture.png");
 	}
 
@@ -167,17 +162,17 @@ Texture* TextureManager::retrieveTexture(const std::string& filePath)
 /// Loads the specified cubemap texture, if texture already exists then it returns a pointer to it instead of reloading the same cubemap texture
 /// </summary>
 /// <returns>Pointer to the created texture</returns>
-CubeMap* TextureManager::retrieveCubeMap()
+CubeMap* TextureManager::retrieveCubeMap(const std::string& filePath)
 {
-	//If a loaded cubemap exists, return a pointer to it
+	// If a loaded cubemap exists, return a pointer to it
 	if (m_loadedCubemaps.size() > 0)
 	{
 		return m_loadedCubemaps.back();
 	}
 
-	//Otherwise create a new cubemap
+	// Otherwise create a new cubemap
 	CubeMap* t = new CubeMap;
-	t->loadCubeMap();
+	t->loadCubeMap(filePath);
 	m_loadedCubemaps.push_back(t);
 	return m_loadedCubemaps.back();
 }
@@ -204,6 +199,7 @@ void TextureManager::clearCubemaps()
 
 CubeMap::CubeMap()
 {
+	m_skyFaces.reserve(6);
 }
 
 CubeMap::~CubeMap()
@@ -232,9 +228,14 @@ void CubeMap::Unbind() const
 /// Loads a cubemap texture from the specified filepath and sets its parameters
 /// </summary>
 /// <returns></returns>
-bool CubeMap::loadCubeMap()
+bool CubeMap::loadCubeMap(const std::string& filePath)
 {
-	//m_filePath = filePath;
+	m_skyFaces.push_back("res/textures/sky/" + filePath + "_right.png");
+	m_skyFaces.push_back("res/textures/sky/" + filePath + "_left.png");
+	m_skyFaces.push_back("res/textures/sky/" + filePath + "_top.png");
+	m_skyFaces.push_back("res/textures/sky/" + filePath + "_bottom.png"); 
+	m_skyFaces.push_back("res/textures/sky/" + filePath + "_front.png");
+	m_skyFaces.push_back("res/textures/sky/" + filePath + "_back.png");
 
 	unsigned char* localBuffer;
 
@@ -247,7 +248,7 @@ bool CubeMap::loadCubeMap()
 
 	for (unsigned int i = 0; i < m_skyFaces.size(); i++)
 	{
-		localBuffer = stbi_load(m_skyFaces[i], &m_width, &m_height, &m_BPP, 0);
+		localBuffer = stbi_load(m_skyFaces[i].c_str(), &m_width, &m_height, &m_BPP, 0);
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localBuffer);
 		stbi_image_free(localBuffer);
 	}
@@ -261,7 +262,6 @@ bool CubeMap::loadCubeMap()
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	
-
 	//Unbind
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 

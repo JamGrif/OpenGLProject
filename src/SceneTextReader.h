@@ -6,6 +6,7 @@
 #include "models/ModelSprite.h"
 #include "models/ModelTerrain.h"
 #include "models/ModelGeometry.h"
+#include "models/ModelSky.h"
 
 // Class that reads from a scene text file, feeding the scene models vectors with created objects from the text file
 class SceneTextReader
@@ -122,6 +123,10 @@ private:
 	{
 		std::string mesh = "";
 	};
+	struct templateModelSky : public templateModel
+	{
+		std::string skyboxTexture = "";
+	};
 
 
 	std::vector<templateModelLighting>		completedModelLightObjects;			// ModelLighting
@@ -130,6 +135,7 @@ private:
 	std::vector<templateModelSprite>		completedModelSpriteObjects;		// ModelSprite
 	std::vector<templateModelEnvironment>	completedModelEnvironmentObjects;	// ModelEnvironment
 	std::vector<templateModelGeometry>		completedModelGeometryObjects;		// ModelGeometry
+	std::vector<templateModelSky>			completedModelSkyObjects;			// ModelSky
 
 	void applyToModel(templateModel& o, const std::vector<std::string>& vector);
 
@@ -139,5 +145,6 @@ private:
 	void applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& vector);
 	void applyToModelEnvironmentTemplate(templateModelEnvironment& o, const std::vector<std::string>& vector);
 	void applyToModelGeometryTemplate(templateModelGeometry& o, const std::vector<std::string>& vector);
+	void applyToModelSkyTemplate(templateModelSky& o, const std::vector<std::string>& vector);
 
 };

@@ -120,7 +120,7 @@ bool Application::appInit()
 	m_input = new Input();
 
 	// Create UI object
-	m_UI = new UI(true);
+	m_UI = new UI(false);
 	
 	// Create scene object
 	if (!changeScene("res/scenes/shadowTest.txt")) // Ensure scene loaded successfully
