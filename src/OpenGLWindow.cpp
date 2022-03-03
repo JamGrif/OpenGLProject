@@ -5,7 +5,7 @@
 #include "stb_image.h"
 #include "EngineStatics.h"
 
-OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, std::string windowTitle, bool fullScreen)
+OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen)
 	:m_status(false), m_currentWindowWidth(windowWidth), m_currentWindowHeight(windowHeight), m_aspectRatio(0), m_Window(nullptr)
 {
 	// Window options

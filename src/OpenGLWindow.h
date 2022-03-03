@@ -12,7 +12,7 @@
 class OpenGLWindow
 {
 public:
-	OpenGLWindow(int windowWidth, int windowHeight, std::string windowTitle, bool fullScreen);
+	OpenGLWindow(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen);
 	~OpenGLWindow();
 
 	GLFWwindow* getWindow() const;
