@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -15,7 +14,7 @@ class Input;
 class Scene;
 class UI;
 
-// Abstracts the program out of main, encapsulating the entire program
+// Abstracts the program out of main.cpp, encapsulating the entire program
 class Application
 {
 public:
@@ -29,8 +28,7 @@ public:
 
 private:
 
-	void		checkForSceneChange();
-	bool		changeScene(const std::string& newSceneName);
+	bool		changeScene(int newSceneNumber);
 
 	OpenGLWindow* m_appWindow;
 

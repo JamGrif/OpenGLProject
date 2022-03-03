@@ -169,41 +169,41 @@ void Scene::updateOnInput()
 		Toggle lights
 	*/
 
-	if (Input::getKeyPressedOnce(GLFW_KEY_6))
-	{
-		if (m_sceneLightManager->getDirectionalLight(0) != nullptr)
-			m_sceneLightManager->getDirectionalLight(0)->toggleActive();
-	}
+	//if (Input::getKeyPressedOnce(GLFW_KEY_6))
+	//{
+	//	if (m_sceneLightManager->getDirectionalLight(0) != nullptr)
+	//		m_sceneLightManager->getDirectionalLight(0)->toggleActive();
+	//}
+	//
+	//if (Input::getKeyPressedOnce(GLFW_KEY_F))
+	//{
+	//	if (m_sceneLightManager->getSpotLight(0) != nullptr)
+	//		m_sceneLightManager->getSpotLight(0)->toggleActive();
+	//}
 	
-	if (Input::getKeyPressedOnce(GLFW_KEY_F))
-	{
-		if (m_sceneLightManager->getSpotLight(0) != nullptr)
-			m_sceneLightManager->getSpotLight(0)->toggleActive();
-	}
-	
-	if (Input::getKeyPressedOnce(GLFW_KEY_8))
-	{
-		if (m_sceneLightManager->getPointLight(0) != nullptr)
-				m_sceneLightManager->getPointLight(0)->toggleActive();
-	}
-	
-	if (Input::getKeyPressedOnce(GLFW_KEY_9))
-	{
-		if (m_sceneLightManager->getPointLight(1) != nullptr)
-			m_sceneLightManager->getPointLight(1)->toggleActive();
-	}
-	
-	if (Input::getKeyPressedOnce(GLFW_KEY_0))
-	{
-		if (m_sceneLightManager->getPointLight(2) != nullptr)
-			m_sceneLightManager->getPointLight(2)->toggleActive();
-	}
-	
-	if (Input::getKeyPressedOnce(GLFW_KEY_MINUS))
-	{
-		if (m_sceneLightManager->getPointLight(3) != nullptr)
-			m_sceneLightManager->getPointLight(3)->toggleActive();
-	}
+	//if (Input::getKeyPressedOnce(GLFW_KEY_8))
+	//{
+	//	if (m_sceneLightManager->getPointLight(0) != nullptr)
+	//			m_sceneLightManager->getPointLight(0)->toggleActive();
+	//}
+	//
+	//if (Input::getKeyPressedOnce(GLFW_KEY_9))
+	//{
+	//	if (m_sceneLightManager->getPointLight(1) != nullptr)
+	//		m_sceneLightManager->getPointLight(1)->toggleActive();
+	//}
+	//
+	//if (Input::getKeyPressedOnce(GLFW_KEY_0))
+	//{
+	//	if (m_sceneLightManager->getPointLight(2) != nullptr)
+	//		m_sceneLightManager->getPointLight(2)->toggleActive();
+	//}
+	//
+	//if (Input::getKeyPressedOnce(GLFW_KEY_MINUS))
+	//{
+	//	if (m_sceneLightManager->getPointLight(3) != nullptr)
+	//		m_sceneLightManager->getPointLight(3)->toggleActive();
+	//}
 }
 
 /// <summary>

@@ -120,11 +120,12 @@ bool Application::appInit()
 	m_input = new Input();
 
 	// Create UI object
-	m_UI = new UI(false);
+	m_UI = new UI(true);
 	
 	// Create scene object
-	if (!changeScene("res/scenes/shadowTest.txt")) // Ensure scene loaded successfully
+	if (!changeScene(e_shadowTest)) // load shadowTest.txt by default
 	{
+		// Scene failed to load
 		return false;
 	}
 
@@ -147,8 +148,6 @@ void Application::appLoop()
 		glClear(GL_DEPTH_BUFFER_BIT); //Clears the screen buffers
 		glfwPollEvents();
 
-		checkForSceneChange();
-
 		if (Input::getKeyPressedOnce(GLFW_KEY_Q))
 		{
 			if (m_UI)
@@ -163,6 +162,9 @@ void Application::appLoop()
 
 		if (m_UI)
 			m_UI->drawInFrame();
+
+		if (m_UI->getSceneNum() != 0)
+			changeScene(m_UI->getSceneNum());
 
 		glfwSwapBuffers(m_appWindow->getWindow());
 
@@ -182,32 +184,31 @@ void Application::windowResizeCALLBACK(GLFWwindow* window, int newWidth, int new
 	std::cout << "called windowResizeCALLBACK function" << std::endl;
 }
 
-
-void Application::checkForSceneChange()
+bool Application::changeScene(int newSceneNumber)
 {
-	if (Input::getKeyPressedOnce(GLFW_KEY_F1))
+	std::string newSceneFilePath = "";
+	switch (newSceneNumber)
 	{
-		changeScene("res/scenes/FMPscene.txt");
+	case e_FMPscene:
+		newSceneFilePath = "res/scenes/FMPscene.txt";
+		break;
+	case e_jamieTest:
+		newSceneFilePath = "res/scenes/jamieTest.txt";
+		break;
+	case e_lightTest:
+		newSceneFilePath = "res/scenes/lightTest.txt";
+		break;
+	case e_materialTest:
+		newSceneFilePath = "res/scenes/materialTest.txt";
+		break;
+	case e_shadowTest:
+		newSceneFilePath = "res/scenes/shadowTest.txt";
+		break;
 	}
-	if (Input::getKeyPressedOnce(GLFW_KEY_F2))
-	{
-		changeScene("res/scenes/jamieTest.txt");
-	}
-	if (Input::getKeyPressedOnce(GLFW_KEY_F3))
-	{
-		changeScene("res/scenes/materialTest.txt");
-	}
-	if (Input::getKeyPressedOnce(GLFW_KEY_F4))
-	{
-		changeScene("res/scenes/lightTest.txt");
-	}
-}
 
-bool Application::changeScene(const std::string& newSceneName)
-{
 	if (m_loadedScene != nullptr)
 	{
-		if (newSceneName == m_loadedScene->getSceneName())
+		if (newSceneFilePath == m_loadedScene->getSceneName())
 		{
 			// Scene is already loaded
 			return false;
@@ -217,11 +218,12 @@ bool Application::changeScene(const std::string& newSceneName)
 		m_loadedScene = nullptr;
 	}
 
-	m_loadedScene = new Scene(newSceneName);
+	m_loadedScene = new Scene(newSceneFilePath);
 
 	if (m_loadedScene->loadScene())
 	{
 		// Scene successfully loaded
+		m_UI->refreshLightButtons();
 		return true;
 	}
 
