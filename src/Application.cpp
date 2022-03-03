@@ -7,6 +7,7 @@
 #include "EngineStatics.h"
 #include "GameTimer.h"
 
+
 Application::Application()
 	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_loadedScene(nullptr), m_input(nullptr)
 {
@@ -100,9 +101,6 @@ bool Application::appInit()
 	// Multisampling
 	glEnable(GL_MULTISAMPLE);
 
-
-	
-
 	// Build applications projection matrix
 	constexpr float SixtyDegrees = 1.0472f; //1.0472 = 60 degrees
 	m_projMatrix = glm::perspective(glm::radians(75.0f), m_appWindow->getAspectRatio(), 0.01f, 1000.0f);
@@ -120,7 +118,7 @@ bool Application::appInit()
 	m_input = new Input();
 
 	// Create UI object
-	//m_UI = new UI();
+	m_UI = new UI(true);
 	
 	// Create scene object
 	if (!changeScene("res/scenes/shadowTest.txt")) // Ensure scene loaded successfully
@@ -141,6 +139,7 @@ void Application::appLoop()
 
 	while (!glfwWindowShouldClose(m_appWindow->getWindow()))
 	{
+
 		gt.updateGameTimer();
 
 		glClear(GL_DEPTH_BUFFER_BIT); //Clears the screen buffers
@@ -157,8 +156,8 @@ void Application::appLoop()
 		if (m_UI)
 			m_UI->startOfFrame();
 		
-
-		m_loadedScene->updateScene();
+		if (m_loadedScene)
+			m_loadedScene->updateScene();
 
 		if (m_UI)
 			m_UI->drawInFrame();

@@ -15,6 +15,8 @@ bool Input::m_firstMouse = true;
 double Input::m_xOffset = 0;
 double Input::m_yOffset = 0;
 
+bool Input::m_mouseEnabled = false;
+
 Input::Input()
 {
 	std::cout << "Input Initialized" << std::endl;
@@ -22,7 +24,7 @@ Input::Input()
 	glfwSetKeyCallback(EngineStatics::getAppWindow()->getWindow(), keyCALLBACK);
 	glfwSetCursorPosCallback(EngineStatics::getAppWindow()->getWindow(), mouseCALLBACK);
 
-    glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); //Hide cursor during runtime
+    glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 Input::~Input()
@@ -118,5 +120,31 @@ void Input::getMouseMoved(double& xMouse, double& yMouse)
 
 	m_xOffset = 0;
 	m_yOffset = 0;
+}
+
+bool Input::getMouseEnabled()
+{
+    return m_mouseEnabled;
+}
+
+void Input::enableMouse()
+{
+    if (m_mouseEnabled) // If already enabled, leave function
+        return;
+
+    m_mouseEnabled = true;
+
+	glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetCursorPos(EngineStatics::getAppWindow()->getWindow(), EngineStatics::getScreenWidth() / 2, EngineStatics::getScreenHeight() / 2);
+}
+
+void Input::disableMouse()
+{
+    if (!m_mouseEnabled) // If already disabled, leave function
+        return;
+
+    m_mouseEnabled = false;
+
+    glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 

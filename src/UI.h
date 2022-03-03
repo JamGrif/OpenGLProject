@@ -2,10 +2,6 @@
 
 
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-
 //#include <GL/glew.h>
 //#include <GLFW/glfw3.h>
 
@@ -14,13 +10,14 @@
 class UI
 {
 public:
-	UI();
+	UI(bool uiVisible);
 	~UI();
 
 	void startOfFrame();
 	void drawInFrame();
 
 	void toggleUI();
+	bool getUiVisible();
 
 private:
 	bool m_uiVisible;

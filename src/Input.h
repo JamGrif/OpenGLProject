@@ -17,6 +17,10 @@ public:
 	static void		mouseCALLBACK(GLFWwindow* window, double xPos, double yPos);
 	static void		getMouseMoved(double& xMouse, double& yMouse);
 
+	static bool		getMouseEnabled();
+	static void		enableMouse();
+	static void		disableMouse();
+
 private:
 
 	// Keyboard
@@ -29,5 +33,7 @@ private:
 	static bool		m_firstMouse;
 	static double	m_xOffset;
 	static double	m_yOffset;
+
+	static bool		m_mouseEnabled;
 };
 

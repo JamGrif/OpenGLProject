@@ -6,6 +6,8 @@
 
 #include <glm\gtc\matrix_transform.hpp>
 
+#include <memory>
+
 #include "OpenGLWindow.h"
 #include "Input.h"
 #include "Scene.h"
