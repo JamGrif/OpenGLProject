@@ -100,6 +100,9 @@ void Camera::processKeyboard(Camera_Movement direction, double deltaTime)
 /// <param name="constrainPitch">Decides if the camera should loop around when reaching maximum pitch</param>
 void Camera::processMouse(float xOffset, float yOffset, bool constrainPitch)
 {
+    if (Input::getMouseEnabled()) // If mouse is enabled, don't move camera
+        return;
+    
     if (xOffset > 100 && xOffset > 0)
         xOffset = 100;
     if (yOffset > 100 && yOffset > 0)
