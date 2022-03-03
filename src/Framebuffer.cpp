@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "Shader.h"
 #include "EngineStatics.h"
 
 Framebuffer::Framebuffer(bool multisampled)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Shader.h"
+class Shader; // Shader forward declaration
 
 enum
 {
@@ -29,7 +29,7 @@ public:
 
 	void			setFrameFilter(int index);
 
-	unsigned int getFBO();
+	unsigned int	getFBO();
 
 private:
 

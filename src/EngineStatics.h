@@ -6,31 +6,35 @@
 #include "Camera.h"
 #include "LightManager.h"
 
+class OpenGLWindow;
+class Camera;
+class LightManager;
+
 // Used to allow classes to easily access required values created in other parts of the program
 class EngineStatics
 {
 public:
 
-	static OpenGLWindow*	getAppWindow() { return m_appWindow; }
-	static void				setAppWindow(OpenGLWindow* w) { m_appWindow = w; }
+	static OpenGLWindow*	getAppWindow();
+	static void				setAppWindow(OpenGLWindow* w);
 
-	static int				getScreenWidth() { return m_screenWidth; }
-	static void				setScreenWidth(int width) { m_screenWidth = width; }
+	static int				getScreenWidth();
+	static void				setScreenWidth(int width);
 
-	static int				getScreenHeight() { return m_screenHeight; }
-	static void				setScreenHeight(int height) { m_screenHeight = height; }
+	static int				getScreenHeight();
+	static void				setScreenHeight(int height);
 
-	static Camera*			getCamera() { return m_camera; }
-	static void				setCamera(Camera* c) { m_camera = c; }
+	static Camera*			getCamera();
+	static void				setCamera(Camera* c);
 	
-	static glm::mat4*		getProjectionMatrix() { return m_projectionMatrix; }
-	static void				setProjectionMatrix(glm::mat4* pm) { m_projectionMatrix = pm; }
+	static glm::mat4*		getProjectionMatrix();
+	static void				setProjectionMatrix(glm::mat4* pm);
 
-	static LightManager*	getLightManager() { return m_lightManager; }
-	static void				setLightManager(LightManager* lm) { m_lightManager = lm; }
+	static LightManager*	getLightManager();
+	static void				setLightManager(LightManager* lm);
 
-	static double			getDeltaTime() { return m_deltaTime; }
-	static void				setDeltaTime(double dt) { m_deltaTime = dt; }
+	static double			getDeltaTime();
+	static void				setDeltaTime(double dt);
 
 
 private:
