@@ -271,6 +271,7 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     <Text Include="res\scenes\jamieTest.txt" />
     <Text Include="res\scenes\lightTest.txt" />
     <Text Include="res\scenes\materialTest.txt" />
+    <Text Include="res\scenes\shadowTest.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
