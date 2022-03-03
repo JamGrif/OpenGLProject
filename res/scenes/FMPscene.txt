@@ -17,7 +17,7 @@ spotLight			0.0		0.0		0.0		0.8		0.8		0.8		1.0		1.0		1.0		0.0		0.0		0.0
 
 #Skybox objects...
 #ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#SkyboxTexture
-modelSky		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			basic
+modelSky		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			default
 
 # modelLighting objects...
 #ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap
