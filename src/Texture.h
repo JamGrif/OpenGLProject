@@ -53,12 +53,12 @@ private:
 	//Overwrite these files to import custom Skybox
 	std::vector<const char*> m_skyFaces =
 	{ 
-		"res/textures/sky/right.png" ,
-		"res/textures/sky/left.png",
-		"res/textures/sky/top.png",
-		"res/textures/sky/bottom.png",
-		"res/textures/sky/front.png",
-		"res/textures/sky/back.png"
+		"res/textures/sky/default_right.png" ,
+		"res/textures/sky/default_left.png",
+		"res/textures/sky/default_top.png",
+		"res/textures/sky/default_bottom.png",
+		"res/textures/sky/default_front.png",
+		"res/textures/sky/default_back.png"
 	};
 
 };

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+#include "models/ModelSky.h"
+
 #include "Camera.h"
 #include "Framebuffer.h"
 #include "EngineStatics.h"

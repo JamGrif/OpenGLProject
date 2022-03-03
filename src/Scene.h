@@ -1,10 +1,10 @@
 #pragma once
 
+#include <string>
 #include <vector>
 
-#include "models/ModelSky.h"
-
 // Forward Declarations
+class Model;
 class Camera;
 class Framebuffer;
 class LightManager;
