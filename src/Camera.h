@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -14,13 +12,13 @@ enum Camera_Movement
 	e_RIGHT
 };
 
-//Default camera values
+// Default camera values
 constexpr GLfloat YAW = -90.0f;
 constexpr GLfloat PITCH = 0.0f;
 constexpr GLfloat SPEED = 14.0f;
 constexpr GLfloat SENSITIVTY = 0.25f;
 
-//Camera class used to provide view matrix and allows input to alter position
+// Camera class used to provide view matrix and allows input to alter position
 class Camera
 {
 public:

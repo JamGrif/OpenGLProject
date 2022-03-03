@@ -2,14 +2,14 @@
 
 #include <vector>
 
-#include "Camera.h"
-#include "Framebuffer.h"
-
 #include "models/ModelSky.h"
 
+// Forward Declarations
+class Camera;
+class Framebuffer;
+class LightManager;
 
-
-//Class that contains all the objects of a loaded level. Loops through them every frame, updating and drawing them
+// Class that contains all the objects of a loaded level. Loops through them every frame, updating and drawing them
 class Scene
 {
 public:
@@ -77,7 +77,7 @@ private:
 	float					m_lightG = 0.0f;
 	float					m_lightB = 0.0f;
 
-	//Cached screen size
+	// Cached screen size
 	int m_cachedScreenWidth;
 	int m_cachedScreenHeight;
 };

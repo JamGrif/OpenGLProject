@@ -1,6 +1,7 @@
 #pragma once
 
-class Shader; // Shader forward declaration
+// Forward Declarations
+class Shader; 
 
 enum
 {

@@ -3,10 +3,12 @@
 #include <iostream>
 #include <string>
 
-#include "stb_image.h"
 #include "EngineStatics.h"
 #include "GameTimer.h"
-
+#include "OpenGLWindow.h"
+#include "Input.h"
+#include "Scene.h"
+#include "UI.h"
 
 Application::Application()
 	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_loadedScene(nullptr), m_input(nullptr)

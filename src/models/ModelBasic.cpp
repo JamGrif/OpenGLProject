@@ -1,5 +1,7 @@
 #include "ModelBasic.h"
 
+#include "../LightManager.h"
+
 ModelBasic::ModelBasic()
 	:m_defaultColour(1.0, 1.0, 1.0), NOT_COPYING_LIGHT(-1), m_pointLightToCopy(NOT_COPYING_LIGHT)
 {

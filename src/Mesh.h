@@ -14,7 +14,7 @@ struct Vertex
 	glm::vec3 Bitangent;
 };
 
-//Stores mesh information and provides a way to load a mesh by interfacing with MeshManager
+// Stores mesh information and provides a way to load a mesh by interfacing with MeshManager
 class Mesh
 {
 public:

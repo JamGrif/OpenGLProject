@@ -6,6 +6,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "LightManager.h"
+
 SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager)
 	:m_filename(filename), m_status(false)
 {

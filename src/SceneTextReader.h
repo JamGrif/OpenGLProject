@@ -1,7 +1,5 @@
 #pragma once
 
-
-#include "LightManager.h"
 #include "models/ModelBasic.h"
 #include "models/ModelLighting.h"
 #include "models/ModelEnvironment.h"
@@ -9,7 +7,7 @@
 #include "models/ModelTerrain.h"
 #include "models/ModelGeometry.h"
 
-//Class that reads from a scene text file, feeding the scene models vectors with created objects from the text file
+// Class that reads from a scene text file, feeding the scene models vectors with created objects from the text file
 class SceneTextReader
 {
 public:
@@ -65,7 +63,6 @@ private:
 	/*
 		Model Objects
 	*/
-
 
 	struct templateModel
 	{
@@ -127,12 +124,12 @@ private:
 	};
 
 
-	std::vector<templateModelLighting> completedModelLightObjects;
-	std::vector<templateModelBasic> completedModelBasicObjects;
-	std::vector<templateModelTerrain> completedModelTerrainObjects;
-	std::vector<templateModelSprite> completedModelSpriteObjects;
-	std::vector<templateModelEnvironment> completedModelEnvironmentObjects;
-	std::vector<templateModelGeometry> completedModelGeometryObjects;
+	std::vector<templateModelLighting>		completedModelLightObjects;			// ModelLighting
+	std::vector<templateModelBasic>			completedModelBasicObjects;			// ModelBasic
+	std::vector<templateModelTerrain>		completedModelTerrainObjects;		// ModelTerrain
+	std::vector<templateModelSprite>		completedModelSpriteObjects;		// ModelSprite
+	std::vector<templateModelEnvironment>	completedModelEnvironmentObjects;	// ModelEnvironment
+	std::vector<templateModelGeometry>		completedModelGeometryObjects;		// ModelGeometry
 
 	void applyToModel(templateModel& o, const std::vector<std::string>& vector);
 

@@ -1,5 +1,7 @@
 #include "ModelLighting.h"
 
+#include "../LightManager.h"
+
 ModelLighting::ModelLighting()
 	:m_modelDiffuseTexture(nullptr), m_modelSpecularTexture(nullptr), m_modelEmissionTexture(nullptr), 
 	m_modelNormalTexture(nullptr), m_modelHeightTexture(nullptr), m_shininess(48.0f), m_normalizeTexture(false), 

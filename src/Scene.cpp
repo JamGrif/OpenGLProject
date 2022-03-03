@@ -3,9 +3,12 @@
 #include <iostream>
 #include <string>
 
+#include "Camera.h"
+#include "Framebuffer.h"
 #include "EngineStatics.h"
 #include "Input.h"
 #include "SceneTextReader.h"
+#include "LightManager.h"
 
 Scene::Scene(const std::string& sceneName)
 	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr),

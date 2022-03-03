@@ -4,6 +4,8 @@
 
 #include "EngineStatics.h"
 
+#include "OpenGLWindow.h"
+
 // Keyboard
 bool Input::m_keys[1024];
 int Input::m_lastKey = 0;

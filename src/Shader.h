@@ -9,8 +9,8 @@
 #include <unordered_map>
 #include <vector>
 
-//Stores shader information and provides a way to load a shader by interfacing with ShaderManager. 
-//Can load vertex shader, fragment shader, Tessellation Control shader, Tessellation Evaluation shader & Geometry shader
+// Stores shader information and provides a way to load a shader by interfacing with ShaderManager. 
+// Can load vertex shader, fragment shader, Tessellation Control shader, Tessellation Evaluation shader & Geometry shader
 class Shader
 {
 public:

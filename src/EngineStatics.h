@@ -2,10 +2,7 @@
 
 #include <glm\glm.hpp>
 
-#include "OpenGLWindow.h"
-#include "Camera.h"
-#include "LightManager.h"
-
+// Forward Declarations
 class OpenGLWindow;
 class Camera;
 class LightManager;

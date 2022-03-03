@@ -1,5 +1,9 @@
 #include "EngineStatics.h"
 
+#include "OpenGLWindow.h"
+#include "Camera.h"
+#include "LightManager.h"
+
 OpenGLWindow* EngineStatics::m_appWindow = nullptr;
 
 int EngineStatics::m_screenWidth = 0;

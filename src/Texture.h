@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-//Stores texture information and provides a way to load a texture by interfacing with TextureManager
+// Stores texture information and provides a way to load a texture by interfacing with TextureManager
 class Texture
 {
 public:

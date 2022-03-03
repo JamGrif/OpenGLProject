@@ -7,11 +7,13 @@
 #include <glm\gtc\matrix_transform.hpp>
 
 #include <memory>
+#include <string>
 
-#include "OpenGLWindow.h"
-#include "Input.h"
-#include "Scene.h"
-#include "UI.h"
+// Forward Declarations
+class OpenGLWindow;
+class Input;
+class Scene;
+class UI;
 
 // Abstracts the program out of main, encapsulating the entire program
 class Application

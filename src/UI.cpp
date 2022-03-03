@@ -8,6 +8,7 @@
 
 #include "EngineStatics.h"
 #include "Input.h"
+#include "OpenGLWindow.h"
 
 UI::UI(bool uiVisible)
 	:m_uiVisible(uiVisible)
