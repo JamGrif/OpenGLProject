@@ -21,15 +21,13 @@ load external textures, load external shaders, Parallax mapping, sprite blending
 
 W/A/S/D to move around the camera  
 Moving the mouse moves the front facing vector of the camera  
-1/2/3/4/5 changes the screen filter applied to the drawn frame  
+1/2/3/4/5 to change the screen filter applied to the drawn frame  
 	1 Normal  
 	2 Inverse  
 	3 Greyscale  
 	4 Edge detection  
 	5 ???  
-6 toggles the scenes directional light on and off ( if included in scene )  
-7 toggles the scenes spotlight on and off ( if included in scene )  
-8/9/0/- toggles the scenes point lights on and off ( if included in scene )  
+Q to toggle the UI
 
 # Building
 
