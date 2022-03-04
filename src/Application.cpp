@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 
+#include "Framebuffer.h"
 #include "EngineStatics.h"
 #include "GameTimer.h"
 #include "OpenGLWindow.h"
@@ -11,7 +12,8 @@
 #include "UI.h"
 
 Application::Application()
-	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_loadedScene(nullptr), m_input(nullptr)
+	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_cachedScreenWidth(0), m_cachedScreenHeight(0),
+	m_input(nullptr), m_UI(nullptr), m_loadedScene(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr)
 {
 }
 
@@ -19,8 +21,17 @@ Application::~Application()
 {
 	EngineStatics::setProjectionMatrix(nullptr);
 
+	delete m_sceneFilterFramebuffer;
+	m_sceneFilterFramebuffer = nullptr;
+
+	delete m_sceneMSAAFrameBuffer;
+	m_sceneMSAAFrameBuffer = nullptr;
+
 	delete m_loadedScene;
 	m_loadedScene = nullptr;
+
+	delete m_UI;
+	m_UI = nullptr;
 
 	delete m_input;
 	m_input = nullptr;
@@ -29,11 +40,6 @@ Application::~Application()
 	{
 		glDeleteVertexArrays(1, &m_appVAO);
 	}
-	
-
-	//ImGui_ImplOpenGL3_Shutdown();
-	//ImGui_ImplGlfw_Shutdown();
-	//ImGui::DestroyContext();
 
 	delete m_appWindow;
 	m_appWindow = nullptr;
@@ -85,7 +91,6 @@ bool Application::appInit()
 	std::cout << "Vendor is " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "Renderer is " << glGetString(GL_RENDERER) << std::endl;
 	std::cout << "Version is " << glGetString(GL_VERSION) << std::endl << std::endl;
-	//std::cout << "Application Initialized" << std::endl;
 
 	/*
 		Set OpenGL Context Settings
@@ -104,7 +109,7 @@ bool Application::appInit()
 	glEnable(GL_MULTISAMPLE);
 
 	// Build applications projection matrix
-	constexpr float SixtyDegrees = 1.0472f; //1.0472 = 60 degrees
+	//constexpr float SixtyDegrees = 1.0472f; //1.0472 = 60 degrees
 	m_projMatrix = glm::perspective(glm::radians(75.0f), m_appWindow->getAspectRatio(), 0.01f, 1000.0f);
 	EngineStatics::setProjectionMatrix(&m_projMatrix);
 
@@ -129,6 +134,14 @@ bool Application::appInit()
 		return false;
 	}
 
+	// Create the apps Framebuffers
+	m_sceneFilterFramebuffer = new Framebuffer(false);
+	m_sceneMSAAFrameBuffer = new Framebuffer(true);
+
+	// Cache the current screen width / height
+	m_cachedScreenWidth = m_appWindow->getWindowWidth();
+	m_cachedScreenHeight = m_appWindow->getWindowHeight();
+
 	return true;
 }
 
@@ -142,10 +155,10 @@ void Application::appLoop()
 
 	while (!glfwWindowShouldClose(m_appWindow->getWindow()))
 	{
-
+		
 		gt.updateGameTimer();
 
-		glClear(GL_DEPTH_BUFFER_BIT); //Clears the screen buffers
+		glClear(GL_DEPTH_BUFFER_BIT); // Clear the screen buffers
 		glfwPollEvents();
 
 		if (Input::getKeyPressedOnce(GLFW_KEY_Q))
@@ -154,17 +167,35 @@ void Application::appLoop()
 				m_UI->toggleUI();
 		}
 
+		if (m_UI->getSceneNum() != 0)
+			changeScene(m_UI->getSceneNum());
+
+		if (m_UI->getFilterNum() != 0)
+			changeScreenFilter(m_UI->getFilterNum());
+
 		if (m_UI)
 			m_UI->startOfFrame();
-		
+
 		if (m_loadedScene)
 			m_loadedScene->updateScene();
 
+		// Bind MSAA for object drawing
+		m_sceneMSAAFrameBuffer->bindFramebuffer();
+
+		if (m_loadedScene)
+			m_loadedScene->drawScene();
+
+		// Reads from the MSAA buffer and writes it to the Filter buffer
+		m_sceneMSAAFrameBuffer->bindReadFramebuffer();
+		m_sceneFilterFramebuffer->bindWriteFramebuffer();
+		glBlitFramebuffer(0, 0, m_appWindow->getWindowWidth(), m_appWindow->getWindowHeight(), 0, 0, m_appWindow->getWindowWidth(), m_appWindow->getWindowHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+		m_sceneMSAAFrameBuffer->unbindFramebuffer();
+
+		// Draw screen filter to buffer
+		m_sceneFilterFramebuffer->draw();
+
 		if (m_UI)
 			m_UI->drawInFrame();
-
-		if (m_UI->getSceneNum() != 0)
-			changeScene(m_UI->getSceneNum());
 
 		glfwSwapBuffers(m_appWindow->getWindow());
 
@@ -229,5 +260,27 @@ bool Application::changeScene(int newSceneNumber)
 
 	// Scene failed to load
 	return false;
+}
+
+void Application::changeScreenFilter(int newFilterNumber)
+{
+	switch (newFilterNumber)
+	{
+	case 1:
+		m_sceneFilterFramebuffer->setFrameFilter(screen_Default);
+		break;
+	case 2:
+		m_sceneFilterFramebuffer->setFrameFilter(screen_Inverse);
+		break;
+	case 3:
+		m_sceneFilterFramebuffer->setFrameFilter(screen_Greyscale);
+		break;
+	case 4:
+		m_sceneFilterFramebuffer->setFrameFilter(screen_EdgeDetection);
+		break;
+	case 5:
+		m_sceneFilterFramebuffer->setFrameFilter(screen_Drugs);
+		break;
+	};
 }
 

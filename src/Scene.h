@@ -17,7 +17,9 @@ public:
 	~Scene();
 
 	bool					loadScene();
+
 	void					updateScene();
+	void					drawScene();
 
 	const std::string&		getSceneName();
 
@@ -31,14 +33,13 @@ private:
 
 	std::string				m_sceneName;
 
-	std::vector<Model*>		m_sceneMeshes;
+	std::vector<Model*>		m_sceneModels;
 
 	Camera*					m_sceneCamera;
 
 	LightManager*			m_sceneLightManager;
 
-	Framebuffer*			m_sceneMSAAFrameBuffer;		//Scene is drawn to this buffer with MSAA applied
-	Framebuffer*			m_sceneFilterFramebuffer;	//Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen
+	
 
 	/*
 		FMPscene.txt exclusive variables
@@ -77,8 +78,5 @@ private:
 	float					m_lightG = 0.0f;
 	float					m_lightB = 0.0f;
 
-	// Cached screen size
-	int m_cachedScreenWidth;
-	int m_cachedScreenHeight;
 };
 

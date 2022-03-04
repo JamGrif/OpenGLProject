@@ -13,6 +13,7 @@ class OpenGLWindow;
 class Input;
 class Scene;
 class UI;
+class Framebuffer;
 
 // Abstracts the program out of main.cpp, encapsulating the entire program
 class Application
@@ -21,28 +22,36 @@ public:
 	Application();
 	~Application();
 
-	bool		appInit();
-	void		appLoop();
+	bool			appInit();
+	void			appLoop();
 
-	static void windowResizeCALLBACK(GLFWwindow* window, int newWidth, int newHeight);
+	static void		windowResizeCALLBACK(GLFWwindow* window, int newWidth, int newHeight);
 
 private:
 
-	bool		changeScene(int newSceneNumber);
+	bool			changeScene(int newSceneNumber);
+	void			changeScreenFilter(int newFilterNumber);
 
-	OpenGLWindow* m_appWindow;
+	OpenGLWindow*	m_appWindow;
 
-	glm::mat4	m_projMatrix;
+	glm::mat4		m_projMatrix;
 
-	GLuint		m_appVAO;
+	GLuint			m_appVAO;
+
+	// Cached screen size
+	int				m_cachedScreenWidth;
+	int				m_cachedScreenHeight;
 
 	// Objects
 
-	Input*		m_input;
+	Input*			m_input;
 
-	UI*			m_UI;
-	
-	Scene*		m_loadedScene;
+	UI*				m_UI;
+
+	Scene*			m_loadedScene;
+
+	Framebuffer*	m_sceneMSAAFrameBuffer;		//Scene is drawn to this buffer with MSAA applied
+	Framebuffer*	m_sceneFilterFramebuffer;	//Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen
 
 };
 

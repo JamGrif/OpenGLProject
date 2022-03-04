@@ -25,6 +25,7 @@ public:
 
 	bool getUiVisible();
 	int getSceneNum();
+	int getFilterNum();
 
 	void refreshLightButtons();
 
@@ -50,6 +51,8 @@ private:
 		e_ThirdPointLight	= 2,
 		e_FourthPointLight	= 3
 	};
+
+	int m_appPostProcess;
 
 	//Cached other classes
 	LightManager* m_localLightManager;

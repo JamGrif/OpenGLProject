@@ -12,35 +12,38 @@
 
 UI::UI(bool uiVisible)
 	:m_uiVisible(uiVisible), m_sceneNum(0),
-	m_directionalLightInScene(false), m_directionalLightActive(true), 
+	m_directionalLightInScene(false), m_directionalLightActive(true),
 	m_spotLightInScene(false), m_spotLightActive(true),
-	m_pointLightInScene{ false, false, false, false }, m_pointLightActive{true, true, true, true},
-	m_localLightManager(nullptr)
+	m_pointLightInScene{ false, false, false, false }, m_pointLightActive{ true, true, true, true },
+	m_appPostProcess(0), m_localLightManager(nullptr)
 {
 	std::cout << "UI Initialized" << std::endl;
 
-	if (m_uiVisible)
-	{
-		Input::enableMouse();
-	}
-	else
-	{
-		Input::disableMouse();
-	}
+	// Enable or Disable the mouse depending on UI visibility
+	m_uiVisible ? Input::enableMouse() : Input::disableMouse();
 
-	IMGUI_CHECKVERSION(); // Check the version
-	
-	ImGui::CreateContext();	// Creating the imgui context
+	// Check the version
+	IMGUI_CHECKVERSION(); 
+
+	// Create the imgui context
+	ImGui::CreateContext();	
 	ImGuiIO& io = ImGui::GetIO();
 	(void)io;
-	
-	ImGui_ImplGlfw_InitForOpenGL(EngineStatics::getAppWindow()->getWindow(), true); // Connect imgui to glfw window
+
+	// Connect ImGui to GLFW window
+	ImGui_ImplGlfw_InitForOpenGL(EngineStatics::getAppWindow()->getWindow(), true); 
 	ImGui_ImplOpenGL3_Init("#version 430");
+
+	// Set ImGui colour style
 	ImGui::StyleColorsClassic(); 
 }
 
 UI::~UI()
 {
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
 	std::cout << "UI destroyed" << std::endl;
 }
 
@@ -148,6 +151,31 @@ void UI::drawInFrame()
 		EngineStatics::getLightManager()->getPointLight(e_FourthPointLight)->lightActive = m_pointLightActive[e_FourthPointLight] ? true : false;
 	}
 
+	// Screen PostProcessing Filter
+	m_appPostProcess = 0;
+
+	ImGui::Text("Change Post-Processing Filter:");
+	if (ImGui::Button("Normal"))
+	{
+		m_appPostProcess = 1;
+	}
+	if (ImGui::Button("Inverse"))
+	{
+		m_appPostProcess = 2;
+	}
+	if (ImGui::Button("Greyscale"))
+	{
+		m_appPostProcess = 3;
+	}
+	if (ImGui::Button("Edge Detection"))
+	{
+		m_appPostProcess = 4;
+	}
+	if (ImGui::Button("???"))
+	{
+		m_appPostProcess = 5;
+	}
+
 	ImGui::End();
 
 	/*
@@ -160,6 +188,8 @@ void UI::drawInFrame()
 	ImGui::Text("Q to toggle the UI");
 	ImGui::Text("1/2/3/4/5 to change the screen filter applied to the drawn frame");
 	ImGui::End();
+
+
 	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -191,6 +221,11 @@ bool UI::getUiVisible()
 int UI::getSceneNum()
 {
 	return m_sceneNum;
+}
+
+int UI::getFilterNum()
+{
+	return m_appPostProcess;
 }
 
 /// <summary>

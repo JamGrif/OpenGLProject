@@ -6,8 +6,8 @@
 #include "EngineStatics.h"
 
 Framebuffer::Framebuffer(bool multisampled)
-	:m_FBO(0), m_frameColourTexture(0), m_RBO(0), m_quadVBO(0),
-	m_screenFilter(1), m_screenShader(nullptr)
+	:m_FBO(0), m_frameColourTexture(0), m_RBO(0),
+	m_quadVBO(0), m_screenFilter(1), m_screenShader(nullptr)
 {
 	glGenFramebuffers(1, &m_FBO);
 	glGenRenderbuffers(1, &m_RBO);

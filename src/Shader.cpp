@@ -593,8 +593,12 @@ Shader* ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* ge
 
 void ShaderManager::clearShaders()
 {
-	for (Shader* s : m_loadedShaders)
+	for (Shader*& s : m_loadedShaders)
 	{
+		// Ignore the framebuffer shaders for the screen
+		if (s->getVertexPath() == "res/shaders/framebuffer-vertex.glsl") 
+			continue;
+
 		delete s;
 		s = nullptr;
 	}

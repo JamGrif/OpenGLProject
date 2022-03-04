@@ -2,16 +2,13 @@
 
 int main()
 {
-	
-	Application* app = new Application();
+
+	std::unique_ptr<Application> app = std::make_unique<Application>();
 
 	if (app->appInit())
 	{
 		app->appLoop();
 	}
-
-	delete app;
-	app = nullptr;
 
 	return 0;
 }

@@ -6,32 +6,28 @@
 //#include "models/ModelSky.h"
 
 #include "Camera.h"
-#include "Framebuffer.h"
 #include "EngineStatics.h"
 #include "Input.h"
 #include "SceneTextReader.h"
 #include "LightManager.h"
 
 Scene::Scene(const std::string& sceneName)
-	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr),
+	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr),
 	m_materialLightMinZ(-5.0f), m_materialLightMaxZ(9.0f), m_materialLightMinX(-25.0f), m_materialLightMaxX(-13.0f), m_materialLightIncZ(true),
 	m_materialLightIncX(true), m_normalLightMaxZ(8.0f), m_normalLightMinZ(23.0f), m_normalLightIncZ(true), m_lightR(0.0f), m_lightG(0.0f), m_lightB(0.0f)
 {
 	std::cout << "Scene Initialized" << std::endl;
 
-	m_cachedScreenWidth = EngineStatics::getScreenWidth();
-	m_cachedScreenHeight = EngineStatics::getScreenHeight();
-
-	m_sceneMeshes.reserve(50);
+	m_sceneModels.reserve(50);
 }
  
 Scene::~Scene()
 {
-	for (Model*& m : m_sceneMeshes)
+	for (Model*& m : m_sceneModels)
 	{
 		delete m;
 	}
-	m_sceneMeshes.clear();
+	m_sceneModels.clear();
 
 	EngineStatics::setCamera(nullptr);
 	delete m_sceneCamera;
@@ -49,12 +45,6 @@ Scene::~Scene()
 	MeshManager::clearMeshes();
 	ShaderManager::clearShaders();
 
-	delete m_sceneFilterFramebuffer;
-	m_sceneFilterFramebuffer = nullptr;
-
-	delete m_sceneMSAAFrameBuffer;
-	m_sceneMSAAFrameBuffer = nullptr;
-
 	std::cout << "Scene Destroyed" << std::endl;
 }
 
@@ -69,14 +59,11 @@ bool Scene::loadScene()
 	addSceneLightManager();
 	//m_sceneMeshes.push_back(new ModelSky()); // Skybox
 
-	m_sceneFilterFramebuffer = new Framebuffer(false);
-	m_sceneMSAAFrameBuffer = new Framebuffer(true);
-
 	/*
 		Run scene reader, giving it the scene objects vector and light manager to fill out
 	*/
 
-	SceneTextReader txtReader(m_sceneName, m_sceneMeshes, m_sceneLightManager);
+	SceneTextReader txtReader(m_sceneName, m_sceneModels, m_sceneLightManager);
 
 	if (!txtReader.getStatus()) // Ensure textfile was read correctly
 	{
@@ -95,25 +82,20 @@ void Scene::updateScene()
 	// Update functions
 	updateSceneLight();
 	updateOnInput();
-	
-	// Bind MSAA for object drawing
-	m_sceneMSAAFrameBuffer->bindFramebuffer();
 
+}
+
+/// <summary>
+/// Draws the sceneObjects by calling its second draw pass function
+/// </summary>
+void Scene::drawScene()
+{
 	// Draw second pass of all models
-	for (Model*& m : m_sceneMeshes)
+	for (Model*& m : m_sceneModels)
 	{
 		m->setMatrixValues();
 		m->drawPassTwo();
 	}
-	
-	// Reads from the MSAA buffer and writes it to the Filter buffer
-	m_sceneMSAAFrameBuffer->bindReadFramebuffer();
-	m_sceneFilterFramebuffer->bindWriteFramebuffer();
-	glBlitFramebuffer(0, 0, m_cachedScreenWidth, m_cachedScreenHeight, 0, 0, m_cachedScreenWidth, m_cachedScreenHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-	m_sceneMSAAFrameBuffer->unbindFramebuffer();
-
-	// Draw screen filter to buffer
-	m_sceneFilterFramebuffer->draw();
 }
 
 /// <summary>
@@ -135,75 +117,6 @@ void Scene::updateOnInput()
 	*/
 
 	m_sceneCamera->Update(EngineStatics::getDeltaTime());
-
-	/*
-		Framebuffer filters inputs
-	*/
-
-	if (Input::getKeyPressed(GLFW_KEY_1))
-	{
-		m_sceneFilterFramebuffer->setFrameFilter(screen_Default);
-	}
-
-	if (Input::getKeyPressed(GLFW_KEY_2))
-	{
-		m_sceneFilterFramebuffer->setFrameFilter(screen_Inverse);
-	}
-
-	if (Input::getKeyPressed(GLFW_KEY_3))
-	{
-		m_sceneFilterFramebuffer->setFrameFilter(screen_Greyscale);
-	}
-
-	if (Input::getKeyPressed(GLFW_KEY_4))
-	{
-		m_sceneFilterFramebuffer->setFrameFilter(screen_EdgeDetection);
-	}
-
-	if (Input::getKeyPressed(GLFW_KEY_5))
-	{
-		m_sceneFilterFramebuffer->setFrameFilter(screen_Drugs);
-	}
-
-	/*
-		Toggle lights
-	*/
-
-	//if (Input::getKeyPressedOnce(GLFW_KEY_6))
-	//{
-	//	if (m_sceneLightManager->getDirectionalLight(0) != nullptr)
-	//		m_sceneLightManager->getDirectionalLight(0)->toggleActive();
-	//}
-	//
-	//if (Input::getKeyPressedOnce(GLFW_KEY_F))
-	//{
-	//	if (m_sceneLightManager->getSpotLight(0) != nullptr)
-	//		m_sceneLightManager->getSpotLight(0)->toggleActive();
-	//}
-	
-	//if (Input::getKeyPressedOnce(GLFW_KEY_8))
-	//{
-	//	if (m_sceneLightManager->getPointLight(0) != nullptr)
-	//			m_sceneLightManager->getPointLight(0)->toggleActive();
-	//}
-	//
-	//if (Input::getKeyPressedOnce(GLFW_KEY_9))
-	//{
-	//	if (m_sceneLightManager->getPointLight(1) != nullptr)
-	//		m_sceneLightManager->getPointLight(1)->toggleActive();
-	//}
-	//
-	//if (Input::getKeyPressedOnce(GLFW_KEY_0))
-	//{
-	//	if (m_sceneLightManager->getPointLight(2) != nullptr)
-	//		m_sceneLightManager->getPointLight(2)->toggleActive();
-	//}
-	//
-	//if (Input::getKeyPressedOnce(GLFW_KEY_MINUS))
-	//{
-	//	if (m_sceneLightManager->getPointLight(3) != nullptr)
-	//		m_sceneLightManager->getPointLight(3)->toggleActive();
-	//}
 }
 
 /// <summary>
@@ -327,83 +240,83 @@ void Scene::updateSceneLight()
 	}
 
 
-	//if (m_sceneName == "res/scenes/materialTest.txt")
-	//{
-	//	/*
-	//		Coloured Lighting
-	//	*/
-	//
-	//	m_materialtestlightR -= 0.001f;
-	//	if (m_materialtestlightR <= 0.0f)
-	//		m_materialtestlightR = 1.0f;
-	//
-	//	m_materialtestlightG += 0.003f;
-	//	if (m_materialtestlightG >= 1.0f)
-	//		m_materialtestlightG = 0.0f;
-	//
-	//	m_materialtestlightB += 0.002f;
-	//	if (m_materialtestlightB >= 1.0f)
-	//		m_materialtestlightB = 0.0f;
-	//
-	//	if (m_sceneLightManager->getPointLight(0) != nullptr)
-	//	{
-	//		m_sceneLightManager->getPointLight(0)->Ambient = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
-	//		m_sceneLightManager->getPointLight(0)->Diffuse = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
-	//		m_sceneLightManager->getPointLight(0)->Specular = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
-	//	}
-	//
-	//	if (m_materialtestLightIncZ)
-	//	{
-	//		if (m_sceneLightManager->getPointLight(0) != nullptr)
-	//		{
-	//			m_sceneLightManager->getPointLight(0)->Position.z += 0.075f;
-	//			if (m_sceneLightManager->getPointLight(0)->Position.z >= m_materialtestLightMaxZ)
-	//			{
-	//				m_sceneLightManager->getPointLight(0)->Position.z = m_materialtestLightMaxZ;
-	//				m_materialtestLightIncZ = false;
-	//			}
-	//		}
-	//	
-	//	}
-	//	else
-	//	{
-	//		if (m_sceneLightManager->getPointLight(0) != nullptr)
-	//		{
-	//			m_sceneLightManager->getPointLight(0)->Position.z -= 0.075f;
-	//			if (m_sceneLightManager->getPointLight(0)->Position.z <= m_materialtestLightMinZ)
-	//			{
-	//				m_sceneLightManager->getPointLight(0)->Position.z = m_materialtestLightMinZ;
-	//				m_materialtestLightIncZ = true;
-	//			}
-	//		}
-	//	}
-	//	
-	//	
-	//	if (m_materialtestLightIncX)
-	//	{
-	//		if (m_sceneLightManager->getPointLight(0) != nullptr)
-	//		{
-	//			m_sceneLightManager->getPointLight(0)->Position.x += 0.1f;
-	//			if (m_sceneLightManager->getPointLight(0)->Position.x >= m_materialtestLightMaxX)
-	//			{
-	//				m_sceneLightManager->getPointLight(0)->Position.x = m_materialtestLightMaxX;
-	//				m_materialtestLightIncX = false;
-	//			}
-	//		}
-	//	}
-	//	else
-	//	{
-	//		if (m_sceneLightManager->getPointLight(0) != nullptr)
-	//		{
-	//			m_sceneLightManager->getPointLight(0)->Position.x -= 0.1f;
-	//			if (m_sceneLightManager->getPointLight(0)->Position.x <= m_materialtestLightMinX)
-	//			{
-	//				m_sceneLightManager->getPointLight(0)->Position.x = m_materialtestLightMinX;
-	//				m_materialtestLightIncX = true;
-	//			}
-	//		}
-	//	}
-	//}
+	if (m_sceneName == "res/scenes/materialTest.txt")
+	{
+		/*
+			Coloured Lighting
+		*/
+	
+		m_materialtestlightR -= 0.001f;
+		if (m_materialtestlightR <= 0.0f)
+			m_materialtestlightR = 1.0f;
+	
+		m_materialtestlightG += 0.003f;
+		if (m_materialtestlightG >= 1.0f)
+			m_materialtestlightG = 0.0f;
+	
+		m_materialtestlightB += 0.002f;
+		if (m_materialtestlightB >= 1.0f)
+			m_materialtestlightB = 0.0f;
+	
+		if (m_sceneLightManager->getPointLight(0) != nullptr)
+		{
+			m_sceneLightManager->getPointLight(0)->Ambient = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+			m_sceneLightManager->getPointLight(0)->Diffuse = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+			m_sceneLightManager->getPointLight(0)->Specular = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+		}
+	
+		if (m_materialtestLightIncZ)
+		{
+			if (m_sceneLightManager->getPointLight(0) != nullptr)
+			{
+				m_sceneLightManager->getPointLight(0)->Position.z += 0.075f;
+				if (m_sceneLightManager->getPointLight(0)->Position.z >= m_materialtestLightMaxZ)
+				{
+					m_sceneLightManager->getPointLight(0)->Position.z = m_materialtestLightMaxZ;
+					m_materialtestLightIncZ = false;
+				}
+			}
+		
+		}
+		else
+		{
+			if (m_sceneLightManager->getPointLight(0) != nullptr)
+			{
+				m_sceneLightManager->getPointLight(0)->Position.z -= 0.075f;
+				if (m_sceneLightManager->getPointLight(0)->Position.z <= m_materialtestLightMinZ)
+				{
+					m_sceneLightManager->getPointLight(0)->Position.z = m_materialtestLightMinZ;
+					m_materialtestLightIncZ = true;
+				}
+			}
+		}
+		
+		
+		if (m_materialtestLightIncX)
+		{
+			if (m_sceneLightManager->getPointLight(0) != nullptr)
+			{
+				m_sceneLightManager->getPointLight(0)->Position.x += 0.1f;
+				if (m_sceneLightManager->getPointLight(0)->Position.x >= m_materialtestLightMaxX)
+				{
+					m_sceneLightManager->getPointLight(0)->Position.x = m_materialtestLightMaxX;
+					m_materialtestLightIncX = false;
+				}
+			}
+		}
+		else
+		{
+			if (m_sceneLightManager->getPointLight(0) != nullptr)
+			{
+				m_sceneLightManager->getPointLight(0)->Position.x -= 0.1f;
+				if (m_sceneLightManager->getPointLight(0)->Position.x <= m_materialtestLightMinX)
+				{
+					m_sceneLightManager->getPointLight(0)->Position.x = m_materialtestLightMinX;
+					m_materialtestLightIncX = true;
+				}
+			}
+		}
+	}
 
 }
 
