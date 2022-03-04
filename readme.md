@@ -4,7 +4,7 @@
 
 This project is a continuation of my Final Year Project for University where I created a 3D renderer using OpenGL which included a large variety of graphical features.
 
-I have been further developing this project in my own time for fun by continuing to abstract away parts of the program, fix bugs and issues and add new features such as the ability to load scenes from textfiles, be able to switch between them during runtime and implementing a UI. 
+I have been further developing this project in my own time for fun by adding new features such as the ability to load scenes from textfiles, be able to switch between them during runtime and implementing a ImGui UI with buttons to edit the scene. This alongside the usual fixing of bugs and issues and further abstracting parts of the program.
 
 This project is mainly a fun way for me to experiment and test my OpenGL and C++ ability.
 
@@ -19,15 +19,15 @@ load external textures, load external shaders, Parallax mapping, sprite blending
 
 # Controls
 
-W/A/S/D to move around the camera  
+**W/A/S/D** to move around the camera  
 Moving the mouse moves the front facing vector of the camera  
-1/2/3/4/5 to change the screen filter applied to the drawn frame  
+**1/2/3/4/5** to change the screen filter applied to the drawn frame  
 	1 Normal  
 	2 Inverse  
 	3 Greyscale  
 	4 Edge detection  
 	5 ???  
-Q to toggle the UI
+**Q** to toggle the UI
 
 # Building
 
