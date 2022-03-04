@@ -166,7 +166,8 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     <PostBuildEvent>
       <Command>xcopy /y /d $(ProjectDir)dependencies\assimp\lib\assimp-vc140-mt.dll $(TargetDir)
 mkdir $(TargetDir)res 
-xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
+xcopy /y /d $(ProjectDir)res $(TargetDir)res /S
+xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
