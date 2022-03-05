@@ -6,8 +6,8 @@ ModelTerrain::ModelTerrain()
 {
 	setShaderTwo("res/shaders/terrain-vertex.glsl", "res/shaders/terrain-tessCont.glsl", "res/shaders/terrain-tessEval.glsl", "res/shaders/terrain-fragment.glsl");
 
-	m_terrainTexture = TextureManager::retrieveTexture("res/textures/terrain_diff.png");
-	m_terrainHeight = TextureManager::retrieveTexture("res/textures/terrain_height.png");
+	//m_terrainTexture = TextureManager::retrieveTexture("res/textures/terrain_diff.png");
+	//m_terrainHeight = TextureManager::retrieveTexture("res/textures/terrain_height.png");
 }
 
 ModelTerrain::~ModelTerrain()
@@ -72,6 +72,16 @@ void ModelTerrain::drawPassTwo()
 	m_modelShaderPassTwo->Unbind();
 	m_terrainTexture->Unbind();
 	m_terrainHeight->Unbind();
+}
+
+void ModelTerrain::setTerrainTexture(const std::string& texturePath)
+{
+	m_terrainTexture = TextureManager::retrieveTexture(texturePath);
+}
+
+void ModelTerrain::setTerrainHeightTexture(const std::string& texturePath)
+{
+	m_terrainHeight = TextureManager::retrieveTexture(texturePath);
 }
 
 /// <summary>

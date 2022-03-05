@@ -14,6 +14,9 @@ public:
     void        drawPassOne() override;
     void        drawPassTwo() override;
 
+	void		setTerrainTexture(const std::string& texturePath);
+	void		setTerrainHeightTexture(const std::string& texturePath);
+
     void        setShaderTwo(const char* vertexPath, const char* tessellationControlPath, const char* tessellationEvaluationPath, const char* fragmentPath);
 
     void        setElevation(float value);

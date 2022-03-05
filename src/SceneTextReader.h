@@ -106,6 +106,9 @@ private:
 	struct templateModelTerrain : public templateModel
 	{
 		float elevation = 0.0f;
+
+		std::string terrainTextureMap = "";
+		std::string terrainHeightMap = "";
 	};
 	struct templateModelSprite : public templateModel
 	{

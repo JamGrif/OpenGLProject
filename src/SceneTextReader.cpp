@@ -251,6 +251,9 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 
 		model->setElevation(o.elevation);
 
+		model->setTerrainTexture(o.terrainTextureMap);
+		model->setTerrainHeightTexture(o.terrainHeightMap);
+
 		sceneMeshes.push_back(model);
 	}
 
@@ -560,12 +563,18 @@ void SceneTextReader::applyToModelTerrainTemplate(templateModelTerrain& o, const
 {
 	enum objectInfo
 	{
-		e_Elevation = 10
+		e_Elevation = 10,
+
+		e_TerrainTextureMap = 11,
+		e_TerrainHeightMap = 12
 	};
 
 	applyToModel(o, vector);
 
 	o.elevation = std::stof(vector.at(e_Elevation));
+
+	o.terrainTextureMap = "res/textures/" + vector.at(e_TerrainTextureMap) + ".png";
+	o.terrainHeightMap = "res/textures/" + vector.at(e_TerrainHeightMap) + ".png";
 }
 
 void SceneTextReader::applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& vector)
