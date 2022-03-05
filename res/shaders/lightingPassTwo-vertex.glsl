@@ -13,7 +13,7 @@ struct Material
 	sampler2D emission;
 	sampler2D normal;
 	sampler2D height;
-	float shininess;
+	float specularShininess;
 
 	int normalizeTex;
 	bool usingNormal;

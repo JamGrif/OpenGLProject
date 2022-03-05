@@ -9,7 +9,7 @@ struct Material
 	sampler2D emission;
 	sampler2D normal;
 	sampler2D height;
-	float shininess;
+	float specularShininess;
 
 	int normalizeTex;
 	bool usingNormal;
@@ -179,7 +179,7 @@ vec3 calculateDirLight(DirectionalLight dl, vec3 normal, vec3 viewDir, vec2 alte
 
 	//Specular 
 	vec3 halfwayDir = normalize(lightDir + viewDir);
-	float spec = pow(max(dot(normal, halfwayDir),0.0),material.shininess);
+	float spec = pow(max(dot(normal, halfwayDir),0.0),material.specularShininess);
 
 	//Combine
 	vec3 ambient = dl.ambient * vec3(texture(material.diffuse, alteredTexCoords));
@@ -212,7 +212,7 @@ vec3 calculatePointLight(PointLight pl, vec3 normal, vec3 viewDir, vec2 alteredT
 
 	//Specular
 	vec3 halfwayDir = normalize(lightDir + viewDir);
-	float spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
+	float spec = pow(max(dot(normal, halfwayDir), 0.0), material.specularShininess);
 
 	//Attenuation
 	float attenuation = 1.0f / (pl.constant + pl.linear * distance + pl.quadratic * (distance * distance));
@@ -255,7 +255,7 @@ vec3 calculateSpotLight(SpotLight sl, vec3 normal, vec3 viewDir, vec2 alteredTex
 
 	//Specular
 	vec3 halfwayDir = normalize(lightDir + viewDir);
-	float spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
+	float spec = pow(max(dot(normal, halfwayDir), 0.0), material.specularShininess);
 
 	//Attenuation
 	float attenuation = 1.0f / (sl.constant + sl.linear * distance + sl.quadratic * (distance * distance));

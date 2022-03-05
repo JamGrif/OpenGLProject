@@ -143,12 +143,12 @@ void ModelLighting::drawPassTwo()
 	}
 
 	// Material properties
-	m_modelShaderPassTwo->setUniform1i("material.diffuse",		e_diffuseTextureSlot);
-	m_modelShaderPassTwo->setUniform1i("material.specular",		e_specularTextureSlot);
-	m_modelShaderPassTwo->setUniform1i("material.emission",		e_emissionTextureSlot);
-	m_modelShaderPassTwo->setUniform1i("material.normal",		e_normalTextureSlot);
-	m_modelShaderPassTwo->setUniform1i("material.height",		e_heightTextureSlot);
-	m_modelShaderPassTwo->setUniform1f("material.shininess",	m_specularShininess);
+	m_modelShaderPassTwo->setUniform1i("material.diffuse",				e_diffuseTextureSlot);
+	m_modelShaderPassTwo->setUniform1i("material.specular",				e_specularTextureSlot);
+	m_modelShaderPassTwo->setUniform1i("material.emission",				e_emissionTextureSlot);
+	m_modelShaderPassTwo->setUniform1i("material.normal",				e_normalTextureSlot);
+	m_modelShaderPassTwo->setUniform1i("material.height",				e_heightTextureSlot);
+	m_modelShaderPassTwo->setUniform1f("material.specularShininess",	m_specularShininess);
 
 	m_modelShaderPassTwo->setUniform1i("material.normalizeTex",		m_normalizeTexture);
 	m_modelShaderPassTwo->setUniform1i("material.usingNormal",		m_modelUsingTextures[e_normalTextureSlot]);
@@ -163,27 +163,27 @@ void ModelLighting::drawPassTwo()
 		Bind textures to pipeline
 	*/
 
-	if (m_modelTextures[e_diffuseTextureSlot])
+	if (m_modelUsingTextures[e_diffuseTextureSlot])
 	{
 		m_modelTextures[e_diffuseTextureSlot]->Bind(e_diffuseTextureSlot);
 	}
 
-	if (m_modelTextures[e_specularTextureSlot])
+	if (m_modelUsingTextures[e_specularTextureSlot])
 	{
 		m_modelTextures[e_specularTextureSlot]->Bind(e_specularTextureSlot);
 	}
 
-	if (m_modelTextures[e_emissionTextureSlot])
+	if (m_modelUsingTextures[e_emissionTextureSlot])
 	{
 		m_modelTextures[e_emissionTextureSlot]->Bind(e_emissionTextureSlot);
 	}
 
-	if (m_modelTextures[e_normalTextureSlot])
+	if (m_modelUsingTextures[e_normalTextureSlot])
 	{
 		m_modelTextures[e_normalTextureSlot]->Bind(e_normalTextureSlot);
 	}
 
-	if (m_modelTextures[e_heightTextureSlot])
+	if (m_modelUsingTextures[e_heightTextureSlot])
 	{
 		m_modelTextures[e_heightTextureSlot]->Bind(e_heightTextureSlot);
 	}
@@ -211,27 +211,27 @@ void ModelLighting::drawPassTwo()
 		Post-draw cleanup
 	*/
 
-	if (m_modelTextures[e_diffuseTextureSlot])
+	if (m_modelUsingTextures[e_diffuseTextureSlot])
 	{
 		m_modelTextures[e_diffuseTextureSlot]->Unbind(e_diffuseTextureSlot);
 	}
 
-	if (m_modelTextures[e_specularTextureSlot])
+	if (m_modelUsingTextures[e_specularTextureSlot])
 	{
 		m_modelTextures[e_specularTextureSlot]->Unbind(e_specularTextureSlot);
 	}
 
-	if (m_modelTextures[e_emissionTextureSlot])
+	if (m_modelUsingTextures[e_emissionTextureSlot])
 	{
 		m_modelTextures[e_emissionTextureSlot]->Unbind(e_emissionTextureSlot);
 	}
 
-	if (m_modelTextures[e_normalTextureSlot])
+	if (m_modelUsingTextures[e_normalTextureSlot])
 	{
 		m_modelTextures[e_normalTextureSlot]->Unbind(e_normalTextureSlot);
 	}
 
-	if (m_modelTextures[e_heightTextureSlot])
+	if (m_modelUsingTextures[e_heightTextureSlot])
 	{
 		m_modelTextures[e_heightTextureSlot]->Unbind(e_heightTextureSlot);
 	}
