@@ -23,17 +23,15 @@ public:
 
 private:
 
-    Texture*                m_modelDiffuseTexture;
-    Texture*                m_modelSpecularTexture;
-    Texture*                m_modelEmissionTexture;
-    Texture*                m_modelNormalTexture;
-    Texture*                m_modelHeightTexture;
-    float                   m_shininess;
+	Texture*				m_modelTextures[5];
+	bool					m_modelUsingTextures[5];
+
+    float                   m_specularShininess;
 
     bool                    m_normalizeTexture;
-    bool                    m_usingEmission;
-    bool                    m_usingNormal;
-    bool                    m_usingHeight;
+    //bool                    m_usingEmission;
+    //bool                    m_usingNormal;
+    //bool                    m_usingHeight;
     float                   m_heightAmount;
 
     std::vector<glm::vec3>  m_tangents;
