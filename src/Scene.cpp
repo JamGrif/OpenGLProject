@@ -124,86 +124,88 @@ void Scene::updateOnInput()
 /// </summary>
 void Scene::updateSceneLight()
 {
+	// Function needs to be rewritten at some point as its current implementation isn't the best
 	/*
 		Light over material showcase
 	*/
 
 	if (m_sceneName == "res/scenes/FMPscene.txt")
 	{
+		PointLight* localFirstPointLight = m_sceneLightManager->getPointLight(1);
+		PointLight* localSecondPointLight = m_sceneLightManager->getPointLight(2);
+		PointLight* localThirdPointLight = m_sceneLightManager->getPointLight(3);
+
 		if (m_materialLightIncZ)
 		{
-			if (m_sceneLightManager->getPointLight(1) != nullptr)
+			if (localFirstPointLight != nullptr)
 			{
-				m_sceneLightManager->getPointLight(1)->Position.z += 0.075f;
-				if (m_sceneLightManager->getPointLight(1)->Position.z >= m_materialLightMaxZ)
+				localFirstPointLight->Position.z += 0.075f;
+				if (localFirstPointLight->Position.z >= m_materialLightMaxZ)
 				{
-					m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMaxZ;
+					localFirstPointLight->Position.z = m_materialLightMaxZ;
 					m_materialLightIncZ = false;
 				}
 			}
-
 		}
 		else
 		{
-			if (m_sceneLightManager->getPointLight(1) != nullptr)
+			if (localFirstPointLight != nullptr)
 			{
-				m_sceneLightManager->getPointLight(1)->Position.z -= 0.075f;
-				if (m_sceneLightManager->getPointLight(1)->Position.z <= m_materialLightMinZ)
+				localFirstPointLight->Position.z -= 0.075f;
+				if (localFirstPointLight->Position.z <= m_materialLightMinZ)
 				{
-					m_sceneLightManager->getPointLight(1)->Position.z = m_materialLightMinZ;
+					localFirstPointLight->Position.z = m_materialLightMinZ;
 					m_materialLightIncZ = true;
 				}
 			}
 		}
 
-
 		if (m_materialLightIncX)
 		{
-			if (m_sceneLightManager->getPointLight(1) != nullptr)
+			if (localFirstPointLight != nullptr)
 			{
-				m_sceneLightManager->getPointLight(1)->Position.x += 0.1f;
-				if (m_sceneLightManager->getPointLight(1)->Position.x >= m_materialLightMaxX)
+				localFirstPointLight->Position.x += 0.1f;
+				if (localFirstPointLight->Position.x >= m_materialLightMaxX)
 				{
-					m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMaxX;
+					localFirstPointLight->Position.x = m_materialLightMaxX;
 					m_materialLightIncX = false;
 				}
 			}
 		}
 		else
 		{
-			if (m_sceneLightManager->getPointLight(1) != nullptr)
+			if (localFirstPointLight != nullptr)
 			{
-				m_sceneLightManager->getPointLight(1)->Position.x -= 0.1f;
-				if (m_sceneLightManager->getPointLight(1)->Position.x <= m_materialLightMinX)
+				localFirstPointLight->Position.x -= 0.1f;
+				if (localFirstPointLight->Position.x <= m_materialLightMinX)
 				{
-					m_sceneLightManager->getPointLight(1)->Position.x = m_materialLightMinX;
+					localFirstPointLight->Position.x = m_materialLightMinX;
 					m_materialLightIncX = true;
 				}
 			}
 		}
 
-
 		//Light showing normals
 		if (m_normalLightIncZ)
 		{
-			if (m_sceneLightManager->getPointLight(2) != nullptr)
+			if (localSecondPointLight != nullptr)
 			{
-				m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
-				if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMaxZ)
+				localSecondPointLight->Position.z += 0.05f;
+				if (localSecondPointLight->Position.z >= m_normalLightMaxZ)
 				{
-					m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMaxZ;
+					localSecondPointLight->Position.z = m_normalLightMaxZ;
 					m_normalLightIncZ = false;
 				}
 			}
 		}
 		else
 		{
-			if (m_sceneLightManager->getPointLight(2) != nullptr)
+			if (localSecondPointLight != nullptr)
 			{
-				m_sceneLightManager->getPointLight(2)->Position.z += 0.05f;
-				if (m_sceneLightManager->getPointLight(2)->Position.z >= m_normalLightMinZ)
+				localSecondPointLight->Position.z += 0.05f;
+				if (localSecondPointLight->Position.z >= m_normalLightMinZ)
 				{
-					m_sceneLightManager->getPointLight(2)->Position.z = m_normalLightMinZ;
+					localSecondPointLight->Position.z = m_normalLightMinZ;
 					m_normalLightIncZ = true;
 				}
 			}
@@ -231,11 +233,11 @@ void Scene::updateSceneLight()
 			m_lightB = 0.0f;
 		}
 			
-		if (m_sceneLightManager->getPointLight(3) != nullptr)
+		if (localThirdPointLight != nullptr)
 		{
-			m_sceneLightManager->getPointLight(3)->Ambient = glm::vec3(m_lightR, m_lightG, m_lightB);
-			m_sceneLightManager->getPointLight(3)->Diffuse = glm::vec3(m_lightR, m_lightG, m_lightB);
-			m_sceneLightManager->getPointLight(3)->Specular = glm::vec3(m_lightR, m_lightG, m_lightB);
+			localThirdPointLight->Ambient = glm::vec3(m_lightR, m_lightG, m_lightB);
+			localThirdPointLight->Diffuse = glm::vec3(m_lightR, m_lightG, m_lightB);
+			localThirdPointLight->Specular = glm::vec3(m_lightR, m_lightG, m_lightB);
 		}
 	}
 
@@ -245,6 +247,8 @@ void Scene::updateSceneLight()
 		/*
 			Coloured Lighting
 		*/
+
+		PointLight* localPointLight = m_sceneLightManager->getPointLight(0);
 	
 		m_materialtestlightR -= 0.001f;
 		if (m_materialtestlightR <= 0.0f)
@@ -257,22 +261,23 @@ void Scene::updateSceneLight()
 		m_materialtestlightB += 0.002f;
 		if (m_materialtestlightB >= 1.0f)
 			m_materialtestlightB = 0.0f;
-	
-		if (m_sceneLightManager->getPointLight(0) != nullptr)
+
+		
+		if (localPointLight != nullptr)
 		{
-			m_sceneLightManager->getPointLight(0)->Ambient = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
-			m_sceneLightManager->getPointLight(0)->Diffuse = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
-			m_sceneLightManager->getPointLight(0)->Specular = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+			localPointLight->Ambient = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+			localPointLight->Diffuse = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+			localPointLight->Specular = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
 		}
 	
 		if (m_materialtestLightIncZ)
 		{
-			if (m_sceneLightManager->getPointLight(0) != nullptr)
+			if (localPointLight != nullptr)
 			{
-				m_sceneLightManager->getPointLight(0)->Position.z += 0.075f;
-				if (m_sceneLightManager->getPointLight(0)->Position.z >= m_materialtestLightMaxZ)
+				localPointLight->Position.z += 0.075f;
+				if (localPointLight->Position.z >= m_materialtestLightMaxZ)
 				{
-					m_sceneLightManager->getPointLight(0)->Position.z = m_materialtestLightMaxZ;
+					localPointLight->Position.z = m_materialtestLightMaxZ;
 					m_materialtestLightIncZ = false;
 				}
 			}
@@ -280,12 +285,12 @@ void Scene::updateSceneLight()
 		}
 		else
 		{
-			if (m_sceneLightManager->getPointLight(0) != nullptr)
+			if (localPointLight != nullptr)
 			{
-				m_sceneLightManager->getPointLight(0)->Position.z -= 0.075f;
-				if (m_sceneLightManager->getPointLight(0)->Position.z <= m_materialtestLightMinZ)
+				localPointLight->Position.z -= 0.075f;
+				if (localPointLight->Position.z <= m_materialtestLightMinZ)
 				{
-					m_sceneLightManager->getPointLight(0)->Position.z = m_materialtestLightMinZ;
+					localPointLight->Position.z = m_materialtestLightMinZ;
 					m_materialtestLightIncZ = true;
 				}
 			}
@@ -294,24 +299,24 @@ void Scene::updateSceneLight()
 		
 		if (m_materialtestLightIncX)
 		{
-			if (m_sceneLightManager->getPointLight(0) != nullptr)
+			if (localPointLight != nullptr)
 			{
-				m_sceneLightManager->getPointLight(0)->Position.x += 0.1f;
-				if (m_sceneLightManager->getPointLight(0)->Position.x >= m_materialtestLightMaxX)
+				localPointLight->Position.x += 0.1f;
+				if (localPointLight->Position.x >= m_materialtestLightMaxX)
 				{
-					m_sceneLightManager->getPointLight(0)->Position.x = m_materialtestLightMaxX;
+					localPointLight->Position.x = m_materialtestLightMaxX;
 					m_materialtestLightIncX = false;
 				}
 			}
 		}
 		else
 		{
-			if (m_sceneLightManager->getPointLight(0) != nullptr)
+			if (localPointLight != nullptr)
 			{
-				m_sceneLightManager->getPointLight(0)->Position.x -= 0.1f;
-				if (m_sceneLightManager->getPointLight(0)->Position.x <= m_materialtestLightMinX)
+				localPointLight->Position.x -= 0.1f;
+				if (localPointLight->Position.x <= m_materialtestLightMinX)
 				{
-					m_sceneLightManager->getPointLight(0)->Position.x = m_materialtestLightMinX;
+					localPointLight->Position.x = m_materialtestLightMinX;
 					m_materialtestLightIncX = true;
 				}
 			}

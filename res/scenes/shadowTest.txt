@@ -6,7 +6,7 @@ directionalLight	0.2		0.2		0.2		0.5		0.5		0.5		0.3		0.3		0.3		-2.0	-2.0	-1.0
 
 #Skybox objects...
 #ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#SkyboxTexture
-modelSky		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			default
+modelSky		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			black
 
 # modelLighting objects...
 #ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap

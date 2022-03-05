@@ -59,9 +59,11 @@ void UI::startOfFrame()
 
 void UI::drawInFrame()
 {
+	// UI is not visible so leave
 	if (!m_uiVisible)
 		return;
 
+	// if localLightManager is nullptr then the scene hasn't been loaded yet
 	if (m_localLightManager == nullptr)
 		return;
 
@@ -112,43 +114,44 @@ void UI::drawInFrame()
 		ImGui::Checkbox("SpotLight", &m_spotLightActive);
 
 		// Set the active state of the SpotLight depending on the check box status
-		EngineStatics::getLightManager()->getSpotLight(0)->lightActive = m_spotLightActive ? true : false;
+		m_localLightManager->getSpotLight(0)->lightActive = m_spotLightActive ? true : false;
 	}
+
 
 	if (m_pointLightInScene[e_FirstPointLight])
 	{
 		// There is the first pointLight in scene and act on button presses
 		ImGui::Checkbox("First PointLight", &m_pointLightActive[e_FirstPointLight]);
-
+	
 		// Set the active state of the pointLight depending on the check box status
-		EngineStatics::getLightManager()->getPointLight(e_FirstPointLight)->lightActive = m_pointLightActive[e_FirstPointLight] ? true : false;
+		m_localLightManager->getPointLight(e_FirstPointLight)->lightActive = m_pointLightActive[e_FirstPointLight] ? true : false;
 	}
-
+	
 	if (m_pointLightInScene[e_SecondPointLight])
 	{
 		// There is the second pointLight in scene and act on button presses
 		ImGui::Checkbox("Second PointLight", &m_pointLightActive[e_SecondPointLight]);
-
+	
 		// Set the active state of the pointLight depending on the check box status
-		EngineStatics::getLightManager()->getPointLight(e_SecondPointLight)->lightActive = m_pointLightActive[e_SecondPointLight] ? true : false;
+		m_localLightManager->getPointLight(e_SecondPointLight)->lightActive = m_pointLightActive[e_SecondPointLight] ? true : false;
 	}
-
+	
 	if (m_pointLightInScene[e_ThirdPointLight])
 	{
 		// There is the third pointLight in scene and act on button presses
 		ImGui::Checkbox("Third PointLight", &m_pointLightActive[e_ThirdPointLight]);
-
+	
 		// Set the active state of the pointLight depending on the check box status
-		EngineStatics::getLightManager()->getPointLight(e_ThirdPointLight)->lightActive = m_pointLightActive[e_ThirdPointLight] ? true : false;
+		m_localLightManager->getPointLight(e_ThirdPointLight)->lightActive = m_pointLightActive[e_ThirdPointLight] ? true : false;
 	}
-
+	
 	if (m_pointLightInScene[e_FourthPointLight])
 	{
 		// There is the fourth pointLight in scene and act on button presses
 		ImGui::Checkbox("Fourth PointLight", &m_pointLightActive[e_FourthPointLight]);
-
+	
 		// Set the active state of the pointLight depending on the check box status
-		EngineStatics::getLightManager()->getPointLight(e_FourthPointLight)->lightActive = m_pointLightActive[e_FourthPointLight] ? true : false;
+		m_localLightManager->getPointLight(e_FourthPointLight)->lightActive = m_pointLightActive[e_FourthPointLight] ? true : false;
 	}
 
 	// Screen PostProcessing Filter
@@ -189,11 +192,8 @@ void UI::drawInFrame()
 	ImGui::Text("1/2/3/4/5 to change the screen filter applied to the drawn frame");
 	ImGui::End();
 
-
-	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	
 }
 
 /// <summary>
@@ -201,16 +201,11 @@ void UI::drawInFrame()
 /// </summary>
 void UI::toggleUI()
 {
+	// Flip variable state
 	m_uiVisible = m_uiVisible == true ? false : true;
 
-	if (m_uiVisible)
-	{
-		Input::enableMouse();
-	}
-	else
-	{
-		Input::disableMouse();
-	}
+	// Toggle mouse depending on UI visibility
+	m_uiVisible ? Input::enableMouse() : Input::disableMouse();
 }
 
 bool UI::getUiVisible()
