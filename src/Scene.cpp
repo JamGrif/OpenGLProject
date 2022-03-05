@@ -3,8 +3,6 @@
 #include <iostream>
 #include <string>
 
-//#include "models/ModelSky.h"
-
 #include "Camera.h"
 #include "EngineStatics.h"
 #include "Input.h"
@@ -29,11 +27,9 @@ Scene::~Scene()
 	}
 	m_sceneModels.clear();
 
-	EngineStatics::setCamera(nullptr);
 	delete m_sceneCamera;
 	m_sceneCamera = nullptr;
 
-	EngineStatics::setLightManager(nullptr);
 	delete m_sceneLightManager;
 	m_sceneLightManager = nullptr;
 
@@ -57,7 +53,6 @@ bool Scene::loadScene()
 
 	addSceneCamera(0.0f, 2.0f, 0.0f);
 	addSceneLightManager();
-	//m_sceneMeshes.push_back(new ModelSky()); // Skybox
 
 	/*
 		Run scene reader, giving it the scene objects vector and light manager to fill out
@@ -82,7 +77,6 @@ void Scene::updateScene()
 	// Update functions
 	updateSceneLight();
 	updateOnInput();
-
 }
 
 /// <summary>
@@ -125,6 +119,7 @@ void Scene::updateOnInput()
 void Scene::updateSceneLight()
 {
 	// Function needs to be rewritten at some point as its current implementation isn't the best
+
 	/*
 		Light over material showcase
 	*/
@@ -322,7 +317,6 @@ void Scene::updateSceneLight()
 			}
 		}
 	}
-
 }
 
 /// <summary>
@@ -340,7 +334,6 @@ void Scene::addSceneCamera(float x, float y, float z)
 	}
 	
 	m_sceneCamera = new Camera(glm::vec3{ x,y,z });
-	EngineStatics::setCamera(m_sceneCamera);
 }
 
 /// <summary>
@@ -355,8 +348,4 @@ void Scene::addSceneLightManager()
 	}
 
 	m_sceneLightManager = new LightManager();
-	EngineStatics::setLightManager(m_sceneLightManager);
 }
-
-
-

@@ -6,6 +6,7 @@
 class OpenGLWindow;
 class Camera;
 class LightManager;
+class GameTimer;
 
 // Used to allow classes to easily access required values created in other parts of the program
 class EngineStatics
@@ -33,6 +34,8 @@ public:
 	static double			getDeltaTime();
 	static void				setDeltaTime(double dt);
 
+	static GameTimer*		getGameTimer();
+	static void				setGameTimer(GameTimer* gt);
 
 private:
 
@@ -49,6 +52,8 @@ private:
 	static LightManager*	m_lightManager;
 
 	static double			m_deltaTime;
+
+	static GameTimer*		m_gameTimer;
 
 };
 

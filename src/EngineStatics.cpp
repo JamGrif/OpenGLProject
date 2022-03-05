@@ -3,6 +3,7 @@
 #include "OpenGLWindow.h"
 #include "Camera.h"
 #include "LightManager.h"
+#include "GameTimer.h"
 
 OpenGLWindow* EngineStatics::m_appWindow = nullptr;
 
@@ -18,13 +19,12 @@ LightManager* EngineStatics::m_lightManager = nullptr;
 
 double EngineStatics::m_deltaTime = 0;
 
-
+GameTimer* EngineStatics::m_gameTimer = nullptr;
 
 OpenGLWindow* EngineStatics::getAppWindow()
 {
 	return m_appWindow;
 }
-
 
 void EngineStatics::setAppWindow(OpenGLWindow* w)
 {
@@ -89,6 +89,16 @@ double EngineStatics::getDeltaTime()
 void EngineStatics::setDeltaTime(double dt)
 {
 	m_deltaTime = dt;
+}
+
+GameTimer* EngineStatics::getGameTimer()
+{
+	return m_gameTimer;
+}
+
+void EngineStatics::setGameTimer(GameTimer* gt)
+{
+	m_gameTimer = gt;
 }
 
 

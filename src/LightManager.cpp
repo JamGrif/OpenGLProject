@@ -1,5 +1,6 @@
 #include "LightManager.h"
 
+#include "EngineStatics.h"
 
 #include <iostream>
 
@@ -9,6 +10,8 @@ LightManager::LightManager()
 	m_maxSpotLights(1), m_currentSpotLights(0)
 {
 	std::cout << "LightManager Initialized" << std::endl;
+
+	EngineStatics::setLightManager(this);
 }
 
 LightManager::~LightManager()
@@ -35,6 +38,8 @@ LightManager::~LightManager()
 		sl = nullptr;
 	}
 	m_sceneSpotLights.clear();
+
+	EngineStatics::setLightManager(nullptr);
 }
 
 

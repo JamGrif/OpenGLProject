@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Input.h"
+#include "EngineStatics.h"
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
     : m_front(glm::vec3(0.0f, 0.0f, -1.0f)), m_movementSpeed(SPEED), m_mouseSensitivity(SENSITIVTY),
@@ -12,14 +13,14 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
 
     this->updateCameraVectors();
 
-    //EngineStatics::Setcamera(this);
+    EngineStatics::setCamera(this);
 }
 
 Camera::~Camera()
 {
     std::cout << "Scene Camera Destroyed" << std::endl;
 
-    //EngineStatics::Setcamera(nullptr);
+    EngineStatics::setCamera(nullptr);
 }
 
 /// <summary>
@@ -66,9 +67,7 @@ glm::vec3 Camera::getFront() const
 /// <param name="deltaTime"></param>
 void Camera::processKeyboard(Camera_Movement direction, double deltaTime)
 {
-    //std::cout << "process keyboard" << std::endl;
 	float velocity = m_movementSpeed * static_cast<float>(deltaTime);
-
 
     //Multiple if statements to allow multiple keys pressed down
     if (direction == e_FORWARD)

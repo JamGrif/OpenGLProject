@@ -6,14 +6,14 @@
 #include "EngineStatics.h"
 
 GameTimer::GameTimer()
-	:m_deltaTime(0), m_lastFrame(0), m_previousTime(0), m_frameCount(0), m_currentFrame(0)
+	:m_deltaTime(0), m_lastFrame(0), m_previousTime(0), m_frameCount(0), m_frameCountToDisplay(0), m_currentFrame(0)
 {
-
+	EngineStatics::setGameTimer(this);
 }
 
 GameTimer::~GameTimer()
 {
-
+	EngineStatics::setGameTimer(nullptr);
 }
 
 void GameTimer::startGameTimer()
@@ -43,13 +43,19 @@ void GameTimer::updateGameTimer()
 		// Display the frame count here any way you want.
 		//m_appWindow->setWindowTitle(std::to_string(m_frameCount));
 
+		m_frameCountToDisplay = m_frameCount;
 		m_frameCount = 0;
 		m_previousTime = m_currentFrame;
 	}
 	EngineStatics::setDeltaTime(m_deltaTime);
 }
 
-double GameTimer::getDeltaTime()
+double GameTimer::getDeltaTime() const
 {
 	return m_deltaTime;
+}
+
+int GameTimer::getFrameCount() const
+{
+	return m_frameCountToDisplay;
 }
