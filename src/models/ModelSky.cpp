@@ -31,12 +31,12 @@ void ModelSky::drawPassOne()
 }
 
 /// <summary>
-/// Overridden method from Model base class - Used to draw the skybox
+/// Overridden method from Model base class - Used to draw the Skybox
 /// </summary>
 void ModelSky::drawPassTwo()
 {
 	// If no valid model or shader attached
-	if (m_modelShaderPassTwo == nullptr)
+	if (!m_modelShaderPassTwo)
 	{
 		return;
 	}
@@ -49,7 +49,7 @@ void ModelSky::drawPassTwo()
 	*/
 
 	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", glm::mat4(glm::mat3(EngineStatics::getCamera()->getViewMatrix())));
-	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *EngineStatics::getProjectionMatrix());
+	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", m_localProjectionMatrix);
 	m_modelShaderPassTwo->setUniform1i("sky", 0);
 
 	m_skyTexture->Bind();

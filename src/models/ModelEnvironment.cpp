@@ -1,7 +1,7 @@
 #include "ModelEnvironment.h"
 
 ModelEnvironment::ModelEnvironment()
-	:m_usingReflection(false), m_usingRefraction(false)
+	:m_skyTexture(nullptr), m_usingReflection(false), m_usingRefraction(false)
 {
 	//setShaderOne--------
 	setShaderTwo("res/shaders/environmentMapping-vertex.glsl", "res/shaders/environmentMapping-fragment.glsl");
@@ -11,7 +11,10 @@ ModelEnvironment::ModelEnvironment()
 
 ModelEnvironment::~ModelEnvironment()
 {
-	m_skyTexture = nullptr;
+	if (m_skyTexture)
+	{
+		m_skyTexture = nullptr;
+	}
 }
 
 /// <summary>
@@ -32,7 +35,7 @@ void ModelEnvironment::drawPassOne()
 void ModelEnvironment::drawPassTwo()
 {
 	// If no valid model or shader attached
-	if (m_modelMesh == nullptr || m_modelShaderPassTwo == nullptr)
+	if (!m_modelMesh|| !m_modelShaderPassTwo)
 	{
 		return;
 	}
@@ -52,7 +55,7 @@ void ModelEnvironment::drawPassTwo()
 	
 	m_modelShaderPassTwo->setUniformMatrix4fv("m_matrix", m_mMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", m_vMat);
-	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *EngineStatics::getProjectionMatrix());
+	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", m_localProjectionMatrix);
 
 	/*
 		Set Fragment values

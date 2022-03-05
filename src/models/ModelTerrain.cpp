@@ -2,7 +2,7 @@
 
 
 ModelTerrain::ModelTerrain()
-	:m_elevation(2.5), m_minElevation(-8), m_maxElevation(-3)
+	:m_terrainTexture(nullptr), m_terrainHeight(nullptr), m_elevation(2.5), m_minElevation(-8), m_maxElevation(-3)
 {
 	setShaderTwo("res/shaders/terrain-vertex.glsl", "res/shaders/terrain-tessCont.glsl", "res/shaders/terrain-tessEval.glsl", "res/shaders/terrain-fragment.glsl");
 
@@ -12,6 +12,15 @@ ModelTerrain::ModelTerrain()
 
 ModelTerrain::~ModelTerrain()
 {
+	if (m_terrainTexture)
+	{
+		m_terrainTexture = nullptr;
+	}
+
+	if (m_terrainHeight)
+	{
+		m_terrainHeight = nullptr;
+	}
 }
 
 /// <summary>
@@ -27,7 +36,7 @@ void ModelTerrain::drawPassOne()
 void ModelTerrain::drawPassTwo()
 {
 	// If no shader attached
-	if (m_modelShaderPassTwo == nullptr)
+	if (!m_modelShaderPassTwo)
 	{
 		return;
 	}
@@ -39,7 +48,7 @@ void ModelTerrain::drawPassTwo()
 		Set Vertex / Tessellation / Fragment values
 	*/
 
-	glm::mat4 mMVP = *EngineStatics::getProjectionMatrix() * m_vMat * m_mMat;
+	glm::mat4 mMVP = m_localProjectionMatrix * m_vMat * m_mMat;
 
 	m_modelShaderPassTwo->setUniformMatrix4fv("mvp_matrix", mMVP);
 	m_modelShaderPassTwo->setUniform1f("elevation", m_elevation);

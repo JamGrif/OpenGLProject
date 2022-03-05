@@ -1,16 +1,16 @@
 #include "ModelGeometry.h"
 
 ModelGeometry::ModelGeometry()
-	:m_inflation(0)
+	:m_geometryTexture(nullptr), m_inflation(0), m_increasing(0)
 {
 	setShaderTwo("res/shaders/geometry-vertex.glsl", "res/shaders/geometry-geometry.glsl", "res/shaders/geometry-fragment.glsl");
 
-	m_GeometryTexture = TextureManager::retrieveTexture("res/textures/barrel_diff.png");
+	m_geometryTexture = TextureManager::retrieveTexture("res/textures/barrel_diff.png");
 }
 
 ModelGeometry::~ModelGeometry()
 {
-	m_GeometryTexture = nullptr;
+	m_geometryTexture = nullptr;
 }
 
 /// <summary>
@@ -30,7 +30,7 @@ void ModelGeometry::drawPassTwo()
 
 	// Bind shader
 	m_modelShaderPassTwo->Bind();
-	m_GeometryTexture->Bind();
+	m_geometryTexture->Bind();
 
 	// Determine change of mesh inflation
 	if (m_increasing)
@@ -79,7 +79,7 @@ void ModelGeometry::drawPassTwo()
 	*/
 
 	m_modelShaderPassTwo->Unbind();
-	m_GeometryTexture->Unbind();
+	m_geometryTexture->Unbind();
 }
 
 /// <summary>

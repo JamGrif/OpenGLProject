@@ -6,7 +6,6 @@ class ModelSprite :
     public Model
 {
 public:
-
     ModelSprite();
     ~ModelSprite();
 
@@ -15,10 +14,8 @@ public:
 
     void                    setSprite(const std::string& filePath);
 
-
 private:
 
     Texture*                m_modelSprite;
-
 };
 

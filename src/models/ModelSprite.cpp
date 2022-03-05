@@ -12,7 +12,10 @@ ModelSprite::ModelSprite()
 
 ModelSprite::~ModelSprite()
 {
-	m_modelSprite = nullptr;
+	if (m_modelSprite)
+	{
+		m_modelSprite = nullptr;
+	}
 }
 
 /// <summary>
@@ -33,7 +36,7 @@ void ModelSprite::drawPassOne()
 void ModelSprite::drawPassTwo()
 {
 	// If no valid model or shader attached
-	if (m_modelMesh == nullptr || m_modelShaderPassTwo == nullptr)
+	if (!m_modelMesh || !m_modelShaderPassTwo)
 	{
 		return;
 	}
@@ -46,7 +49,7 @@ void ModelSprite::drawPassTwo()
 	*/
 	m_modelShaderPassTwo->setUniformMatrix4fv("m_matrix", m_mMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", m_vMat);
-	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *EngineStatics::getProjectionMatrix());
+	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", m_localProjectionMatrix);
 	m_modelShaderPassTwo->setUniform1i("sprite", 0);
 
 	m_modelSprite->Bind(0);

@@ -3,7 +3,8 @@
 Model::Model()
 	:m_modelMesh(nullptr), m_modelShaderPassOne(nullptr), m_modelShaderPassTwo(nullptr), 
 	m_VBO(0), m_EBO(0), m_position{ 0.0, 0.0, 0.0 }, m_rotation{ 0.0, 0.0, 0.0 }, m_scale{ 1.0f, 1.0f, 1.0f },
-	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f }, m_localLightManager(EngineStatics::getLightManager())
+	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f },
+	m_localLightManager(EngineStatics::getLightManager()), m_localProjectionMatrix(*EngineStatics::getProjectionMatrix())
 {
 	//m_localLightManager = EngineStatics::getLightManager();
 }
