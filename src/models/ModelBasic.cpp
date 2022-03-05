@@ -102,7 +102,7 @@ void ModelBasic::copyPointLight(unsigned int index)
 		return;
 	}
 
-	int totalCurrentPointLights = m_localLightManager->getCurrentPointLights();
+	unsigned int totalCurrentPointLights = m_localLightManager->getCurrentPointLights();
 	if (index <= totalCurrentPointLights && totalCurrentPointLights != 0) // Ensure index is within the range of created point lights
 	{
 		m_copyingLight = true;

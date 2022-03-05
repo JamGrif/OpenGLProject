@@ -12,14 +12,17 @@
 #include "UI.h"
 
 Application::Application()
-	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0), m_cachedScreenWidth(0), m_cachedScreenHeight(0),
-	m_input(nullptr), m_UI(nullptr), m_loadedScene(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr)
+	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0),
+	m_input(nullptr), m_UI(nullptr), m_loadedScene(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr), m_gameTimer(nullptr)
 {
 }
 
 Application::~Application()
 {
 	EngineStatics::setProjectionMatrix(nullptr);
+
+	delete m_gameTimer;
+	m_gameTimer = nullptr;
 
 	delete m_sceneFilterFramebuffer;
 	m_sceneFilterFramebuffer = nullptr;
@@ -127,7 +130,7 @@ bool Application::appInit()
 	// Create UI object
 	m_UI = new UI(true);
 	
-	// Create scene object
+	// Create Scene object
 	if (!changeScene(e_shadowTest)) // load shadowTest.txt by default
 	{
 		// Scene failed to load
@@ -138,9 +141,8 @@ bool Application::appInit()
 	m_sceneFilterFramebuffer = new Framebuffer(false);
 	m_sceneMSAAFrameBuffer = new Framebuffer(true);
 
-	// Cache the current screen width / height
-	m_cachedScreenWidth = m_appWindow->getWindowWidth();
-	m_cachedScreenHeight = m_appWindow->getWindowHeight();
+	// Create Game Timer object
+	m_gameTimer = new GameTimer();
 
 	return true;
 }
@@ -150,13 +152,13 @@ bool Application::appInit()
 /// </summary>
 void Application::appLoop()
 {
-	GameTimer gt;
-	gt.startGameTimer();
+	if (m_gameTimer)
+		m_gameTimer->startGameTimer();
 
 	while (!glfwWindowShouldClose(m_appWindow->getWindow()))
 	{
-		
-		gt.updateGameTimer();
+		if (m_gameTimer)
+			m_gameTimer->updateGameTimer();
 
 		glClear(GL_DEPTH_BUFFER_BIT); // Clear the screen buffers
 		glfwPollEvents();
@@ -167,32 +169,38 @@ void Application::appLoop()
 				m_UI->toggleUI();
 		}
 
-		if (m_UI->getSceneNum() != 0)
-			changeScene(m_UI->getSceneNum());
-
-		if (m_UI->getFilterNum() != 0)
-			changeScreenFilter(m_UI->getFilterNum());
-
 		if (m_UI)
-			m_UI->startOfFrame();
+		{
+			if (m_UI->getSceneNum() != 0)
+				changeScene(m_UI->getSceneNum());
 
+			if (m_UI->getFilterNum() != 0)
+				changeScreenFilter(m_UI->getFilterNum());
+
+			m_UI->startOfFrame();
+		}
+		
 		if (m_loadedScene)
 			m_loadedScene->updateScene();
 
 		// Bind MSAA for object drawing
-		m_sceneMSAAFrameBuffer->bindFramebuffer();
+		if (m_sceneMSAAFrameBuffer)
+			m_sceneMSAAFrameBuffer->bindFramebuffer();
 
 		if (m_loadedScene)
 			m_loadedScene->drawScene();
 
 		// Reads from the MSAA buffer and writes it to the Filter buffer
-		m_sceneMSAAFrameBuffer->bindReadFramebuffer();
-		m_sceneFilterFramebuffer->bindWriteFramebuffer();
-		glBlitFramebuffer(0, 0, m_appWindow->getWindowWidth(), m_appWindow->getWindowHeight(), 0, 0, m_appWindow->getWindowWidth(), m_appWindow->getWindowHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
-		m_sceneMSAAFrameBuffer->unbindFramebuffer();
+		if (m_sceneMSAAFrameBuffer && m_sceneFilterFramebuffer)
+		{
+			m_sceneMSAAFrameBuffer->bindReadFramebuffer();
+			m_sceneFilterFramebuffer->bindWriteFramebuffer();
+			glBlitFramebuffer(0, 0, m_appWindow->getWindowWidth(), m_appWindow->getWindowHeight(), 0, 0, m_appWindow->getWindowWidth(), m_appWindow->getWindowHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+			m_sceneMSAAFrameBuffer->unbindFramebuffer();
 
-		// Draw screen filter to buffer
-		m_sceneFilterFramebuffer->draw();
+			// Draw screen filter to buffer
+			m_sceneFilterFramebuffer->draw();
+		}
 
 		if (m_UI)
 			m_UI->drawInFrame();
@@ -201,7 +209,7 @@ void Application::appLoop()
 
 	}
 
-	gt.stopGameTimer();
+	m_gameTimer->stopGameTimer();
 }
 
 /// <summary>
@@ -235,6 +243,10 @@ bool Application::changeScene(int newSceneNumber)
 	case e_shadowTest:
 		newSceneFilePath = "res/scenes/shadowTest.txt";
 		break;
+	default:
+		// Specified sceneNumber is out of range
+		std::cout << "Specified sceneNumber is out of range" << std::endl;
+		return false;
 	}
 
 	if (m_loadedScene != nullptr)
@@ -254,7 +266,9 @@ bool Application::changeScene(int newSceneNumber)
 	if (m_loadedScene->loadScene())
 	{
 		// Scene successfully loaded
-		m_UI->refreshLightButtons();
+		if (m_UI)
+			m_UI->refreshLightButtons();
+
 		return true;
 	}
 

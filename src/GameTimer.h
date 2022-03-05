@@ -8,12 +8,13 @@ public:
 	GameTimer();
 	~GameTimer();
 
-	void startGameTimer();
-	void stopGameTimer();
+	void	startGameTimer();
+	void	stopGameTimer();
 
-	void updateGameTimer();
+	void	updateGameTimer();
 
-	double getDeltaTime();
+	double	getDeltaTime() const;
+	int		getFrameCount() const;
 
 private:
 
@@ -23,6 +24,7 @@ private:
 
 	double		m_previousTime;
 	int			m_frameCount;
+	int			m_frameCountToDisplay;
 	double		m_currentFrame;
 
 };

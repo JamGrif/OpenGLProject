@@ -30,7 +30,7 @@ public:
 
 	void			setFrameFilter(int index);
 
-	unsigned int	getFBO();
+	unsigned int	getFBO() const;
 
 private:
 

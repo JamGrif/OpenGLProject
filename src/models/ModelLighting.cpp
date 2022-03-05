@@ -129,17 +129,17 @@ void ModelLighting::drawPassTwo()
 	{
 		SpotLight* tempSpotLight = m_localLightManager->getSpotLight(0);
 
-		m_modelShaderPassTwo->setUniform3f("sLight.ambient",		tempSpotLight->Ambient);
-		m_modelShaderPassTwo->setUniform3f("sLight.diffuse",		tempSpotLight->Diffuse);
-		m_modelShaderPassTwo->setUniform3f("sLight.specular",		tempSpotLight->Specular);
-		m_modelShaderPassTwo->setUniform3f("sLight.position",		EngineStatics::getCamera()->getPosition());
-		m_modelShaderPassTwo->setUniform3f("sLight.direction",		EngineStatics::getCamera()->getFront());
-		m_modelShaderPassTwo->setUniform1f("sLight.cutOff",			glm::cos(glm::radians(tempSpotLight->cutOff)));
-		m_modelShaderPassTwo->setUniform1f("sLight.outerCutOff",	glm::cos(glm::radians(tempSpotLight->outerCutOff)));
-		m_modelShaderPassTwo->setUniform1f("sLight.constant",		tempSpotLight->Constant);
-		m_modelShaderPassTwo->setUniform1f("sLight.linear",			tempSpotLight->Linear);
-		m_modelShaderPassTwo->setUniform1f("sLight.quadratic",		tempSpotLight->Quadratic);
-		m_modelShaderPassTwo->setUniform1i("sLight.lightActive",	tempSpotLight->lightActive);
+		m_modelShaderPassTwo->setUniform3f("sLight.ambient",			tempSpotLight->Ambient);
+		m_modelShaderPassTwo->setUniform3f("sLight.diffuse",			tempSpotLight->Diffuse);
+		m_modelShaderPassTwo->setUniform3f("sLight.specular",			tempSpotLight->Specular);
+		m_modelShaderPassTwo->setUniform3f("sLight.position",			EngineStatics::getCamera()->getPosition());
+		m_modelShaderPassTwo->setUniform3f("sLight.direction",			EngineStatics::getCamera()->getFront());
+		m_modelShaderPassTwo->setUniform1f("sLight.cutOff",				glm::cos(glm::radians(tempSpotLight->cutOff)));
+		m_modelShaderPassTwo->setUniform1f("sLight.outerCutOff",		glm::cos(glm::radians(tempSpotLight->outerCutOff)));
+		m_modelShaderPassTwo->setUniform1f("sLight.constant",			tempSpotLight->Constant);
+		m_modelShaderPassTwo->setUniform1f("sLight.linear",				tempSpotLight->Linear);
+		m_modelShaderPassTwo->setUniform1f("sLight.quadratic",			tempSpotLight->Quadratic);
+		m_modelShaderPassTwo->setUniform1i("sLight.lightActive",		tempSpotLight->lightActive);
 	}
 
 	// Material properties
@@ -150,11 +150,11 @@ void ModelLighting::drawPassTwo()
 	m_modelShaderPassTwo->setUniform1i("material.height",				e_heightTextureSlot);
 	m_modelShaderPassTwo->setUniform1f("material.specularShininess",	m_specularShininess);
 
-	m_modelShaderPassTwo->setUniform1i("material.normalizeTex",		m_normalizeTexture);
-	m_modelShaderPassTwo->setUniform1i("material.usingNormal",		m_modelUsingTextures[e_normalTextureSlot]);
-	m_modelShaderPassTwo->setUniform1i("material.usingEmission",	m_modelUsingTextures[e_emissionTextureSlot]);
-	m_modelShaderPassTwo->setUniform1i("material.usingHeight",		m_modelUsingTextures[e_heightTextureSlot]);
-	m_modelShaderPassTwo->setUniform1f("material.heightAmount",		m_heightAmount);
+	m_modelShaderPassTwo->setUniform1i("material.normalizeTex",			m_normalizeTexture);
+	m_modelShaderPassTwo->setUniform1i("material.usingNormal",			m_modelUsingTextures[e_normalTextureSlot]);
+	m_modelShaderPassTwo->setUniform1i("material.usingEmission",		m_modelUsingTextures[e_emissionTextureSlot]);
+	m_modelShaderPassTwo->setUniform1i("material.usingHeight",			m_modelUsingTextures[e_heightTextureSlot]);
+	m_modelShaderPassTwo->setUniform1f("material.heightAmount",			m_heightAmount);
 
 	// Camera Position
 	m_modelShaderPassTwo->setUniform3f("viewPos", EngineStatics::getCamera()->getPosition());

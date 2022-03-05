@@ -160,7 +160,7 @@ void Framebuffer::setFrameFilter(int index)
 /// Returns the Framebuffer Object (FBO)
 /// </summary>
 /// <returns></returns>
-unsigned int Framebuffer::getFBO()
+unsigned int Framebuffer::getFBO() const
 {
 	return m_FBO;
 }

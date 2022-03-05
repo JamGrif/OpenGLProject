@@ -136,6 +136,12 @@ void Input::enableMouse()
 
     m_mouseEnabled = true;
 
+	// Reset any lingering mouse movement
+	m_lastX = 0;
+	m_lastY = 0;
+	m_xOffset = 0;
+	m_yOffset = 0;
+
 	glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	glfwSetCursorPos(EngineStatics::getAppWindow()->getWindow(), EngineStatics::getScreenWidth() / 2, EngineStatics::getScreenHeight() / 2);
 }

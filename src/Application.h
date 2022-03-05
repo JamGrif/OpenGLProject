@@ -14,6 +14,7 @@ class Input;
 class Scene;
 class UI;
 class Framebuffer;
+class GameTimer;
 
 // Abstracts the program out of main.cpp, encapsulating the entire program
 class Application
@@ -38,10 +39,6 @@ private:
 
 	GLuint			m_appVAO;
 
-	// Cached screen size
-	int				m_cachedScreenWidth;
-	int				m_cachedScreenHeight;
-
 	// Objects
 
 	Input*			m_input;
@@ -52,6 +49,8 @@ private:
 
 	Framebuffer*	m_sceneMSAAFrameBuffer;		//Scene is drawn to this buffer with MSAA applied
 	Framebuffer*	m_sceneFilterFramebuffer;	//Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen
+
+	GameTimer*		m_gameTimer;
 
 };
 

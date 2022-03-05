@@ -9,6 +9,7 @@
 #include "EngineStatics.h"
 #include "Input.h"
 #include "OpenGLWindow.h"
+#include "GameTimer.h"
 
 UI::UI(bool uiVisible)
 	:m_uiVisible(uiVisible), m_sceneNum(0),
@@ -192,6 +193,24 @@ void UI::drawInFrame()
 	ImGui::Text("1/2/3/4/5 to change the screen filter applied to the drawn frame");
 	ImGui::End();
 
+	/*
+		Performance Metrics
+	*/
+
+	double x = EngineStatics::getGameTimer()->getDeltaTime();
+	std::string xx = std::to_string(x);
+	std::string xxx = "Delta Time: " + xx;
+
+	double y = EngineStatics::getGameTimer()->getFrameCount();
+	std::string yy = std::to_string(y);
+	std::string yyy = "FPS: " + yy;
+	
+
+	ImGui::Begin("Performance Metrics:");
+	ImGui::Text(yyy.c_str());
+	ImGui::Text(xxx.c_str());
+	ImGui::End();
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
@@ -208,17 +227,17 @@ void UI::toggleUI()
 	m_uiVisible ? Input::enableMouse() : Input::disableMouse();
 }
 
-bool UI::getUiVisible()
+bool UI::getUiVisible() const
 {
 	return m_uiVisible;
 }
 
-int UI::getSceneNum()
+int UI::getSceneNum() const
 {
 	return m_sceneNum;
 }
 
-int UI::getFilterNum()
+int UI::getFilterNum() const
 {
 	return m_appPostProcess;
 }

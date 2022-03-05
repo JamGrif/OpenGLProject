@@ -18,16 +18,16 @@ public:
 	UI(bool uiVisible);
 	~UI();
 
-	void startOfFrame();
-	void drawInFrame();
+	void	startOfFrame();
+	void	drawInFrame();
 
-	void toggleUI();
+	void	toggleUI();
 
-	bool getUiVisible();
-	int getSceneNum();
-	int getFilterNum();
+	bool	getUiVisible() const;
+	int		getSceneNum() const;
+	int		getFilterNum() const;
 
-	void refreshLightButtons();
+	void	refreshLightButtons();
 
 private:
 
