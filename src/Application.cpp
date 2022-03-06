@@ -73,7 +73,6 @@ bool Application::appInit()
 	*/
 
 	m_appWindow = new OpenGLWindow(1920, 1080, "OpenGL - Jamie", false);
-	//m_appWindow = new OpenGLWindow(1920, 1080, "OpenGL - Jamie", true);
 	if (!m_appWindow->getWindowStatus())
 	{
 		std::cout << "Window failed to initialize" << std::endl;
@@ -163,21 +162,20 @@ void Application::appLoop()
 		glClear(GL_DEPTH_BUFFER_BIT); // Clear the screen buffers
 		glfwPollEvents();
 
-		if (Input::getKeyPressedOnce(GLFW_KEY_Q))
-		{
-			if (m_UI)
-				m_UI->toggleUI();
-		}
-
 		if (m_UI)
 		{
-			if (m_UI->getSceneNum() != 0)
-				changeScene(m_UI->getSceneNum());
-
-			if (m_UI->getFilterNum() != 0)
-				changeScreenFilter(m_UI->getFilterNum());
-
 			m_UI->startOfFrame();
+
+			if (m_UI->getUiVisible())
+			{
+				// Check if loaded scene needs to change
+				if (m_UI->getSceneNum() != 0)
+					changeScene(m_UI->getSceneNum());
+
+				// Check if applied screen filter needs to change
+				if (m_UI->getFilterNum() != 0)
+					changeScreenFilter(m_UI->getFilterNum());
+			}
 		}
 		
 		if (m_loadedScene)
@@ -244,7 +242,6 @@ bool Application::changeScene(int newSceneNumber)
 		newSceneFilePath = "res/scenes/shadowTest.txt";
 		break;
 	default:
-		// Specified sceneNumber is out of range
 		std::cout << "Specified sceneNumber is out of range" << std::endl;
 		return false;
 	}

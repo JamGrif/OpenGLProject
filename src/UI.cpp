@@ -50,12 +50,21 @@ UI::~UI()
 
 void UI::startOfFrame()
 {
+	// Check if user wants to toggle UI visibility
+	if (Input::getKeyPressedOnce(GLFW_KEY_Q))
+	{
+		toggleUI();
+	}
+
+	// If UI is not visible then return
 	if (!m_uiVisible)
 		return;
 	
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+
+	
 }
 
 void UI::drawInFrame()
