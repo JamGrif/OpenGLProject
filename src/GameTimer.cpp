@@ -37,17 +37,14 @@ void GameTimer::updateGameTimer()
 
 	// Calculate framecount
 	m_frameCount++;
+
 	// If a second has passed.
 	if (m_currentFrame - m_previousTime >= 1.0)
 	{
-		// Display the frame count here any way you want.
-		//m_appWindow->setWindowTitle(std::to_string(m_frameCount));
-
 		m_frameCountToDisplay = m_frameCount;
 		m_frameCount = 0;
 		m_previousTime = m_currentFrame;
 	}
-	EngineStatics::setDeltaTime(m_deltaTime);
 }
 
 double GameTimer::getDeltaTime() const

@@ -4,6 +4,7 @@
 
 #include "Input.h"
 #include "EngineStatics.h"
+#include "GameTimer.h"
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
     : m_front(glm::vec3(0.0f, 0.0f, -1.0f)), m_movementSpeed(SPEED), m_mouseSensitivity(SENSITIVTY),
@@ -14,6 +15,8 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
     this->updateCameraVectors();
 
     EngineStatics::setCamera(this);
+
+	m_localGameTimer = EngineStatics::getGameTimer();
 }
 
 Camera::~Camera()
@@ -27,12 +30,12 @@ Camera::~Camera()
 /// Updates the camera depending on input from the keyboard or mouse
 /// </summary>
 /// <param name="deltaTime"></param>
-void Camera::Update(double deltaTime)
+void Camera::Update()
 {
-    if (Input::getKeyPressed(GLFW_KEY_W)) { processKeyboard(e_FORWARD, deltaTime); }
-    if (Input::getKeyPressed(GLFW_KEY_S)) { processKeyboard(e_BACKWARD, deltaTime); }
-    if (Input::getKeyPressed(GLFW_KEY_A)) { processKeyboard(e_LEFT, deltaTime); }
-    if (Input::getKeyPressed(GLFW_KEY_D)) { processKeyboard(e_RIGHT, deltaTime); }
+    if (Input::getKeyPressed(GLFW_KEY_W)) { processKeyboard(e_FORWARD); }
+    if (Input::getKeyPressed(GLFW_KEY_S)) { processKeyboard(e_BACKWARD); }
+    if (Input::getKeyPressed(GLFW_KEY_A)) { processKeyboard(e_LEFT); }
+    if (Input::getKeyPressed(GLFW_KEY_D)) { processKeyboard(e_RIGHT); }
 
     if (Input::getKeyPressed(GLFW_KEY_R))
     {
@@ -65,9 +68,9 @@ glm::vec3 Camera::getFront() const
 /// </summary>
 /// <param name="direction">Direction the camera is moving</param>
 /// <param name="deltaTime"></param>
-void Camera::processKeyboard(Camera_Movement direction, double deltaTime)
+void Camera::processKeyboard(Camera_Movement direction)
 {
-	float velocity = m_movementSpeed * static_cast<float>(deltaTime);
+	float velocity = m_movementSpeed * static_cast<float>(m_localGameTimer->getDeltaTime());
 
     //Multiple if statements to allow multiple keys pressed down
     if (direction == e_FORWARD)

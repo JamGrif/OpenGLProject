@@ -49,7 +49,7 @@ void ModelSky::drawPassTwo()
 	*/
 
 	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", glm::mat4(glm::mat3(EngineStatics::getCamera()->getViewMatrix())));
-	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", m_localProjectionMatrix);
+	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *m_localProjectionMatrix);
 	m_modelShaderPassTwo->setUniform1i("sky", 0);
 
 	m_skyTexture->Bind();

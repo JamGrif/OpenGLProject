@@ -4,6 +4,7 @@
 
 #include "Shader.h"
 #include "EngineStatics.h"
+#include "OpenGLWindow.h"
 
 Framebuffer::Framebuffer(bool multisampled)
 	:m_FBO(0), m_frameColourTexture(0), m_RBO(0),
@@ -16,20 +17,20 @@ Framebuffer::Framebuffer(bool multisampled)
 
 	glGenTextures(1, &m_frameColourTexture);
 
-	int width = EngineStatics::getScreenWidth();
-	int height = EngineStatics::getScreenHeight();
+	int windowWidth = EngineStatics::getAppWindow()->getWindowWidth();
+	int windowHeight = EngineStatics::getAppWindow()->getWindowHeight();
 
 	// If specified create a framebuffer that can handle multiple samples in the same texel
 	if (multisampled)
 	{
 		// Create multisampled frame texture
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_frameColourTexture);
-		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, width, height, GL_TRUE);
+		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, windowWidth, windowHeight, GL_TRUE);
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_frameColourTexture, 0);
 
 		// Create render buffer object
-		glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, width, height);
+		glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, windowWidth, windowHeight);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
 
 	}
@@ -38,14 +39,14 @@ Framebuffer::Framebuffer(bool multisampled)
 	{
 		// Create frame texture
 		glBindTexture(GL_TEXTURE_2D, m_frameColourTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, windowWidth, windowHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_frameColourTexture, 0);
 
 		// Create render buffer object
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, windowWidth, windowHeight);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
 	}
 	

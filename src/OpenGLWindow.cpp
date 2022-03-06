@@ -39,8 +39,6 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, const std::string&
 
 	// Set EngineStatics values
 	EngineStatics::setAppWindow(this);
-	EngineStatics::setScreenWidth(m_currentWindowWidth);
-	EngineStatics::setScreenHeight(m_currentWindowHeight);
 
 	glfwSwapInterval(1); // Double buffering
 	glClearColor(0.0, 0.0, 0.0, 1.0); // Sets clear colour
@@ -57,8 +55,8 @@ OpenGLWindow::~OpenGLWindow()
 {
 	// Clear EngineStatics values
 	EngineStatics::setAppWindow(nullptr);
-	EngineStatics::setScreenWidth(0);
-	EngineStatics::setScreenHeight(0);
+	//EngineStatics::setScreenWidth(0);
+	//EngineStatics::setScreenHeight(0);
 
 	glfwDestroyWindow(m_Window);
 }

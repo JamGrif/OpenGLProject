@@ -5,21 +5,15 @@
 #include "LightManager.h"
 #include "GameTimer.h"
 
-OpenGLWindow* EngineStatics::m_appWindow = nullptr;
+OpenGLWindow* EngineStatics::m_appWindow		= nullptr;
 
-int EngineStatics::m_screenWidth = 0;
+Camera* EngineStatics::m_camera					= nullptr;
 
-int EngineStatics::m_screenHeight = 0;
+glm::mat4* EngineStatics::m_projectionMatrix	= nullptr;
 
-Camera* EngineStatics::m_camera = nullptr;
+LightManager* EngineStatics::m_lightManager		= nullptr;
 
-glm::mat4* EngineStatics::m_projectionMatrix = nullptr;
-
-LightManager* EngineStatics::m_lightManager = nullptr;
-
-double EngineStatics::m_deltaTime = 0;
-
-GameTimer* EngineStatics::m_gameTimer = nullptr;
+GameTimer* EngineStatics::m_gameTimer			= nullptr;
 
 OpenGLWindow* EngineStatics::getAppWindow()
 {
@@ -29,26 +23,6 @@ OpenGLWindow* EngineStatics::getAppWindow()
 void EngineStatics::setAppWindow(OpenGLWindow* w)
 {
 	m_appWindow = w;
-}
-
-int EngineStatics::getScreenWidth()
-{
-	return m_screenWidth;
-}
-
-void EngineStatics::setScreenWidth(int width)
-{
-	m_screenWidth = width;
-}
-
-int EngineStatics::getScreenHeight()
-{
-	return m_screenHeight;
-}
-
-void EngineStatics::setScreenHeight(int height)
-{
-	m_screenHeight = height;
 }
 
 Camera* EngineStatics::getCamera()
@@ -81,16 +55,6 @@ void EngineStatics::setLightManager(LightManager* lm)
 	m_lightManager = lm;
 }
 
-double EngineStatics::getDeltaTime()
-{
-	return m_deltaTime;
-}
-
-void EngineStatics::setDeltaTime(double dt)
-{
-	m_deltaTime = dt;
-}
-
 GameTimer* EngineStatics::getGameTimer()
 {
 	return m_gameTimer;
@@ -100,5 +64,3 @@ void EngineStatics::setGameTimer(GameTimer* gt)
 {
 	m_gameTimer = gt;
 }
-
-

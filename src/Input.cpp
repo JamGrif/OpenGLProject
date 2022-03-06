@@ -143,7 +143,7 @@ void Input::enableMouse()
 	m_yOffset = 0;
 
 	glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	glfwSetCursorPos(EngineStatics::getAppWindow()->getWindow(), EngineStatics::getScreenWidth() / 2, EngineStatics::getScreenHeight() / 2);
+	glfwSetCursorPos(EngineStatics::getAppWindow()->getWindow(), EngineStatics::getAppWindow()->getWindowWidth() / 2, EngineStatics::getAppWindow()->getWindowHeight() / 2);
 }
 
 /// <summary>

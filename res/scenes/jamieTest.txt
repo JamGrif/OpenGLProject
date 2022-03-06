@@ -16,15 +16,15 @@ modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
 
 # modelLighting objects...
 #ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap
-modelLighting	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				metal_spec				metal_norm				0.0						null					0.0					null
-modelLighting	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				metal_spec				metal_norm				0.0						null					0.0					null
+modelLighting	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
+modelLighting	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
+modelLighting	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
+modelLighting	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
+modelLighting	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
+modelLighting	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
+modelLighting	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
+modelLighting	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
+modelLighting	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null
 
 
 

@@ -48,7 +48,7 @@ void ModelTerrain::drawPassTwo()
 		Set Vertex / Tessellation / Fragment values
 	*/
 
-	glm::mat4 mMVP = m_localProjectionMatrix * m_vMat * m_mMat;
+	glm::mat4 mMVP = *m_localProjectionMatrix * m_vMat * m_mMat;
 
 	m_modelShaderPassTwo->setUniformMatrix4fv("mvp_matrix", mMVP);
 	m_modelShaderPassTwo->setUniform1f("elevation", m_elevation);

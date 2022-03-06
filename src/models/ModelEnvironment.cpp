@@ -55,7 +55,7 @@ void ModelEnvironment::drawPassTwo()
 	
 	m_modelShaderPassTwo->setUniformMatrix4fv("m_matrix", m_mMat);
 	m_modelShaderPassTwo->setUniformMatrix4fv("v_matrix", m_vMat);
-	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", m_localProjectionMatrix);
+	m_modelShaderPassTwo->setUniformMatrix4fv("proj_matrix", *m_localProjectionMatrix);
 
 	/*
 		Set Fragment values

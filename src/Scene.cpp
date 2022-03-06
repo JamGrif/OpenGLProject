@@ -110,7 +110,7 @@ void Scene::updateOnInput()
 		Update scene camera
 	*/
 
-	m_sceneCamera->Update(EngineStatics::getDeltaTime());
+	m_sceneCamera->Update();
 }
 
 /// <summary>

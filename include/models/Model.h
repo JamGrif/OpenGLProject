@@ -78,6 +78,6 @@ protected:
 
 	//Cached other classes
 	LightManager*	m_localLightManager;
-	glm::mat4		m_localProjectionMatrix;
+	glm::mat4*		m_localProjectionMatrix;
 };
 
