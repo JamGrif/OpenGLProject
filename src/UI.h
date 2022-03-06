@@ -11,6 +11,9 @@ enum sceneNames
 	e_shadowTest	= 5
 };
 
+// Forward Declarations
+class GameTimer;
+
 // A wrapper around imGui to display UI elements to the window
 class UI
 {
@@ -55,6 +58,7 @@ private:
 	int m_appPostProcess;
 
 	//Cached other classes
-	LightManager* m_localLightManager;
+	LightManager*	m_localLightManager;
+	GameTimer*		m_localgameTimer;
 };
 

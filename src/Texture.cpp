@@ -106,7 +106,6 @@ void Texture::Unbind(unsigned int slot) const
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-
 const std::string& Texture::getFilePath() const
 {
 	return m_filePath;

@@ -16,7 +16,7 @@ UI::UI(bool uiVisible)
 	m_directionalLightInScene(false), m_directionalLightActive(true),
 	m_spotLightInScene(false), m_spotLightActive(true),
 	m_pointLightInScene{ false, false, false, false }, m_pointLightActive{ true, true, true, true },
-	m_appPostProcess(0), m_localLightManager(nullptr)
+	m_appPostProcess(0), m_localLightManager(nullptr), m_localgameTimer(EngineStatics::getGameTimer())
 {
 	std::cout << "UI Initialized" << std::endl;
 
@@ -48,6 +48,9 @@ UI::~UI()
 	std::cout << "UI destroyed" << std::endl;
 }
 
+/// <summary>
+/// Called at start of each frame, before UI drawInFrame()
+/// </summary>
 void UI::startOfFrame()
 {
 	// Check if user wants to toggle UI visibility
@@ -63,18 +66,19 @@ void UI::startOfFrame()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-
-	
 }
 
+/// <summary>
+/// Called every frame to draw the UI and adjust variables depending on user input on the ImGui buttons
+/// </summary>
 void UI::drawInFrame()
 {
 	// UI is not visible so leave
 	if (!m_uiVisible)
 		return;
 
-	// if localLightManager is nullptr then the scene hasn't been loaded yet
-	if (m_localLightManager == nullptr)
+	// If localLightManager is nullptr then the scene hasn't been loaded yet
+	if (!m_localLightManager)
 		return;
 
 	/*
@@ -206,11 +210,11 @@ void UI::drawInFrame()
 		Performance Metrics
 	*/
 
-	double x = EngineStatics::getGameTimer()->getDeltaTime();
+	double x = m_localgameTimer->getDeltaTime();
 	std::string xx = std::to_string(x);
 	std::string xxx = "Delta Time: " + xx;
 
-	double y = EngineStatics::getGameTimer()->getFrameCount();
+	double y = m_localgameTimer->getFrameCount();
 	std::string yy = std::to_string(y);
 	std::string yyy = "FPS: " + yy;
 	

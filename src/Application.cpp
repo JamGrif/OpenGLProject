@@ -21,9 +21,6 @@ Application::~Application()
 {
 	EngineStatics::setProjectionMatrix(nullptr);
 
-	delete m_gameTimer;
-	m_gameTimer = nullptr;
-
 	delete m_sceneFilterFramebuffer;
 	m_sceneFilterFramebuffer = nullptr;
 
@@ -38,6 +35,9 @@ Application::~Application()
 
 	delete m_input;
 	m_input = nullptr;
+
+	delete m_gameTimer;
+	m_gameTimer = nullptr;
 
 	if (m_appVAO != 0)
 	{
@@ -123,6 +123,9 @@ bool Application::appInit()
 		Create applications objects
 	*/
 
+	// Create Game Timer object
+	m_gameTimer = new GameTimer();
+
 	// Create Input object
 	m_input = new Input();
 
@@ -139,9 +142,6 @@ bool Application::appInit()
 	// Create the apps Framebuffers
 	m_sceneFilterFramebuffer = new Framebuffer(false);
 	m_sceneMSAAFrameBuffer = new Framebuffer(true);
-
-	// Create Game Timer object
-	m_gameTimer = new GameTimer();
 
 	return true;
 }
@@ -221,6 +221,11 @@ void Application::windowResizeCALLBACK(GLFWwindow* window, int newWidth, int new
 	std::cout << "called windowResizeCALLBACK function" << std::endl;
 }
 
+/// <summary>
+/// Function changes the scene to specified scene number, unloads the currently loaded scene and refreshes the UI light buttons
+/// </summary>
+/// <param name="newSceneNumber">Specified scene to change to (use sceneNames enum)</param>
+/// <returns></returns>
 bool Application::changeScene(int newSceneNumber)
 {
 	std::string newSceneFilePath = "";
@@ -273,6 +278,10 @@ bool Application::changeScene(int newSceneNumber)
 	return false;
 }
 
+/// <summary>
+/// Function changes the post-processing screen filter to the specified filter number
+/// </summary>
+/// <param name="newFilterNumber">Specified screen filter to change to (use screenFilters enum)</param>
 void Application::changeScreenFilter(int newFilterNumber)
 {
 	switch (newFilterNumber)
@@ -292,6 +301,7 @@ void Application::changeScreenFilter(int newFilterNumber)
 	case 5:
 		m_sceneFilterFramebuffer->setFrameFilter(screen_Drugs);
 		break;
+	default:
+		std::cout << "Specified filterNumber is out of range" << std::endl;
 	};
 }
-

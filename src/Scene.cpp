@@ -70,7 +70,7 @@ bool Scene::loadScene()
 }
 
 /// <summary>
-/// Updates scene objects and models
+/// Updates scene models, scene lights and the camera
 /// </summary>
 void Scene::updateScene()
 {
@@ -80,7 +80,7 @@ void Scene::updateScene()
 }
 
 /// <summary>
-/// Draws the sceneObjects by calling its second draw pass function
+/// Draws the sceneModels by calling its second draw pass function
 /// </summary>
 void Scene::drawScene()
 {

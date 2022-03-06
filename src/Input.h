@@ -17,9 +17,9 @@ public:
 	static void		mouseCALLBACK(GLFWwindow* window, double xPos, double yPos);
 	static void		getMouseMoved(double& xMouse, double& yMouse);
 
-	static bool		getMouseEnabled();
 	static void		enableMouse();
 	static void		disableMouse();
+	static bool		getMouseEnabled();
 
 private:
 

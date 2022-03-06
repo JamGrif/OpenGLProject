@@ -39,9 +39,6 @@ Input::~Input()
 /// </summary>
 /// <param name="window">The window that has input</param>
 /// <param name="key">Key pressed</param>
-/// <param name="scancode"></param>
-/// <param name="action"></param>
-/// <param name="mode"></param>
 void Input::keyCALLBACK(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -78,6 +75,11 @@ bool Input::getKeyPressed(int key)
 	return false;
 }
 
+/// <summary>
+/// Returns whether the specified key is pressed or not, but only once until the key is released
+/// </summary>
+/// <param name="key">Specified key to query (use GLFW_KEY_ macro)</param>
+/// <returns></returns>
 bool Input::getKeyPressedOnce(int key)
 {
 	if (key != m_lastKey && m_keys[key]) // Key is not same as last key and key was pressed
@@ -124,11 +126,9 @@ void Input::getMouseMoved(double& xMouse, double& yMouse)
 	m_yOffset = 0;
 }
 
-bool Input::getMouseEnabled()
-{
-    return m_mouseEnabled;
-}
-
+/// <summary>
+/// Enables the mouse cursor and sets it to the centre of the window
+/// </summary>
 void Input::enableMouse()
 {
     if (m_mouseEnabled) // If already enabled, leave function
@@ -146,6 +146,9 @@ void Input::enableMouse()
 	glfwSetCursorPos(EngineStatics::getAppWindow()->getWindow(), EngineStatics::getScreenWidth() / 2, EngineStatics::getScreenHeight() / 2);
 }
 
+/// <summary>
+/// Disables the mouse cursor
+/// </summary>
 void Input::disableMouse()
 {
     if (!m_mouseEnabled) // If already disabled, leave function
@@ -156,3 +159,7 @@ void Input::disableMouse()
     glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
+bool Input::getMouseEnabled()
+{
+	return m_mouseEnabled;
+}
