@@ -1,6 +1,6 @@
-#include "ModelBasic.h"
+#include "models/ModelBasic.h"
 
-#include "../LightManager.h"
+#include "LightManager.h"
 
 ModelBasic::ModelBasic()
 	:m_defaultColour(1.0, 1.0, 1.0), m_copyingLight(false), m_localPointLight(nullptr)

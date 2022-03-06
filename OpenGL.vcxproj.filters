@@ -110,76 +110,76 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Shader.h">
+    <ClInclude Include="include\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera.h">
+    <ClInclude Include="include\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mesh.h">
+    <ClInclude Include="include\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Input.h">
+    <ClInclude Include="include\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Application.h">
+    <ClInclude Include="include\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scene.h">
+    <ClInclude Include="include\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\Model.h">
+    <ClInclude Include="include\models\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\EngineStatics.h">
+    <ClInclude Include="include\EngineStatics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\LightManager.h">
+    <ClInclude Include="include\LightManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Texture.h">
+    <ClInclude Include="include\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="res\icon\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\ModelBasic.h">
+    <ClInclude Include="include\models\ModelBasic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\ModelLighting.h">
+    <ClInclude Include="include\models\ModelLighting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\ModelSky.h">
+    <ClInclude Include="include\models\ModelSky.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\ModelEnvironment.h">
+    <ClInclude Include="include\models\ModelEnvironment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Framebuffer.h">
+    <ClInclude Include="include\Framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\ModelSprite.h">
+    <ClInclude Include="include\models\ModelSprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\ModelTerrain.h">
+    <ClInclude Include="include\models\ModelTerrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\ModelGeometry.h">
+    <ClInclude Include="include\models\ModelGeometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SceneTextReader.h">
+    <ClInclude Include="include\SceneTextReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpenGLWindow.h">
+    <ClInclude Include="include\OpenGLWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\stb_image\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameTimer.h">
+    <ClInclude Include="include\GameTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI.h">
+    <ClInclude Include="include\UI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\imgui\imstb_truetype.h">

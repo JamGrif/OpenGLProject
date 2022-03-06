@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Model.h"
+#include "models/Model.h"
 
 // Forward Declarations
 struct PointLight;

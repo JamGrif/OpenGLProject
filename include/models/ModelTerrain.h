@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Model.h"
+#include "models/Model.h"
 
 //Class that uses tessellation shader to draw objects. Provides a way to alter the elevation of created terrain
 class ModelTerrain :

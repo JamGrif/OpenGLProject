@@ -97,7 +97,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\assimp\include;$(SolutionDir)dependencies\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\assimp\include;$(SolutionDir)dependencies\imgui;$(SolutionDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,7 +114,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\assimp\include;$(SolutionDir)dependencies\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\assimp\include;$(SolutionDir)dependencies\imgui;$(SolutionDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\assimp\include;$(SolutionDir)dependencies\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\assimp\include;$(SolutionDir)dependencies\imgui;$(SolutionDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,7 +153,7 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\assimp\include;$(SolutionDir)dependencies\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\assimp\include;$(SolutionDir)dependencies\imgui;$(SolutionDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -213,29 +213,29 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
-    <ClInclude Include="src\GameTimer.h" />
-    <ClInclude Include="src\models\ModelGeometry.h" />
-    <ClInclude Include="src\models\ModelSprite.h" />
-    <ClInclude Include="src\Framebuffer.h" />
-    <ClInclude Include="src\models\ModelEnvironment.h" />
-    <ClInclude Include="src\models\ModelSky.h" />
-    <ClInclude Include="src\models\ModelBasic.h" />
-    <ClInclude Include="src\models\ModelLighting.h" />
+    <ClInclude Include="include\GameTimer.h" />
+    <ClInclude Include="include\models\ModelGeometry.h" />
+    <ClInclude Include="include\models\ModelSprite.h" />
+    <ClInclude Include="include\Framebuffer.h" />
+    <ClInclude Include="include\models\ModelEnvironment.h" />
+    <ClInclude Include="include\models\ModelSky.h" />
+    <ClInclude Include="include\models\ModelBasic.h" />
+    <ClInclude Include="include\models\ModelLighting.h" />
     <ClInclude Include="res\icon\resource.h" />
-    <ClInclude Include="src\LightManager.h" />
-    <ClInclude Include="src\EngineStatics.h" />
-    <ClInclude Include="src\models\Model.h" />
-    <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\Scene.h" />
-    <ClInclude Include="src\Input.h" />
-    <ClInclude Include="src\Mesh.h" />
-    <ClInclude Include="src\Camera.h" />
-    <ClInclude Include="src\SceneTextReader.h" />
-    <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\Texture.h" />
-    <ClInclude Include="src\models\ModelTerrain.h" />
-    <ClInclude Include="src\OpenGLWindow.h" />
-    <ClInclude Include="src\UI.h" />
+    <ClInclude Include="include\LightManager.h" />
+    <ClInclude Include="include\EngineStatics.h" />
+    <ClInclude Include="include\models\Model.h" />
+    <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\Scene.h" />
+    <ClInclude Include="include\Input.h" />
+    <ClInclude Include="include\Mesh.h" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\SceneTextReader.h" />
+    <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\models\ModelTerrain.h" />
+    <ClInclude Include="include\OpenGLWindow.h" />
+    <ClInclude Include="include\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\icon\Icon.ico" />

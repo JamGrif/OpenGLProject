@@ -1,5 +1,5 @@
 #pragma once
-#include "Model.h"
+#include "models/Model.h"
 
 //Class that is used to draw a simple sprite at a location
 class ModelSprite :

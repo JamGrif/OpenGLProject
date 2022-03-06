@@ -1,4 +1,4 @@
-#include "ModelEnvironment.h"
+#include "models/ModelEnvironment.h"
 
 ModelEnvironment::ModelEnvironment()
 	:m_skyTexture(nullptr), m_usingReflection(false), m_usingRefraction(false)

@@ -10,11 +10,11 @@
 
 #include <string>
 
-#include "../Camera.h"
-#include "../Mesh.h"
-#include "../Shader.h"
-#include "../Texture.h"
-#include "../EngineStatics.h"
+#include "Camera.h"
+#include "Mesh.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "EngineStatics.h"
 
 // Abstract model class - The different classes that derive from Model all have their own implementation of
 // drawing, such as different shader values, attributes and texture map types. Essentially, provides an

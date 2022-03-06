@@ -1,4 +1,4 @@
-#include "ModelTerrain.h"
+#include "models/ModelTerrain.h"
 
 
 ModelTerrain::ModelTerrain()

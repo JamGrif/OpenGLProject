@@ -1,4 +1,4 @@
-#include "ModelSky.h"
+#include "models/ModelSky.h"
 
 ModelSky::ModelSky()
 {

@@ -1,4 +1,4 @@
-#include "ModelGeometry.h"
+#include "models/ModelGeometry.h"
 
 ModelGeometry::ModelGeometry()
 	:m_geometryTexture(nullptr), m_inflation(0), m_increasing(0)

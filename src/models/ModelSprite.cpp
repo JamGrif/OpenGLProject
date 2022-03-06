@@ -1,4 +1,4 @@
-#include "ModelSprite.h"
+#include "models/ModelSprite.h"
 
 ModelSprite::ModelSprite()
 	:m_modelSprite(nullptr)

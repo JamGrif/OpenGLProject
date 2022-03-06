@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Model.h"
+#include "models/Model.h"
 
 //Class that uses the geometry shader to simple "inflate/deflate" an object 
 class ModelGeometry

@@ -1,4 +1,4 @@
-#include "Model.h"
+#include "models/Model.h"
 
 Model::Model()
 	:m_modelMesh(nullptr), m_modelShaderPassOne(nullptr), m_modelShaderPassTwo(nullptr), 
