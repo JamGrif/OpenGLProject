@@ -12,7 +12,8 @@ ModelGeometry::ModelGeometry()
 
 ModelGeometry::~ModelGeometry()
 {
-	m_geometryTexture = nullptr;
+	if (m_geometryTexture)
+		m_geometryTexture = nullptr;
 }
 
 /// <summary>
@@ -26,10 +27,8 @@ void ModelGeometry::drawPassTwo()
 {
 	//If no shader attached
 	if (m_modelMesh == nullptr || m_modelShaderPassTwo == nullptr)
-	{
 		return;
-	}
-
+	
 	// Bind shader
 	m_modelShaderPassTwo->Bind();
 	m_geometryTexture->Bind();

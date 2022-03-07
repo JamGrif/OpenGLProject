@@ -37,10 +37,12 @@ void ModelSky::drawPassTwo()
 {
 	// If no valid model or shader attached
 	if (!m_modelShaderPassTwo)
-	{
 		return;
-	}
-
+	
+	// Sky cubemap has not loaded correctly, so don't draw object
+	if (!m_skyTexture)
+		return;
+	
 	// Bind shader
 	m_modelShaderPassTwo->Bind();
 

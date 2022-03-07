@@ -6,15 +6,14 @@ ModelEnvironment::ModelEnvironment()
 	//setShaderOne--------
 	setShaderTwo("res/shaders/environmentMapping-vertex.glsl", "res/shaders/environmentMapping-fragment.glsl");
 
-	m_skyTexture = TextureManager::retrieveCubeMap("default");
+	// Get the sky cubemap
+	m_skyTexture = TextureManager::retrieveCubeMap();
 }
 
 ModelEnvironment::~ModelEnvironment()
 {
 	if (m_skyTexture)
-	{
 		m_skyTexture = nullptr;
-	}
 }
 
 /// <summary>
@@ -30,22 +29,22 @@ void ModelEnvironment::drawPassOne()
 }
 
 /// <summary>
-/// Overridden method from Model base class - Used for environment mapping by taking the skybox texture and mapping it to the texture
+/// Overridden method from Model base class - Used for environment mapping by taking the Skybox texture and mapping it to the texture
 /// </summary>
 void ModelEnvironment::drawPassTwo()
 {
 	// If no valid model or shader attached
 	if (!m_modelMesh|| !m_modelShaderPassTwo)
-	{
 		return;
-	}
-
+	
 	// If not using either environment mapping types, stop drawing object
 	if (!m_usingReflection && !m_usingRefraction)
-	{
 		return;
-	}
-
+	
+	// Sky cubemap has not loaded correctly, so don't draw object
+	if (!m_skyTexture)
+		return;
+	
 	// Bind shader
 	m_modelShaderPassTwo->Bind();
 

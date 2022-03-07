@@ -6,30 +6,24 @@ Model::Model()
 	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f },
 	m_localLightManager(EngineStatics::getLightManager()), m_localProjectionMatrix(EngineStatics::getProjectionMatrix())
 {
-	//m_localLightManager = EngineStatics::getLightManager();
 }
 
 Model::~Model()
 {
 	if (m_modelMesh != nullptr)
-	{
 		m_modelMesh = nullptr;
-	}
+	
 
 	if (m_modelShaderPassOne != nullptr)
-	{
 		m_modelShaderPassOne = nullptr;
-	}
+	
 
 	if (m_modelShaderPassTwo != nullptr)
-	{
 		m_modelShaderPassTwo = nullptr;
-	}
 
 	//glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glDeleteBuffers(1, &m_VBO);
 	glDeleteBuffers(1, &m_EBO);
-
 }
 
 /// <summary>

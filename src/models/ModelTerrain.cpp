@@ -6,21 +6,15 @@ ModelTerrain::ModelTerrain()
 {
 	setShaderTwo("res/shaders/terrain-vertex.glsl", "res/shaders/terrain-tessCont.glsl", "res/shaders/terrain-tessEval.glsl", "res/shaders/terrain-fragment.glsl");
 
-	//m_terrainTexture = TextureManager::retrieveTexture("res/textures/terrain_diff.png");
-	//m_terrainHeight = TextureManager::retrieveTexture("res/textures/terrain_height.png");
 }
 
 ModelTerrain::~ModelTerrain()
 {
 	if (m_terrainTexture)
-	{
 		m_terrainTexture = nullptr;
-	}
-
+	
 	if (m_terrainHeight)
-	{
 		m_terrainHeight = nullptr;
-	}
 }
 
 /// <summary>
@@ -37,10 +31,8 @@ void ModelTerrain::drawPassTwo()
 {
 	// If no shader attached
 	if (!m_modelShaderPassTwo)
-	{
 		return;
-	}
-
+	
 	// Bind shaders
 	m_modelShaderPassTwo->Bind(); 
 

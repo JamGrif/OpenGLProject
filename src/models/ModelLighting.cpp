@@ -74,10 +74,8 @@ void ModelLighting::drawPassTwo()
 {
 	// If no valid model or shader attached
 	if (!m_modelMesh || !m_modelShaderPassTwo)
-	{
 		return;
-	}
-
+	
 	// Bind shader
 	m_modelShaderPassTwo->Bind();
 
@@ -164,30 +162,21 @@ void ModelLighting::drawPassTwo()
 	*/
 
 	if (m_modelUsingTextures[e_diffuseTextureSlot])
-	{
 		m_modelTextures[e_diffuseTextureSlot]->Bind(e_diffuseTextureSlot);
-	}
+	
 
 	if (m_modelUsingTextures[e_specularTextureSlot])
-	{
 		m_modelTextures[e_specularTextureSlot]->Bind(e_specularTextureSlot);
-	}
-
+	
 	if (m_modelUsingTextures[e_emissionTextureSlot])
-	{
 		m_modelTextures[e_emissionTextureSlot]->Bind(e_emissionTextureSlot);
-	}
-
+	
 	if (m_modelUsingTextures[e_normalTextureSlot])
-	{
 		m_modelTextures[e_normalTextureSlot]->Bind(e_normalTextureSlot);
-	}
-
+	
 	if (m_modelUsingTextures[e_heightTextureSlot])
-	{
 		m_modelTextures[e_heightTextureSlot]->Bind(e_heightTextureSlot);
-	}
-
+	
 	/*
 		Bind VBOs and vertex attributes
 	*/
@@ -212,29 +201,19 @@ void ModelLighting::drawPassTwo()
 	*/
 
 	if (m_modelUsingTextures[e_diffuseTextureSlot])
-	{
 		m_modelTextures[e_diffuseTextureSlot]->Unbind(e_diffuseTextureSlot);
-	}
-
+	
 	if (m_modelUsingTextures[e_specularTextureSlot])
-	{
 		m_modelTextures[e_specularTextureSlot]->Unbind(e_specularTextureSlot);
-	}
-
+	
 	if (m_modelUsingTextures[e_emissionTextureSlot])
-	{
 		m_modelTextures[e_emissionTextureSlot]->Unbind(e_emissionTextureSlot);
-	}
-
+	
 	if (m_modelUsingTextures[e_normalTextureSlot])
-	{
 		m_modelTextures[e_normalTextureSlot]->Unbind(e_normalTextureSlot);
-	}
-
+	
 	if (m_modelUsingTextures[e_heightTextureSlot])
-	{
 		m_modelTextures[e_heightTextureSlot]->Unbind(e_heightTextureSlot);
-	}
 	
 	m_modelShaderPassTwo->Unbind();
 }

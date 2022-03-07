@@ -12,9 +12,7 @@ ModelBasic::ModelBasic()
 ModelBasic::~ModelBasic()
 {
 	if (m_localPointLight)
-	{
 		m_localPointLight = nullptr;
-	}
 }
 
 /// <summary>
@@ -36,16 +34,13 @@ void ModelBasic::drawPassTwo()
 {
 	// If no valid model or shader attached
 	if (!m_modelMesh || !m_modelShaderPassTwo)
-	{
 		return;
-	}
+	
 
 	// If copying light, ensure the light is active otherwise leave draw function
 	if (m_copyingLight)
-	{
-		if (!m_localPointLight->lightActive) //If light is not active, leave draw function 
+		if (!m_localPointLight->lightActive) //If light is not active, leave draw function
 			return;
-	}
 	
 	// Bind shader
 	m_modelShaderPassTwo->Bind();
@@ -98,9 +93,8 @@ void ModelBasic::drawPassTwo()
 void ModelBasic::copyPointLight(unsigned int index)
 {
 	if (m_localLightManager->getPointLight(index) == nullptr) // If pointlight at specified index does not exist, ignore and return
-	{
 		return;
-	}
+	
 
 	unsigned int totalCurrentPointLights = m_localLightManager->getCurrentPointLights();
 	if (index <= totalCurrentPointLights && totalCurrentPointLights != 0) // Ensure index is within the range of created point lights
