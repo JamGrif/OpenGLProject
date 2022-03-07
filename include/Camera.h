@@ -35,7 +35,7 @@ public:
     glm::vec3       getFront() const;
     
     void            processKeyboard(Camera_Movement direction);
-    void            processMouse(float xOffset, float yOffset, bool constrainPitch = true);
+    void            processMouse(float xOffset, float yOffset);
 
 private:
 
@@ -55,7 +55,7 @@ private:
     // Camera Options
 	float			m_movementSpeed;
 	float			m_mouseSensitivity;
-	float			m_zoom;
+	//float			m_zoom;
 
 	// Cached other classes
 	GameTimer*		m_localGameTimer;

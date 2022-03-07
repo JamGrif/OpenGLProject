@@ -254,8 +254,8 @@ modelSprite		-19.0	-0.5	17.0	90.0	0.0		90.0		0.4			0.4			0.4		grass_sprite
 
 #modelEnvironment objects...
 #ObjectType			#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#mesh	#reflection		#refraction
-#modelEnvironment	14.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	1.0				0.0
-#modelEnvironment	22.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	0.0				1.0
+modelEnvironment	14.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	1.0				0.0
+modelEnvironment	22.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	0.0				1.0
 
 #modelGeometry objects...
 #ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#mesh

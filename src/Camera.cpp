@@ -32,10 +32,10 @@ Camera::~Camera()
 /// <param name="deltaTime"></param>
 void Camera::Update()
 {
-    if (Input::getKeyPressed(GLFW_KEY_W)) { processKeyboard(e_FORWARD); }
-    if (Input::getKeyPressed(GLFW_KEY_S)) { processKeyboard(e_BACKWARD); }
-    if (Input::getKeyPressed(GLFW_KEY_A)) { processKeyboard(e_LEFT); }
-    if (Input::getKeyPressed(GLFW_KEY_D)) { processKeyboard(e_RIGHT); }
+	if (Input::getKeyPressed(GLFW_KEY_W)) { processKeyboard(e_FORWARD); }
+	if (Input::getKeyPressed(GLFW_KEY_S)) { processKeyboard(e_BACKWARD); }
+	if (Input::getKeyPressed(GLFW_KEY_A)) { processKeyboard(e_LEFT); }
+	if (Input::getKeyPressed(GLFW_KEY_D)) { processKeyboard(e_RIGHT); }
 
     if (Input::getKeyPressed(GLFW_KEY_R))
     {
@@ -100,7 +100,7 @@ void Camera::processKeyboard(Camera_Movement direction)
 /// <param name="xOffset"></param>
 /// <param name="yOffset"></param>
 /// <param name="constrainPitch">Decides if the camera should loop around when reaching maximum pitch</param>
-void Camera::processMouse(float xOffset, float yOffset, bool constrainPitch)
+void Camera::processMouse(float xOffset, float yOffset)
 {
     if (Input::getMouseEnabled()) // If mouse is enabled, don't move camera
         return;
@@ -115,7 +115,6 @@ void Camera::processMouse(float xOffset, float yOffset, bool constrainPitch)
     if (yOffset < -100 && yOffset < 0)
         yOffset = -100;
     
-    
     xOffset *= m_mouseSensitivity;
     yOffset *= m_mouseSensitivity;
     
@@ -123,21 +122,17 @@ void Camera::processMouse(float xOffset, float yOffset, bool constrainPitch)
     m_pitch += yOffset;
     
     //Make sure that when pitch is out of bounds, screen doesn't get flipped
-    if (constrainPitch)
+    if (m_pitch > 89.0f)
     {
-        if (m_pitch > 89.0f)
-        {
-            m_pitch = 89.0;
-        }
-        if (m_pitch < -89.0f)
-        {
-            m_pitch = -89.0f;
-        }
+        m_pitch = 89.0;
+    }
+    if (m_pitch < -89.0f)
+    {
+        m_pitch = -89.0f;
     }
     
     //Update Front, Right and Up vectors using the updated Eular angles
     updateCameraVectors();
-
 }
 
 /// <summary>

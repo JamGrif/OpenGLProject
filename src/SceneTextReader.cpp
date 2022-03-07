@@ -156,6 +156,27 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 		);
 	}
 
+	for (const auto& o : completedModelSkyObjects)
+	{
+		ModelSky* model = new ModelSky();
+
+		model->SetXPos(o.PosX);
+		model->SetYPos(o.PosY);
+		model->SetZPos(o.PosZ);
+
+		model->SetXRot(o.RotX);
+		model->SetYRot(o.RotY);
+		model->SetZRot(o.RotZ);
+
+		model->SetXScale(o.ScaleX);
+		model->SetYScale(o.ScaleY);
+		model->SetZScale(o.ScaleZ);
+
+		model->setSkyboxTexture(o.skyboxTexture);
+
+		sceneMeshes.push_back(model);
+	}
+
 	for (const auto& o : completedModelLightObjects)
 	{
 		ModelLighting* model = new ModelLighting();
@@ -322,26 +343,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 		sceneMeshes.push_back(model);
 	}
 
-	for (const auto& o : completedModelSkyObjects)
-	{
-		ModelSky* model = new ModelSky();
-
-		model->SetXPos(o.PosX);
-		model->SetYPos(o.PosY);
-		model->SetZPos(o.PosZ);
-
-		model->SetXRot(o.RotX);
-		model->SetYRot(o.RotY);
-		model->SetZRot(o.RotZ);
-
-		model->SetXScale(o.ScaleX);
-		model->SetYScale(o.ScaleY);
-		model->SetZScale(o.ScaleZ);
-
-		model->setSkyboxTexture(o.skyboxTexture);
-
-		sceneMeshes.push_back(model);
-	}
+	
 
 	m_status = true;
 
