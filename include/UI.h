@@ -1,6 +1,5 @@
 #pragma once
 
-#include "LightManager.h"
 
 enum sceneNames
 {
@@ -13,6 +12,7 @@ enum sceneNames
 
 // Forward Declarations
 class GameTimer;
+class LightManager;
 
 // A wrapper around imGui to display UI elements to the window
 class UI
@@ -34,18 +34,18 @@ public:
 
 private:
 
-	bool	m_uiVisible;
+	bool			m_uiVisible; // Dictates whether the UI will be drawn or not
 
-	int		m_sceneNum;
+	int				m_sceneNum; 
 
-	bool	m_directionalLightInScene;
-	bool	m_directionalLightActive;
+	bool			m_directionalLightInScene; // Indicates if the button to toggle the light should be visible or not
+	bool			m_directionalLightActiveButton;
 
-	bool	m_spotLightInScene;
-	bool	m_spotLightActive;
+	bool			m_spotLightInScene;
+	bool			m_spotLightActiveButton;
 
-	bool	m_pointLightInScene[4];
-	bool	m_pointLightActive[4];
+	bool			m_pointLightInScene[4];
+	bool			m_pointLightActiveButton[4];
 
 	enum
 	{
@@ -55,7 +55,7 @@ private:
 		e_FourthPointLight	= 3
 	};
 
-	int m_appPostProcess;
+	int				m_appPostProcess;
 
 	//Cached other classes
 	LightManager*	m_localLightManager;

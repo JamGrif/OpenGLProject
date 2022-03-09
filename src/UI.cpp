@@ -10,12 +10,13 @@
 #include "Input.h"
 #include "OpenGLWindow.h"
 #include "GameTimer.h"
+#include "LightManager.h"
 
 UI::UI(bool uiVisible)
 	:m_uiVisible(uiVisible), m_sceneNum(0),
-	m_directionalLightInScene(false), m_directionalLightActive(true),
-	m_spotLightInScene(false), m_spotLightActive(true),
-	m_pointLightInScene{ false, false, false, false }, m_pointLightActive{ true, true, true, true },
+	m_directionalLightInScene(false), m_directionalLightActiveButton(true),
+	m_spotLightInScene(false), m_spotLightActiveButton(true),
+	m_pointLightInScene{ false, false, false, false }, m_pointLightActiveButton{ true, true, true, true },
 	m_appPostProcess(0), m_localLightManager(nullptr), m_localgameTimer(EngineStatics::getGameTimer())
 {
 	std::cout << "UI Initialized" << std::endl;
@@ -116,56 +117,56 @@ void UI::drawInFrame()
 	if (m_directionalLightInScene) 
 	{
 		// There is a directionalLight in scene so show button and act on button presses
-		ImGui::Checkbox("DirectionalLight", &m_directionalLightActive);
+		ImGui::Checkbox("DirectionalLight", &m_directionalLightActiveButton);
 
 		// Set the active state of the DirectionalLight depending on the check box status
-		m_localLightManager->getDirectionalLight(0)->lightActive = m_directionalLightActive ? true : false;
+		m_localLightManager->getDirectionalLight(0)->lightActive = m_directionalLightActiveButton ? true : false;
 	}
 	
 	if (m_spotLightInScene)
 	{
 		// There is a spotLight in scene so show button and act on button presses
-		ImGui::Checkbox("SpotLight", &m_spotLightActive);
+		ImGui::Checkbox("SpotLight", &m_spotLightActiveButton);
 
 		// Set the active state of the SpotLight depending on the check box status
-		m_localLightManager->getSpotLight(0)->lightActive = m_spotLightActive ? true : false;
+		m_localLightManager->getSpotLight(0)->lightActive = m_spotLightActiveButton ? true : false;
 	}
 
 
 	if (m_pointLightInScene[e_FirstPointLight])
 	{
 		// There is the first pointLight in scene and act on button presses
-		ImGui::Checkbox("First PointLight", &m_pointLightActive[e_FirstPointLight]);
+		ImGui::Checkbox("First PointLight", &m_pointLightActiveButton[e_FirstPointLight]);
 	
 		// Set the active state of the pointLight depending on the check box status
-		m_localLightManager->getPointLight(e_FirstPointLight)->lightActive = m_pointLightActive[e_FirstPointLight] ? true : false;
+		m_localLightManager->getPointLight(e_FirstPointLight)->lightActive = m_pointLightActiveButton[e_FirstPointLight] ? true : false;
 	}
 	
 	if (m_pointLightInScene[e_SecondPointLight])
 	{
 		// There is the second pointLight in scene and act on button presses
-		ImGui::Checkbox("Second PointLight", &m_pointLightActive[e_SecondPointLight]);
+		ImGui::Checkbox("Second PointLight", &m_pointLightActiveButton[e_SecondPointLight]);
 	
 		// Set the active state of the pointLight depending on the check box status
-		m_localLightManager->getPointLight(e_SecondPointLight)->lightActive = m_pointLightActive[e_SecondPointLight] ? true : false;
+		m_localLightManager->getPointLight(e_SecondPointLight)->lightActive = m_pointLightActiveButton[e_SecondPointLight] ? true : false;
 	}
 	
 	if (m_pointLightInScene[e_ThirdPointLight])
 	{
 		// There is the third pointLight in scene and act on button presses
-		ImGui::Checkbox("Third PointLight", &m_pointLightActive[e_ThirdPointLight]);
+		ImGui::Checkbox("Third PointLight", &m_pointLightActiveButton[e_ThirdPointLight]);
 	
 		// Set the active state of the pointLight depending on the check box status
-		m_localLightManager->getPointLight(e_ThirdPointLight)->lightActive = m_pointLightActive[e_ThirdPointLight] ? true : false;
+		m_localLightManager->getPointLight(e_ThirdPointLight)->lightActive = m_pointLightActiveButton[e_ThirdPointLight] ? true : false;
 	}
 	
 	if (m_pointLightInScene[e_FourthPointLight])
 	{
 		// There is the fourth pointLight in scene and act on button presses
-		ImGui::Checkbox("Fourth PointLight", &m_pointLightActive[e_FourthPointLight]);
+		ImGui::Checkbox("Fourth PointLight", &m_pointLightActiveButton[e_FourthPointLight]);
 	
 		// Set the active state of the pointLight depending on the check box status
-		m_localLightManager->getPointLight(e_FourthPointLight)->lightActive = m_pointLightActive[e_FourthPointLight] ? true : false;
+		m_localLightManager->getPointLight(e_FourthPointLight)->lightActive = m_pointLightActiveButton[e_FourthPointLight] ? true : false;
 	}
 
 	// Screen PostProcessing Filter

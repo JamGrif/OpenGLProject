@@ -1,9 +1,9 @@
 #pragma once
+
 #include <glm\glm.hpp>
 #include <vector>
 
-
-// Base class for all 3 lights - provides utility functions they all can use
+// Base class for all 3 lights - provides basic variables they all use
 struct Light
 {
 	Light(glm::vec3 ambient = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 diffuse = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f))
@@ -11,15 +11,11 @@ struct Light
 	{
 	}
 
-	void toggleActive()
-	{
-		lightActive = lightActive == true ? false : true;
-	}
-
 	glm::vec3	Ambient;
 	glm::vec3	Diffuse;
 	glm::vec3	Specular;
-	bool		lightActive;
+
+	bool		lightActive; // Toggles whether models should take lighting information from this light or not
 };
 
 struct PointLight : 
@@ -28,7 +24,6 @@ struct PointLight :
 	PointLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f))
 		:Light(ambient, diffuse, specular), Position(position)
 	{
-		//lightActive = true;
 	}
 
 	glm::vec3	Position;
@@ -45,7 +40,6 @@ struct DirectionalLight :
 	DirectionalLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction = glm::vec3(0.0f, 0.0f, 0.0f))
 		:Light(ambient, diffuse, specular), Direction(direction)
 	{
-		//lightActive = true;
 	}
 
 	glm::vec3	Direction;
@@ -55,13 +49,8 @@ struct SpotLight :
 	public Light
 {
 	SpotLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f))
-		:Light(ambient, diffuse, specular), Position(position)
+		:Light(ambient, diffuse, specular), Position(position), Direction(0.0f, 0.0f, 0.0f)
 	{
-		Direction.x = 0.0f;
-		Direction.y = 0.0f;
-		Direction.z = 0.0f;
-
-		//lightActive = true;
 	}
 
 	glm::vec3	Position;
