@@ -21,10 +21,10 @@ Scene::Scene(const std::string& sceneName)
  
 Scene::~Scene()
 {
-	for (Model*& m : m_sceneModels)
-	{
-		delete m;
-	}
+	//for (Model*& m : m_sceneModels)
+	//{
+	//	delete m;
+	//}
 	m_sceneModels.clear();
 
 	delete m_sceneCamera;
@@ -85,7 +85,7 @@ void Scene::updateScene()
 void Scene::drawScene()
 {
 	// Draw second pass of all models
-	for (Model*& m : m_sceneModels)
+	for (std::shared_ptr<Model>& m : m_sceneModels)
 	{
 		m->setMatrixValues();
 		m->drawPassTwo();
@@ -347,5 +347,7 @@ void Scene::addSceneLightManager()
 		m_sceneLightManager = nullptr;
 	}
 
+	std::cout << "before make lightmanager new statement" << std::endl;
 	m_sceneLightManager = new LightManager();
+	std::cout << "after make lightmanager new statement" << std::endl;
 }

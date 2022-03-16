@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 // Forward Declarations
 class Model;
@@ -33,7 +34,7 @@ private:
 
 	std::string				m_sceneName;
 
-	std::vector<Model*>		m_sceneModels;
+	std::vector<std::shared_ptr<Model>>		m_sceneModels;
 
 	Camera*					m_sceneCamera;
 

@@ -12,8 +12,7 @@ ModelEnvironment::ModelEnvironment()
 
 ModelEnvironment::~ModelEnvironment()
 {
-	if (m_skyTexture)
-		m_skyTexture = nullptr;
+	m_skyTexture = nullptr;
 }
 
 /// <summary>

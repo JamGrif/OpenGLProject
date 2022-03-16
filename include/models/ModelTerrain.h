@@ -24,13 +24,13 @@ public:
 
 private:
 
-    Texture*    m_terrainTexture;
-    Texture*    m_terrainHeight;
+	std::shared_ptr<Texture>    m_terrainTexture;
+	std::shared_ptr<Texture>    m_terrainHeight;
 
-    float       m_elevation;
+    float						m_elevation;
 
-    const float m_minElevation;
-    const float m_maxElevation;
+	const float					m_minElevation;
+	const float					m_maxElevation;
 
 };
 

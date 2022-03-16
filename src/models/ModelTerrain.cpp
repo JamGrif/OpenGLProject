@@ -10,11 +10,9 @@ ModelTerrain::ModelTerrain()
 
 ModelTerrain::~ModelTerrain()
 {
-	if (m_terrainTexture)
-		m_terrainTexture = nullptr;
+	m_terrainTexture = nullptr;
 	
-	if (m_terrainHeight)
-		m_terrainHeight = nullptr;
+	m_terrainHeight = nullptr;
 }
 
 /// <summary>

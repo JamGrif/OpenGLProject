@@ -21,21 +21,6 @@ Application::~Application()
 {
 	EngineStatics::setProjectionMatrix(nullptr);
 
-	delete m_sceneFilterFramebuffer;
-	m_sceneFilterFramebuffer = nullptr;
-
-	delete m_sceneMSAAFrameBuffer;
-	m_sceneMSAAFrameBuffer = nullptr;
-
-	delete m_loadedScene;
-	m_loadedScene = nullptr;
-
-	delete m_UI;
-	m_UI = nullptr;
-
-	delete m_input;
-	m_input = nullptr;
-
 	delete m_gameTimer;
 	m_gameTimer = nullptr;
 
@@ -127,10 +112,10 @@ bool Application::appInit()
 	m_gameTimer = new GameTimer();
 
 	// Create Input object
-	m_input = new Input();
+	m_input = std::make_unique<Input>();
 
 	// Create UI object
-	m_UI = new UI(true);
+	m_UI = std::make_unique<UI>(true);
 	
 	// Create Scene object
 	if (!changeScene(e_shadowTest)) // load shadowTest.txt by default
@@ -140,8 +125,8 @@ bool Application::appInit()
 	}
 
 	// Create the apps Framebuffers
-	m_sceneFilterFramebuffer = new Framebuffer(false);
-	m_sceneMSAAFrameBuffer = new Framebuffer(true);
+	m_sceneFilterFramebuffer = std::make_unique<Framebuffer>(false);
+	m_sceneMSAAFrameBuffer = std::make_unique<Framebuffer>(true);
 
 	return true;
 }
@@ -258,12 +243,10 @@ bool Application::changeScene(int newSceneNumber)
 			// Scene is already loaded
 			return false;
 		}
-		// A scene is already loaded, so delete it
-		delete m_loadedScene;
-		m_loadedScene = nullptr;
 	}
 
-	m_loadedScene = new Scene(newSceneFilePath);
+	//m_loadedScene = new Scene(newSceneFilePath);
+	m_loadedScene = std::make_unique<Scene>(newSceneFilePath);
 
 	if (m_loadedScene->loadScene())
 	{

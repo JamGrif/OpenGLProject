@@ -6,7 +6,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-std::vector<Mesh*> MeshManager::m_loadedModels;
+std::vector<std::shared_ptr<Mesh>> MeshManager::m_loadedMeshes;
 
 Mesh::Mesh()
 	:m_filePath("")
@@ -39,32 +39,32 @@ bool Mesh::loadMesh(const std::string& filePath)
 	{
 		Vertex vertex;
 
-		//Position
+		// Position
 		glm::vec3 vector;
 		vector.x = mesh->mVertices[i].x;
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
 		vertex.Position = vector;
 
-		//Normals
+		// Normals
 		vector.x = mesh->mNormals[i].x;
 		vector.y = mesh->mNormals[i].y;
 		vector.z = mesh->mNormals[i].z;
 		vertex.Normal = vector;
 
-		//Texcoords
+		// Texcoords
 		glm::vec2 vec;
 		vec.x = mesh->mTextureCoords[0][i].x;
 		vec.y = mesh->mTextureCoords[0][i].y;
 		vertex.TexCoords = vec;
 
-		//Tangent
+		// Tangent
 		vector.x = mesh->mTangents[i].x;
 		vector.y = mesh->mTangents[i].y;
 		vector.z = mesh->mTangents[i].z;
 		vertex.Tangent = vector;
 
-		//Bitangent
+		// Bitangent
 		vector.x = mesh->mBitangents[i].x;
 		vector.y = mesh->mBitangents[i].y;
 		vector.z = mesh->mBitangents[i].z;
@@ -73,7 +73,7 @@ bool Mesh::loadMesh(const std::string& filePath)
 		m_vertices.push_back(vertex);
 	}
 
-	//Indices
+	// Indices
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
@@ -84,7 +84,6 @@ bool Mesh::loadMesh(const std::string& filePath)
 	}
 	return true;
 }
-
 
 const std::vector<Vertex>& Mesh::getVertices() const
 {
@@ -106,10 +105,10 @@ const std::string& Mesh::getFilePath() const
 /// </summary>
 /// <param name="filePath">Mesh file path</param>
 /// <returns>Pointer to the loaded mesh</returns>
-Mesh* MeshManager::loadModel(const std::string& filePath)
+std::shared_ptr<Mesh> MeshManager::loadMesh(const std::string& filePath)
 {
-	//Check if model is already loaded loaded
-	for (Mesh* im : m_loadedModels)
+	// Check if model is already loaded loaded
+	for (std::shared_ptr<Mesh> im : m_loadedMeshes)
 	{
 		if (im->getFilePath() == filePath)
 		{
@@ -117,38 +116,29 @@ Mesh* MeshManager::loadModel(const std::string& filePath)
 		}
 	}
 
-	//Otherwise, create new model and add it to vector
-
-	Mesh* newMesh = new Mesh;
+	// Otherwise, create new model and add it to vector
+	std::shared_ptr<Mesh> newMesh = std::make_shared<Mesh>();
 
 	if (!newMesh->loadMesh(filePath)) //Attempt to load texture
 	{
-		//Texture failed to load so check if missing texture texture is already loaded and then return it
-		for (Mesh* m : m_loadedModels)
+		// Texture failed to load so check if missing texture texture is already loaded and then return it
+		for (std::shared_ptr<Mesh> m : m_loadedMeshes)
 		{
 			if (m->getFilePath() == "res/meshes/cube.obj")
 			{
-				delete newMesh;
-				newMesh = nullptr;
-
 				return m;
 			}
 		}
 
-		//The missing texture texture has not already been made so make it
+		// The missing texture texture has not already been made so make it
 		newMesh->loadMesh("res/meshes/cube.obj");
 	}
 
-	m_loadedModels.push_back(newMesh);
-	return m_loadedModels.back();
+	m_loadedMeshes.push_back(newMesh);
+	return newMesh;
 }
 
 void MeshManager::clearMeshes()
 {
-	for (Mesh* m : m_loadedModels)
-	{
-		delete m;
-		m = nullptr;
-	}
-	m_loadedModels.clear();
+	m_loadedMeshes.clear();
 }

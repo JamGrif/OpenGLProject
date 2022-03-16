@@ -4,26 +4,20 @@
 #include <sstream>
 #include <iostream>
 
-std::vector<Shader*> ShaderManager::m_loadedShaders;
+std::vector<std::shared_ptr<Shader>> ShaderManager::m_loadedShaders;
 
 Shader::Shader()
 	:m_shaderProgram(0), m_vertexPath(""), m_fragmentPath(""), m_tessellationControlPath(""), m_tessellationEvaluationPath(""), m_geometryPath("")
 {
-	
-
 }
 
 Shader::~Shader()
 {
-	//std::cout << "Shader Destroyed" << std::endl;
-
 	glDeleteProgram(m_shaderProgram);
 }
 
 void Shader::loadShader(const GLchar* vertexPath, const GLchar* fragmentPath)
 {
-	//std::cout << "Shader Initialized" << std::endl;
-
 	m_vertexPath = vertexPath;
 	m_fragmentPath = fragmentPath;
 
@@ -523,14 +517,13 @@ const int Shader::getUniformLocation(const std::string& name)
 /// <param name="vertexPath">Vertex shader file path</param>
 /// <param name="fragmentPath">Fragment shader file path</param>
 /// <returns>Pointer to the created shader</returns>
-Shader* ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* fragmentPath)
+std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* fragmentPath)
 {
 	//Check if shader program is already loaded
-	for (Shader* s : m_loadedShaders)
+	for (std::shared_ptr<Shader> s : m_loadedShaders)
 	{
 		if (s->getVertexPath() == vertexPath && s->getFragmentPath() == fragmentPath)
 		{
-			//std::cout << "SHADERMANAGER->" << vertexPath << " + " << fragmentPath << " program already exists, returning loaded shader program" << std::endl;
 			return s;
 		}
 	}
@@ -538,23 +531,22 @@ Shader* ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* fr
 	//Otherwise, create new texture and add it to vector
 	std::cout << "SHADERMANAGER->" << vertexPath << " + " << fragmentPath << " program is being created" << std::endl;
 
-	Shader* s = new Shader();
+	std::shared_ptr<Shader> s = std::make_shared<Shader>();
 	s->loadShader(vertexPath, fragmentPath);
 	m_loadedShaders.push_back(s);
-	return m_loadedShaders.back();
+	return s;
 }
 
-Shader* ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* tessellationControlPath, const GLchar* tessellationEvaluationPath, const GLchar* fragmentPath)
+std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* tessellationControlPath, const GLchar* tessellationEvaluationPath, const GLchar* fragmentPath)
 {
 	//Check if exact same shader program is already loaded
-	for (Shader* s : m_loadedShaders)
+	for (std::shared_ptr<Shader> s : m_loadedShaders)
 	{
 		if (s->getVertexPath() == vertexPath &&
 			s->getTessellationControlPath() == tessellationControlPath &&
 			s->getTessellationEvaluationPath() == tessellationEvaluationPath &&
 			s->getFragmentPath() == fragmentPath)
 		{
-			//std::cout << "SHADERMANAGER->" << vertexPath << " + " << fragmentPath << " program already exists, returning loaded shader program" << std::endl;
 			return s;
 		}
 	}
@@ -562,16 +554,16 @@ Shader* ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* te
 	//Otherwise, create new texture and add it to vector
 	std::cout << "SHADERMANAGER->" << vertexPath << " + " << fragmentPath << " program is being created" << std::endl;
 
-	Shader* s = new Shader();
+	std::shared_ptr<Shader> s = std::make_shared<Shader>();
 	s->loadShader(vertexPath, tessellationControlPath, tessellationEvaluationPath, fragmentPath);
 	m_loadedShaders.push_back(s);
-	return m_loadedShaders.back();
+	return s;
 }
 
-Shader* ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* geometryPath, const GLchar* fragmentPath)
+std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* geometryPath, const GLchar* fragmentPath)
 {
 	//Check if exact same shader program is already loaded
-	for (Shader* s : m_loadedShaders)
+	for (std::shared_ptr<Shader> s : m_loadedShaders)
 	{
 		if (s->getVertexPath() == vertexPath &&
 			s->getGeometryPath() == geometryPath &&
@@ -585,22 +577,13 @@ Shader* ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* ge
 	//Otherwise, create new texture and add it to vector
 	std::cout << "SHADERMANAGER->" << vertexPath << " + " << fragmentPath << " program is being created" << std::endl;
 
-	Shader* s = new Shader();
+	std::shared_ptr<Shader> s = std::make_shared<Shader>();
 	s->loadShader(vertexPath, geometryPath, fragmentPath);
 	m_loadedShaders.push_back(s);
-	return m_loadedShaders.back();
+	return s;
 }
 
 void ShaderManager::clearShaders()
 {
-	for (Shader*& s : m_loadedShaders)
-	{
-		// Ignore the framebuffer shaders for the screen
-		if (s->getVertexPath() == "res/shaders/framebuffer-vertex.glsl") 
-			continue;
-
-		delete s;
-		s = nullptr;
-	}
 	m_loadedShaders.clear();
 }

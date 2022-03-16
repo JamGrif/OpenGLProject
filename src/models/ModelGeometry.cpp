@@ -12,8 +12,7 @@ ModelGeometry::ModelGeometry()
 
 ModelGeometry::~ModelGeometry()
 {
-	if (m_geometryTexture)
-		m_geometryTexture = nullptr;
+	m_geometryTexture = nullptr;
 }
 
 /// <summary>

@@ -18,7 +18,7 @@ public:
 
 private:
 
-    CubeMap* m_skyTexture;
+	std::shared_ptr<CubeMap> m_skyTexture;
 
     //Skybox uses a custom cube that is inside out
     const float m_skyboxVertices[216] = {

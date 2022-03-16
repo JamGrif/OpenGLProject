@@ -8,12 +8,14 @@
 #include "models/ModelGeometry.h"
 #include "models/ModelSky.h"
 
+#include <memory>
+
 // Class that reads from a scene text file, feeding the scene models vectors with created objects from the text file
 class SceneTextReader
 {
 public:
 
-	SceneTextReader(const std::string& filename, std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager);
+	SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneMeshes, LightManager* sceneLightManager);
 	~SceneTextReader();
 
 	bool getStatus();

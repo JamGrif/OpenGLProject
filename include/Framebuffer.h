@@ -1,7 +1,9 @@
 #pragma once
 
 // Forward Declarations
-class Shader; 
+class Shader;
+
+#include <memory>
 
 enum screenFilters
 {
@@ -54,7 +56,7 @@ private:
 
 	int				m_screenFilter;
 
-	Shader*			m_screenShader;
+	std::shared_ptr<Shader>	m_screenShader;
 
 };
 

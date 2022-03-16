@@ -72,6 +72,7 @@ Framebuffer::Framebuffer(bool multisampled)
 Framebuffer::~Framebuffer()
 {
 	glDeleteFramebuffers(1, &m_FBO);
+	std::cout << "deleted framebuffer" << std::endl;
 }
 
 /// <summary>

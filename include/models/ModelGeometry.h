@@ -18,10 +18,10 @@ public:
 
 private:
 
-	Texture*	m_geometryTexture;
+	std::shared_ptr<Texture>	m_geometryTexture;
 
-	float		m_inflation;
-	bool		m_increasing;
+	float						m_inflation;
+	bool						m_increasing;
 
 };
 

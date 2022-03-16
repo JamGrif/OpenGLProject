@@ -8,7 +8,7 @@
 
 #include "LightManager.h"
 
-SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*>& sceneMeshes, LightManager* sceneLightManager)
+SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneMeshes, LightManager* sceneLightManager)
 	:m_filename(filename), m_status(false)
 {
 	std::ifstream fileStream(m_filename, std::ios::in);
@@ -158,7 +158,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 
 	for (const auto& o : completedModelSkyObjects)
 	{
-		ModelSky* model = new ModelSky();
+		std::shared_ptr<ModelSky> model = std::make_shared<ModelSky>();
 
 		model->SetXPos(o.PosX);
 		model->SetYPos(o.PosY);
@@ -179,7 +179,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 
 	for (const auto& o : completedModelLightObjects)
 	{
-		ModelLighting* model = new ModelLighting();
+		std::shared_ptr<ModelLighting> model = std::make_shared<ModelLighting>();
 
 		model->SetXPos(o.PosX);
 		model->SetYPos(o.PosY);
@@ -233,7 +233,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 
 	for (const auto& o : completedModelBasicObjects)
 	{
-		ModelBasic* model = new ModelBasic();
+		std::shared_ptr<ModelBasic> model = std::make_shared<ModelBasic>();
 
 		model->SetXPos(o.PosX);
 		model->SetYPos(o.PosY);
@@ -256,7 +256,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 
 	for (const auto& o : completedModelTerrainObjects)
 	{
-		ModelTerrain* model = new ModelTerrain();
+		std::shared_ptr<ModelTerrain> model = std::make_shared<ModelTerrain>();
 
 		model->SetXPos(o.PosX);
 		model->SetYPos(o.PosY);
@@ -280,7 +280,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 
 	for (const auto& o : completedModelSpriteObjects)
 	{
-		ModelSprite* model = new ModelSprite();
+		std::shared_ptr<ModelSprite> model = std::make_shared<ModelSprite>();
 
 		model->SetXPos(o.PosX);
 		model->SetYPos(o.PosY);
@@ -300,7 +300,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 
 	for (const auto& o : completedModelEnvironmentObjects)
 	{
-		ModelEnvironment* model = new ModelEnvironment();
+		std::shared_ptr<ModelEnvironment> model = std::make_shared<ModelEnvironment>();
 
 		model->SetXPos(o.PosX);
 		model->SetYPos(o.PosY);
@@ -324,7 +324,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 
 	for (const auto& o : completedModelGeometryObjects)
 	{
-		ModelGeometry* model = new ModelGeometry();
+		std::shared_ptr<ModelGeometry> model = std::make_shared<ModelGeometry>();
 
 		model->SetXPos(o.PosX);
 		model->SetYPos(o.PosY);
@@ -343,10 +343,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<Model*
 		sceneMeshes.push_back(model);
 	}
 
-	
-
 	m_status = true;
-
 }
 
 SceneTextReader::~SceneTextReader()

@@ -17,7 +17,7 @@ public:
 
 private:
 
-    CubeMap*    m_skyTexture;
+	std::shared_ptr<CubeMap>    m_skyTexture;
 
     bool        m_usingReflection;
     bool        m_usingRefraction;

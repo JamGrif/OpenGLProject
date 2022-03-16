@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 // Stores texture information and provides a way to load a texture by interfacing with TextureManager
 class Texture
@@ -65,17 +66,16 @@ class TextureManager
 {
 public:
 
-	static Texture* retrieveTexture(const std::string& filePath);
-	static CubeMap* retrieveCubeMap(const std::string& filePath = "");
+	static std::shared_ptr<Texture> retrieveTexture(const std::string& filePath);
+	static std::shared_ptr<CubeMap> retrieveCubeMap(const std::string& filePath = "");
 
 	static void		clearTextures();
 	static void		clearCubemaps();
 
 private:
 
-	static std::vector<Texture*> m_loadedTextures;
-	static std::vector<CubeMap*> m_loadedCubemaps;
+	static std::vector<std::shared_ptr<Texture>> m_loadedTextures;
+	static std::vector<std::shared_ptr<CubeMap>> m_loadedCubemaps;
 
 	TextureManager(); //Private so a class of this can't be initialized
 };
-

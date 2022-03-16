@@ -8,9 +8,10 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 // Stores shader information and provides a way to load a shader by interfacing with ShaderManager. 
-// Can load vertex shader, fragment shader, Tessellation Control shader, Tessellation Evaluation shader & Geometry shader
+// Can load Vertex shader, Fragment shader, Tessellation Control shader, Tessellation Evaluation shader & Geometry shader
 class Shader
 {
 public:
@@ -52,7 +53,6 @@ private:
 
 	//Cache for uniforms
 	std::unordered_map<std::string, int>	m_locationCache;
-	
 };
 
 //Stores current loaded shaders ensuring only one of each shaders gets loaded. Provides a way to load a shader from a file
@@ -60,15 +60,15 @@ class ShaderManager
 {
 public:
 
-	static Shader*			retrieveShader(const GLchar* vertexPath, const GLchar* fragmentPath);
-	static Shader*			retrieveShader(const GLchar* vertexPath, const GLchar* tessellationControlPath, const GLchar* tessellationEvaluationPath, const GLchar* fragmentPath);
-	static Shader*			retrieveShader(const GLchar* vertexPath, const GLchar* geometryPath, const GLchar* fragmentPath);
+	static std::shared_ptr<Shader>	retrieveShader(const GLchar* vertexPath, const GLchar* fragmentPath);
+	static std::shared_ptr<Shader>	retrieveShader(const GLchar* vertexPath, const GLchar* tessellationControlPath, const GLchar* tessellationEvaluationPath, const GLchar* fragmentPath);
+	static std::shared_ptr<Shader>	retrieveShader(const GLchar* vertexPath, const GLchar* geometryPath, const GLchar* fragmentPath);
 
-	static void				clearShaders();
+	static void						clearShaders();
 
 private:
 
-	static std::vector<Shader*> m_loadedShaders;
+	static std::vector<std::shared_ptr<Shader>>	m_loadedShaders;
 
 	ShaderManager(); //Private so a class of this can't be initialized
 };

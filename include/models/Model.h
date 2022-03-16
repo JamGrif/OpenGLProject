@@ -9,6 +9,7 @@
 #include <glm\gtx\transform.hpp>
 
 #include <string>
+#include <memory>
 
 #include "Camera.h"
 #include "Mesh.h"
@@ -54,13 +55,12 @@ public:
 
 protected:
 
-	
 	void			setVBOAttrib(bool shaderPos = false, bool shaderNorm = false, bool shaderTex = false, bool shaderTan = false, bool shaderBiTan = false);
 	
-	//Model properties
-	Mesh*			m_modelMesh;
-	Shader*			m_modelShaderPassOne;
-	Shader*			m_modelShaderPassTwo;
+	// Model properties
+	std::shared_ptr<Mesh>		m_modelMesh;
+	std::shared_ptr<Shader>		m_modelShaderPassOne;
+	std::shared_ptr<Shader>		m_modelShaderPassTwo;
 
 	GLuint			m_VBO;
 	GLuint			m_EBO;

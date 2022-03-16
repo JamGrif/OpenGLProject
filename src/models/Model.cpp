@@ -1,4 +1,5 @@
 #include "models/Model.h"
+#include <iostream>
 
 Model::Model()
 	:m_modelMesh(nullptr), m_modelShaderPassOne(nullptr), m_modelShaderPassTwo(nullptr), 
@@ -10,16 +11,9 @@ Model::Model()
 
 Model::~Model()
 {
-	if (m_modelMesh != nullptr)
-		m_modelMesh = nullptr;
-	
-
-	if (m_modelShaderPassOne != nullptr)
-		m_modelShaderPassOne = nullptr;
-	
-
-	if (m_modelShaderPassTwo != nullptr)
-		m_modelShaderPassTwo = nullptr;
+	m_modelMesh = nullptr;
+	m_modelShaderPassOne = nullptr;
+	m_modelShaderPassTwo = nullptr;
 
 	//glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glDeleteBuffers(1, &m_VBO);
@@ -32,7 +26,7 @@ Model::~Model()
 /// <param name="meshFilePath">Mesh file path</param>
 void Model::setMesh(const std::string& meshFilePath)
 {
-	m_modelMesh = MeshManager::loadModel(meshFilePath);
+	m_modelMesh = MeshManager::loadMesh(meshFilePath);
 
 	glGenBuffers(1, &m_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
@@ -41,7 +35,6 @@ void Model::setMesh(const std::string& meshFilePath)
 	glGenBuffers(1, &m_EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_modelMesh->getIndices().size() * sizeof(unsigned int), &m_modelMesh->getIndices()[0], GL_STATIC_DRAW);
-
 }
 
 /// <summary>

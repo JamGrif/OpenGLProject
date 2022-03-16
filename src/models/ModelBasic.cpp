@@ -11,8 +11,7 @@ ModelBasic::ModelBasic()
 
 ModelBasic::~ModelBasic()
 {
-	if (m_localPointLight)
-		m_localPointLight = nullptr;
+	m_localPointLight = nullptr;
 }
 
 /// <summary>

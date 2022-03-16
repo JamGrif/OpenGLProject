@@ -16,6 +16,6 @@ public:
 
 private:
 
-    Texture*                m_modelSprite;
+	std::shared_ptr<Texture>	m_modelSprite;
 };
 

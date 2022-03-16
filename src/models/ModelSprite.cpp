@@ -12,8 +12,7 @@ ModelSprite::ModelSprite()
 
 ModelSprite::~ModelSprite()
 {
-	if (m_modelSprite)
-		m_modelSprite = nullptr;
+	m_modelSprite = nullptr;
 }
 
 /// <summary>

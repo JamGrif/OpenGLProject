@@ -4,8 +4,8 @@
 
 #include "stb_image.h"
 
-std::vector<Texture*> TextureManager::m_loadedTextures;
-std::vector<CubeMap*> TextureManager::m_loadedCubemaps;
+std::vector<std::shared_ptr<Texture>> TextureManager::m_loadedTextures;
+std::vector<std::shared_ptr<CubeMap>> TextureManager::m_loadedCubemaps;
 
 Texture::Texture()
 	:m_texture(0), m_width(0), m_height(0), m_BPP(0), m_filePath("")
@@ -121,10 +121,10 @@ const GLuint Texture::getTexture() const
 /// </summary>
 /// <param name="filePath"></param>
 /// <returns>Pointer to the created texture</returns>
-Texture* TextureManager::retrieveTexture(const std::string& filePath)
+std::shared_ptr<Texture> TextureManager::retrieveTexture(const std::string& filePath)
 {
 	// Check if texture is already loaded
-	for (Texture* t : m_loadedTextures)
+	for (std::shared_ptr<Texture> t : m_loadedTextures)
 	{
 		if (t->getFilePath() == filePath)
 		{
@@ -133,17 +133,18 @@ Texture* TextureManager::retrieveTexture(const std::string& filePath)
 	}
 
 	//  Otherwise, create new texture
-	Texture* newTexture = new Texture;
+	//Texture* newTexture = new Texture;
+	std::shared_ptr<Texture> newTexture = std::make_shared<Texture>();
 
 	if (!newTexture->loadTexture(filePath)) //Attempt to load texture
 	{
 		// Texture failed to load so check if missing texture texture is already loaded and then return it
-		for (Texture* t : m_loadedTextures)
+		for (std::shared_ptr<Texture> t : m_loadedTextures)
 		{
 			if (t->getFilePath() == "res/textures/missingtexture.png")
 			{
 				// Delete texture that failed to load
-				delete newTexture;
+				//delete newTexture;
 				newTexture = nullptr;
 
 				// Return the missingtexture texture
@@ -163,14 +164,14 @@ Texture* TextureManager::retrieveTexture(const std::string& filePath)
 /// Loads the specified cubemap texture, if cubemap already exists then it returns a pointer to it instead of reloading the same cubemap texture
 /// </summary>
 /// <returns>Pointer to the created texture</returns>
-CubeMap* TextureManager::retrieveCubeMap(const std::string& filePath)
+std::shared_ptr<CubeMap> TextureManager::retrieveCubeMap(const std::string& filePath)
 {
 	// If filepath is default (""), then return the first cubemap (which will be the cubemap the sky uses)
 	if (filePath == "")
 	{
 		if (m_loadedCubemaps.size() > 0)
 		{
-			return *m_loadedCubemaps.begin();
+			return m_loadedCubemaps.at(0);
 		}
 		else
 		{
@@ -180,7 +181,7 @@ CubeMap* TextureManager::retrieveCubeMap(const std::string& filePath)
 	}
 
 	// Check if cubemap is already loaded
-	for (CubeMap* cm : m_loadedCubemaps)
+	for (std::shared_ptr<CubeMap> cm : m_loadedCubemaps)
 	{
 		if (cm->getFilePath() == filePath)
 		{
@@ -189,12 +190,13 @@ CubeMap* TextureManager::retrieveCubeMap(const std::string& filePath)
 	}
 
 	// Otherwise create a new cubemap
-	CubeMap* newCubemap = new CubeMap;
+	//CubeMap* newCubemap = new CubeMap;
+	std::shared_ptr<CubeMap> newCubemap = std::make_shared<CubeMap>();
 
 	if (!newCubemap->loadCubeMap(filePath)) // Attempt to load cubemap
 	{
 		//Cubemap failed to load so delete attempted cubemap and return
-		delete newCubemap;
+		//delete newCubemap;
 		return nullptr;
 	}
 
@@ -204,21 +206,11 @@ CubeMap* TextureManager::retrieveCubeMap(const std::string& filePath)
 
 void TextureManager::clearTextures()
 {
-	for (Texture* t : m_loadedTextures)
-	{
-		delete t;
-		t = nullptr;
-	}
 	m_loadedTextures.clear();
 }
 
 void TextureManager::clearCubemaps()
 {
-	for (CubeMap* cm : m_loadedCubemaps)
-	{
-		delete cm;
-		cm = nullptr;
-	}
 	m_loadedCubemaps.clear();
 }
 

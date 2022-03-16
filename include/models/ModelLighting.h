@@ -23,19 +23,19 @@ public:
 
 private:
 
-	Texture*				m_modelTextures[5];
-	bool					m_modelUsingTextures[5];
+	std::shared_ptr<Texture>	m_modelTextures[5];
+	bool						m_modelUsingTextures[5];
 
-    float                   m_specularShininess;
+    float						m_specularShininess;
 
-    bool                    m_normalizeTexture;
-    //bool                    m_usingEmission;
-    //bool                    m_usingNormal;
-    //bool                    m_usingHeight;
-    float                   m_heightAmount;
+    bool						m_normalizeTexture;
+    //bool						m_usingEmission;
+    //bool						m_usingNormal;
+    //bool						m_usingHeight;
+    float						m_heightAmount;
 
-    std::vector<glm::vec3>  m_tangents;
-    std::vector<glm::vec3>  m_bitangents;
+    std::vector<glm::vec3>		m_tangents;
+    std::vector<glm::vec3>		m_bitangents;
 
     enum textureSlotNumber
     {
