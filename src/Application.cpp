@@ -21,20 +21,14 @@ Application::~Application()
 {
 	EngineStatics::setProjectionMatrix(nullptr);
 
-	delete m_gameTimer;
 	m_gameTimer = nullptr;
 
-	if (m_appVAO != 0)
-	{
+	if (m_appVAO)
 		glDeleteVertexArrays(1, &m_appVAO);
-	}
 
-	delete m_appWindow;
 	m_appWindow = nullptr;
 
 	glfwTerminate();
-
-	//std::cout << "Application Destroyed" << std::endl;
 }
 
 /// <summary>
@@ -57,12 +51,14 @@ bool Application::appInit()
 		Initialize Window
 	*/
 
-	m_appWindow = new OpenGLWindow(1920, 1080, "OpenGL - Jamie", false);
+	//m_appWindow = new OpenGLWindow(1920, 1080, "OpenGL - Jamie", false);
+	m_appWindow = std::make_shared<OpenGLWindow>(1920, 1080, "OpenGL - Jamie", false);
 	if (!m_appWindow->getWindowStatus())
 	{
 		std::cout << "Window failed to initialize" << std::endl;
 		return false;
 	}
+	EngineStatics::setAppWindow(m_appWindow);
 
 	/*
 		Initialize GLEW
@@ -71,7 +67,7 @@ bool Application::appInit()
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
-		std::cout << "GLFW failed to initialize" << std::endl;
+		std::cout << "GLEW failed to initialize" << std::endl;
 		return false;
 	}
 
@@ -109,7 +105,8 @@ bool Application::appInit()
 	*/
 
 	// Create Game Timer object
-	m_gameTimer = new GameTimer();
+	m_gameTimer = std::make_shared<GameTimer>();
+	EngineStatics::setGameTimer(m_gameTimer);
 
 	// Create Input object
 	m_input = std::make_unique<Input>();

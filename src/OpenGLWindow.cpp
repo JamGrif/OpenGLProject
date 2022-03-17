@@ -26,7 +26,7 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, const std::string&
 	}
 	
 	// Check if window was made successfully
-	if (m_Window == nullptr)
+	if (!m_Window)
 	{
 		m_status = false;
 		return;
@@ -38,7 +38,7 @@ OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, const std::string&
 	glfwMakeContextCurrent(m_Window);
 
 	// Set EngineStatics values
-	EngineStatics::setAppWindow(this);
+	//EngineStatics::setAppWindow(this);
 
 	glfwSwapInterval(1); // Double buffering
 	glClearColor(0.0, 0.0, 0.0, 1.0); // Sets clear colour
@@ -55,8 +55,6 @@ OpenGLWindow::~OpenGLWindow()
 {
 	// Clear EngineStatics values
 	EngineStatics::setAppWindow(nullptr);
-	//EngineStatics::setScreenWidth(0);
-	//EngineStatics::setScreenHeight(0);
 
 	glfwDestroyWindow(m_Window);
 }

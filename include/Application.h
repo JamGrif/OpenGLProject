@@ -33,7 +33,7 @@ private:
 	bool			changeScene(int newSceneNumber);
 	void			changeScreenFilter(int newFilterNumber);
 
-	OpenGLWindow*	m_appWindow;
+	std::shared_ptr<OpenGLWindow> m_appWindow;
 
 	glm::mat4		m_projMatrix;
 
@@ -50,8 +50,6 @@ private:
 	std::unique_ptr<Framebuffer>	m_sceneMSAAFrameBuffer;		//Scene is drawn to this buffer with MSAA applied
 	std::unique_ptr<Framebuffer>	m_sceneFilterFramebuffer;	//Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen
 
-	GameTimer*			m_gameTimer;
-
-
+	std::shared_ptr<GameTimer> m_gameTimer;
 };
 

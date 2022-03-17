@@ -11,7 +11,7 @@ LightManager::LightManager()
 {
 	std::cout << "LightManager Initialized" << std::endl;
 
-	EngineStatics::setLightManager(this);
+	//EngineStatics::setLightManager(this);
 }
 
 LightManager::~LightManager()

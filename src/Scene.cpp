@@ -21,17 +21,13 @@ Scene::Scene(const std::string& sceneName)
  
 Scene::~Scene()
 {
-	//for (Model*& m : m_sceneModels)
-	//{
-	//	delete m;
-	//}
 	m_sceneModels.clear();
 
-	delete m_sceneCamera;
 	m_sceneCamera = nullptr;
+	EngineStatics::setCamera(nullptr);
 
-	delete m_sceneLightManager;
 	m_sceneLightManager = nullptr;
+	EngineStatics::setLightManager(nullptr);
 
 	/*
 		By not deleting all the scenes assets, it allows for quicker scene change after the content has been initially loaded
@@ -132,7 +128,7 @@ void Scene::updateSceneLight()
 
 		if (m_materialLightIncZ)
 		{
-			if (localFirstPointLight != nullptr)
+			if (localFirstPointLight)
 			{
 				localFirstPointLight->Position.z += 0.075f;
 				if (localFirstPointLight->Position.z >= m_materialLightMaxZ)
@@ -144,7 +140,7 @@ void Scene::updateSceneLight()
 		}
 		else
 		{
-			if (localFirstPointLight != nullptr)
+			if (localFirstPointLight)
 			{
 				localFirstPointLight->Position.z -= 0.075f;
 				if (localFirstPointLight->Position.z <= m_materialLightMinZ)
@@ -157,7 +153,7 @@ void Scene::updateSceneLight()
 
 		if (m_materialLightIncX)
 		{
-			if (localFirstPointLight != nullptr)
+			if (localFirstPointLight)
 			{
 				localFirstPointLight->Position.x += 0.1f;
 				if (localFirstPointLight->Position.x >= m_materialLightMaxX)
@@ -169,7 +165,7 @@ void Scene::updateSceneLight()
 		}
 		else
 		{
-			if (localFirstPointLight != nullptr)
+			if (localFirstPointLight)
 			{
 				localFirstPointLight->Position.x -= 0.1f;
 				if (localFirstPointLight->Position.x <= m_materialLightMinX)
@@ -183,7 +179,7 @@ void Scene::updateSceneLight()
 		//Light showing normals
 		if (m_normalLightIncZ)
 		{
-			if (localSecondPointLight != nullptr)
+			if (localSecondPointLight)
 			{
 				localSecondPointLight->Position.z += 0.05f;
 				if (localSecondPointLight->Position.z >= m_normalLightMaxZ)
@@ -195,7 +191,7 @@ void Scene::updateSceneLight()
 		}
 		else
 		{
-			if (localSecondPointLight != nullptr)
+			if (localSecondPointLight)
 			{
 				localSecondPointLight->Position.z += 0.05f;
 				if (localSecondPointLight->Position.z >= m_normalLightMinZ)
@@ -228,7 +224,7 @@ void Scene::updateSceneLight()
 			m_lightB = 0.0f;
 		}
 			
-		if (localThirdPointLight != nullptr)
+		if (localThirdPointLight)
 		{
 			localThirdPointLight->Ambient = glm::vec3(m_lightR, m_lightG, m_lightB);
 			localThirdPointLight->Diffuse = glm::vec3(m_lightR, m_lightG, m_lightB);
@@ -258,7 +254,7 @@ void Scene::updateSceneLight()
 			m_materialtestlightB = 0.0f;
 
 		
-		if (localPointLight != nullptr)
+		if (localPointLight)
 		{
 			localPointLight->Ambient = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
 			localPointLight->Diffuse = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
@@ -267,7 +263,7 @@ void Scene::updateSceneLight()
 	
 		if (m_materialtestLightIncZ)
 		{
-			if (localPointLight != nullptr)
+			if (localPointLight)
 			{
 				localPointLight->Position.z += 0.075f;
 				if (localPointLight->Position.z >= m_materialtestLightMaxZ)
@@ -280,7 +276,7 @@ void Scene::updateSceneLight()
 		}
 		else
 		{
-			if (localPointLight != nullptr)
+			if (localPointLight)
 			{
 				localPointLight->Position.z -= 0.075f;
 				if (localPointLight->Position.z <= m_materialtestLightMinZ)
@@ -294,7 +290,7 @@ void Scene::updateSceneLight()
 		
 		if (m_materialtestLightIncX)
 		{
-			if (localPointLight != nullptr)
+			if (localPointLight)
 			{
 				localPointLight->Position.x += 0.1f;
 				if (localPointLight->Position.x >= m_materialtestLightMaxX)
@@ -306,7 +302,7 @@ void Scene::updateSceneLight()
 		}
 		else
 		{
-			if (localPointLight != nullptr)
+			if (localPointLight)
 			{
 				localPointLight->Position.x -= 0.1f;
 				if (localPointLight->Position.x <= m_materialtestLightMinX)
@@ -320,34 +316,22 @@ void Scene::updateSceneLight()
 }
 
 /// <summary>
-/// Creates the scene camera, remakes it if one already exists
+/// Creates the scene camera
 /// </summary>
 /// <param name="x">Starting X position of camera</param>
 /// <param name="y">Starting Y position of camera</param>
 /// <param name="z">Starting Z position of camera</param>
 void Scene::addSceneCamera(float x, float y, float z)
 {
-	if (m_sceneCamera != nullptr) // sceneCamera already exists
-	{
-		delete m_sceneCamera;
-		m_sceneCamera = nullptr;
-	}
-	
-	m_sceneCamera = new Camera(glm::vec3{ x,y,z });
+	m_sceneCamera = std::make_shared<Camera>(glm::vec3{ x,y,z });
+	EngineStatics::setCamera(m_sceneCamera);
 }
 
 /// <summary>
-/// Creates the scene light manager, remakes it if one already exists
+/// Creates the scene light manager
 /// </summary>
 void Scene::addSceneLightManager()
 {
-	if (m_sceneLightManager != nullptr) // sceneLightmanger already exists
-	{
-		delete m_sceneLightManager;
-		m_sceneLightManager = nullptr;
-	}
-
-	//std::cout << "before make lightmanager new statement" << std::endl;
-	m_sceneLightManager = new LightManager();
-	//std::cout << "after make lightmanager new statement" << std::endl;
+	m_sceneLightManager = std::make_shared<LightManager>();
+	EngineStatics::setLightManager(m_sceneLightManager);
 }

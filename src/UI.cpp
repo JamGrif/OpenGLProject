@@ -17,7 +17,7 @@ UI::UI(bool uiVisible)
 	m_directionalLightInScene(false), m_directionalLightActiveButton(true),
 	m_spotLightInScene(false), m_spotLightActiveButton(true),
 	m_pointLightInScene{ false, false, false, false }, m_pointLightActiveButton{ true, true, true, true },
-	m_appPostProcess(0), m_localLightManager(nullptr), m_localgameTimer(EngineStatics::getGameTimer())
+	m_appPostProcess(0), m_localLightManager(nullptr), m_localGameTimer(EngineStatics::getGameTimer())
 {
 	std::cout << "UI Initialized" << std::endl;
 
@@ -42,6 +42,9 @@ UI::UI(bool uiVisible)
 
 UI::~UI()
 {
+	m_localLightManager = nullptr;
+	m_localGameTimer = nullptr;
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -211,14 +214,11 @@ void UI::drawInFrame()
 		Performance Metrics
 	*/
 
-	double x = m_localgameTimer->getDeltaTime();
-	std::string xx = std::to_string(x);
-	std::string xxx = "Delta Time: " + xx;
+	double x = m_localGameTimer->getDeltaTime();
+	std::string xxx = "Delta Time: " + std::to_string(x);
 
-	double y = m_localgameTimer->getFrameCount();
-	std::string yy = std::to_string(y);
-	std::string yyy = "FPS: " + yy;
-	
+	double y = m_localGameTimer->getFrameCount();
+	std::string yyy = "FPS: " + std::to_string(y);
 
 	ImGui::Begin("Performance Metrics:");
 	ImGui::Text(yyy.c_str());
@@ -261,6 +261,7 @@ int UI::getFilterNum() const
 /// </summary>
 void UI::refreshLightButtons()
 {
+	// Get the new scene light manager
 	m_localLightManager = EngineStatics::getLightManager();
 
 	// Test whether there is a directionalLight in the scene

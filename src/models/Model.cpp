@@ -63,7 +63,7 @@ void Model::setMatrixValues()
 	m_sMat = glm::scale(m_sMat, m_scale);
 
 	m_mMat = m_tMat * m_rMat * m_sMat;
-	m_vMat = EngineStatics::getCamera()->getViewMatrix();
+	m_vMat = EngineStatics::getCamera()->getViewMatrix(); //---------
 }
 
 void Model::SetXPos(float num) { m_position.x = num; }

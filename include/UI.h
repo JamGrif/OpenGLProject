@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 
 enum sceneNames
 {
@@ -58,7 +59,7 @@ private:
 	int				m_appPostProcess;
 
 	//Cached other classes
-	LightManager*	m_localLightManager;
-	GameTimer*		m_localgameTimer;
+	std::shared_ptr<LightManager>	m_localLightManager;
+	std::shared_ptr<GameTimer>		m_localGameTimer;
 };
 

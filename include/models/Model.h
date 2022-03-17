@@ -72,7 +72,7 @@ protected:
 	glm::mat4		m_sMat;		//Scale
 
 	//Cached other classes
-	LightManager*	m_localLightManager;
+	std::shared_ptr<LightManager>	m_localLightManager;
 	glm::mat4*		m_localProjectionMatrix;
 };
 

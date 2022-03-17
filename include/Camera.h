@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <memory>
+
 enum Camera_Movement
 {
 	e_FORWARD,
@@ -58,5 +60,5 @@ private:
 	//float			m_zoom;
 
 	// Cached other classes
-	GameTimer*		m_localGameTimer;
+	std::shared_ptr<GameTimer>		m_localGameTimer;
 };

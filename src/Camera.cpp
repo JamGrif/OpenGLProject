@@ -14,8 +14,6 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
 
     this->updateCameraVectors();
 
-    EngineStatics::setCamera(this);
-
 	m_localGameTimer = EngineStatics::getGameTimer();
 }
 
@@ -23,7 +21,7 @@ Camera::~Camera()
 {
     std::cout << "Scene Camera Destroyed" << std::endl;
 
-    EngineStatics::setCamera(nullptr);
+	m_localGameTimer = nullptr;
 }
 
 /// <summary>

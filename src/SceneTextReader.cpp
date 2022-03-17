@@ -8,7 +8,7 @@
 
 #include "LightManager.h"
 
-SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneMeshes, LightManager* sceneLightManager)
+SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneMeshes, std::shared_ptr<LightManager> sceneLightManager)
 	:m_filename(filename), m_status(false)
 {
 	std::ifstream fileStream(m_filename, std::ios::in);

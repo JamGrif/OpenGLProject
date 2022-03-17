@@ -5,32 +5,33 @@
 #include "LightManager.h"
 #include "GameTimer.h"
 
-OpenGLWindow* EngineStatics::m_appWindow		= nullptr;
+std::shared_ptr<OpenGLWindow> EngineStatics::m_appWindow	= nullptr;
 
-Camera* EngineStatics::m_camera					= nullptr;
+std::shared_ptr<Camera>		 EngineStatics::m_camera		= nullptr;
 
-glm::mat4* EngineStatics::m_projectionMatrix	= nullptr;
+glm::mat4* EngineStatics::m_projectionMatrix				= nullptr;
 
-LightManager* EngineStatics::m_lightManager		= nullptr;
+std::shared_ptr<LightManager> EngineStatics::m_lightManager	= nullptr;
 
-GameTimer* EngineStatics::m_gameTimer			= nullptr;
+std::shared_ptr<GameTimer> EngineStatics::m_gameTimer		= nullptr;
 
-OpenGLWindow* EngineStatics::getAppWindow()
+
+std::shared_ptr<OpenGLWindow> EngineStatics::getAppWindow()
 {
 	return m_appWindow;
 }
 
-void EngineStatics::setAppWindow(OpenGLWindow* w)
+void EngineStatics::setAppWindow(std::shared_ptr<OpenGLWindow> w)
 {
 	m_appWindow = w;
 }
 
-Camera* EngineStatics::getCamera()
+std::shared_ptr<Camera>	EngineStatics::getCamera()
 {
 	return m_camera;
 }
 
-void EngineStatics::setCamera(Camera* c)
+void EngineStatics::setCamera(std::shared_ptr<Camera> c)
 {
 	m_camera = c;
 }
@@ -45,22 +46,22 @@ void EngineStatics::setProjectionMatrix(glm::mat4* pm)
 	m_projectionMatrix = pm;
 }
 
-LightManager* EngineStatics::getLightManager()
+std::shared_ptr<LightManager> EngineStatics::getLightManager()
 {
 	return m_lightManager;
 }
 
-void EngineStatics::setLightManager(LightManager* lm)
+void EngineStatics::setLightManager(std::shared_ptr<LightManager> lm)
 {
 	m_lightManager = lm;
 }
 
-GameTimer* EngineStatics::getGameTimer()
+std::shared_ptr<GameTimer> EngineStatics::getGameTimer()
 {
 	return m_gameTimer;
 }
 
-void EngineStatics::setGameTimer(GameTimer* gt)
+void EngineStatics::setGameTimer(std::shared_ptr<GameTimer> gt)
 {
 	m_gameTimer = gt;
 }

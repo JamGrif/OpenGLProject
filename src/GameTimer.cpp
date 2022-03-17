@@ -8,7 +8,7 @@
 GameTimer::GameTimer()
 	:m_deltaTime(0), m_lastFrame(0), m_previousTime(0), m_frameCount(0), m_frameCountToDisplay(0), m_currentFrame(0)
 {
-	EngineStatics::setGameTimer(this);
+	//EngineStatics::setGameTimer(this);
 }
 
 GameTimer::~GameTimer()

@@ -15,7 +15,7 @@ class SceneTextReader
 {
 public:
 
-	SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneMeshes, LightManager* sceneLightManager);
+	SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneMeshes, std::shared_ptr<LightManager> sceneLightManager);
 	~SceneTextReader();
 
 	bool getStatus();

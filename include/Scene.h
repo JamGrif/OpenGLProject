@@ -36,10 +36,10 @@ private:
 
 	std::vector<std::shared_ptr<Model>>		m_sceneModels;
 
-	Camera*					m_sceneCamera;
+	std::shared_ptr<Camera>					m_sceneCamera;
 
-	LightManager*			m_sceneLightManager;
-
+	//LightManager*			m_sceneLightManager;
+	std::shared_ptr<LightManager> m_sceneLightManager;
 	
 
 	/*
