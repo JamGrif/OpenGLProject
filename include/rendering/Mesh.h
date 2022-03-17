@@ -1,10 +1,9 @@
 #pragma once
 
-#include "glm/glm.hpp"
+#include "rendering/BaseAsset.h"
 
-#include <vector>
-#include <string>
-#include <memory>
+
+
 
 struct Vertex
 {
@@ -16,7 +15,8 @@ struct Vertex
 };
 
 // Stores mesh information and provides a way to load a mesh by interfacing with MeshManager
-class Mesh
+class Mesh :
+	public BaseAsset
 {
 public:
 	Mesh();

@@ -1,14 +1,13 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "rendering/BaseAsset.h"
 
-#include <vector>
-#include <string>
-#include <memory>
+
+
 
 // Stores texture information and provides a way to load a texture by interfacing with TextureManager
-class Texture
+class Texture :
+	public BaseAsset
 {
 public:
 	Texture();

@@ -171,6 +171,7 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\rendering\BaseAsset.cpp" />
     <ClCompile Include="dependencies\imgui\imgui.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
@@ -194,16 +195,17 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Input.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\rendering\Mesh.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\SceneTextReader.cpp" />
-    <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\rendering\Shader.cpp" />
+    <ClCompile Include="src\rendering\Texture.cpp" />
     <ClCompile Include="src\models\ModelTerrain.cpp" />
     <ClCompile Include="src\OpenGLWindow.cpp" />
     <ClCompile Include="src\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\rendering\BaseAsset.h" />
     <ClInclude Include="dependencies\imgui\imconfig.h" />
     <ClInclude Include="dependencies\imgui\imgui.h" />
     <ClInclude Include="dependencies\imgui\imgui_impl_glfw.h" />
@@ -228,11 +230,11 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClInclude Include="include\Application.h" />
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\Input.h" />
-    <ClInclude Include="include\Mesh.h" />
+    <ClInclude Include="include\rendering\Mesh.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\SceneTextReader.h" />
-    <ClInclude Include="include\Shader.h" />
-    <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\rendering\Shader.h" />
+    <ClInclude Include="include\rendering\Texture.h" />
     <ClInclude Include="include\models\ModelTerrain.h" />
     <ClInclude Include="include\OpenGLWindow.h" />
     <ClInclude Include="include\UI.h" />

@@ -1,18 +1,23 @@
 #pragma once
 
-#include <GL/glew.h>
+#include "rendering/BaseAsset.h"
 
-#include <glm\glm.hpp>
-#include <glm\gtc\type_ptr.hpp>
-
-#include <string>
 #include <unordered_map>
-#include <vector>
-#include <memory>
+
+enum shaderFilePaths
+{
+	e_VertexPath					= 0,
+	e_FragmentPath					= 1,
+	e_TessellationControlPath		= 2,
+	e_TessellationEvaluationPath	= 3,
+	e_GeometryPath					= 4
+
+};
 
 // Stores shader information and provides a way to load a shader by interfacing with ShaderManager. 
 // Can load Vertex shader, Fragment shader, Tessellation Control shader, Tessellation Evaluation shader & Geometry shader
-class Shader
+class Shader :
+	public BaseAsset
 {
 public:
 	Shader();
@@ -33,11 +38,12 @@ public:
 	void					setUniformMatrix3fv(const std::string& name, const glm::mat3& v0);
 
 	const GLuint			getProgram() const;
-	const GLchar*			getVertexPath() const;
-	const GLchar*			getFragmentPath() const;
-	const GLchar*			getTessellationControlPath() const;
-	const GLchar*			getTessellationEvaluationPath() const;
-	const GLchar*			getGeometryPath() const;
+	const GLchar*			getFilePath(int filePath) const;
+	//const GLchar*			getVertexPath() const;
+	//const GLchar*			getFragmentPath() const;
+	//const GLchar*			getTessellationControlPath() const;
+	//const GLchar*			getTessellationEvaluationPath() const;
+	//const GLchar*			getGeometryPath() const;
 
 private:
 

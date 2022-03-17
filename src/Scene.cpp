@@ -347,7 +347,7 @@ void Scene::addSceneLightManager()
 		m_sceneLightManager = nullptr;
 	}
 
-	std::cout << "before make lightmanager new statement" << std::endl;
+	//std::cout << "before make lightmanager new statement" << std::endl;
 	m_sceneLightManager = new LightManager();
-	std::cout << "after make lightmanager new statement" << std::endl;
+	//std::cout << "after make lightmanager new statement" << std::endl;
 }

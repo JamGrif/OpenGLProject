@@ -12,9 +12,9 @@
 #include <memory>
 
 #include "Camera.h"
-#include "Mesh.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "rendering/Mesh.h"
+#include "rendering/Shader.h"
+#include "rendering/Texture.h"
 #include "EngineStatics.h"
 
 // Abstract model class - The different classes that derive from Model all have their own implementation of

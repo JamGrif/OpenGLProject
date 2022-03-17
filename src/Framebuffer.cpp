@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "Shader.h"
+#include "rendering/Shader.h"
 #include "EngineStatics.h"
 #include "OpenGLWindow.h"
 
