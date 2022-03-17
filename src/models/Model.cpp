@@ -1,9 +1,8 @@
 #include "models/Model.h"
-#include <iostream>
 
 Model::Model()
 	:m_modelMesh(nullptr), m_modelShaderPassOne(nullptr), m_modelShaderPassTwo(nullptr), 
-	m_VBO(0), m_EBO(0), m_position{ 0.0, 0.0, 0.0 }, m_rotation{ 0.0, 0.0, 0.0 }, m_scale{ 1.0f, 1.0f, 1.0f },
+	m_position{ 0.0, 0.0, 0.0 }, m_rotation{ 0.0, 0.0, 0.0 }, m_scale{ 1.0f, 1.0f, 1.0f },
 	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f },
 	m_localLightManager(EngineStatics::getLightManager()), m_localProjectionMatrix(EngineStatics::getProjectionMatrix())
 {
@@ -14,10 +13,6 @@ Model::~Model()
 	m_modelMesh = nullptr;
 	m_modelShaderPassOne = nullptr;
 	m_modelShaderPassTwo = nullptr;
-
-	//glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glDeleteBuffers(1, &m_VBO);
-	glDeleteBuffers(1, &m_EBO);
 }
 
 /// <summary>
@@ -27,14 +22,6 @@ Model::~Model()
 void Model::setMesh(const std::string& meshFilePath)
 {
 	m_modelMesh = MeshManager::loadMesh(meshFilePath);
-
-	glGenBuffers(1, &m_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, m_modelMesh->getVertices().size() * sizeof(Vertex), &m_modelMesh->getVertices()[0], GL_STATIC_DRAW);
-
-	glGenBuffers(1, &m_EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_modelMesh->getIndices().size() * sizeof(unsigned int), &m_modelMesh->getIndices()[0], GL_STATIC_DRAW);
 }
 
 /// <summary>
@@ -77,57 +64,6 @@ void Model::setMatrixValues()
 
 	m_mMat = m_tMat * m_rMat * m_sMat;
 	m_vMat = EngineStatics::getCamera()->getViewMatrix();
-
-}
-
-/// <summary>
-/// Sets the layout vertex attributes of the models shader
-/// </summary>
-/// <param name="shaderPos">Does the shader use position vertices?</param>
-/// <param name="shaderNorm">Does the shader use normal vertices?</param>
-/// <param name="shaderTex">Does the shader use texture coordinates vertices?</param>
-/// <param name="shaderTan">Does the shader use tangents vertices?</param>
-/// <param name="shaderBiTan">Does the shader use bitangents vertices?</param>
-void Model::setVBOAttrib(bool shaderPos, bool shaderNorm, bool shaderTex, bool shaderTan, bool shaderBiTan)
-{
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-
-	if (shaderPos)
-	{
-		//Position
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-	}
-
-	if (shaderNorm)
-	{
-		//Normal
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
-	}
-
-	if (shaderTex)
-	{
-		//Texture
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
-	}
-
-	if (shaderTan)
-	{
-		//Tangents
-		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
-
-	}
-
-	if (shaderBiTan)
-	{
-		//Bitangents
-		glEnableVertexAttribArray(4);
-		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
-	}
 }
 
 void Model::SetXPos(float num) { m_position.x = num; }
@@ -201,8 +137,3 @@ void Model::DecXScale(float num) { m_scale.x -= num; }
 void Model::DecYScale(float num) { m_scale.y -= num; }
 
 void Model::DecZScale(float num) { m_scale.z -= num; }
-
-
-
-
-

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "models/Model.h"
 
 // Class that allows an object to be lit by all the scene lights and gives the option for multiple texture maps to be applied
@@ -14,12 +13,10 @@ public:
     void                    drawPassTwo() override;
 
     void                    setDiffuseTexture(const std::string& texturePath);
-    void                    setSpecularTexture(const std::string& texturePath);
+    void                    setSpecularTexture(const std::string& texturePath, float shininessAmount);
     void                    setEmissionTexture(const std::string& texturePath);
     void                    setNormalTexture(const std::string& texturePath, bool normalize);
     void                    setHeightTexture(const std::string& texturePath, float heightAmount);
-
-    void                    setSpecularShiniess(float value);
 
 private:
 
@@ -29,9 +26,6 @@ private:
     float						m_specularShininess;
 
     bool						m_normalizeTexture;
-    //bool						m_usingEmission;
-    //bool						m_usingNormal;
-    //bool						m_usingHeight;
     float						m_heightAmount;
 
     std::vector<glm::vec3>		m_tangents;

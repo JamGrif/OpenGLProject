@@ -2,9 +2,6 @@
 
 #include "rendering/BaseAsset.h"
 
-
-
-
 struct Vertex
 {
 	glm::vec3 Position;
@@ -23,17 +20,26 @@ public:
 	~Mesh();
 
 	bool								loadMesh(const std::string& filePath);
+	void								setupMesh();
 
-	const std::vector<Vertex>&			getVertices() const;
+	void setVBOAttrib(bool shaderPos = false, bool shaderNorm = false, bool shaderTex = false, bool shaderTan = false, bool shaderBiTan = false);
+
+public:
+
 	const std::vector<unsigned int>&	getIndices() const;
 	const std::string&					getFilePath() const;
 
 private:
 
-	std::string					m_filePath;
+	std::string							m_filePath;
 
-	std::vector<Vertex>			m_vertices;
-	std::vector<unsigned int>	m_indices;
+	GLuint								m_VBO;
+	GLuint								m_EBO;
+
+private:
+
+	std::vector<Vertex>					m_vertices;
+	std::vector<unsigned int>			m_indices;
 };
 
 //Stores current loaded meshes ensuring only one of each mesh gets loaded. Provides a way to load a mesh from a file

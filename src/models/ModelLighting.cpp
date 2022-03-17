@@ -5,7 +5,7 @@
 ModelLighting::ModelLighting()
 	:m_modelTextures{nullptr, nullptr, nullptr, nullptr, nullptr},
 	m_modelUsingTextures{false, false, false, false, false},
-	m_specularShininess(48.0f), m_normalizeTexture(false), m_heightAmount(0.5)
+	m_specularShininess(0.0f), m_normalizeTexture(false), m_heightAmount(0.5)
 {
 	setShaderOne("res/shaders/lightingPassOne-vertex.glsl", "res/shaders/lightingPassOne-fragment.glsl");
 	setShaderTwo("res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
@@ -181,7 +181,7 @@ void ModelLighting::drawPassTwo()
 		Bind VBOs and vertex attributes
 	*/
 
-	setVBOAttrib(true, true, true, true, true); 
+	m_modelMesh->setVBOAttrib(true, true, true, true, true); 
 	//if (m_modelNormalTexture != nullptr)
 	//{
 	//}
@@ -232,10 +232,13 @@ void ModelLighting::setDiffuseTexture(const std::string& texturePath)
 /// Assigns specified texture to the model to be used for a specular map
 /// </summary>
 /// <param name="texturePath"></param>
-void ModelLighting::setSpecularTexture(const std::string& texturePath)
+/// <param name="shininessAmount">Shiniess of the specular texture in the fragment shader</param>
+void ModelLighting::setSpecularTexture(const std::string& texturePath, float shininessAmount)
 {
 	m_modelTextures[e_specularTextureSlot] = TextureManager::retrieveTexture(texturePath);
 	m_modelUsingTextures[e_specularTextureSlot] = true;
+
+	m_specularShininess = shininessAmount;
 }
 
 /// <summary>
@@ -273,11 +276,4 @@ void ModelLighting::setHeightTexture(const std::string& texturePath, float heigh
 	m_heightAmount = heightAmount;
 }
 
-/// <summary>
-/// Sets the specular maps shininess in the fragment shader
-/// </summary>
-/// <param name="value"></param>
-void ModelLighting::setSpecularShiniess(float value)
-{
-	m_specularShininess = value;
-}
+

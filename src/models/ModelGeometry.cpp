@@ -66,7 +66,7 @@ void ModelGeometry::drawPassTwo()
 		Bind VBOs and vertex attributes
 	*/
 
-	setVBOAttrib(true, true, true, false, false);
+	m_modelMesh->setVBOAttrib(true, true, true, false, false);
 
 	/*
 		Draw

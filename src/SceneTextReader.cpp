@@ -206,11 +206,11 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 
 		if (o.specularMap != "null")
 		{
-			model->setSpecularTexture(o.specularMap);
+			model->setSpecularTexture(o.specularMap, 48.0f);
 		}
 		else
 		{
-			model->setSpecularTexture("res/textures/blank.png"); // Models have to have a specular map
+			model->setSpecularTexture("res/textures/blank.png", 48.0f); // Models have to have a specular map
 		}
 
 		if (o.normalMap != "null")

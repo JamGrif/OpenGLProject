@@ -13,15 +13,20 @@ Mesh::Mesh()
 {
 }
 
+
+
 Mesh::~Mesh()
 {
+	////glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glDeleteBuffers(1, &m_VBO);
+	glDeleteBuffers(1, &m_EBO);
 }
 
 bool Mesh::loadMesh(const std::string& filePath)
 {
 	m_filePath = filePath;
 	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(filePath, aiProcess_Triangulate | aiProcess_CalcTangentSpace);
+	const aiScene* const scene = import.ReadFile(filePath, aiProcess_Triangulate | aiProcess_CalcTangentSpace);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -82,12 +87,74 @@ bool Mesh::loadMesh(const std::string& filePath)
 			m_indices.push_back(face.mIndices[j]);
 		}
 	}
+
+	setupMesh();
+
 	return true;
 }
 
-const std::vector<Vertex>& Mesh::getVertices() const
+/// <summary>
+/// Creates the OpenGL VBO and EBO
+/// </summary>
+void Mesh::setupMesh()
 {
-	return m_vertices;
+	glGenBuffers(1, &m_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex), &m_vertices[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &m_EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &m_indices[0], GL_STATIC_DRAW);
+}
+
+
+/// <summary>
+/// Sets the layout vertex attributes of the models shader
+/// </summary>
+/// <param name="shaderPos">Does the shader use position vertices?</param>
+/// <param name="shaderNorm">Does the shader use normal vertices?</param>
+/// <param name="shaderTex">Does the shader use texture coordinates vertices?</param>
+/// <param name="shaderTan">Does the shader use tangents vertices?</param>
+/// <param name="shaderBiTan">Does the shader use bitangents vertices?</param>
+void Mesh::setVBOAttrib(bool shaderPos, bool shaderNorm, bool shaderTex, bool shaderTan, bool shaderBiTan)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+
+	if (shaderPos)
+	{
+		// Position
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	}
+
+	if (shaderNorm)
+	{
+		// Normal
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+	}
+
+	if (shaderTex)
+	{
+		// Texture
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+	}
+
+	if (shaderTan)
+	{
+		// Tangents
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+	}
+
+	if (shaderBiTan)
+	{
+		// Bitangents
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
+	}
 }
 
 const std::vector<unsigned int>& Mesh::getIndices() const
@@ -99,6 +166,8 @@ const std::string& Mesh::getFilePath() const
 {
 	return m_filePath;
 }
+
+// MeshManager --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /// <summary>
 /// Loads the specified mesh, if mesh already exists it returns a pointer to it instead of reloading the same mesh

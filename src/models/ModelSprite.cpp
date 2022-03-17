@@ -8,8 +8,6 @@ ModelSprite::ModelSprite()
 	setShaderTwo("res/shaders/blendingSprite-vertex.glsl", "res/shaders/blendingSprite-fragment.glsl");
 }
 
-
-
 ModelSprite::~ModelSprite()
 {
 	m_modelSprite = nullptr;
@@ -55,7 +53,7 @@ void ModelSprite::drawPassTwo()
 		Bind VBOs and vertex attributes
 	*/
 
-	setVBOAttrib(true, false, true, false, false);
+	m_modelMesh->setVBOAttrib(true, false, true, false, false);
 
 	/*
 		Draw
@@ -74,5 +72,3 @@ void ModelSprite::setSprite(const std::string& filePath)
 {
 	m_modelSprite = TextureManager::retrieveTexture(filePath);
 }
-
-
