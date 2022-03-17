@@ -4,14 +4,13 @@
 
 #include <unordered_map>
 
-enum shaderFilePaths
+enum shaderFilePath
 {
-	e_VertexPath					= 0,
-	e_FragmentPath					= 1,
-	e_TessellationControlPath		= 2,
-	e_TessellationEvaluationPath	= 3,
-	e_GeometryPath					= 4
-
+	e_VertexPath = 0,
+	e_FragmentPath = 1,
+	e_TessellationControlPath = 2,
+	e_TessellationEvaluationPath = 3,
+	e_GeometryPath = 4
 };
 
 // Stores shader information and provides a way to load a shader by interfacing with ShaderManager. 
@@ -38,12 +37,7 @@ public:
 	void					setUniformMatrix3fv(const std::string& name, const glm::mat3& v0);
 
 	const GLuint			getProgram() const;
-	const GLchar*			getFilePath(int filePath) const;
-	//const GLchar*			getVertexPath() const;
-	//const GLchar*			getFragmentPath() const;
-	//const GLchar*			getTessellationControlPath() const;
-	//const GLchar*			getTessellationEvaluationPath() const;
-	//const GLchar*			getGeometryPath() const;
+	const GLchar*			getFilePath(shaderFilePath filePath) const;
 
 private:
 

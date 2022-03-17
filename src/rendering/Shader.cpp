@@ -464,8 +464,7 @@ const GLuint Shader::getProgram() const
 	return m_shaderProgram;
 }
 
-
-const GLchar* Shader::getFilePath(int filePath) const
+const GLchar* Shader::getFilePath(shaderFilePath filePath) const
 {
 	switch (filePath)
 	{
@@ -484,34 +483,8 @@ const GLchar* Shader::getFilePath(int filePath) const
 	case e_GeometryPath:
 		return m_geometryPath;
 	}
-
 	return nullptr;
 }
-
-//const GLchar* Shader::getVertexPath() const
-//{
-//	return m_vertexPath;
-//}
-//
-//const GLchar* Shader::getFragmentPath() const
-//{
-//	return m_fragmentPath;
-//}
-//
-//const GLchar* Shader::getTessellationControlPath() const
-//{
-//	return m_tessellationControlPath;
-//}
-//
-//const GLchar* Shader::getTessellationEvaluationPath() const
-//{
-//	return m_tessellationEvaluationPath;
-//}
-//
-//const GLchar* Shader::getGeometryPath() const
-//{
-//	return m_geometryPath;
-//}
 
 /// <summary>
 /// Cache system that only finds the location of a uniform once and then stores it location.
