@@ -15,20 +15,20 @@ class EngineStatics
 {
 public:
 
-	static std::shared_ptr<OpenGLWindow>	getAppWindow();
-	static void								setAppWindow(std::shared_ptr<OpenGLWindow> w);
+	static const std::shared_ptr<OpenGLWindow>&			getAppWindow();
+	static void										setAppWindow(const std::shared_ptr<OpenGLWindow>& w);
 
-	static std::shared_ptr<Camera>			getCamera();
-	static void								setCamera(std::shared_ptr<Camera> c);
-	
-	static glm::mat4*						getProjectionMatrix();
-	static void								setProjectionMatrix(glm::mat4* pm);
+	static const std::shared_ptr<Camera>&					getCamera();
+	static void										setCamera(const std::shared_ptr<Camera>& c);
 
-	static std::shared_ptr<LightManager>	getLightManager();
-	static void								setLightManager(std::shared_ptr<LightManager> lm);
+	static glm::mat4*								getProjectionMatrix();
+	static void										setProjectionMatrix(glm::mat4* pm);
 
-	static std::shared_ptr<GameTimer>		getGameTimer();
-	static void								setGameTimer(std::shared_ptr<GameTimer> gt);
+	static const std::shared_ptr<LightManager>&			getLightManager();
+	static void										setLightManager(const std::shared_ptr<LightManager>& lm);
+
+	static const std::shared_ptr<GameTimer>&		getGameTimer();
+	static void										setGameTimer(const std::shared_ptr<GameTimer>& gt);
 
 private:
 

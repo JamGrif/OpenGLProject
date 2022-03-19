@@ -15,6 +15,7 @@ ModelSky::ModelSky()
 
 ModelSky::~ModelSky()
 {
+	m_skyTexture = nullptr;
 	glDeleteBuffers(1, &m_skyboxVBO);
 }
 
