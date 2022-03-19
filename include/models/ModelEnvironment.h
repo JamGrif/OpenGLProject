@@ -1,7 +1,7 @@
 #pragma once
 #include "models/Model.h"
 
-//Class allows meshes to have a reflection environment map or a refraction environment map from the skybox
+// Class allows meshes to have a reflection environment map or a refraction environment map from the skybox
 class ModelEnvironment :
     public Model
 {

@@ -2,7 +2,7 @@
 
 #include "models/Model.h"
 
-//Class that uses the geometry shader to simple "inflate/deflate" an object 
+// Class that uses the geometry shader to simple "inflate/deflate" an object 
 class ModelGeometry
 	:public Model
 {

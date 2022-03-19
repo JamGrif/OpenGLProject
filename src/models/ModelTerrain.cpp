@@ -1,3 +1,4 @@
+
 #include "models/ModelTerrain.h"
 
 
@@ -11,7 +12,6 @@ ModelTerrain::ModelTerrain()
 ModelTerrain::~ModelTerrain()
 {
 	m_terrainTexture = nullptr;
-	
 	m_terrainHeight = nullptr;
 }
 

@@ -159,6 +159,10 @@ void Input::disableMouse()
     glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
+/// <summary>
+/// Returns true if cursor is enabled and false if not
+/// </summary>
+/// <returns></returns>
 bool Input::getMouseEnabled()
 {
 	return m_mouseEnabled;

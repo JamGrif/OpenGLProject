@@ -1,7 +1,7 @@
 #pragma once
 #include "models/Model.h"
 
-//Class that is used to draw a simple sprite at a location
+// Class that is used to draw a simple sprite at a location
 class ModelSprite :
     public Model
 {
