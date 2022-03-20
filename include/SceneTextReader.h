@@ -1,21 +1,21 @@
 #pragma once
 
-#include "models/ModelBasic.h"
-#include "models/ModelLighting.h"
-#include "models/ModelEnvironment.h"
-#include "models/ModelSprite.h"
-#include "models/ModelTerrain.h"
-#include "models/ModelGeometry.h"
-#include "models/ModelSky.h"
+#include <glm\glm.hpp> // glm::vec3()
 
+#include <vector>
+#include <string>
 #include <memory>
+
+// Forward Declarations
+class Model;
+class LightManager;
 
 // Class that reads from a scene text file, feeding the scene models vectors with created objects from the text file
 class SceneTextReader
 {
 public:
 
-	SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneMeshes, std::shared_ptr<LightManager> sceneLightManager);
+	SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneMeshes, std::shared_ptr<LightManager>& sceneLightManager);
 	~SceneTextReader();
 
 	bool getStatus();
@@ -57,14 +57,14 @@ private:
 	std::vector<templateDirectionalLight> completedDirectionalLightObjects;
 	std::vector<templateSpotLight> completedSpotLightObjects;
 
-	void applyToLight(templateLight& l, const std::vector<std::string>& vector);
+	inline void applyToLight(templateLight& l, const std::vector<std::string>& fullLine);
 
-	void applyToPointLight(templatePointLight& l, const std::vector<std::string>& vector);
-	void applyToDirectionalLight(templateDirectionalLight& l, const std::vector<std::string>& vector);
-	void applyToSpotLight(templateSpotLight& l, const std::vector<std::string>& vector);
+	inline bool applyToPointLight(templatePointLight& l, const std::vector<std::string>& fullLine);
+	inline bool applyToDirectionalLight(templateDirectionalLight& l, const std::vector<std::string>& fullLine);
+	inline bool applyToSpotLight(templateSpotLight& l, const std::vector<std::string>& fullLine);
 
 	/*
-		Model Objects
+		Model Objectss
 	*/
 
 	struct templateModel
@@ -92,7 +92,7 @@ private:
 		std::string specularMap = "";
 
 		std::string normalMap = "";
-		bool normalMapNormalize;
+		bool normalMapNormalize = false;
 
 		std::string heightMap = "";
 		float heightMapHeight = 0.0f;
@@ -142,14 +142,20 @@ private:
 	std::vector<templateModelGeometry>		completedModelGeometryObjects;		// ModelGeometry
 	std::vector<templateModelSky>			completedModelSkyObjects;			// ModelSky
 
-	void applyToModel(templateModel& o, const std::vector<std::string>& vector);
+	inline void applyToModel(templateModel& o, const std::vector<std::string>& vector);
 
-	void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector);
-	void applyToModelBasicTemplate(templateModelBasic& o, const std::vector<std::string>& vector);
-	void applyToModelTerrainTemplate(templateModelTerrain& o, const std::vector<std::string>& vector);
-	void applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& vector);
-	void applyToModelEnvironmentTemplate(templateModelEnvironment& o, const std::vector<std::string>& vector);
-	void applyToModelGeometryTemplate(templateModelGeometry& o, const std::vector<std::string>& vector);
-	void applyToModelSkyTemplate(templateModelSky& o, const std::vector<std::string>& vector);
+	inline void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector);
+	inline void applyToModelBasicTemplate(templateModelBasic& o, const std::vector<std::string>& vector);
+	inline void applyToModelTerrainTemplate(templateModelTerrain& o, const std::vector<std::string>& vector);
+	inline void applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& vector);
+	inline void applyToModelEnvironmentTemplate(templateModelEnvironment& o, const std::vector<std::string>& vector);
+	inline void applyToModelGeometryTemplate(templateModelGeometry& o, const std::vector<std::string>& vector);
+	inline void applyToModelSkyTemplate(templateModelSky& o, const std::vector<std::string>& vector);
+
+
+	// thread stuff
+private:
+	void createLights(std::shared_ptr<LightManager> sceneLightManager, std::vector<templatePointLight> completedPointLightObjects, std::vector<templateDirectionalLight> completedDirectionalLightObjects, std::vector<templateSpotLight> completedSpotLightObjects);
+
 
 };

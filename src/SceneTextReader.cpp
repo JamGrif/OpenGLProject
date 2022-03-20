@@ -1,14 +1,56 @@
 #include "SceneTextReader.h"
 
+#include "models/ModelBasic.h"
+#include "models/ModelLighting.h"
+#include "models/ModelEnvironment.h"
+#include "models/ModelSprite.h"
+#include "models/ModelTerrain.h"
+#include "models/ModelGeometry.h"
+#include "models/ModelSky.h"
+
 #include <iostream>
-#include <vector>
-#include <string>
 #include <fstream>
 #include <sstream>
+#include <thread>
 
 #include "LightManager.h"
 
-SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneMeshes, std::shared_ptr<LightManager> sceneLightManager)
+void SceneTextReader::createLights(std::shared_ptr<LightManager> sceneLightManager, std::vector<templatePointLight> completedPointLightObjects, std::vector<templateDirectionalLight> completedDirectionalLightObjects, std::vector<templateSpotLight> completedSpotLightObjects)
+{
+	for (const auto& o : completedDirectionalLightObjects)
+	{
+		sceneLightManager->addDirectionalLight(
+			o.Ambient,
+			o.Diffuse,
+			o.Specular,
+			o.Direction
+		);
+	}
+	
+	for (const auto& o : completedPointLightObjects)
+	{
+		sceneLightManager->addPointLight(
+			o.Ambient,
+			o.Diffuse,
+			o.Specular,
+			o.Position
+		);
+	}
+	
+	for (const auto& o : completedSpotLightObjects)
+	{
+		sceneLightManager->addSpotLight(
+			o.Ambient,
+			o.Diffuse,
+			o.Specular,
+			o.Position
+		);
+	}
+
+}
+
+
+SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneMeshes, std::shared_ptr<LightManager>& sceneLightManager)
 	:m_filename(filename), m_status(false)
 {
 	std::ifstream fileStream(m_filename, std::ios::in);
@@ -52,25 +94,31 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 			which will be used to actually create the objects later on
 		*/
 
-		if (fullLine.at(0) == "directionalLight")
+		if (fullLine.at(0) == "directionalLight") // .at(0) is the first word in the row - ObjectType
 		{
 			templateDirectionalLight object;
-			applyToDirectionalLight(object, fullLine);
-			completedDirectionalLightObjects.push_back(object);
+
+			// Only add to list of directional lights to create if was read successfully from file
+			if (applyToDirectionalLight(object, fullLine))
+				completedDirectionalLightObjects.push_back(object);
 		}
 		else if (fullLine.at(0) == "pointLight")
 		{
 			templatePointLight object;
-			applyToPointLight(object, fullLine);
-			completedPointLightObjects.push_back(object);
+
+			// Only add to list of point lights to create if was read successfully from file
+			if (applyToPointLight(object, fullLine))
+				completedPointLightObjects.push_back(object);
 		}
 		else if (fullLine.at(0) == "spotLight")
 		{
 			templateSpotLight object;
-			applyToSpotLight(object, fullLine);
-			completedSpotLightObjects.push_back(object);
+
+			// Only add to list of spot lights to create if was read successfully from file
+			if (applyToSpotLight(object, fullLine))
+				completedSpotLightObjects.push_back(object);
 		}
-		else if (fullLine.at(0) == "modelLighting") // .at(0) is the first word in the row - ObjectType
+		else if (fullLine.at(0) == "modelLighting") 
 		{
 			templateModelLighting object;
 			applyToModelLightingTemplate(object, fullLine);
@@ -121,40 +169,15 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 
 	fileStream.close();
 
+	
+
 	/*
 		2. Use the temp objects to create and fill out the attributes of all the required objects in the scene
 		   and add it to the scene vector
 	*/
 
-	for (const auto& o : completedDirectionalLightObjects)
-	{
-		sceneLightManager->addDirectionalLight(
-			o.Ambient,
-			o.Diffuse,
-			o.Specular,
-			o.Direction
-		);
-	}
+	std::thread worker(&SceneTextReader::createLights, this, sceneLightManager, completedPointLightObjects, completedDirectionalLightObjects, completedSpotLightObjects);
 
-	for (const auto& o : completedPointLightObjects)
-	{
-		sceneLightManager->addPointLight(
-			o.Ambient,
-			o.Diffuse,
-			o.Specular,
-			o.Position
-		);
-	}
-
-	for (const auto& o : completedSpotLightObjects)
-	{
-		sceneLightManager->addSpotLight(
-			o.Ambient,
-			o.Diffuse,
-			o.Specular,
-			o.Position
-		);
-	}
 
 	for (const auto& o : completedModelSkyObjects)
 	{
@@ -177,24 +200,26 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		sceneMeshes.push_back(model);
 	}
 
+	
+
 	for (const auto& o : completedModelLightObjects)
 	{
 		std::shared_ptr<ModelLighting> model = std::make_shared<ModelLighting>();
-
+	
 		model->SetXPos(o.PosX);
 		model->SetYPos(o.PosY);
 		model->SetZPos(o.PosZ);
-
+	
 		model->SetXRot(o.RotX);
 		model->SetYRot(o.RotY);
 		model->SetZRot(o.RotZ);
-
+	
 		model->SetXScale(o.ScaleX);
 		model->SetYScale(o.ScaleY);
 		model->SetZScale(o.ScaleZ);
-
+	
 		model->setMesh(o.mesh);
-
+	
 		if (o.diffuseMap != "null")
 		{
 			model->setDiffuseTexture(o.diffuseMap);
@@ -203,7 +228,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		{
 			model->setDiffuseTexture("res/textures/blank.png"); // Models have to have a diffuse map
 		}
-
+	
 		if (o.specularMap != "null")
 		{
 			model->setSpecularTexture(o.specularMap, 48.0f);
@@ -212,22 +237,22 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		{
 			model->setSpecularTexture("res/textures/blank.png", 48.0f); // Models have to have a specular map
 		}
-
+	
 		if (o.normalMap != "null")
 		{
 			model->setNormalTexture(o.normalMap, o.normalMapNormalize);
 		}
-
+	
 		if (o.heightMap != "null")
 		{
 			model->setHeightTexture(o.heightMap, o.heightMapHeight);
 		}
-
+	
 		if (o.emissionMap != "null")
 		{
 			model->setEmissionTexture(o.emissionMap);
 		}
-
+	
 		sceneMeshes.push_back(model);
 	}
 
@@ -254,6 +279,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		sceneMeshes.push_back(model);
 	}
 
+	
 	for (const auto& o : completedModelTerrainObjects)
 	{
 		std::shared_ptr<ModelTerrain> model = std::make_shared<ModelTerrain>();
@@ -343,6 +369,8 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		sceneMeshes.push_back(model);
 	}
 
+	worker.join();
+
 	m_status = true;
 }
 
@@ -355,7 +383,7 @@ bool SceneTextReader::getStatus()
 	return m_status;
 }
 
-void SceneTextReader::applyToLight(templateLight& l, const std::vector<std::string>& vector)
+void SceneTextReader::applyToLight(templateLight& l, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -374,70 +402,127 @@ void SceneTextReader::applyToLight(templateLight& l, const std::vector<std::stri
 		e_specB = 9
 	};
 
-	l.modelType = vector.at(e_objectType);
+	l.modelType = fullLine.at(e_objectType);
 
-	l.Ambient.r = std::stof(vector.at(e_AmbR));
-	l.Ambient.g = std::stof(vector.at(e_AmbG));
-	l.Ambient.b = std::stof(vector.at(e_ambB));
+	l.Ambient.r = std::stof(fullLine.at(e_AmbR));
+	l.Ambient.g = std::stof(fullLine.at(e_AmbG));
+	l.Ambient.b = std::stof(fullLine.at(e_ambB));
 
-	l.Diffuse.r = std::stof(vector.at(e_DiffR));
-	l.Diffuse.g = std::stof(vector.at(e_DiffG));
-	l.Diffuse.b = std::stof(vector.at(e_DiffB));
+	l.Diffuse.r = std::stof(fullLine.at(e_DiffR));
+	l.Diffuse.g = std::stof(fullLine.at(e_DiffG));
+	l.Diffuse.b = std::stof(fullLine.at(e_DiffB));
 
-	l.Specular.r = std::stof(vector.at(e_SpecR));
-	l.Specular.g = std::stof(vector.at(e_SpecG));
-	l.Specular.b = std::stof(vector.at(e_specB));
+	l.Specular.r = std::stof(fullLine.at(e_SpecR));
+	l.Specular.g = std::stof(fullLine.at(e_SpecG));
+	l.Specular.b = std::stof(fullLine.at(e_specB));
 }
 
 
-void SceneTextReader::applyToPointLight(templatePointLight& l, const std::vector<std::string>& vector)
+bool SceneTextReader::applyToPointLight(templatePointLight& l, const std::vector<std::string>& fullLine)
 {
-	applyToLight(l, vector);
-
 	enum objectInfo
 	{
 		e_PositionX = 10,
 		e_PositionY = 11,
-		e_PositionZ = 12
+		e_PositionZ = 12,
+
+		e_END_OF_POINT_LIGHT_ENUM
 	};
 
-	l.Position.x = std::stof(vector.at(e_PositionX));
-	l.Position.y = std::stof(vector.at(e_PositionY));
-	l.Position.z = std::stof(vector.at(e_PositionZ));
+	// Ensure text line is correct size
+	if (fullLine.size() != e_END_OF_POINT_LIGHT_ENUM)
+	{
+		std::cout << "SCENE->failed to add point light from textfile (line is incorrect length) - FAILURE" << std::endl;
+		return false;
+	}
+
+	try
+	{
+		applyToLight(l, fullLine);
+
+		l.Position.x = std::stof(fullLine.at(e_PositionX));
+		l.Position.y = std::stof(fullLine.at(e_PositionY));
+		l.Position.z = std::stof(fullLine.at(e_PositionZ));
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "SCENE->failed to add point light from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		return false;
+	}
+
+	return true;
 }
 
 
-void SceneTextReader::applyToDirectionalLight(templateDirectionalLight& l, const std::vector<std::string>& vector)
+bool SceneTextReader::applyToDirectionalLight(templateDirectionalLight& l, const std::vector<std::string>& fullLine)
 {
-	applyToLight(l, vector);
-
 	enum objectInfo
 	{
 		e_DirectionX = 10,
 		e_DirectionY = 11,
-		e_DirectionZ = 12
+		e_DirectionZ = 12,
+
+		e_END_OF_DIRECTIONAL_LIGHT_ENUM
 	};
 
-	l.Direction.x = std::stof(vector.at(e_DirectionX));
-	l.Direction.y = std::stof(vector.at(e_DirectionY));
-	l.Direction.z = std::stof(vector.at(e_DirectionZ));
+	// Ensure text line is correct size
+	if (fullLine.size() != e_END_OF_DIRECTIONAL_LIGHT_ENUM)
+	{
+		std::cout << "SCENE->failed to add directional light from textfile (line is incorrect length) - FAILURE" << std::endl;
+		return false;
+	}
+
+	try
+	{
+		applyToLight(l, fullLine);
+
+		l.Direction.x = std::stof(fullLine.at(e_DirectionX));
+		l.Direction.y = std::stof(fullLine.at(e_DirectionY));
+		l.Direction.z = std::stof(fullLine.at(e_DirectionZ));
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "SCENE->failed to add directional light from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		return false;
+	}
+
+	return true;
 }
 
 
-void SceneTextReader::applyToSpotLight(templateSpotLight& l, const std::vector<std::string>& vector)
+bool SceneTextReader::applyToSpotLight(templateSpotLight& l, const std::vector<std::string>& fullLine)
 {
-	applyToLight(l, vector);
-
 	enum objectInfo
 	{
 		e_PositionX = 10,
 		e_PositionY = 11,
-		e_PositionZ = 12
+		e_PositionZ = 12,
+
+		e_END_OF_SPOT_LIGHT_ENUM
 	};
 
-	l.Position.x = std::stof(vector.at(e_PositionX));
-	l.Position.y = std::stof(vector.at(e_PositionY));
-	l.Position.z = std::stof(vector.at(e_PositionZ));
+	// Ensure text line is correct size
+	if (fullLine.size() != e_END_OF_SPOT_LIGHT_ENUM)
+	{
+		std::cout << "SCENE->failed to add spot light from textfile (line is incorrect length) - FAILURE" << std::endl;
+		return false;
+	}
+
+	try
+	{
+		applyToLight(l, fullLine);
+
+		l.Position.x = std::stof(fullLine.at(e_PositionX));
+		l.Position.y = std::stof(fullLine.at(e_PositionY));
+		l.Position.z = std::stof(fullLine.at(e_PositionZ));
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "SCENE->failed to add spot light from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		return false;
+	}
+
+	return true;
 }
 
 void SceneTextReader::applyToModel(templateModel& o, const std::vector<std::string>& vector)
@@ -472,6 +557,7 @@ void SceneTextReader::applyToModel(templateModel& o, const std::vector<std::stri
 	o.ScaleY = std::stof(vector.at(e_ScaleY));
 	o.ScaleZ = std::stof(vector.at(e_ScaleZ));
 }
+
 
 void SceneTextReader::applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector)
 {

@@ -2,12 +2,22 @@
 
 #include <iostream>
 #include <string>
+#include <thread>
 
 #include "Camera.h"
 #include "EngineStatics.h"
 #include "Input.h"
 #include "SceneTextReader.h"
 #include "LightManager.h"
+
+#include "models/Model.h"
+
+
+
+//void cubemapThread()
+//{
+//	TextureManager::createCubemaps();
+//}
 
 Scene::Scene(const std::string& sceneName)
 	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr),
@@ -40,6 +50,13 @@ Scene::~Scene()
 	std::cout << "Scene Destroyed" << std::endl;
 }
 
+void Scene::createTextureThread()
+{
+	std::cout << "in textureThread" << std::endl;
+	TextureManager::createTextures();
+	std::cout << "end textureThread" << std::endl;
+}
+
 /// <summary>
 /// Initializes the scene objects and creates the scenes models
 /// </summary>
@@ -61,6 +78,13 @@ bool Scene::loadScene()
 		// Scene failed to load
 		return false;
 	}
+
+	//std::thread worker1(&Scene::createTextureThread, this);
+	//
+	//worker1.join();
+
+	TextureManager::createTextures();
+	TextureManager::createCubemaps();
 
 	return true;
 }
