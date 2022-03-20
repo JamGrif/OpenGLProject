@@ -66,12 +66,12 @@ void ModelTerrain::drawPassTwo()
 
 void ModelTerrain::setTerrainTexture(const std::string& texturePath)
 {
-	m_terrainTexture = TextureManager::retrieveTexture(texturePath);
+	m_terrainTexture = TextureManager::retrieveTextureObject(texturePath);
 }
 
 void ModelTerrain::setTerrainHeightTexture(const std::string& texturePath)
 {
-	m_terrainHeight = TextureManager::retrieveTexture(texturePath);
+	m_terrainHeight = TextureManager::retrieveTextureObject(texturePath);
 }
 
 /// <summary>

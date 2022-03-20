@@ -13,8 +13,6 @@ Mesh::Mesh()
 {
 }
 
-
-
 Mesh::~Mesh()
 {
 	////glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
@@ -40,6 +38,7 @@ bool Mesh::loadMesh(const std::string& filePath)
 
 	aiMesh* mesh = scene->mMeshes[0];
 
+	m_vertices.reserve(mesh->mNumVertices); // Reserve enough space to hold all the vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex;
@@ -87,6 +86,7 @@ bool Mesh::loadMesh(const std::string& filePath)
 			m_indices.push_back(face.mIndices[j]);
 		}
 	}
+
 
 	setupMesh();
 

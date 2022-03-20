@@ -224,7 +224,7 @@ void ModelLighting::drawPassTwo()
 /// <param name="texturePath"></param>
 void ModelLighting::setDiffuseTexture(const std::string& texturePath)
 {
-	m_modelTextures[e_diffuseTextureSlot] = TextureManager::retrieveTexture(texturePath);
+	m_modelTextures[e_diffuseTextureSlot] = TextureManager::retrieveTextureObject(texturePath);
 	m_modelUsingTextures[e_diffuseTextureSlot] = true;
 }
 
@@ -235,7 +235,7 @@ void ModelLighting::setDiffuseTexture(const std::string& texturePath)
 /// <param name="shininessAmount">Shiniess of the specular texture in the fragment shader</param>
 void ModelLighting::setSpecularTexture(const std::string& texturePath, float shininessAmount)
 {
-	m_modelTextures[e_specularTextureSlot] = TextureManager::retrieveTexture(texturePath);
+	m_modelTextures[e_specularTextureSlot] = TextureManager::retrieveTextureObject(texturePath);
 	m_modelUsingTextures[e_specularTextureSlot] = true;
 
 	m_specularShininess = shininessAmount;
@@ -247,7 +247,7 @@ void ModelLighting::setSpecularTexture(const std::string& texturePath, float shi
 /// <param name="texturePath"></param>
 void ModelLighting::setEmissionTexture(const std::string& texturePath)
 {
-	m_modelTextures[e_emissionTextureSlot] = TextureManager::retrieveTexture(texturePath);
+	m_modelTextures[e_emissionTextureSlot] = TextureManager::retrieveTextureObject(texturePath);
 	m_modelUsingTextures[e_emissionTextureSlot] = true;
 }
 
@@ -258,7 +258,7 @@ void ModelLighting::setEmissionTexture(const std::string& texturePath)
 /// <param name="normalize">Should the texture be normalized in the fragment shader</param>
 void ModelLighting::setNormalTexture(const std::string& texturePath, bool normalize)
 {
-	m_modelTextures[e_normalTextureSlot] = TextureManager::retrieveTexture(texturePath);
+	m_modelTextures[e_normalTextureSlot] = TextureManager::retrieveTextureObject(texturePath);
 	m_modelUsingTextures[e_normalTextureSlot] = true;
 
 	m_normalizeTexture = normalize;
@@ -270,7 +270,7 @@ void ModelLighting::setNormalTexture(const std::string& texturePath, bool normal
 /// <param name="texturePath"></param>
 void ModelLighting::setHeightTexture(const std::string& texturePath, float heightAmount)
 {
-	m_modelTextures[e_heightTextureSlot] = TextureManager::retrieveTexture(texturePath);
+	m_modelTextures[e_heightTextureSlot] = TextureManager::retrieveTextureObject(texturePath);
 	m_modelUsingTextures[e_heightTextureSlot] = true;
 
 	m_heightAmount = heightAmount;

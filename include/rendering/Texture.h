@@ -15,6 +15,8 @@ public:
 
 	bool				loadTexture(const std::string& filePath);
 
+	void				createTexture();
+
 	virtual void		Bind(unsigned int slot = 0) const;
 	virtual void		Unbind() const;
 	void				Unbind(unsigned int slot) const;
@@ -44,6 +46,8 @@ public:
 
 	bool				loadCubeMap(const std::string& filePath);
 
+	void				createCubemap();
+
 private:
 
 	enum cubeFaces
@@ -65,8 +69,11 @@ class TextureManager
 {
 public:
 
-	static std::shared_ptr<Texture> retrieveTexture(const std::string& filePath);
-	static std::shared_ptr<CubeMap> retrieveCubeMap(const std::string& filePath = "");
+	static void createTextures();
+	static void createCubemaps();
+
+	static std::shared_ptr<Texture> retrieveTextureObject(const std::string& filePath);
+	static std::shared_ptr<CubeMap> retrieveCubeMapObject(const std::string& filePath = "");
 
 	static void		clearTextures();
 	static void		clearCubemaps();

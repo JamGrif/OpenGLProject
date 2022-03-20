@@ -7,7 +7,7 @@ ModelEnvironment::ModelEnvironment()
 	setShaderTwo("res/shaders/environmentMapping-vertex.glsl", "res/shaders/environmentMapping-fragment.glsl");
 
 	// Get the sky cubemap
-	m_skyTexture = TextureManager::retrieveCubeMap();
+	m_skyTexture = TextureManager::retrieveCubeMapObject();
 }
 
 ModelEnvironment::~ModelEnvironment()

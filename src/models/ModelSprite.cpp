@@ -70,5 +70,5 @@ void ModelSprite::drawPassTwo()
 
 void ModelSprite::setSprite(const std::string& filePath)
 {
-	m_modelSprite = TextureManager::retrieveTexture(filePath);
+	m_modelSprite = TextureManager::retrieveTextureObject(filePath);
 }

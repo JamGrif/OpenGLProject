@@ -4,6 +4,17 @@
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#DirX	#DirY	#DirZ
 directionalLight	0.2		0.2		0.2		0.5		0.5		0.5		0.3		0.3		0.3		-2.0	-2.0	-1.0
 
+#pointLight objects...
+#ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
+pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		0.0		3.0		0.0
+pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-20.0	2.0		0.0
+pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		22.0	2.0		22.0
+pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-20.0	2.0		20.0
+
+#spotLight objects...
+#ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
+spotLight			0.0		0.0		0.0		0.8		0.8		0.8		1.0		1.0		1.0		0.0		0.0		0.0
+
 #Skybox objects...
 #ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#SkyboxTexture
 modelSky		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			default
