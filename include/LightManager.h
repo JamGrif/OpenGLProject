@@ -75,21 +75,21 @@ public:
 
 	// Directional Lights
 	void							setDirectionalLight(float x, float y, float z, int index = 0);
-	void							addDirectionalLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction);
+	void							addDirectionalLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& direction);
 	DirectionalLight*				getDirectionalLight(int index = 0) const;
 
 	unsigned int					getCurrentDirectionalLights() const;
 
 	// Point Lights
 	void							setPointLight(float x, float y, float z, int index = 0);
-	void							addPointLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position);
+	void							addPointLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& position);
 	PointLight*						getPointLight(int index = 0) const;
 
 	unsigned int					getCurrentPointLights() const;
 
 	// Spot Lights
 	void							setSpotLight(float x, float y, float z, int index = 0);
-	void							addSpotLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position);
+	void							addSpotLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& position);
 	SpotLight*						getSpotLight(int index = 0) const;
 
 	unsigned int					getCurrentSpotLights() const;

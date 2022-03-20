@@ -66,7 +66,7 @@ void LightManager::setDirectionalLight(float x, float y, float z, int index)
 /// <param name="x"></param>
 /// <param name="y"></param>
 /// <param name="z"></param>
-void LightManager::addDirectionalLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction)
+void LightManager::addDirectionalLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& direction)
 {
 	// Ensure new directional lights don't exceed the maximum amount allowed
 	if (m_currentDirectionalLights < m_maxDirectionalLights)
@@ -134,7 +134,7 @@ void LightManager::setPointLight(float x, float y, float z, int index)
 /// <param name="x"></param>
 /// <param name="y"></param>
 /// <param name="z"></param>
-void LightManager::addPointLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position)
+void LightManager::addPointLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& position)
 {
 	//Ensure new point lights don't exceed the maximum amount allowed
 	if (m_currentPointLights < m_maxPointLights)
@@ -202,7 +202,7 @@ void LightManager::setSpotLight(float x, float y, float z, int index)
 /// <param name="x"></param>
 /// <param name="y"></param>
 /// <param name="z"></param>
-void LightManager::addSpotLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 position)
+void LightManager::addSpotLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& position)
 {
 	//Ensure new point lights don't exceed the maximum amount allowed
 	if (m_currentSpotLights < m_maxSpotLights)
