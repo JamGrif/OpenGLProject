@@ -22,7 +22,7 @@ modelSky		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			default
 # modelLighting objects...
 #ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap
 #Inner Ring
-modelLighting	3.0		-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
+modelLighting	3.0		-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null		 			0.0						null					0.0					null
 modelLighting	-3.0	-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
 modelLighting	3.0		-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null
 modelLighting	-3.0	-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null

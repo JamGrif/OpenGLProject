@@ -64,7 +64,7 @@ private:
 	inline bool applyToSpotLight(templateSpotLight& l, const std::vector<std::string>& fullLine);
 
 	/*
-		Model Objectss
+		Model Objects
 	*/
 
 	struct templateModel
@@ -142,15 +142,15 @@ private:
 	std::vector<templateModelGeometry>		completedModelGeometryObjects;		// ModelGeometry
 	std::vector<templateModelSky>			completedModelSkyObjects;			// ModelSky
 
-	inline void applyToModel(templateModel& o, const std::vector<std::string>& vector);
+	inline void applyToModel(templateModel& o, const std::vector<std::string>& fullLine);
 
-	inline void applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector);
-	inline void applyToModelBasicTemplate(templateModelBasic& o, const std::vector<std::string>& vector);
-	inline void applyToModelTerrainTemplate(templateModelTerrain& o, const std::vector<std::string>& vector);
-	inline void applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& vector);
-	inline void applyToModelEnvironmentTemplate(templateModelEnvironment& o, const std::vector<std::string>& vector);
-	inline void applyToModelGeometryTemplate(templateModelGeometry& o, const std::vector<std::string>& vector);
-	inline void applyToModelSkyTemplate(templateModelSky& o, const std::vector<std::string>& vector);
+	inline bool applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& fullLine);
+	inline bool applyToModelBasicTemplate(templateModelBasic& o, const std::vector<std::string>& fullLine);
+	inline bool applyToModelTerrainTemplate(templateModelTerrain& o, const std::vector<std::string>& fullLine);
+	inline bool applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& fullLine);
+	inline bool applyToModelEnvironmentTemplate(templateModelEnvironment& o, const std::vector<std::string>& fullLine);
+	inline bool applyToModelGeometryTemplate(templateModelGeometry& o, const std::vector<std::string>& fullLine);
+	inline bool applyToModelSkyTemplate(templateModelSky& o, const std::vector<std::string>& fullLine);
 
 
 	// thread stuff

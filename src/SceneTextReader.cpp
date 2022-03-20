@@ -100,7 +100,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 
 			// Only add to list of directional lights to create if was read successfully from file
 			if (applyToDirectionalLight(object, fullLine))
-				completedDirectionalLightObjects.push_back(object);
+				completedDirectionalLightObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "pointLight")
 		{
@@ -108,7 +108,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 
 			// Only add to list of point lights to create if was read successfully from file
 			if (applyToPointLight(object, fullLine))
-				completedPointLightObjects.push_back(object);
+				completedPointLightObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "spotLight")
 		{
@@ -116,49 +116,63 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 
 			// Only add to list of spot lights to create if was read successfully from file
 			if (applyToSpotLight(object, fullLine))
-				completedSpotLightObjects.push_back(object);
+				completedSpotLightObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelLighting") 
 		{
 			templateModelLighting object;
-			applyToModelLightingTemplate(object, fullLine);
-			completedModelLightObjects.emplace_back(object);
+
+			// Only add to list of modellighting objects to create if was read successfully from file
+			if (applyToModelLightingTemplate(object, fullLine))
+				completedModelLightObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelBasic")
 		{
 			templateModelBasic object;
-			applyToModelBasicTemplate(object, fullLine);
-			completedModelBasicObjects.push_back(object);
+
+			// Only add to list of modelbasic objects to create if was read successfully from file
+			if (applyToModelBasicTemplate(object, fullLine))
+				completedModelBasicObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelTerrain")
 		{
 			templateModelTerrain object;
-			applyToModelTerrainTemplate(object, fullLine);
-			completedModelTerrainObjects.push_back(object);
+
+			// Only add to list of modelterrain objects to create if was read successfully from file
+			if (applyToModelTerrainTemplate(object, fullLine))
+				completedModelTerrainObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelSprite")
 		{
 			templateModelSprite object;
-			applyToModelSpriteTemplate(object, fullLine);
-			completedModelSpriteObjects.push_back(object);
+
+			// Only add to list of modelsprite objects to create if was read successfully from file
+			if (applyToModelSpriteTemplate(object, fullLine))
+				completedModelSpriteObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelEnvironment")
 		{
 			templateModelEnvironment object;
-			applyToModelEnvironmentTemplate(object, fullLine);
-			completedModelEnvironmentObjects.push_back(object);
+
+			// Only add to list of modelenvironment objects to create if was read successfully from file
+			if (applyToModelEnvironmentTemplate(object, fullLine))
+				completedModelEnvironmentObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelGeometry")
 		{
 			templateModelGeometry object;
-			applyToModelGeometryTemplate(object, fullLine);
-			completedModelGeometryObjects.push_back(object);
+
+			// Only add to list of modelgeometry objects to create if was read successfully from file
+			if (applyToModelGeometryTemplate(object, fullLine))
+				completedModelGeometryObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelSky")
 		{
 			templateModelSky object;
-			applyToModelSkyTemplate(object, fullLine);
-			completedModelSkyObjects.push_back(object);
+
+			// Only add to list of modelsky objects to create if was read successfully from file
+			if (applyToModelSkyTemplate(object, fullLine))
+				completedModelSkyObjects.emplace_back(object);
 		}
 		else
 		{
@@ -197,7 +211,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 
 		model->setSkyboxTexture(o.skyboxTexture);
 
-		sceneMeshes.push_back(model);
+		sceneMeshes.emplace_back(model);
 	}
 
 	
@@ -253,7 +267,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 			model->setEmissionTexture(o.emissionMap);
 		}
 	
-		sceneMeshes.push_back(model);
+		sceneMeshes.emplace_back(model);
 	}
 
 	for (const auto& o : completedModelBasicObjects)
@@ -276,7 +290,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 
 		model->copyPointLight(o.lightToCopy);
 
-		sceneMeshes.push_back(model);
+		sceneMeshes.emplace_back(model);
 	}
 
 	
@@ -301,7 +315,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		model->setTerrainTexture(o.terrainTextureMap);
 		model->setTerrainHeightTexture(o.terrainHeightMap);
 
-		sceneMeshes.push_back(model);
+		sceneMeshes.emplace_back(model);
 	}
 
 	for (const auto& o : completedModelSpriteObjects)
@@ -321,7 +335,8 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		model->SetZScale(o.ScaleZ);
 
 		model->setSprite(o.sprite);
-		sceneMeshes.push_back(model);
+
+		sceneMeshes.emplace_back(model);
 	}
 
 	for (const auto& o : completedModelEnvironmentObjects)
@@ -345,7 +360,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		model->toggleReflection(o.reflection);
 		model->toggleRefraction(o.refraction);
 
-		sceneMeshes.push_back(model);
+		sceneMeshes.emplace_back(model);
 	}
 
 	for (const auto& o : completedModelGeometryObjects)
@@ -366,7 +381,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 
 		model->setMesh(o.mesh);
 
-		sceneMeshes.push_back(model);
+		sceneMeshes.emplace_back(model);
 	}
 
 	worker.join();
@@ -525,7 +540,7 @@ bool SceneTextReader::applyToSpotLight(templateSpotLight& l, const std::vector<s
 	return true;
 }
 
-void SceneTextReader::applyToModel(templateModel& o, const std::vector<std::string>& vector)
+void SceneTextReader::applyToModel(templateModel& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -543,23 +558,23 @@ void SceneTextReader::applyToModel(templateModel& o, const std::vector<std::stri
 		e_ScaleZ = 9,
 	};
 
-	o.objectType = vector.at(e_objectType);
+	o.objectType = fullLine.at(e_objectType);
 
-	o.PosX = std::stof(vector.at(e_PosX));
-	o.PosY = std::stof(vector.at(e_PosY));
-	o.PosZ = std::stof(vector.at(e_PosZ));
+	o.PosX = std::stof(fullLine.at(e_PosX));
+	o.PosY = std::stof(fullLine.at(e_PosY));
+	o.PosZ = std::stof(fullLine.at(e_PosZ));
 
-	o.RotX = std::stof(vector.at(e_RotX));
-	o.RotY = std::stof(vector.at(e_RotY));
-	o.RotZ = std::stof(vector.at(e_RotZ));
+	o.RotX = std::stof(fullLine.at(e_RotX));
+	o.RotY = std::stof(fullLine.at(e_RotY));
+	o.RotZ = std::stof(fullLine.at(e_RotZ));
 
-	o.ScaleX = std::stof(vector.at(e_ScaleX));
-	o.ScaleY = std::stof(vector.at(e_ScaleY));
-	o.ScaleZ = std::stof(vector.at(e_ScaleZ));
+	o.ScaleX = std::stof(fullLine.at(e_ScaleX));
+	o.ScaleY = std::stof(fullLine.at(e_ScaleY));
+	o.ScaleZ = std::stof(fullLine.at(e_ScaleZ));
 }
 
 
-void SceneTextReader::applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& vector)
+bool SceneTextReader::applyToModelLightingTemplate(templateModelLighting& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -570,111 +585,190 @@ void SceneTextReader::applyToModelLightingTemplate(templateModelLighting& o, con
 		e_normalMapNormalize = 14,
 		e_heightMap = 15,
 		e_heightMapHeight = 16,
-		e_emissionMap = 17
+		e_emissionMap = 17,
+
+		e_END_OF_MODELLIGHTING_ENUM
 	};
 
-	applyToModel(o, vector);
-
-	o.mesh = "res/meshes/" + vector.at(e_mesh) + ".obj";
-
-	if (vector.at(e_diffuseMap) == "null")
+	// Ensure text line is correct size
+	if (fullLine.size() != e_END_OF_MODELLIGHTING_ENUM)
 	{
-		o.diffuseMap = "null"; // Object will use no diffuse map
-	}
-	else
-	{
-		o.diffuseMap = "res/textures/" + vector.at(e_diffuseMap) + ".png";
+		std::cout << "SCENE->failed to add modelLighting from textfile (line is incorrect length) - FAILURE" << std::endl;
+		return false;
 	}
 
-	if (vector.at(e_specularMap) == "null")
+	try
 	{
-		o.specularMap = "null"; // Object will use no specular map
+		applyToModel(o, fullLine);
+
+		o.mesh = "res/meshes/" + fullLine.at(e_mesh) + ".obj";
+
+		if (fullLine.at(e_diffuseMap) == "null")
+		{
+			o.diffuseMap = "null"; // Object will use no diffuse map
+		}
+		else
+		{
+			o.diffuseMap = "res/textures/" + fullLine.at(e_diffuseMap) + ".png";
+		}
+
+		if (fullLine.at(e_specularMap) == "null")
+		{
+			o.specularMap = "null"; // Object will use no specular map
+		}
+		else
+		{
+			o.specularMap = "res/textures/" + fullLine.at(e_specularMap) + ".png";
+		}
+
+		if (fullLine.at(e_normalMap) == "null")
+		{
+			o.normalMap = "null"; // Object will use no normal map
+		}
+		else
+		{
+			o.normalMap = "res/textures/" + fullLine.at(e_normalMap) + ".png";
+		}
+
+		o.normalMapNormalize = std::stof(fullLine.at(e_normalMapNormalize));
+
+		if (fullLine.at(e_heightMap) == "null")
+		{
+			o.heightMap = "null"; // Object will use no height map
+		}
+		else
+		{
+			o.heightMap = "res/textures/" + fullLine.at(e_heightMap) + ".png";
+		}
+
+		o.heightMapHeight = std::stof(fullLine.at(e_heightMapHeight));
+
+		if (fullLine.at(e_emissionMap) == "null")
+		{
+			o.emissionMap = "null"; // Object will use no emission map
+		}
+		else
+		{
+			o.emissionMap = "res/textures/" + fullLine.at(e_emissionMap) + ".png";
+		}
 	}
-	else
+	catch (const std::exception& e)
 	{
-		o.specularMap = "res/textures/" + vector.at(e_specularMap) + ".png";
+		std::cout << "SCENE->failed to add modelLighting from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		return false;
 	}
 
-	if (vector.at(e_normalMap) == "null")
-	{
-		o.normalMap = "null"; // Object will use no normal map
-	}
-	else
-	{
-		o.normalMap = "res/textures/" + vector.at(e_normalMap) + ".png";
-	}
-
-	o.normalMapNormalize = std::stof(vector.at(e_normalMapNormalize));
-
-	if (vector.at(e_heightMap) == "null")
-	{
-		o.heightMap = "null"; // Object will use no height map
-	}
-	else
-	{
-		o.heightMap = "res/textures/" + vector.at(e_heightMap) + ".png";
-	}
-
-	o.heightMapHeight = std::stof(vector.at(e_heightMapHeight));
-
-	if (vector.at(e_emissionMap) == "null")
-	{
-		o.emissionMap = "null"; // Object will use no emission map
-	}
-	else
-	{
-		o.emissionMap = "res/textures/" + vector.at(e_emissionMap) + ".png";
-	}
+	return true;
 }
 
-void SceneTextReader::applyToModelBasicTemplate(templateModelBasic& o, const std::vector<std::string>& vector)
+bool SceneTextReader::applyToModelBasicTemplate(templateModelBasic& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
 		e_mesh = 10,
 
-		e_lightToCopy = 11
+		e_lightToCopy = 11,
+
+		e_END_OF_MODELBASIC_ENUM
 	};
 
-	applyToModel(o, vector);
+	// Ensure text line is correct size
+	if (fullLine.size() != e_END_OF_MODELBASIC_ENUM)
+	{
+		std::cout << "SCENE->failed to add modelBasic from textfile (line is incorrect length) - FAILURE" << std::endl;
+		return false;
+	}
 
-	o.mesh = "res/meshes/" + vector.at(e_mesh) + ".obj";
+	try
+	{
+		applyToModel(o, fullLine);
 
-	o.lightToCopy = std::stoi(vector.at(e_lightToCopy));
+		o.mesh = "res/meshes/" + fullLine.at(e_mesh) + ".obj";
+
+		o.lightToCopy = std::stoi(fullLine.at(e_lightToCopy));
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "SCENE->failed to add modelBasic from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		return false;
+	}
+
+
+
+
+	return true;
 }
 
 
-void SceneTextReader::applyToModelTerrainTemplate(templateModelTerrain& o, const std::vector<std::string>& vector)
+bool SceneTextReader::applyToModelTerrainTemplate(templateModelTerrain& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
 		e_Elevation = 10,
 
 		e_TerrainTextureMap = 11,
-		e_TerrainHeightMap = 12
+		e_TerrainHeightMap = 12,
+
+		e_END_OF_MODELTERRAIN_ENUM
 	};
 
-	applyToModel(o, vector);
+	// Ensure text line is correct size
+	if (fullLine.size() != e_END_OF_MODELTERRAIN_ENUM)
+	{
+		std::cout << "SCENE->failed to add modelTerrain from textfile (line is incorrect length) - FAILURE" << std::endl;
+		return false;
+	}
 
-	o.elevation = std::stof(vector.at(e_Elevation));
+	try
+	{
+		applyToModel(o, fullLine);
 
-	o.terrainTextureMap = "res/textures/" + vector.at(e_TerrainTextureMap) + ".png";
-	o.terrainHeightMap = "res/textures/" + vector.at(e_TerrainHeightMap) + ".png";
+		o.elevation = std::stof(fullLine.at(e_Elevation));
+
+		o.terrainTextureMap = "res/textures/" + fullLine.at(e_TerrainTextureMap) + ".png";
+		o.terrainHeightMap = "res/textures/" + fullLine.at(e_TerrainHeightMap) + ".png";
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "SCENE->failed to add modelTerrain from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		return false;
+	}
+
+	return true;
 }
 
-void SceneTextReader::applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& vector)
+bool SceneTextReader::applyToModelSpriteTemplate(templateModelSprite& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
-		e_Sprite = 10
+		e_Sprite = 10,
+
+		e_END_OF_MODELSPRITE_ENUM
 	};
 
-	applyToModel(o, vector);
+	// Ensure text line is correct size
+	if (fullLine.size() != e_END_OF_MODELSPRITE_ENUM)
+	{
+		std::cout << "SCENE->failed to add modelSprite from textfile (line is incorrect length) - FAILURE" << std::endl;
+		return false;
+	}
 
-	o.sprite = "res/textures/" + vector.at(e_Sprite) + ".png";
+	try
+	{
+		applyToModel(o, fullLine);
+
+		o.sprite = "res/textures/" + fullLine.at(e_Sprite) + ".png";
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "SCENE->failed to add modelSprite from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		return false;
+	}
+
+	return true;
 }
 
-void SceneTextReader::applyToModelEnvironmentTemplate(templateModelEnvironment& o, const std::vector<std::string>& vector)
+bool SceneTextReader::applyToModelEnvironmentTemplate(templateModelEnvironment& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -682,43 +776,95 @@ void SceneTextReader::applyToModelEnvironmentTemplate(templateModelEnvironment& 
 
 		e_reflection = 11,
 
-		e_refraction = 12
+		e_refraction = 12,
+
+		e_END_OF_MODELENVIRONMENT_ENUM
 	};
 
-	applyToModel(o, vector);
+	// Ensure text line is correct size
+	if (fullLine.size() != e_END_OF_MODELENVIRONMENT_ENUM)
+	{
+		std::cout << "SCENE->failed to add modelEnvironment from textfile (line is incorrect length) - FAILURE" << std::endl;
+		return false;
+	}
 
-	o.mesh = "res/meshes/" + vector.at(e_mesh) + ".obj";
+	try
+	{
+		applyToModel(o, fullLine);
 
-	o.reflection = std::stof(vector.at(e_reflection));
+		o.mesh = "res/meshes/" + fullLine.at(e_mesh) + ".obj";
 
-	o.refraction = std::stof(vector.at(e_refraction));
+		o.reflection = std::stof(fullLine.at(e_reflection));
+
+		o.refraction = std::stof(fullLine.at(e_refraction));
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "SCENE->failed to add modelEnvironment from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		return false;
+	}
+
+	return true;
 }
 
-void SceneTextReader::applyToModelGeometryTemplate(templateModelGeometry& o, const std::vector<std::string>& vector)
+bool SceneTextReader::applyToModelGeometryTemplate(templateModelGeometry& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
 		e_mesh = 10,
 
-		e_reflection = 11,
-
-		e_refraction = 12
+		e_END_OF_MODEGEOMETRY_ENUM
 	};
 
-	applyToModel(o, vector);
+	// Ensure text line is correct size
+	if (fullLine.size() != e_END_OF_MODEGEOMETRY_ENUM)
+	{
+		std::cout << "SCENE->failed to add modelGeometry from textfile (line is incorrect length) - FAILURE" << std::endl;
+		return false;
+	}
 
-	o.mesh = "res/meshes/" + vector.at(e_mesh) + ".obj";
+	try
+	{
+		applyToModel(o, fullLine);
+
+		o.mesh = "res/meshes/" + fullLine.at(e_mesh+13) + ".obj";
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "SCENE->failed to add modelGeometry from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		return false;
+	}
+
+	return true;
 }
 
-void SceneTextReader::applyToModelSkyTemplate(templateModelSky& o, const std::vector<std::string>& vector)
+bool SceneTextReader::applyToModelSkyTemplate(templateModelSky& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
-		e_skyboxTexture = 10
+		e_skyboxTexture = 10,
+
+		e_END_OF_MODELSKY_ENUM
 	};
 
-	applyToModel(o, vector);
+	// Ensure text line is correct size
+	if (fullLine.size() != e_END_OF_MODELSKY_ENUM)
+	{
+		std::cout << "SCENE->failed to add modelSky from textfile (line is incorrect length) - FAILURE" << std::endl;
+		return false;
+	}
 
-	o.skyboxTexture = vector.at(e_skyboxTexture);
+	try
+	{
+		applyToModel(o, fullLine);
 
+		o.skyboxTexture = fullLine.at(e_skyboxTexture);
+	}
+	catch (const std::exception& e )
+	{
+		std::cout << "SCENE->failed to add modelSky from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		return false;
+	}
+
+	return true;
 }
