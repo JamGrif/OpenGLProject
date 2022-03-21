@@ -192,6 +192,7 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClCompile Include="src\EngineStatics.cpp" />
     <ClCompile Include="src\models\Model.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\rendering\Cubemap.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Input.cpp" />
@@ -223,6 +224,7 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClInclude Include="include\models\ModelSky.h" />
     <ClInclude Include="include\models\ModelBasic.h" />
     <ClInclude Include="include\models\ModelLighting.h" />
+    <ClInclude Include="include\rendering\Cubemap.h" />
     <ClInclude Include="res\icon\resource.h" />
     <ClInclude Include="include\LightManager.h" />
     <ClInclude Include="include\EngineStatics.h" />

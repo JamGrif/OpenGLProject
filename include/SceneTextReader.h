@@ -34,23 +34,23 @@ private:
 	{
 		std::string modelType;
 
-		glm::vec3	Ambient;
-		glm::vec3	Diffuse;
-		glm::vec3	Specular;
+		glm::vec3	Ambient = {0.0f, 0.0f, 0.0f};
+		glm::vec3	Diffuse = { 0.0f, 0.0f, 0.0f };
+		glm::vec3	Specular = { 0.0f, 0.0f, 0.0f };
 		bool		lightActive = false;
 	};
 	struct templatePointLight : public templateLight
 	{
-		glm::vec3	Position;
+		glm::vec3	Position = { 0.0f, 0.0f, 0.0f };
 	};
 	struct templateDirectionalLight : public templateLight
 	{
-		glm::vec3	Direction;
+		glm::vec3	Direction = { 0.0f, 0.0f, 0.0f };
 	};
 	struct templateSpotLight : public templateLight
 	{
-		glm::vec3	Position;
-		glm::vec3	Direction;
+		glm::vec3	Position = { 0.0f, 0.0f, 0.0f };
+		glm::vec3	Direction = { 0.0f, 0.0f, 0.0f };
 	};
 
 	std::vector<templatePointLight> completedPointLightObjects;

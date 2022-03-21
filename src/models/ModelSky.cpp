@@ -86,5 +86,5 @@ void ModelSky::drawPassTwo()
 
 void ModelSky::setSkyboxTexture(const std::string& texturePath)
 {
-	m_skyTexture = TextureManager::retrieveCubeMapObject(texturePath);
+	m_skyTexture = CubemapManager::retrieveCubeMapObject(texturePath);
 }

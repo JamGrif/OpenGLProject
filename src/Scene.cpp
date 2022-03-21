@@ -43,7 +43,7 @@ Scene::~Scene()
 		By not deleting all the scenes assets, it allows for quicker scene change after the content has been initially loaded
 	*/
 	TextureManager::clearTextures();
-	TextureManager::clearCubemaps();
+	CubemapManager::clearCubemaps();
 	MeshManager::clearMeshes();
 	ShaderManager::clearShaders();
 
@@ -84,7 +84,7 @@ bool Scene::loadScene()
 	//worker1.join();
 
 	TextureManager::createTextures();
-	TextureManager::createCubemaps();
+	CubemapManager::createCubemaps();
 
 	return true;
 }

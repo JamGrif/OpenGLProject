@@ -111,6 +111,9 @@
     <ClCompile Include="src\rendering\BaseAsset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\rendering\Cubemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\rendering\Shader.h">
@@ -210,6 +213,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\rendering\BaseAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rendering\Cubemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
