@@ -6,10 +6,6 @@
 
 std::vector<std::shared_ptr<Texture>> TextureManager::m_loadedTextures;
 
-/*
-	Texture
-*/
-
 Texture::Texture()
 	:m_texture(0), m_width(0), m_height(0), m_BPP(0), m_filePath("")
 {
@@ -21,27 +17,28 @@ Texture::~Texture()
 	glDeleteTextures(1, &m_texture);
 }
 
-bool Texture::loadTexture()
+void Texture::readTextureFromFile()
 {
-	unsigned char* localBuffer;
+	stbi_set_flip_vertically_on_load_thread(1); // Flips texture on Y-Axis
 
-	stbi_set_flip_vertically_on_load(1); // Flips texture on Y-Axis
-	//std::cout << m_filePath << std::endl;
-	localBuffer = stbi_load(m_filePath.c_str(), &m_width, &m_height, &m_BPP, 4);
+	localbuffer = stbi_load(m_filePath.c_str(), &m_width, &m_height, &m_BPP, 4);
 
 	// Check if file loaded successfully
 	if (stbi_failure_reason() == "can't fopen")
 	{
 		std::cout << "TEXTURE->" << m_filePath << " failed to load, using default texture - FAILURE" << std::endl;
-		return false;
+		//return false;
 	}
 	else
 	{
 		std::cout << "TEXTURE->" << m_filePath << " successfully loaded - SUCCESS" << std::endl;
 	}
+}
 
+bool Texture::loadTexture()
+{
 	// Generate texture buffer
-	glGenTextures(1, &m_texture);
+	glGenTextures(1, &m_texture); 
 
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 
@@ -62,15 +59,15 @@ bool Texture::loadTexture()
 	}
 
 	// Define the texture
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localbuffer);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// Unbind
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	if (localBuffer)
+	if (localbuffer)
 	{
-		stbi_image_free(localBuffer);
+		stbi_image_free(localbuffer);
 	}
 
 	return true;
@@ -98,9 +95,7 @@ void Texture::Unbind(unsigned int slot) const
 /// <summary>
 /// Loads a texture from the specified filepath and sets its parameters
 /// </summary>
-/// <param name="filePath"></param>
-/// <returns></returns>
-void Texture::setTexturePath(const std::string& filePath)
+void Texture::setFilePath(const std::string& filePath)
 {
 	m_filePath = filePath;
 }
@@ -132,10 +127,19 @@ std::shared_ptr<Texture> TextureManager::retrieveTextureObject(const std::string
 
 	// Create new texture object
 	auto newTexture = std::make_shared<Texture>();
-	newTexture->setTexturePath(filePath);
+	newTexture->setFilePath(filePath);
 	m_loadedTextures.push_back(newTexture);
 
 	return newTexture;
+}
+
+
+void TextureManager::readTexturesFromFile()
+{
+	for (auto& t : m_loadedTextures)
+	{
+		t->readTextureFromFile();
+	}
 }
 
 void TextureManager::createTextures()
@@ -145,7 +149,7 @@ void TextureManager::createTextures()
 		if (!t->loadTexture())
 		{
 			// If texture fails to load, then load the default missingtexture texture
-			t->setTexturePath("res/textures/missingtexture.png");
+			t->setFilePath("res/textures/missingtexture.png");
 			t->loadTexture();
 		}
 	}

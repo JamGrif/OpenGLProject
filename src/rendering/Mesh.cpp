@@ -20,16 +20,17 @@ Mesh::~Mesh()
 	glDeleteBuffers(1, &m_EBO);
 }
 
-bool Mesh::loadMesh(const std::string& filePath)
+
+void Mesh::readMeshFromFile()
 {
-	m_filePath = filePath;
+	//m_filePath = filePath;
 	Assimp::Importer import;
-	const aiScene* const scene = import.ReadFile(filePath, aiProcess_Triangulate | aiProcess_CalcTangentSpace);
+	const aiScene* const scene = import.ReadFile(m_filePath, aiProcess_Triangulate | aiProcess_CalcTangentSpace);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		std::cout << "MESH->" << m_filePath << " failed to load, loading default mesh - FAILURE" << std::endl;
-		return false;
+		//return false;
 	}
 	else
 	{
@@ -86,9 +87,21 @@ bool Mesh::loadMesh(const std::string& filePath)
 			m_indices.push_back(face.mIndices[j]);
 		}
 	}
+}
 
+bool Mesh::loadMesh()
+{
+	
 
-	setupMesh();
+	glGenBuffers(1, &m_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex), &m_vertices[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &m_EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &m_indices[0], GL_STATIC_DRAW);
+
+	//setupMesh();
 
 	return true;
 }
@@ -98,13 +111,7 @@ bool Mesh::loadMesh(const std::string& filePath)
 /// </summary>
 void Mesh::setupMesh()
 {
-	glGenBuffers(1, &m_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex), &m_vertices[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &m_EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &m_indices[0], GL_STATIC_DRAW);
 }
 
 
@@ -157,6 +164,12 @@ void Mesh::setVBOAttrib(bool shaderPos, bool shaderNorm, bool shaderTex, bool sh
 	}
 }
 
+
+void Mesh::setFilePath(const std::string& filePath)
+{
+	m_filePath = filePath;
+}
+
 const std::vector<unsigned int>& Mesh::getIndices() const
 {
 	return m_indices;
@@ -174,7 +187,7 @@ const std::string& Mesh::getFilePath() const
 /// </summary>
 /// <param name="filePath">Mesh file path</param>
 /// <returns>Pointer to the loaded mesh</returns>
-std::shared_ptr<Mesh> MeshManager::loadMesh(const std::string& filePath)
+std::shared_ptr<Mesh> MeshManager::retrieveMeshObject(const std::string& filePath)
 {
 	// Check if model is already loaded loaded
 	for (std::shared_ptr<Mesh> im : m_loadedMeshes)
@@ -187,24 +200,32 @@ std::shared_ptr<Mesh> MeshManager::loadMesh(const std::string& filePath)
 
 	// Otherwise, create new model and add it to vector
 	std::shared_ptr<Mesh> newMesh = std::make_shared<Mesh>();
-
-	if (!newMesh->loadMesh(filePath)) //Attempt to load texture
-	{
-		// Texture failed to load so check if missing texture texture is already loaded and then return it
-		for (std::shared_ptr<Mesh> m : m_loadedMeshes)
-		{
-			if (m->getFilePath() == "res/meshes/cube.obj")
-			{
-				return m;
-			}
-		}
-
-		// The missing texture texture has not already been made so make it
-		newMesh->loadMesh("res/meshes/cube.obj");
-	}
-
+	newMesh->setFilePath(filePath);
 	m_loadedMeshes.push_back(newMesh);
+
 	return newMesh;
+}
+
+
+void MeshManager::readMeshesFromFile()
+{
+	for (auto& m : m_loadedMeshes)
+	{
+		m->readMeshFromFile();
+	}
+}
+
+void MeshManager::createMeshes()
+{
+	for (auto& m : m_loadedMeshes)
+	{
+		if (!m->loadMesh())
+		{
+			// If mesh fails to load, then load the default cube texture
+			m->setFilePath("res/meshes/cube.obj");
+			m->loadMesh();
+		}
+	}
 }
 
 void MeshManager::clearMeshes()

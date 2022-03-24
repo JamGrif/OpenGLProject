@@ -7,7 +7,7 @@
 std::vector<std::shared_ptr<Shader>> ShaderManager::m_loadedShaders;
 
 Shader::Shader()
-	:m_shaderProgram(0), m_vertexPath(""), m_fragmentPath(""), m_tessellationControlPath(""), m_tessellationEvaluationPath(""), m_geometryPath("")
+	:m_shaderProgram(0), m_shaderFilePaths{"","","","",""}
 {
 }
 
@@ -16,37 +16,37 @@ Shader::~Shader()
 	glDeleteProgram(m_shaderProgram);
 }
 
-void Shader::loadShader(const GLchar* vertexPath, const GLchar* fragmentPath)
-{
-	m_vertexPath = vertexPath;
-	m_fragmentPath = fragmentPath;
 
-	//Retrieve the vertex/fragment source code from filePath
+void Shader::readFromShaderFile()
+{
+	// All shader types will have both a vertex and fragment shader
+	
+	// Retrieve the vertex/fragment source code from filePath
 	std::string vertexCode;
 	std::string fragmentCode;
 	std::ifstream vShaderFile;
 	std::ifstream fShaderFile;
 
-	//Ensure ifstream objects can throw exceptions
+	// Ensure ifstream objects can throw exceptions
 	vShaderFile.exceptions(std::ifstream::badbit);
 	fShaderFile.exceptions(std::ifstream::badbit);
 
 	try
 	{
-		//Open files
-		vShaderFile.open(vertexPath);
-		fShaderFile.open(fragmentPath);
+		// Open files
+		vShaderFile.open(m_shaderFilePaths[e_VertexShader]);
+		fShaderFile.open(m_shaderFilePaths[e_FragmentShader]);
 		std::stringstream vShaderStream, fShaderStream;
 
-		//Read file's buffer contents into streams
+		// Read file's buffer contents into streams
 		vShaderStream << vShaderFile.rdbuf();
 		fShaderStream << fShaderFile.rdbuf();
 
-		//Close File handlers
+		// Close File handlers
 		vShaderFile.close();
 		fShaderFile.close();
 
-		//Convert stream into string
+		// Convert stream into string
 		vertexCode = vShaderStream.str();
 		fragmentCode = fShaderStream.str();
 	}
@@ -55,332 +55,145 @@ void Shader::loadShader(const GLchar* vertexPath, const GLchar* fragmentPath)
 		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
 	}
 
-	const GLchar* vShaderCode = vertexCode.c_str();
-	const GLchar* fShaderCode = fragmentCode.c_str();
+	m_shaderCode[e_VertexShader] = vertexCode.c_str();
+	m_shaderCode[e_FragmentShader] = fragmentCode.c_str();
 
-	//Compile our shader program
-	GLuint vertex, fragment;
-	GLint success;
-	GLchar infoLog[512];
-
-	//Vertex shader
-	vertex = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex, 1, &vShaderCode, NULL);
-	glCompileShader(vertex);
-
-	glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
-
-	//Check if shader has successfully compiled
-	if (!success)
+	if (m_shaderType == e_NormalShaderType)
 	{
-		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		return;
 	}
 
-	//Fragment
-	fragment = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragment, 1, &fShaderCode, NULL);
-	glCompileShader(fragment);
-
-	glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
-
-	//Check if shader has successfully compiled
-	if (!success)
+	// If a tessellation shader, also read and save from the tessellation shader text files
+	if (m_shaderType == e_TessellationShaderType)
 	{
-		glGetShaderInfoLog(fragment, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+		//Retrieve the vertex/fragment source code from filePath
+
+		std::string tcCode;
+		std::string teCode;
+
+		std::ifstream tcShaderFile;
+		std::ifstream teShaderFile;
+
+		tcShaderFile.exceptions(std::ifstream::badbit);
+		teShaderFile.exceptions(std::ifstream::badbit);
+
+		try
+		{
+			//Open files
+			tcShaderFile.open(m_shaderFilePaths[e_TessellationControlShader]);
+			teShaderFile.open(m_shaderFilePaths[e_TessellationEvaluationShader]);
+			std::stringstream tcShaderStream, teShaderStream;
+
+			//Read file's buffer contents into streams
+			tcShaderStream << tcShaderFile.rdbuf();
+			teShaderStream << teShaderFile.rdbuf();
+
+			//Close File handlers
+			tcShaderFile.close();
+			teShaderFile.close();
+
+			//Convert stream into string
+			teCode = teShaderStream.str();
+			tcCode = tcShaderStream.str();
+		}
+		catch (std::ifstream::failure e)
+		{
+			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		}
+		m_shaderCode[e_TessellationControlShader] = tcCode.c_str();
+		m_shaderCode[e_TessellationEvaluationShader] = teCode.c_str();
+
+		return;
 	}
 
-	//Shader program
-	m_shaderProgram = glCreateProgram();
-	glAttachShader(m_shaderProgram, vertex);
-	glAttachShader(m_shaderProgram, fragment);
-	glLinkProgram(m_shaderProgram);
-
-	//Check for linking errors
-	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
-
-	if (!success)
+	// If a geometry shader, also read and save from the tessellation shader text files
+	if (m_shaderType == e_GeometryShaderType)
 	{
-		glGetProgramInfoLog(m_shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-	}
+		//Retrieve the vertex/fragment source code from filePath
+		std::string geoCode;
 
-	//Delete the shaders as they're linked into our program now and no longer neccessery
-	glDeleteShader(vertex);
-	glDeleteShader(fragment);
+		std::ifstream geoShaderFile;
+
+
+		//Ensure ifstream objects can throw exceptions
+		geoShaderFile.exceptions(std::ifstream::badbit);
+
+		try
+		{
+			//Open files
+			geoShaderFile.open(m_shaderFilePaths[e_GeometryShader]);
+			std::stringstream geoShaderStream;
+
+			//Read file's buffer contents into streams
+			geoShaderStream << geoShaderFile.rdbuf();
+
+			//Close File handlers
+			geoShaderFile.close();
+
+			//Convert stream into string
+			geoCode = geoShaderStream.str();
+		}
+		catch (std::ifstream::failure e)
+		{
+			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		}
+		m_shaderCode[e_GeometryShader] = geoCode.c_str();
+	}
 }
 
-void Shader::loadShader(const GLchar* vertexPath, const GLchar* tessellationControlPath, const GLchar* tessellationEvaluationPath, const GLchar* fragmentPath)
+/// <summary>
+/// Converts the saved shader code into a shader program for OpenGL. Must be ran after .readFromShaderFile()
+/// </summary>
+void Shader::compileAndCreateShader()
 {
-	m_vertexPath = vertexPath;
-	m_tessellationControlPath = tessellationControlPath;
-	m_tessellationEvaluationPath = tessellationEvaluationPath;
-	m_fragmentPath = fragmentPath;
-
-	//Retrieve the vertex/fragment source code from filePath
-	std::string vertexCode;
-	std::string fragmentCode;
-	std::string tcCode;
-	std::string teCode;
-
-	std::ifstream vShaderFile;
-	std::ifstream fShaderFile;
-	std::ifstream tcShaderFile;
-	std::ifstream teShaderFile;
-	
-
-	//Ensure ifstream objects can throw exceptions
-	vShaderFile.exceptions(std::ifstream::badbit);
-	fShaderFile.exceptions(std::ifstream::badbit);
-	tcShaderFile.exceptions(std::ifstream::badbit);
-	teShaderFile.exceptions(std::ifstream::badbit);
-
-	try
+	if (m_shaderType == e_NormalShaderType)
 	{
-		//Open files
-		vShaderFile.open(vertexPath);
-		fShaderFile.open(fragmentPath);
-		tcShaderFile.open(tessellationControlPath);
-		teShaderFile.open(tessellationEvaluationPath);
-		std::stringstream vShaderStream, fShaderStream, tcShaderStream, teShaderStream;
-
-		//Read file's buffer contents into streams
-		vShaderStream << vShaderFile.rdbuf();
-		fShaderStream << fShaderFile.rdbuf();
-		tcShaderStream << tcShaderFile.rdbuf();
-		teShaderStream << teShaderFile.rdbuf();
-
-		//Close File handlers
-		vShaderFile.close();
-		fShaderFile.close();
-		tcShaderFile.close();
-		teShaderFile.close();
-
-		//Convert stream into string
-		vertexCode = vShaderStream.str();
-		fragmentCode = fShaderStream.str();
-		teCode = teShaderStream.str();
-		tcCode = tcShaderStream.str();
+		compileAndCreateNormalShader();
 	}
-	catch (std::ifstream::failure e)
+	else if (m_shaderType == e_TessellationShaderType)
 	{
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		compileAndCreateTesselationShader();
 	}
-
-	const GLchar* vShaderCode = vertexCode.c_str();
-	const GLchar* fShaderCode = fragmentCode.c_str();
-	const GLchar* tcShaderCode = tcCode.c_str();
-	const GLchar* teShaderCode = teCode.c_str();
-
-	//Compile our shader program
-	GLuint vertex, fragment, TControl, TEvaluation;
-	GLint success;
-	GLchar infoLog[512];
-
-	//Vertex shader
-	vertex = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex, 1, &vShaderCode, NULL);
-	glCompileShader(vertex);
-
-	glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
-
-	//Check if shader has successfully compiled
-	if (!success)
+	else if (m_shaderType == e_GeometryShaderType)
 	{
-		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		compileAndCreateGeometryShader();
 	}
-
-	//Tessellation Control
-	TControl = glCreateShader(GL_TESS_CONTROL_SHADER);
-	glShaderSource(TControl, 1, &tcShaderCode, NULL);
-	glCompileShader(TControl);
-
-	glGetShaderiv(TControl, GL_COMPILE_STATUS, &success);
-
-	//Check if shader has successfully compiled
-	if (!success)
-	{
-		glGetShaderInfoLog(TControl, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-
-	//Tessellation Evaluation
-	TEvaluation = glCreateShader(GL_TESS_EVALUATION_SHADER);
-	glShaderSource(TEvaluation, 1, &teShaderCode, NULL);
-	glCompileShader(TEvaluation);
-
-	glGetShaderiv(TEvaluation, GL_COMPILE_STATUS, &success);
-
-	//Check if shader has successfully compiled
-	if (!success)
-	{
-		glGetShaderInfoLog(TEvaluation, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	//Fragment
-	fragment = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragment, 1, &fShaderCode, NULL);
-	glCompileShader(fragment);
-
-	glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
-
-	//Check if shader has successfully compiled
-	if (!success)
-	{
-		glGetShaderInfoLog(fragment, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	//Shader program
-	m_shaderProgram = glCreateProgram();
-	glAttachShader(m_shaderProgram, vertex);
-	glAttachShader(m_shaderProgram, TControl);
-	glAttachShader(m_shaderProgram, TEvaluation);
-	glAttachShader(m_shaderProgram, fragment);
-	glLinkProgram(m_shaderProgram);
-
-	//Check for linking errors
-	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
-
-	if (!success)
-	{
-		glGetProgramInfoLog(m_shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-	}
-
-	//Delete the shaders as they're linked into our program now and no longer neccessery
-	glDeleteShader(vertex);
-	glDeleteShader(fragment);
-	glDeleteShader(TControl);
-	glDeleteShader(TEvaluation);
 }
 
-void Shader::loadShader(const GLchar* vertexPath, const GLchar* geometryPath, const GLchar* fragmentPath)
+/// <summary>
+/// NORMAL VERTEX/FRAGMENT SHADER ONLY - Sets the shader type to be a normal shader and saves the file paths for the specific shader files 
+/// </summary>
+void Shader::setFilePath(const std::string& vertexPath, const std::string& fragmentPath)
 {
-	m_vertexPath = vertexPath;
-	m_geometryPath = geometryPath;
-	m_fragmentPath = fragmentPath;
+	m_shaderType = e_NormalShaderType;
 
-	//Retrieve the vertex/fragment source code from filePath
-	std::string vertexCode;
-	std::string fragmentCode;
-	std::string geoCode;
+	m_shaderFilePaths[e_VertexShader] = vertexPath;
+	m_shaderFilePaths[e_FragmentShader] = fragmentPath;
+}
 
-	std::ifstream vShaderFile;
-	std::ifstream fShaderFile;
-	std::ifstream geoShaderFile;
+/// <summary>
+/// TESSELLATION SHADER ONLY - Sets the shader type to be a tessellation shader and saves the file paths for the specific shader files 
+/// </summary>
+void Shader::setFilePath(const std::string& vertexPath, const std::string& tessellationControlPath, const std::string& tessellationEvaluationPath, const std::string& fragmentPath)
+{
+	m_shaderType = e_TessellationShaderType;
 
+	m_shaderFilePaths[e_VertexShader] = vertexPath;
+	m_shaderFilePaths[e_TessellationControlShader] = tessellationControlPath;
+	m_shaderFilePaths[e_TessellationEvaluationShader] = tessellationEvaluationPath;
+	m_shaderFilePaths[e_FragmentShader] = fragmentPath;
+}
 
-	//Ensure ifstream objects can throw exceptions
-	vShaderFile.exceptions(std::ifstream::badbit);
-	fShaderFile.exceptions(std::ifstream::badbit);
-	geoShaderFile.exceptions(std::ifstream::badbit);
+/// <summary>
+/// GEOMETRY SHADER ONLY - Sets the shader type to be a geometry shader and saves the file paths for the specific shader files 
+/// </summary>
+void Shader::setFilePath(const std::string& vertexPath, const std::string& geometryPath, const std::string& fragmentPath)
+{
+	m_shaderType = e_GeometryShaderType;
 
-	try
-	{
-		//Open files
-		vShaderFile.open(vertexPath);
-		fShaderFile.open(fragmentPath);
-		geoShaderFile.open(geometryPath);
-		std::stringstream vShaderStream, fShaderStream, geoShaderStream;
-
-		//Read file's buffer contents into streams
-		vShaderStream << vShaderFile.rdbuf();
-		fShaderStream << fShaderFile.rdbuf();
-		geoShaderStream << geoShaderFile.rdbuf();
-
-		//Close File handlers
-		vShaderFile.close();
-		fShaderFile.close();
-		geoShaderFile.close();
-
-		//Convert stream into string
-		vertexCode = vShaderStream.str();
-		fragmentCode = fShaderStream.str();
-		geoCode = geoShaderStream.str();
-	}
-	catch (std::ifstream::failure e)
-	{
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-	}
-
-	const GLchar* vShaderCode = vertexCode.c_str();
-	const GLchar* fShaderCode = fragmentCode.c_str();
-	const GLchar* geoShaderCode = geoCode.c_str();
-
-	//Compile our shader program
-	GLuint vertex, fragment, geometry;
-	GLint success;
-	GLchar infoLog[512];
-
-	//Vertex shader
-	vertex = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex, 1, &vShaderCode, NULL);
-	glCompileShader(vertex);
-
-	glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
-
-	//Check if shader has successfully compiled
-	if (!success)
-	{
-		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	//Geometry shader
-	geometry = glCreateShader(GL_GEOMETRY_SHADER);
-	glShaderSource(geometry, 1, &geoShaderCode, NULL);
-	glCompileShader(geometry);
-
-	glGetShaderiv(geometry, GL_COMPILE_STATUS, &success);
-
-	//Check if shader has successfully compiled
-	if (!success)
-	{
-		glGetShaderInfoLog(geometry, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-
-
-	//Fragment
-	fragment = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragment, 1, &fShaderCode, NULL);
-	glCompileShader(fragment);
-
-	glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
-
-	//Check if shader has successfully compiled
-	if (!success)
-	{
-		glGetShaderInfoLog(fragment, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	//Shader program
-	m_shaderProgram = glCreateProgram();
-	glAttachShader(m_shaderProgram, vertex);
-	glAttachShader(m_shaderProgram, geometry);
-	glAttachShader(m_shaderProgram, fragment);
-	glLinkProgram(m_shaderProgram);
-
-	//Check for linking errors
-	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
-
-	if (!success)
-	{
-		glGetProgramInfoLog(m_shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-	}
-
-	//Delete the shaders as they're linked into our program now and no longer neccessery
-	glDeleteShader(vertex);
-	glDeleteShader(fragment);
-	glDeleteShader(geometry);
+	m_shaderFilePaths[e_VertexShader] = vertexPath;
+	m_shaderFilePaths[e_GeometryShader] = geometryPath;
+	m_shaderFilePaths[e_FragmentShader] = fragmentPath;
 }
 
 /// <summary>
@@ -464,26 +277,258 @@ const GLuint Shader::getProgram() const
 	return m_shaderProgram;
 }
 
-const GLchar* Shader::getFilePath(shaderFilePath filePath) const
+/// <summary>
+/// Returns the filepath to a specific shader file
+/// </summary>
+/// <param name="filePath"></param>
+/// <returns></returns>
+const std::string& Shader::getFilePath(int filePath) const
 {
 	switch (filePath)
 	{
-	case e_VertexPath:
-		return m_vertexPath;
-
-	case e_FragmentPath:
-		return m_fragmentPath;
-
-	case e_TessellationControlPath:
-		return m_tessellationControlPath;
-
-	case e_TessellationEvaluationPath:
-		return m_tessellationEvaluationPath;
-
-	case e_GeometryPath:
-		return m_geometryPath;
+	case e_VertexShader:
+		return m_shaderFilePaths[e_VertexShader];
+	case e_FragmentShader:
+		return m_shaderFilePaths[e_FragmentShader];
+	case e_TessellationControlShader:
+		return m_shaderFilePaths[e_TessellationControlShader];
+	case e_TessellationEvaluationShader:
+		return m_shaderFilePaths[e_TessellationEvaluationShader];
+	case e_GeometryShader:
+		return m_shaderFilePaths[e_GeometryShader];
 	}
-	return nullptr;
+}
+
+const int Shader::getShaderType() const
+{
+	return m_shaderType;
+}
+
+void Shader::compileAndCreateNormalShader()
+{
+	// Compile our shader program
+	GLuint vertex, fragment;
+	GLint success;
+	GLchar infoLog[512];
+
+	const GLchar* testvertex = m_shaderCode[e_VertexShader].c_str();
+	const GLchar* testfragment = m_shaderCode[e_FragmentShader].c_str();
+
+	// Vertex shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &testvertex, NULL);
+	glCompileShader(vertex);
+
+	glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
+
+	// Check if shader has successfully compiled
+	if (!success)
+	{
+		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Fragment
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment, 1, &testfragment, NULL);
+	glCompileShader(fragment);
+
+	glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
+
+	// Check if shader has successfully compiled
+	if (!success)
+	{
+		glGetShaderInfoLog(fragment, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Shader program
+	m_shaderProgram = glCreateProgram();
+	glAttachShader(m_shaderProgram, vertex);
+	glAttachShader(m_shaderProgram, fragment);
+	glLinkProgram(m_shaderProgram);
+
+	// Check for linking errors
+	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
+
+	if (!success)
+	{
+		glGetProgramInfoLog(m_shaderProgram, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+}
+
+
+void Shader::compileAndCreateTesselationShader()
+{
+	const GLchar* testvertex = m_shaderCode[e_VertexShader].c_str();
+	const GLchar* testfragment = m_shaderCode[e_FragmentShader].c_str();
+	const GLchar* testtcontrol = m_shaderCode[e_TessellationControlShader].c_str();
+	const GLchar* testtevaluation = m_shaderCode[e_TessellationEvaluationShader].c_str();
+
+	// Compile our shader program
+	GLuint vertex, fragment, TControl, TEvaluation;
+	GLint success;
+	GLchar infoLog[512];
+
+	// Vertex shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &testvertex, NULL);
+	glCompileShader(vertex);
+
+	glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
+
+	// Check if shader has successfully compiled
+	if (!success)
+	{
+		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Tessellation Control
+	TControl = glCreateShader(GL_TESS_CONTROL_SHADER);
+	glShaderSource(TControl, 1, &testtcontrol, NULL);
+	glCompileShader(TControl);
+
+	glGetShaderiv(TControl, GL_COMPILE_STATUS, &success);
+
+	// Check if shader has successfully compiled
+	if (!success)
+	{
+		glGetShaderInfoLog(TControl, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+
+	// Tessellation Evaluation
+	TEvaluation = glCreateShader(GL_TESS_EVALUATION_SHADER);
+	glShaderSource(TEvaluation, 1, &testtevaluation, NULL);
+	glCompileShader(TEvaluation);
+
+	glGetShaderiv(TEvaluation, GL_COMPILE_STATUS, &success);
+
+	// Check if shader has successfully compiled
+	if (!success)
+	{
+		glGetShaderInfoLog(TEvaluation, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Fragment
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment, 1, &testfragment, NULL);
+	glCompileShader(fragment);
+
+	glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
+
+	// Check if shader has successfully compiled
+	if (!success)
+	{
+		glGetShaderInfoLog(fragment, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Shader program
+	m_shaderProgram = glCreateProgram();
+	glAttachShader(m_shaderProgram, vertex);
+	glAttachShader(m_shaderProgram, TControl);
+	glAttachShader(m_shaderProgram, TEvaluation);
+	glAttachShader(m_shaderProgram, fragment);
+	glLinkProgram(m_shaderProgram);
+
+	// Check for linking errors
+	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
+
+	if (!success)
+	{
+		glGetProgramInfoLog(m_shaderProgram, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+	glDeleteShader(TControl);
+	glDeleteShader(TEvaluation);
+}
+
+void Shader::compileAndCreateGeometryShader()
+{
+	const GLchar* testvertex = m_shaderCode[e_VertexShader].c_str();
+	const GLchar* testfragment = m_shaderCode[e_FragmentShader].c_str();
+	const GLchar* testgeometry = m_shaderCode[e_GeometryShader].c_str();
+
+	// Compile our shader program
+	GLuint vertex, fragment, geometry;
+	GLint success;
+	GLchar infoLog[512];
+
+	// Vertex shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &testvertex, NULL);
+	glCompileShader(vertex);
+
+	glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
+
+	// Check if shader has successfully compiled
+	if (!success)
+	{
+		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Geometry shader
+	geometry = glCreateShader(GL_GEOMETRY_SHADER);
+	glShaderSource(geometry, 1, &testgeometry, NULL);
+	glCompileShader(geometry);
+
+	glGetShaderiv(geometry, GL_COMPILE_STATUS, &success);
+
+	// Check if shader has successfully compiled
+	if (!success)
+	{
+		glGetShaderInfoLog(geometry, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Fragment
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment, 1, &testfragment, NULL);
+	glCompileShader(fragment);
+
+	glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
+
+	// Check if shader has successfully compiled
+	if (!success)
+	{
+		glGetShaderInfoLog(fragment, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Shader program
+	m_shaderProgram = glCreateProgram();
+	glAttachShader(m_shaderProgram, vertex);
+	glAttachShader(m_shaderProgram, geometry);
+	glAttachShader(m_shaderProgram, fragment);
+	glLinkProgram(m_shaderProgram);
+
+	// Check for linking errors
+	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
+
+	if (!success)
+	{
+		glGetProgramInfoLog(m_shaderProgram, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+	glDeleteShader(geometry);
 }
 
 /// <summary>
@@ -517,9 +562,9 @@ const int Shader::getUniformLocation(const std::string& name)
 std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* fragmentPath)
 {
 	//Check if shader program is already loaded
-	for (std::shared_ptr<Shader> s : m_loadedShaders)
+	for (const auto& s : m_loadedShaders)
 	{
-		if (s->getFilePath(e_VertexPath) == vertexPath && s->getFilePath(e_FragmentPath) == fragmentPath)
+		if (s->getFilePath(e_VertexShader) == vertexPath && s->getFilePath(e_FragmentShader) == fragmentPath)
 		{
 			return s;
 		}
@@ -529,20 +574,21 @@ std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, 
 	std::cout << "SHADERMANAGER->" << vertexPath << " + " << fragmentPath << " program is being created" << std::endl;
 
 	std::shared_ptr<Shader> s = std::make_shared<Shader>();
-	s->loadShader(vertexPath, fragmentPath);
+	s->setFilePath(vertexPath, fragmentPath);
 	m_loadedShaders.push_back(s);
+
 	return s;
 }
 
 std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* tessellationControlPath, const GLchar* tessellationEvaluationPath, const GLchar* fragmentPath)
 {
-	//Check if exact same shader program is already loaded
-	for (std::shared_ptr<Shader> s : m_loadedShaders)
+	// Check if exact same shader program is already loaded
+	for (const auto& s : m_loadedShaders)
 	{
-		if (s->getFilePath(e_VertexPath) == vertexPath &&
-			s->getFilePath(e_TessellationControlPath) == tessellationControlPath &&
-			s->getFilePath(e_TessellationEvaluationPath) == tessellationEvaluationPath &&
-			s->getFilePath(e_FragmentPath) == fragmentPath)
+		if (s->getFilePath(e_VertexShader) == vertexPath &&
+			s->getFilePath(e_TessellationControlShader) == tessellationControlPath &&
+			s->getFilePath(e_TessellationEvaluationShader) == tessellationEvaluationPath &&
+			s->getFilePath(e_FragmentShader) == fragmentPath)
 		{
 			return s;
 		}
@@ -552,32 +598,49 @@ std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, 
 	std::cout << "SHADERMANAGER->" << vertexPath << " + " << fragmentPath << " program is being created" << std::endl;
 
 	std::shared_ptr<Shader> s = std::make_shared<Shader>();
-	s->loadShader(vertexPath, tessellationControlPath, tessellationEvaluationPath, fragmentPath);
+	s->setFilePath(vertexPath, tessellationControlPath, tessellationEvaluationPath, fragmentPath);
 	m_loadedShaders.push_back(s);
 	return s;
 }
 
 std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, const GLchar* geometryPath, const GLchar* fragmentPath)
 {
-	//Check if exact same shader program is already loaded
-	for (std::shared_ptr<Shader> s : m_loadedShaders)
+	// Check if exact same shader program is already loaded
+	for (const auto s : m_loadedShaders)
 	{
-		if (s->getFilePath(e_VertexPath) == vertexPath &&
-			s->getFilePath(e_GeometryPath) == geometryPath &&
-			s->getFilePath(e_FragmentPath) == fragmentPath)
+		if (s->getFilePath(e_VertexShader) == vertexPath &&
+			s->getFilePath(e_GeometryShader) == geometryPath &&
+			s->getFilePath(e_FragmentShader) == fragmentPath)
 		{
 			//std::cout << "SHADERMANAGER->" << vertexPath << " + " << fragmentPath << " program already exists, returning loaded shader program" << std::endl;
 			return s;
 		}
 	}
 
-	//Otherwise, create new texture and add it to vector
+	// Otherwise, create new texture and add it to vector
 	std::cout << "SHADERMANAGER->" << vertexPath << " + " << fragmentPath << " program is being created" << std::endl;
 
 	std::shared_ptr<Shader> s = std::make_shared<Shader>();
-	s->loadShader(vertexPath, geometryPath, fragmentPath);
+	s->setFilePath(vertexPath, geometryPath, fragmentPath);
 	m_loadedShaders.push_back(s);
 	return s;
+}
+
+
+void ShaderManager::readShadersFromFile()
+{
+	for (auto& s : m_loadedShaders)
+	{
+		s->readFromShaderFile();
+	}
+}
+
+void ShaderManager::createShaders()
+{
+	for (auto& s : m_loadedShaders)
+	{
+		s->compileAndCreateShader();
+	}
 }
 
 void ShaderManager::clearShaders()

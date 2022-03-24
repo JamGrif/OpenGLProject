@@ -19,12 +19,15 @@ public:
 	Mesh();
 	~Mesh();
 
-	bool								loadMesh(const std::string& filePath);
+	void								readMeshFromFile();
+	bool								loadMesh(); 
 	void								setupMesh();
 
 	void setVBOAttrib(bool shaderPos = false, bool shaderNorm = false, bool shaderTex = false, bool shaderTan = false, bool shaderBiTan = false);
 
 public:
+
+	void								setFilePath(const std::string& filePath);
 
 	const std::vector<unsigned int>&	getIndices() const;
 	const std::string&					getFilePath() const;
@@ -47,7 +50,10 @@ class MeshManager
 {
 public:
 
-	static std::shared_ptr<Mesh>	loadMesh(const std::string& filePath);
+	static std::shared_ptr<Mesh>	retrieveMeshObject(const std::string& filePath);
+
+	static void						readMeshesFromFile();
+	static void						createMeshes();
 
 	static void						clearMeshes();
 

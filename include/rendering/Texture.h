@@ -10,12 +10,13 @@ public:
 	Texture();
 	~Texture();
 
+	void						readTextureFromFile();
 	inline bool					loadTexture(); 
 
 	void						Bind(unsigned int slot = 0) const;
 	void						Unbind(unsigned int slot = 0) const;
 
-	inline void					setTexturePath(const std::string& filePath);
+	inline void					setFilePath(const std::string& filePath);
 
 	inline const std::string&	getFilePath() const;
 
@@ -26,15 +27,18 @@ private:
 	std::string					m_filePath;
 
 	int							m_width, m_height, m_BPP;
+
+	unsigned char* localbuffer;
 };
 
-// Stores currently loaded textures and cubemaps ensuring only one of each texture gets loaded. Provides a way to load a texture from a file
+// Stores currently loaded textures ensuring only one of each texture gets loaded. Provides a way to load a texture from a file
 class TextureManager
 {
 public:
 
 	static std::shared_ptr<Texture> retrieveTextureObject(const std::string& filePath);
 
+	static void		readTexturesFromFile();
 	static void		createTextures();
 
 	static void		clearTextures();

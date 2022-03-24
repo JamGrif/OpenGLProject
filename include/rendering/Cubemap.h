@@ -10,14 +10,15 @@ public:
 	Cubemap();
 	~Cubemap();
 
+	void						readCubemapFromFile();
 	inline bool					loadCubemap();
 
 	void						Bind(unsigned int slot = 0) const;
 	void						Unbind() const;
 
-	inline void					setCubemapPath(const std::string& filePath);
+	inline void					setFilePath(const std::string& filePath);
 
-	inline const std::string& getFilePath() const;
+	inline const std::string&	getFilePath() const;
 
 private:
 
@@ -36,17 +37,20 @@ private:
 		e_cubeFaceBottom = 3,
 		e_cubeFaceFront = 4,
 		e_cubeFaceBack = 5,
-		e_CUBE_FACE_END = 6
+		e_END_OF_CUBEFACE_ENUM
 	};
+
+	unsigned char* m_localbuffer[6];
 };
 
-// Stores currently loaded textures and cubemaps ensuring only one of each texture gets loaded. Provides a way to load a texture from a file
+// Stores currently loaded cubemaps ensuring only one of each texture gets loaded. Provides a way to load a texture from a file
 class CubemapManager
 {
 public:
 
 	static std::shared_ptr<Cubemap> retrieveCubeMapObject(const std::string& filePath = "");
 
+	static void     readCubemapsFromFile();
 	static void		createCubemaps();
 
 	static void		clearCubemaps();

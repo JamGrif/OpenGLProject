@@ -6,11 +6,18 @@
 
 enum shaderFilePath
 {
-	e_VertexPath = 0,
-	e_FragmentPath = 1,
-	e_TessellationControlPath = 2,
-	e_TessellationEvaluationPath = 3,
-	e_GeometryPath = 4
+	e_VertexShader = 0,
+	e_FragmentShader = 1,
+	e_TessellationControlShader = 2,
+	e_TessellationEvaluationShader = 3,
+	e_GeometryShader = 4
+};
+
+enum ShaderType
+{
+	e_NormalShaderType = 0,
+	e_TessellationShaderType = 1,
+	e_GeometryShaderType = 2
 };
 
 // Stores shader information and provides a way to load a shader by interfacing with ShaderManager. 
@@ -22,34 +29,43 @@ public:
 	Shader();
 	~Shader();
 
-	void					loadShader(const GLchar* vertexPath, const GLchar* fragmentPath);
-	void					loadShader(const GLchar* vertexPath, const GLchar* tessellationControlPath, const GLchar* tessellationEvaluationPath, const GLchar* fragmentPath);
-	void					loadShader(const GLchar* vertexPath, const GLchar* geometryPath, const GLchar* fragmentPath);
+	inline void					readFromShaderFile();
+	inline void					compileAndCreateShader();
 
-	void					Bind() const;
-	void					Unbind() const;
+	inline void					setFilePath(const std::string& vertexPath, const std::string& fragmentPath);
+	inline void					setFilePath(const std::string& vertexPath, const std::string& tessellationControlPath, const std::string& tessellationEvaluationPath, const std::string& fragmentPath);
+	inline void					setFilePath(const std::string& vertexPath, const std::string& geometryPath, const std::string& fragmentPath);
 
-	void					setUniform1i(const std::string& name, int v0);
-	void					setUniform1f(const std::string& name, float v0);
-	void					setUniform3f(const std::string& name, const glm::vec3& v0);
-	void					setUniform4f(const std::string& name, const glm::vec4& v0);
-	void					setUniformMatrix4fv(const std::string& name, const glm::mat4& v0);
-	void					setUniformMatrix3fv(const std::string& name, const glm::mat3& v0);
 
-	const GLuint			getProgram() const;
-	const GLchar*			getFilePath(shaderFilePath filePath) const;
+	void						Bind() const;
+	void						Unbind() const;
+
+	void						setUniform1i(const std::string& name, int v0);
+	void						setUniform1f(const std::string& name, float v0);
+	void						setUniform3f(const std::string& name, const glm::vec3& v0);
+	void						setUniform4f(const std::string& name, const glm::vec4& v0);
+	void						setUniformMatrix4fv(const std::string& name, const glm::mat4& v0);
+	void						setUniformMatrix3fv(const std::string& name, const glm::mat3& v0);
+
+	inline const GLuint			getProgram() const;
+	inline const std::string&	getFilePath(int filePath) const;
+	inline const int			getShaderType() const;
 
 private:
 
-	const int				getUniformLocation(const std::string& name);
+	inline void					compileAndCreateNormalShader();
+	inline void					compileAndCreateTesselationShader();
+	inline void					compileAndCreateGeometryShader();
 
-	GLuint					m_shaderProgram;
+	inline const int			getUniformLocation(const std::string& name);
 
-	const GLchar*			m_vertexPath;
-	const GLchar*			m_fragmentPath;
-	const GLchar*			m_tessellationEvaluationPath;
-	const GLchar*			m_tessellationControlPath;
-	const GLchar*			m_geometryPath;
+	GLuint						m_shaderProgram;
+
+	int							m_shaderType;
+
+	std::string					m_shaderFilePaths[5];
+
+	std::string					m_shaderCode[5];
 
 	//Cache for uniforms
 	std::unordered_map<std::string, int>	m_locationCache;
@@ -63,6 +79,9 @@ public:
 	static std::shared_ptr<Shader>	retrieveShader(const GLchar* vertexPath, const GLchar* fragmentPath);
 	static std::shared_ptr<Shader>	retrieveShader(const GLchar* vertexPath, const GLchar* tessellationControlPath, const GLchar* tessellationEvaluationPath, const GLchar* fragmentPath);
 	static std::shared_ptr<Shader>	retrieveShader(const GLchar* vertexPath, const GLchar* geometryPath, const GLchar* fragmentPath);
+
+	static void						readShadersFromFile();
+	static void						createShaders();
 
 	static void						clearShaders();
 

@@ -18,7 +18,8 @@ Cubemap::~Cubemap()
 	glDeleteTextures(1, &m_texture);
 }
 
-bool Cubemap::loadCubemap()
+
+void Cubemap::readCubemapFromFile()
 {
 	m_facesFilePath[e_cubeFaceRight] = "res/textures/sky/" + m_filePath + "_right.png";
 	m_facesFilePath[e_cubeFaceLeft] = "res/textures/sky/" + m_filePath + "_left.png";
@@ -27,33 +28,44 @@ bool Cubemap::loadCubemap()
 	m_facesFilePath[e_cubeFaceFront] = "res/textures/sky/" + m_filePath + "_front.png";
 	m_facesFilePath[e_cubeFaceBack] = "res/textures/sky/" + m_filePath + "_back.png";
 
-	stbi_set_flip_vertically_on_load(0); // Flips texture on Y-Axis
+	
+
+	//unsigned char* localBuffer;
+	for (unsigned int i = e_cubeFaceRight; i < e_END_OF_CUBEFACE_ENUM; i++)
+	{
+		stbi_set_flip_vertically_on_load_thread(0);
+
+		m_localbuffer[i] = stbi_load(m_facesFilePath[i].c_str(), &m_width[i], &m_height[i], &m_BPP[i], 0);
+
+		// Check if file loaded successfully
+		if (stbi_failure_reason() == "can't fopen")
+		{
+			std::cout << "CUBEMAP->" << m_facesFilePath[i] << " failed to load, loading default texture - FAILURE" << std::endl;
+			//stbi_image_free(m_localbuffer[i]);
+			//return false;
+		}
+		else
+		{
+			std::cout << "CUBEMAP->" << m_facesFilePath[i] << " successfully loaded - SUCCESS" << std::endl;
+		}
+	}
+}
+
+bool Cubemap::loadCubemap()
+{
+	
 
 	// Generate texture buffer
 	glGenTextures(1, &m_texture);
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
 
-	unsigned char* localBuffer;
-	for (unsigned int i = e_cubeFaceRight; i < e_CUBE_FACE_END; i++)
+	for (unsigned int i = e_cubeFaceRight; i < e_END_OF_CUBEFACE_ENUM; i++)
 	{
-		localBuffer = stbi_load(m_facesFilePath[i].c_str(), &m_width[i], &m_height[i], &m_BPP[i], 0);
-
-		// Check if file loaded successfully
-		if (stbi_failure_reason() == "can't fopen")
-		{
-			std::cout << "CUBEMAP->" << m_facesFilePath[i] << " failed to load, loading default texture - FAILURE" << std::endl;
-			stbi_image_free(localBuffer);
-			return false;
-		}
-		else
-		{
-			std::cout << "CUBEMAP->" << m_facesFilePath[i] << " successfully loaded - SUCCESS" << std::endl;
-		}
-
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_width[i], m_height[i], 0, GL_RGBA, GL_UNSIGNED_BYTE, localBuffer);
-		stbi_image_free(localBuffer);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_width[i], m_height[i], 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localbuffer[i]);
+		stbi_image_free(m_localbuffer[i]);
 	}
+	
 
 	// Specify what happens if texture is rendered on a different sized surface
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -92,7 +104,7 @@ void Cubemap::Unbind() const
 /// Loads a cubemap texture from the specified filepath and sets its parameters
 /// </summary>
 /// <returns></returns>
-void Cubemap::setCubemapPath(const std::string& filePath)
+void Cubemap::setFilePath(const std::string& filePath)
 {
 	m_filePath = filePath;
 }
@@ -137,17 +149,26 @@ std::shared_ptr<Cubemap> CubemapManager::retrieveCubeMapObject(const std::string
 
 	// Create new cubemap object
 	auto newCubemap = std::make_shared<Cubemap>();
-	newCubemap->setCubemapPath(filePath);
+	newCubemap->setFilePath(filePath);
 	m_loadedCubemaps.push_back(newCubemap);
 
 	return newCubemap;
 }
 
+
+void CubemapManager::readCubemapsFromFile()
+{
+	for (auto& cm : m_loadedCubemaps)
+	{
+		cm->readCubemapFromFile();
+	}
+}
+
 void CubemapManager::createCubemaps()
 {
-	for (auto& t : m_loadedCubemaps)
+	for (auto& cm : m_loadedCubemaps)
 	{
-		t->loadCubemap();
+		cm->loadCubemap();
 	}
 }
 
