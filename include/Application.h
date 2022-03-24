@@ -30,8 +30,8 @@ public:
 
 private:
 
-	bool			changeScene(int newSceneNumber);
-	void			changeScreenFilter(int newFilterNumber);
+	bool			setScene(int newSceneNumber);
+	void			setScreenFilter(int newFilterNumber);
 
 	std::shared_ptr<OpenGLWindow>	m_appWindow;
 

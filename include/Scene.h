@@ -17,9 +17,6 @@ public:
 	Scene(const std::string& sceneName);
 	~Scene();
 
-
-	void createTextureThread();
-
 	bool					loadScene();
 
 	void					updateScene();

@@ -10,14 +10,15 @@
 #include "SceneTextReader.h"
 #include "LightManager.h"
 
+#include "PerformanceTimer.h"
+
 #include "models/Model.h"
 
-
-
-//void cubemapThread()
-//{
-//	TextureManager::createCubemaps();
-//}
+// ran from std::threads in .loadScene()
+static void createTextureThread(){ TextureManager::readTexturesFromFile(); }
+static void createMeshThread(){ MeshManager::readMeshesFromFile(); }
+static void createShaderThread(){ ShaderManager::readShadersFromFile(); }
+static void createCubemapThread(){ CubemapManager::readCubemapsFromFile(); }
 
 Scene::Scene(const std::string& sceneName)
 	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr),
@@ -42,6 +43,7 @@ Scene::~Scene()
 	/*
 		By not deleting all the scenes assets, it allows for quicker scene change after the content has been initially loaded
 	*/
+
 	TextureManager::clearTextures();
 	CubemapManager::clearCubemaps();
 	MeshManager::clearMeshes();
@@ -50,27 +52,16 @@ Scene::~Scene()
 	std::cout << "Scene Destroyed" << std::endl;
 }
 
-void Scene::createTextureThread()
-{
-	std::cout << "in textureThread" << std::endl;
-	TextureManager::createTextures();
-	std::cout << "end textureThread" << std::endl;
-}
-
 /// <summary>
 /// Initializes the scene objects and creates the scenes models
 /// </summary>
 bool Scene::loadScene()
 {
 	// Scene essentials - all scenes must contain these objects
-
 	addSceneCamera(0.0f, 2.0f, 0.0f);
 	addSceneLightManager();
 
-	/*
-		Run scene reader, giving it the scene objects vector and light manager to fill out
-	*/
-
+	// Run scene reader, giving it the scene objects vector and light manager to fill out
 	SceneTextReader txtReader(m_sceneName, m_sceneModels, m_sceneLightManager);
 
 	if (!txtReader.getStatus()) // Ensure textfile was read correctly
@@ -79,12 +70,24 @@ bool Scene::loadScene()
 		return false;
 	}
 
-	//std::thread worker1(&Scene::createTextureThread, this);
-	//
-	//worker1.join();
+	PerformanceTimer t("AssetLoadingTime");
 
+	// Create threads to read assets from their files
+	std::thread textureLoadThread(createTextureThread);
+	std::thread meshLoadThread(createMeshThread);
+	std::thread shaderLoadThread(createShaderThread);
+	std::thread cubemapLoadThread(createCubemapThread);
+	
+	textureLoadThread.join();
+	meshLoadThread.join();
+	shaderLoadThread.join();
+	cubemapLoadThread.join();
+
+	// Once the files have been read and saved into the objects, use them to create the OpenGL objects
 	TextureManager::createTextures();
 	CubemapManager::createCubemaps();
+	MeshManager::createMeshes();
+	ShaderManager::createShaders();
 
 	return true;
 }

@@ -37,21 +37,14 @@ Application::~Application()
 /// <returns>Returns success or failure of initialization</returns>
 bool Application::appInit()
 {
-	/*
-		Initialize GLFW
-	*/
-
+	// GLFW
 	if (!glfwInit())
 	{
 		std::cout << "GLFW failed to initialize" << std::endl;
 		return false;
 	}
 
-	/*
-		Initialize Window
-	*/
-
-	//m_appWindow = new OpenGLWindow(1920, 1080, "OpenGL - Jamie", false);
+	// OpenGL Window
 	m_appWindow = std::make_shared<OpenGLWindow>(1920, 1080, "OpenGL - Jamie", false);
 	if (!m_appWindow->getWindowStatus())
 	{
@@ -60,10 +53,7 @@ bool Application::appInit()
 	}
 	EngineStatics::setAppWindow(m_appWindow);
 
-	/*
-		Initialize GLEW
-	*/
-
+	// GLEW
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
@@ -113,17 +103,17 @@ bool Application::appInit()
 
 	// Create UI object
 	m_UI = std::make_unique<UI>(true);
-	
-	// Create Scene object
-	if (!changeScene(e_shadowTest)) // load shadowTest.txt by default
-	{
-		// Scene failed to load
-		return false;
-	}
 
 	// Create the apps Framebuffers
 	m_sceneFilterFramebuffer = std::make_unique<Framebuffer>(false);
 	m_sceneMSAAFrameBuffer = std::make_unique<Framebuffer>(true);
+
+	// Create Scene object and set initial scene
+	if (!setScene(e_shadowTest)) 
+	{
+		// Scene failed to load
+		return false;
+	}
 
 	return true;
 }
@@ -152,11 +142,11 @@ void Application::appLoop()
 			{
 				// Check if loaded scene needs to change
 				if (m_UI->getSceneNum() != 0)
-					changeScene(m_UI->getSceneNum());
+					setScene(m_UI->getSceneNum());
 
 				// Check if applied screen filter needs to change
 				if (m_UI->getFilterNum() != 0)
-					changeScreenFilter(m_UI->getFilterNum());
+					setScreenFilter(m_UI->getFilterNum());
 			}
 		}
 		
@@ -208,7 +198,7 @@ void Application::windowResizeCALLBACK(GLFWwindow* window, int newWidth, int new
 /// </summary>
 /// <param name="newSceneNumber">Specified scene to change to (use sceneNames enum)</param>
 /// <returns></returns>
-bool Application::changeScene(int newSceneNumber)
+bool Application::setScene(int newSceneNumber)
 {
 	std::string newSceneFilePath = "";
 	switch (newSceneNumber)
@@ -262,7 +252,7 @@ bool Application::changeScene(int newSceneNumber)
 /// Function changes the post-processing screen filter to the specified filter number
 /// </summary>
 /// <param name="newFilterNumber">Specified screen filter to change to (use screenFilters enum)</param>
-void Application::changeScreenFilter(int newFilterNumber)
+void Application::setScreenFilter(int newFilterNumber)
 {
 	switch (newFilterNumber)
 	{

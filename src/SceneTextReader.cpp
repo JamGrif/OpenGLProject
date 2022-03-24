@@ -190,7 +190,37 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		   and add it to the scene vector
 	*/
 
-	std::thread worker(&SceneTextReader::createLights, this, sceneLightManager, completedPointLightObjects, completedDirectionalLightObjects, completedSpotLightObjects);
+	//std::thread worker(&SceneTextReader::createLights, this, sceneLightManager, completedPointLightObjects, completedDirectionalLightObjects, completedSpotLightObjects);
+
+	for (const auto& o : completedDirectionalLightObjects)
+	{
+		sceneLightManager->addDirectionalLight(
+			o.Ambient,
+			o.Diffuse,
+			o.Specular,
+			o.Direction
+		);
+	}
+
+	for (const auto& o : completedPointLightObjects)
+	{
+		sceneLightManager->addPointLight(
+			o.Ambient,
+			o.Diffuse,
+			o.Specular,
+			o.Position
+		);
+	}
+
+	for (const auto& o : completedSpotLightObjects)
+	{
+		sceneLightManager->addSpotLight(
+			o.Ambient,
+			o.Diffuse,
+			o.Specular,
+			o.Position
+		);
+	}
 
 
 	for (const auto& o : completedModelSkyObjects)
@@ -384,7 +414,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		sceneMeshes.emplace_back(model);
 	}
 
-	worker.join();
+	//worker.join();
 
 	m_status = true;
 }
@@ -827,7 +857,7 @@ bool SceneTextReader::applyToModelGeometryTemplate(templateModelGeometry& o, con
 	{
 		applyToModel(o, fullLine);
 
-		o.mesh = "res/meshes/" + fullLine.at(e_mesh+13) + ".obj";
+		o.mesh = "res/meshes/" + fullLine.at(e_mesh) + ".obj";
 	}
 	catch (const std::exception& e)
 	{

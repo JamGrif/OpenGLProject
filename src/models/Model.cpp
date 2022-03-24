@@ -21,7 +21,7 @@ Model::~Model()
 /// <param name="meshFilePath">Mesh file path</param>
 void Model::setMesh(const std::string& meshFilePath)
 {
-	m_modelMesh = MeshManager::loadMesh(meshFilePath);
+	m_modelMesh = MeshManager::retrieveMeshObject(meshFilePath);
 }
 
 /// <summary>
