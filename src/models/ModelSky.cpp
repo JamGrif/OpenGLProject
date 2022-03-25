@@ -19,6 +19,11 @@ ModelSky::~ModelSky()
 	glDeleteBuffers(1, &m_skyboxVBO);
 }
 
+void ModelSky::updateModel()
+{
+
+}
+
 /// <summary>
 /// Overridden method from Model base class - Unused in this class
 /// </summary>

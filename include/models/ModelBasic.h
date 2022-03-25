@@ -13,6 +13,7 @@ public:
     ModelBasic();
     ~ModelBasic();
 
+	void		updateModel() override;
     void        drawPassOne() override;
     void        drawPassTwo() override;
 

@@ -11,6 +11,7 @@ public:
     ModelSky();
     ~ModelSky();
 
+	void updateModel() override;
     void drawPassOne() override;
     void drawPassTwo() override;
 

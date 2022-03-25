@@ -14,6 +14,11 @@ ModelBasic::~ModelBasic()
 	m_localPointLight = nullptr;
 }
 
+void ModelBasic::updateModel()
+{
+
+}
+
 /// <summary>
 /// Overridden method from Model base class - Unused in this class
 /// </summary>

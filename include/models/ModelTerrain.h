@@ -11,6 +11,7 @@ public:
     ModelTerrain();
     ~ModelTerrain();
 
+	void		updateModel() override;
     void        drawPassOne() override;
     void        drawPassTwo() override;
 

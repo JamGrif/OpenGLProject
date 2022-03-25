@@ -15,6 +15,11 @@ ModelTerrain::~ModelTerrain()
 	m_terrainHeight = nullptr;
 }
 
+void ModelTerrain::updateModel()
+{
+
+}
+
 /// <summary>
 /// Overridden method from Model base class - Unused in this class
 /// </summary>

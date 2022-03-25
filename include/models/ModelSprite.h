@@ -9,6 +9,7 @@ public:
     ModelSprite();
     ~ModelSprite();
 
+	void					updateModel() override;
     void                    drawPassOne() override;
     void                    drawPassTwo() override;
 

@@ -15,6 +15,11 @@ ModelEnvironment::~ModelEnvironment()
 	m_skyTexture = nullptr;
 }
 
+void ModelEnvironment::updateModel()
+{
+
+}
+
 /// <summary>
 /// Overridden method from Model base class - Unused in this class
 /// </summary>

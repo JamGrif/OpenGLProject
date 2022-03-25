@@ -28,6 +28,7 @@ public:
 	Model();
 	virtual ~Model();
 
+	virtual void	updateModel() = 0;
 	virtual void	drawPassOne() = 0;
 	virtual void	drawPassTwo() = 0;
 

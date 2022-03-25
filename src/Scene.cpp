@@ -100,6 +100,18 @@ void Scene::updateScene()
 	// Update functions
 	updateSceneLight();
 	updateOnInput();
+
+	// Draw second pass of all models
+	for (std::shared_ptr<Model>& m : m_sceneModels)
+	{
+		m->setMatrixValues();
+	}
+
+	// Draw second pass of all models
+	for (std::shared_ptr<Model>& m : m_sceneModels)
+	{
+		m->updateModel();
+	}
 }
 
 /// <summary>
@@ -110,7 +122,7 @@ void Scene::drawScene()
 	// Draw second pass of all models
 	for (std::shared_ptr<Model>& m : m_sceneModels)
 	{
-		m->setMatrixValues();
+		//m->setMatrixValues();
 		m->drawPassTwo();
 	}
 }

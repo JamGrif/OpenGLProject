@@ -9,6 +9,7 @@ public:
     ModelEnvironment();
     ~ModelEnvironment();
 
+	void		updateModel() override;
     void        drawPassOne() override;
     void        drawPassTwo() override;
 

@@ -15,6 +15,11 @@ ModelGeometry::~ModelGeometry()
 	m_geometryTexture = nullptr;
 }
 
+void ModelGeometry::updateModel()
+{
+
+}
+
 /// <summary>
 /// Overridden method from Model base class - Unused in this class
 /// </summary>

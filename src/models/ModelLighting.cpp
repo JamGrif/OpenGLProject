@@ -46,6 +46,11 @@ ModelLighting::~ModelLighting()
 	}
 }
 
+void ModelLighting::updateModel()
+{
+
+}
+
 /// <summary>
 /// Overridden method from Model base class - Used to render the scene to the shadow map depth texture
 /// </summary>

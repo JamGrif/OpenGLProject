@@ -9,6 +9,7 @@ public:
     ModelLighting();
     ~ModelLighting();
 
+	void					updateModel() override;
     void                    drawPassOne() override;
     void                    drawPassTwo() override;
 
