@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -175,6 +167,8 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\CollisionMaster.cpp" />
+    <ClCompile Include="src\CollisionObject.cpp" />
     <ClCompile Include="src\rendering\BaseAsset.cpp" />
     <ClCompile Include="dependencies\imgui\imgui.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
@@ -210,6 +204,8 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClCompile Include="src\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\CollisionMaster.h" />
+    <ClInclude Include="include\CollisionObject.h" />
     <ClInclude Include="include\PerformanceTimer.h" />
     <ClInclude Include="include\rendering\BaseAsset.h" />
     <ClInclude Include="dependencies\imgui\imconfig.h" />

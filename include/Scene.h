@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 
+#include <CollisionMaster.h>
+
 // Forward Declarations
 class Model;
 class Camera;
@@ -41,6 +43,8 @@ private:
 
 	//LightManager*			m_sceneLightManager;
 	std::shared_ptr<LightManager> m_sceneLightManager;
+
+	std::shared_ptr<CollisionMaster> m_sceneCollisionMaster;
 	
 
 	/*

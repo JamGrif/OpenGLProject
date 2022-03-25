@@ -1,6 +1,8 @@
 #pragma once
 #include "models/Model.h"
 
+#include "CollisionObject.h"
+
 // Class that allows an object to be lit by all the scene lights and gives the option for multiple texture maps to be applied
 class ModelLighting :
     public Model
@@ -40,6 +42,8 @@ private:
         e_normalTextureSlot     = 3,
         e_heightTextureSlot     = 4
     };
+
+	std::shared_ptr<CollisionObject> m_collisionObject;
 
 };
 

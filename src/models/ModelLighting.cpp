@@ -11,6 +11,8 @@ ModelLighting::ModelLighting()
 {
 	setShaderOne("res/shaders/lightingPassOne-vertex.glsl", "res/shaders/lightingPassOne-fragment.glsl");
 	setShaderTwo("res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
+
+	m_collisionObject = std::make_shared<CollisionObject>();
 }
 
 ModelLighting::~ModelLighting()
@@ -44,11 +46,13 @@ ModelLighting::~ModelLighting()
 		m_modelTextures[e_heightTextureSlot]->Unbind(e_heightTextureSlot);
 		m_modelTextures[e_heightTextureSlot] = nullptr;
 	}
+
+	m_collisionObject = nullptr;
 }
 
 void ModelLighting::updateModel()
 {
-
+	m_collisionObject->update();
 }
 
 /// <summary>

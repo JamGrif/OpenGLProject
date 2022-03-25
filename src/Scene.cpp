@@ -49,6 +49,8 @@ Scene::~Scene()
 	MeshManager::clearMeshes();
 	ShaderManager::clearShaders();
 
+	m_sceneCollisionMaster = nullptr; 
+
 	std::cout << "Scene Destroyed" << std::endl;
 }
 
@@ -88,6 +90,8 @@ bool Scene::loadScene()
 	CubemapManager::createCubemaps();
 	MeshManager::createMeshes();
 	ShaderManager::createShaders();
+
+	m_sceneCollisionMaster = std::make_shared<CollisionMaster>();
 
 	return true;
 }
