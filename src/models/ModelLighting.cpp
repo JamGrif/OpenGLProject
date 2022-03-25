@@ -2,6 +2,8 @@
 
 #include "LightManager.h"
 
+#include <iostream>
+
 ModelLighting::ModelLighting()
 	:m_modelTextures{nullptr, nullptr, nullptr, nullptr, nullptr},
 	m_modelUsingTextures{false, false, false, false, false},
@@ -181,13 +183,14 @@ void ModelLighting::drawPassTwo()
 		Bind VBOs and vertex attributes
 	*/
 
-	m_modelMesh->setVBOAttrib(true, true, true, true, true); 
-	//if (m_modelNormalTexture != nullptr)
+	m_modelMesh->Bind(true, true, true, true);
+	//if (m_modelUsingTextures[e_normalTextureSlot])
 	//{
+	//	
 	//}
 	//else
 	//{
-	//	setVBOAttrib(true, true, true, false, false); //No use for tangents / bitangents if no normal map
+	//	m_modelMesh->Bind(true, true, true, false, false); //No use for tangents / bitangents if no normal map
 	//}
 	
 	/*
@@ -199,6 +202,8 @@ void ModelLighting::drawPassTwo()
 	/*
 		Post-draw cleanup
 	*/
+
+	m_modelMesh->Unbind();
 
 	if (m_modelUsingTextures[e_diffuseTextureSlot])
 		m_modelTextures[e_diffuseTextureSlot]->Unbind(e_diffuseTextureSlot);

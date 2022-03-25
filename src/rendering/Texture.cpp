@@ -2,45 +2,76 @@
 
 #include <iostream>
 
-#include "stb_image.h"
+#include "stb_image.h" // Image loading
 
 std::vector<std::shared_ptr<Texture>> TextureManager::m_loadedTextures;
 
 Texture::Texture()
-	:m_texture(0), m_width(0), m_height(0), m_BPP(0), m_filePath("")
+	:m_textureID(0), m_width(0), m_height(0), m_BPP(0), m_filePath(""), m_localbuffer(nullptr)
 {
 }
 
 Texture::~Texture()
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glDeleteTextures(1, &m_texture);
+	glDeleteTextures(1, &m_textureID);
 }
 
-void Texture::readTextureFromFile()
+/// <summary>
+/// Binds the texture to the specified slot
+/// </summary>
+void Texture::Bind(unsigned int slot) const
+{
+	glActiveTexture(GL_TEXTURE0 + slot);
+	glBindTexture(GL_TEXTURE_2D, m_textureID);
+}
+
+/// <summary>
+/// Unbinds the texture from the specified slot
+/// </summary>
+void Texture::Unbind(unsigned int slot) const
+{
+	glActiveTexture(GL_TEXTURE0 + slot);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+/// <summary>
+/// Uses the saved filepath (from .setFilePath()) to load the texture image into the object.
+/// Must be called BEFORE .loadTexture()
+/// </summary>
+/// <returns>Returns false if image can't be found at filepath</returns>
+bool Texture::readTextureFromFile()
 {
 	stbi_set_flip_vertically_on_load_thread(1); // Flips texture on Y-Axis
 
-	localbuffer = stbi_load(m_filePath.c_str(), &m_width, &m_height, &m_BPP, 4);
+	m_localbuffer = stbi_load(m_filePath.c_str(), &m_width, &m_height, &m_BPP, 4);
 
 	// Check if file loaded successfully
 	if (stbi_failure_reason() == "can't fopen")
 	{
 		std::cout << "TEXTURE->" << m_filePath << " failed to load, using default texture - FAILURE" << std::endl;
-		//return false;
+		stbi_image_free(m_localbuffer);
+		m_localbuffer = nullptr;
+
+		return false;
 	}
 	else
 	{
 		std::cout << "TEXTURE->" << m_filePath << " successfully loaded - SUCCESS" << std::endl;
 	}
+	return true;
 }
 
-bool Texture::loadTexture()
+/// <summary>
+/// Turns the saved image data into an OpenGL texture.
+/// Must be called AFTER .readTextureFromFile()
+/// </summary>
+void Texture::loadTexture()
 {
 	// Generate texture buffer
-	glGenTextures(1, &m_texture); 
+	glGenTextures(1, &m_textureID);
 
-	glBindTexture(GL_TEXTURE_2D, m_texture);
+	glBindTexture(GL_TEXTURE_2D, m_textureID);
 
 	// Specify what happens if texture is rendered on a different sized surface
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -59,41 +90,21 @@ bool Texture::loadTexture()
 	}
 
 	// Define the texture
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localbuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localbuffer);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// Unbind
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	if (localbuffer)
+	if (m_localbuffer)
 	{
-		stbi_image_free(localbuffer);
+		stbi_image_free(m_localbuffer);
+		m_localbuffer = nullptr;
 	}
-
-	return true;
 }
 
 /// <summary>
-/// Binds the texture to the rendering pipeline and to specified texture slot
-/// </summary>
-/// <param name="slot">Texture slot to bind to</param>
-void Texture::Bind(unsigned int slot) const
-{
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, m_texture);
-}
-
-/// <summary>
-/// Unbinds texture from the pipeline
-/// </summary>
-void Texture::Unbind(unsigned int slot) const
-{
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-/// <summary>
-/// Loads a texture from the specified filepath and sets its parameters
+/// Sets the textures filepath. Used by .readTextureFromFile()
 /// </summary>
 void Texture::setFilePath(const std::string& filePath)
 {
@@ -105,15 +116,11 @@ const std::string& Texture::getFilePath() const
 	return m_filePath;
 }
 
-/*
-	TextureManager 
-*/
-
 /// <summary>
-/// Loads the specified texture, if texture already exists then it returns a pointer to it instead of reloading the same texture
+/// Creates a texture object, using the specified filepath.
+/// If an object already exists with the same filepath, then return that instead of recreating the same object.
 /// </summary>
-/// <param name="filePath"></param>
-/// <returns>Pointer to the created texture</returns>
+/// <returns>Pointer to the created texture object</returns>
 std::shared_ptr<Texture> TextureManager::retrieveTextureObject(const std::string& filePath)
 {
 	// Check if a texture object with the same filePath is already loaded
@@ -133,28 +140,38 @@ std::shared_ptr<Texture> TextureManager::retrieveTextureObject(const std::string
 	return newTexture;
 }
 
-
+/// <summary>
+/// Calls the .readTextureFromFile() function for each texture object created from ::retrieveTextureObject(). This part reads the image data from the filepath and puts it into the object.
+/// Part 1 of 2 for texture creation
+/// </summary>
 void TextureManager::readTexturesFromFile()
 {
 	for (auto& t : m_loadedTextures)
 	{
-		t->readTextureFromFile();
-	}
-}
-
-void TextureManager::createTextures()
-{
-	for (auto& t : m_loadedTextures)
-	{
-		if (!t->loadTexture())
+		if (!t->readTextureFromFile())
 		{
-			// If texture fails to load, then load the default missingtexture texture
+			// If texture fails to be read, then load in the default missingtexture texture
 			t->setFilePath("res/textures/missingtexture.png");
-			t->loadTexture();
+			t->readTextureFromFile();
 		}
 	}
 }
 
+/// <summary>
+/// Calls the .loadTexture() function for each texture object. Uses the saved image data saved in the object to create the OpenGL texture
+/// Part 2 of 2 for texture creation
+/// </summary>
+void TextureManager::createTextures()
+{
+	for (auto& t : m_loadedTextures)
+	{
+		t->loadTexture();
+	}
+}
+
+/// <summary>
+/// Completely clears all saved texture objects
+/// </summary>
 void TextureManager::clearTextures()
 {
 	m_loadedTextures.clear();

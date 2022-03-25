@@ -70,7 +70,7 @@ void ModelBasic::drawPassTwo()
 		Bind VBOs and vertex attributes
 	*/
 
-	m_modelMesh->setVBOAttrib(true, false, false, false, false);
+	m_modelMesh->Bind(true, false, false, false);
 
 	/*
 		Draw
@@ -81,6 +81,8 @@ void ModelBasic::drawPassTwo()
 	/*
 		Post-draw cleanup
 	*/
+
+	m_modelMesh->Unbind();
 
 	m_modelShaderPassTwo->Unbind();
 }

@@ -70,7 +70,7 @@ void ModelEnvironment::drawPassTwo()
 		Bind VBOs and vertex attributes
 	*/
 
-	m_modelMesh->setVBOAttrib(true, true, false, false, false);
+	m_modelMesh->Bind(true, true, false, false);
 
 	/*
 		Draw
@@ -81,7 +81,7 @@ void ModelEnvironment::drawPassTwo()
 	/*
 		Post-draw cleanup
 	*/
-
+	m_modelMesh->Unbind();
 	m_modelShaderPassTwo->Unbind();
 	m_skyTexture->Unbind();
 }

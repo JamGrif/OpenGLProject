@@ -2,16 +2,12 @@
 
 #include "rendering/BaseAsset.h"
 
-struct Vertex
-{
-	glm::vec3 Position;
-	glm::vec3 Normal;
-	glm::vec2 TexCoords;
-	glm::vec3 Tangent;
-	glm::vec3 Bitangent;
-};
+// Forward Declarations
+struct Vertex;
 
-// Stores mesh information and provides a way to load a mesh by interfacing with MeshManager
+/// <summary>
+/// Stores mesh information and provides a way to load a mesh by providing an interface for MeshManager
+/// </summary>
 class Mesh :
 	public BaseAsset
 {
@@ -19,33 +15,36 @@ public:
 	Mesh();
 	~Mesh();
 
-	void								readMeshFromFile();
-	bool								loadMesh(); 
-	void								setupMesh();
-
-	void setVBOAttrib(bool shaderPos = false, bool shaderNorm = false, bool shaderTex = false, bool shaderTan = false, bool shaderBiTan = false);
-
-public:
-
-	void								setFilePath(const std::string& filePath);
+	// Drawing functions
+	void								Bind(bool shaderPos = false, bool shaderNorm = false, bool shaderTex = false, bool shaderTanBi = false) const;
+	void								Unbind() const;
 
 	const std::vector<unsigned int>&	getIndices() const;
-	const std::string&					getFilePath() const;
+
+	// Mesh loading functions
+	inline bool							readMeshFromFile();
+	inline void							loadMesh();
+
+	inline void							setFilePath(const std::string& filePath);
+	inline const std::string&			getFilePath() const;
+	
 
 private:
+
+	GLuint								m_meshVBO;
+	GLuint								m_meshEBO;
+
+	std::vector<Vertex>					m_meshVertices;
+	std::vector<unsigned int>			m_meshIndices;
 
 	std::string							m_filePath;
 
-	GLuint								m_VBO;
-	GLuint								m_EBO;
-
-private:
-
-	std::vector<Vertex>					m_vertices;
-	std::vector<unsigned int>			m_indices;
 };
 
-//Stores current loaded meshes ensuring only one of each mesh gets loaded. Provides a way to load a mesh from a file
+/// <summary>
+/// Stores created mesh objects, only one version of a mesh object will exist for each filepath set.
+///	Do all mesh creation and deleting through the MeshManager
+/// </summary>
 class MeshManager
 {
 public:

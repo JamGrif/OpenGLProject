@@ -20,8 +20,10 @@ enum ShaderType
 	e_GeometryShaderType = 2
 };
 
-// Stores shader information and provides a way to load a shader by interfacing with ShaderManager. 
-// Can load Vertex shader, Fragment shader, Tessellation Control shader, Tessellation Evaluation shader & Geometry shader
+/// <summary>
+/// Stores shader information and provides a way to load a shader by providing an interface for ShaderManager
+/// Can load vertex, fragment, tessellation controls, tessellation evaluation & geometry shaders
+/// </summary>
 class Shader :
 	public BaseAsset
 {
@@ -29,14 +31,7 @@ public:
 	Shader();
 	~Shader();
 
-	inline void					readFromShaderFile();
-	inline void					compileAndCreateShader();
-
-	inline void					setFilePath(const std::string& vertexPath, const std::string& fragmentPath);
-	inline void					setFilePath(const std::string& vertexPath, const std::string& tessellationControlPath, const std::string& tessellationEvaluationPath, const std::string& fragmentPath);
-	inline void					setFilePath(const std::string& vertexPath, const std::string& geometryPath, const std::string& fragmentPath);
-
-
+	// Drawing functions
 	void						Bind() const;
 	void						Unbind() const;
 
@@ -47,18 +42,28 @@ public:
 	void						setUniformMatrix4fv(const std::string& name, const glm::mat4& v0);
 	void						setUniformMatrix3fv(const std::string& name, const glm::mat3& v0);
 
-	inline const GLuint			getProgram() const;
+	// Shader loading functions
+	inline void					readShaderFromFile();
+	inline void					loadShader();
+
+	inline void					setFilePath(const std::string& vertexPath, const std::string& fragmentPath);
+	inline void					setFilePath(const std::string& vertexPath, const std::string& tessellationControlPath, const std::string& tessellationEvaluationPath, const std::string& fragmentPath);
+	inline void					setFilePath(const std::string& vertexPath, const std::string& geometryPath, const std::string& fragmentPath);
+
 	inline const std::string&	getFilePath(int filePath) const;
 	inline const int			getShaderType() const;
 
 private:
 
+	// Drawing functions
+	inline const int			getUniformLocation(const std::string& name);
+
+	// Shader loading functions
 	inline void					compileAndCreateNormalShader();
 	inline void					compileAndCreateTesselationShader();
 	inline void					compileAndCreateGeometryShader();
 
-	inline const int			getUniformLocation(const std::string& name);
-
+	
 	GLuint						m_shaderProgram;
 
 	int							m_shaderType;
@@ -67,11 +72,14 @@ private:
 
 	std::string					m_shaderCode[5];
 
-	//Cache for uniforms
+	// Cache for uniform locations
 	std::unordered_map<std::string, int>	m_locationCache;
 };
 
-//Stores current loaded shaders ensuring only one of each shaders gets loaded. Provides a way to load a shader from a file
+/// <summary>
+/// Stores created shader objects, only one version of a shader object will exist for each filepath set.
+/// Do all shader creation and deleting through the TextureManager
+/// </summary>
 class ShaderManager
 {
 public:

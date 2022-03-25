@@ -2,7 +2,9 @@
 
 #include "rendering/BaseAsset.h"
 
-// Stores texture information and provides a way to load a texture by interfacing with TextureManager
+/// <summary>
+/// Stores texture information and provides a way to load a texture by providing an interface for TextureManager
+/// </summary>
 class Texture :
 	public BaseAsset
 {
@@ -10,38 +12,42 @@ public:
 	Texture();
 	~Texture();
 
-	void						readTextureFromFile();
-	inline bool					loadTexture(); 
-
+	// Drawing functions
 	void						Bind(unsigned int slot = 0) const;
 	void						Unbind(unsigned int slot = 0) const;
 
-	inline void					setFilePath(const std::string& filePath);
+	// Texture loading functions
+	inline bool					readTextureFromFile();
+	inline void					loadTexture(); 
 
+	inline void					setFilePath(const std::string& filePath);
 	inline const std::string&	getFilePath() const;
 
 private:
 
-	GLuint						m_texture;
-
-	std::string					m_filePath;
+	GLuint						m_textureID;
 
 	int							m_width, m_height, m_BPP;
 
-	unsigned char* localbuffer;
+	std::string					m_filePath;
+
+	unsigned char*				m_localbuffer;
 };
 
-// Stores currently loaded textures ensuring only one of each texture gets loaded. Provides a way to load a texture from a file
+/// <summary>
+/// Stores created texture objects, only one version of a texture object will exist for each filepath set.
+/// Do all texture creation and deleting through the TextureManager
+/// </summary>
 class TextureManager
 {
 public:
 
 	static std::shared_ptr<Texture> retrieveTextureObject(const std::string& filePath);
 
-	static void		readTexturesFromFile();
-	static void		createTextures();
+	static void						readTexturesFromFile();
+	static void						createTextures();
 
-	static void		clearTextures();
+	static void						clearTextures();
 
 private:
 

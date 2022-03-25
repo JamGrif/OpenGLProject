@@ -59,6 +59,7 @@ void ModelTerrain::drawPassTwo()
 		Post-draw cleanup
 	*/
 
+	m_modelMesh->Unbind();
 	m_modelShaderPassTwo->Unbind();
 	m_terrainTexture->Unbind();
 	m_terrainHeight->Unbind();

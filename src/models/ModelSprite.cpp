@@ -53,7 +53,7 @@ void ModelSprite::drawPassTwo()
 		Bind VBOs and vertex attributes
 	*/
 
-	m_modelMesh->setVBOAttrib(true, false, true, false, false);
+	m_modelMesh->Bind(true, false, true, false);
 
 	/*
 		Draw
@@ -65,6 +65,7 @@ void ModelSprite::drawPassTwo()
 		Post-draw cleanup
 	*/
 
+	m_modelMesh->Unbind();
 	m_modelSprite->Unbind();
 }
 
