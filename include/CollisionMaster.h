@@ -1,6 +1,7 @@
 #pragma once
 
-#include <vector>
+#include "btBulletDynamicsCommon.h"
+
 
 class CollisionObject;
 
@@ -12,11 +13,27 @@ public:
 	~CollisionMaster();
 
 	static void addToCollisionObjects(CollisionObject* cObject);
+
+	static btDynamicsWorld* getDynamicsWorld();
+
+	static void update();
 	
 
 private:
 
 	static std::vector<CollisionObject*> m_sceneCollisionObjects;
+
+
+
+	btDefaultCollisionConfiguration* collisionConfiguration;
+
+	btCollisionDispatcher* dispatcher;
+
+	btBroadphaseInterface* overlappingPairCache;
+
+	btSequentialImpulseConstraintSolver* solver;
+
+	static btDynamicsWorld* dynamicsWorld;
 
 };
 
