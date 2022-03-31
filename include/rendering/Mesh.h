@@ -27,12 +27,17 @@ public:
 
 	inline void							setFilePath(const std::string& filePath);
 	inline const std::string&			getFilePath() const;
+
+	int getMeshNumVertices() {return m_meshNumVertices;}
 	
 
 private:
 
 	GLuint								m_meshVBO;
 	GLuint								m_meshEBO;
+
+	int									m_meshNumVertices;
+	//aiMesh*								m_meshForCollision;
 
 	std::vector<Vertex>					m_meshVertices;
 	std::vector<unsigned int>			m_meshIndices;

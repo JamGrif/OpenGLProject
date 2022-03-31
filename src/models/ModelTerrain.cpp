@@ -1,3 +1,4 @@
+#include "pch.h"
 
 #include "models/ModelTerrain.h"
 
@@ -13,6 +14,11 @@ ModelTerrain::~ModelTerrain()
 {
 	m_terrainTexture = nullptr;
 	m_terrainHeight = nullptr;
+}
+
+void ModelTerrain::initModel()
+{
+
 }
 
 void ModelTerrain::updateModel()

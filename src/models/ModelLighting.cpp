@@ -1,8 +1,9 @@
+#include "pch.h"
+
 #include "models/ModelLighting.h"
 
 #include "LightManager.h"
 
-#include <iostream>
 
 ModelLighting::ModelLighting()
 	:m_modelTextures{nullptr, nullptr, nullptr, nullptr, nullptr},
@@ -12,7 +13,9 @@ ModelLighting::ModelLighting()
 	setShaderOne("res/shaders/lightingPassOne-vertex.glsl", "res/shaders/lightingPassOne-fragment.glsl");
 	setShaderTwo("res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
 
+	
 	m_collisionObject = std::make_shared<CollisionObject>();
+	//affectedByGravity();
 }
 
 ModelLighting::~ModelLighting()
@@ -50,9 +53,17 @@ ModelLighting::~ModelLighting()
 	m_collisionObject = nullptr;
 }
 
+void ModelLighting::initModel()
+{
+	setMatrixValues(true);
+	m_collisionObject->init(m_position, m_scale, m_rotation, m_modelMesh->getFilePath());
+}
+
 void ModelLighting::updateModel()
 {
-	m_collisionObject->update();
+	//std::cout << m_position.y << std::endl;
+	m_collisionObject->update(m_position, m_scale, m_rotation);
+	//std::cout << m_position.y << std::endl;
 }
 
 /// <summary>
@@ -290,4 +301,24 @@ void ModelLighting::setHeightTexture(const std::string& texturePath, float heigh
 	m_heightAmount = heightAmount;
 }
 
+void ModelLighting::affectedByGravity(bool gravity)
+{
+	
+	m_collisionObject->affectedByGravity(gravity);
+	std::cout << std::endl;
+	//std::cout << m_position.x << std::endl;
+	//std::cout << m_position.y << std::endl;
+	//std::cout << m_position.z << std::endl;
+	//
+	//std::cout << m_scale.x << std::endl;
+	//std::cout << m_scale.y << std::endl;
+	//std::cout << m_scale.z << std::endl;
+	//
+	//std::cout << m_rotation.x << std::endl;
+	//std::cout << m_rotation.y << std::endl;
+	//std::cout << m_rotation.z << std::endl;
+	//std::cout << std::endl;
+
+	
+}
 

@@ -1,16 +1,13 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <memory>
 
-#include <CollisionMaster.h>
 
 // Forward Declarations
 class Model;
 class Camera;
 class Framebuffer;
 class LightManager;
+class CollisionMaster;
 
 // Class that contains all the objects of a loaded level. Loops through them every frame, updating and drawing them
 class Scene

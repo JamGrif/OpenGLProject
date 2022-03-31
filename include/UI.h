@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 enum sceneNames
 {
 	e_FMPscene		= 1,

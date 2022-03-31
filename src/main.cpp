@@ -1,9 +1,11 @@
+#include "pch.h"
+
 /////-----includes_start-----
 //#include "btBulletDynamicsCommon.h"
 //#include <stdio.h>
 //// temp here to use as reference for implementing bullet3 -----------------------------------------------------------------------------------
 //
-/// This is a Hello World program for running a basic Bullet physics simulation
+//// This is a Hello World program for running a basic Bullet physics simulation
 //int jeff()
 //{
 //	///-----includes_end-----
@@ -97,7 +99,8 @@
 //	/// Do some simulation
 //
 //	///-----stepsimulation_start-----
-//	for (i = 0; i < 150; i++)
+//	
+//	while (true)
 //	{
 //		dynamicsWorld->stepSimulation(1.f / 60.f, 10);
 //
@@ -152,7 +155,7 @@
 //	//delete solver
 //	delete solver;
 //
-//	//delete broadphase
+//	//delete broad phase
 //	delete overlappingPairCache;
 //
 //	//delete dispatcher
@@ -166,16 +169,13 @@
 //	return 1;
 //}
 
-
-
 #include "Application.h"
-
 
 int main()
 {
 	//jeff();
 	std::unique_ptr<Application> app = std::make_unique<Application>();
-
+	
 	if (app->appInit())
 	{
 		app->appLoop();

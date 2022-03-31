@@ -1,4 +1,5 @@
 #pragma once
+
 #include "models/Model.h"
 
 // Class that is used to draw a simple sprite at a location
@@ -9,6 +10,7 @@ public:
     ModelSprite();
     ~ModelSprite();
 
+	void					initModel() override;
 	void					updateModel() override;
     void                    drawPassOne() override;
     void                    drawPassTwo() override;

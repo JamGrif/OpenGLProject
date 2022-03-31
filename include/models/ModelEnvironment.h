@@ -1,4 +1,5 @@
 #pragma once
+
 #include "models/Model.h"
 
 // Class allows meshes to have a reflection environment map or a refraction environment map from the skybox
@@ -9,6 +10,7 @@ public:
     ModelEnvironment();
     ~ModelEnvironment();
 
+	void		initModel() override;
 	void		updateModel() override;
     void        drawPassOne() override;
     void        drawPassTwo() override;

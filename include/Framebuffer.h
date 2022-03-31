@@ -3,7 +3,6 @@
 // Forward Declarations
 class Shader;
 
-#include <memory>
 
 enum screenFilters
 {

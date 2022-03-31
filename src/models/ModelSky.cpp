@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "models/ModelSky.h"
 
 ModelSky::ModelSky()
@@ -17,6 +19,11 @@ ModelSky::~ModelSky()
 {
 	m_skyTexture = nullptr;
 	glDeleteBuffers(1, &m_skyboxVBO);
+}
+
+void ModelSky::initModel()
+{
+
 }
 
 void ModelSky::updateModel()

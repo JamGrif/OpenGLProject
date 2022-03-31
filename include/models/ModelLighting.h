@@ -1,4 +1,5 @@
 #pragma once
+
 #include "models/Model.h"
 
 #include "CollisionObject.h"
@@ -11,6 +12,7 @@ public:
     ModelLighting();
     ~ModelLighting();
 
+	void					initModel() override;
 	void					updateModel() override;
     void                    drawPassOne() override;
     void                    drawPassTwo() override;
@@ -20,6 +22,8 @@ public:
     void                    setEmissionTexture(const std::string& texturePath);
     void                    setNormalTexture(const std::string& texturePath, bool normalize);
     void                    setHeightTexture(const std::string& texturePath, float heightAmount);
+
+	void					affectedByGravity(bool gravity);
 
 private:
 

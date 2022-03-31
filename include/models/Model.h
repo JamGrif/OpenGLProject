@@ -8,9 +8,6 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtx\transform.hpp>
 
-#include <string>
-#include <memory>
-
 #include "Camera.h"
 #include "EngineStatics.h"
 
@@ -28,6 +25,7 @@ public:
 	Model();
 	virtual ~Model();
 
+	virtual void	initModel() = 0;
 	virtual void	updateModel() = 0;
 	virtual void	drawPassOne() = 0;
 	virtual void	drawPassTwo() = 0;
@@ -54,7 +52,7 @@ public:
 	void			IncXScale(float num),	IncYScale(float num),	IncZScale(float num);
 	void			DecXScale(float num),	DecYScale(float num),	DecZScale(float num);
 
-	void			setMatrixValues();
+	void			setMatrixValues(bool includeVmat = true);
 
 protected:
 	

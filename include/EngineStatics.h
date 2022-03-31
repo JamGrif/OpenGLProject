@@ -2,7 +2,6 @@
 
 #include <glm\glm.hpp>
 
-#include <memory>
 
 // Forward Declarations
 class OpenGLWindow;

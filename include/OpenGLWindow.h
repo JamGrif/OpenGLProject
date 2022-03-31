@@ -3,7 +3,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <string>
 
 /// <summary>
 /// A wrapper class around the GLFWwindow variable, providing a way to create and destroy one, 

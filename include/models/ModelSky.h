@@ -11,9 +11,10 @@ public:
     ModelSky();
     ~ModelSky();
 
-	void updateModel() override;
-    void drawPassOne() override;
-    void drawPassTwo() override;
+	void	initModel() override;
+	void	updateModel() override;
+    void	drawPassOne() override;
+    void	drawPassTwo() override;
 
     void setSkyboxTexture(const std::string& texturePath);
 

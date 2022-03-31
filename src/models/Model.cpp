@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "models/Model.h"
 
 Model::Model()
@@ -47,7 +49,7 @@ void Model::setShaderTwo(const char* vertexPath, const char* fragmentPath)
 /// <summary>
 /// Resets and sets the matrix values of the model
 /// </summary>
-void Model::setMatrixValues()
+void Model::setMatrixValues(bool includeVmat)
 {
 	//Reset matrix values
 	m_mMat = glm::mat4(1.0f);
@@ -63,7 +65,11 @@ void Model::setMatrixValues()
 	m_sMat = glm::scale(m_sMat, m_scale);
 
 	m_mMat = m_tMat * m_rMat * m_sMat;
-	m_vMat = EngineStatics::getCamera()->getViewMatrix(); //---------
+
+	if (includeVmat)
+	{
+		m_vMat = EngineStatics::getCamera()->getViewMatrix(); //---------
+	}
 }
 
 void Model::SetXPos(float num) { m_position.x = num; }

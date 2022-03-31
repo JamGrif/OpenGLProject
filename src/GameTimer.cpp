@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "GameTimer.h"
 
 #include <GL/glew.h>

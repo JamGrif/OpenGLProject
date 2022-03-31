@@ -2,9 +2,6 @@
 
 #include <glm\glm.hpp> // glm::vec3()
 
-#include <vector>
-#include <string>
-#include <memory>
 
 // Forward Declarations
 class Model;
@@ -98,6 +95,8 @@ private:
 		float heightMapHeight = 0.0f;
 
 		std::string emissionMap = "";
+
+		bool gravity = false;
 	};
 	struct templateModelBasic : public templateModel
 	{

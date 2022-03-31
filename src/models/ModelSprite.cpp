@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "models/ModelSprite.h"
 
 ModelSprite::ModelSprite()
@@ -11,6 +13,11 @@ ModelSprite::ModelSprite()
 ModelSprite::~ModelSprite()
 {
 	m_modelSprite = nullptr;
+}
+
+void ModelSprite::initModel()
+{
+
 }
 
 void ModelSprite::updateModel()

@@ -1,6 +1,7 @@
+#include "pch.h"
+
 #include "rendering/Texture.h"
 
-#include <iostream>
 
 #include "stb_image.h" // Image loading
 

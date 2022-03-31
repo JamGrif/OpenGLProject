@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "models/ModelEnvironment.h"
 
 ModelEnvironment::ModelEnvironment()
@@ -13,6 +15,11 @@ ModelEnvironment::ModelEnvironment()
 ModelEnvironment::~ModelEnvironment()
 {
 	m_skyTexture = nullptr;
+}
+
+void ModelEnvironment::initModel()
+{
+
 }
 
 void ModelEnvironment::updateModel()

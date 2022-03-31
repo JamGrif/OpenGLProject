@@ -1,7 +1,7 @@
+#include "pch.h"
+
 #include "Scene.h"
 
-#include <iostream>
-#include <string>
 #include <thread>
 
 #include "Camera.h"
@@ -9,6 +9,7 @@
 #include "Input.h"
 #include "SceneTextReader.h"
 #include "LightManager.h"
+#include "CollisionMaster.h"
 
 #include "PerformanceTimer.h"
 
@@ -63,6 +64,9 @@ bool Scene::loadScene()
 	addSceneCamera(0.0f, 2.0f, 0.0f);
 	addSceneLightManager();
 
+
+	m_sceneCollisionMaster = std::make_shared<CollisionMaster>();
+
 	// Run scene reader, giving it the scene objects vector and light manager to fill out
 	SceneTextReader txtReader(m_sceneName, m_sceneModels, m_sceneLightManager);
 
@@ -91,7 +95,11 @@ bool Scene::loadScene()
 	MeshManager::createMeshes();
 	ShaderManager::createShaders();
 
-	m_sceneCollisionMaster = std::make_shared<CollisionMaster>();
+	for (auto& m : m_sceneModels)
+	{
+		m->initModel();
+	}
+
 
 	return true;
 }
@@ -104,6 +112,8 @@ void Scene::updateScene()
 	// Update functions
 	updateSceneLight();
 	updateOnInput();
+
+	m_sceneCollisionMaster->update();
 
 	// Draw second pass of all models
 	for (std::shared_ptr<Model>& m : m_sceneModels)

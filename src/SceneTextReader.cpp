@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "SceneTextReader.h"
 
 #include "models/ModelBasic.h"
@@ -8,10 +10,8 @@
 #include "models/ModelGeometry.h"
 #include "models/ModelSky.h"
 
-#include <iostream>
 #include <fstream>
 #include <sstream>
-#include <thread>
 
 #include "LightManager.h"
 
@@ -296,6 +296,8 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		{
 			model->setEmissionTexture(o.emissionMap);
 		}
+
+		model->affectedByGravity(o.gravity);
 	
 		sceneMeshes.emplace_back(model);
 	}
@@ -616,6 +618,7 @@ bool SceneTextReader::applyToModelLightingTemplate(templateModelLighting& o, con
 		e_heightMap = 15,
 		e_heightMapHeight = 16,
 		e_emissionMap = 17,
+		e_gravity = 18,
 
 		e_END_OF_MODELLIGHTING_ENUM
 	};
@@ -681,6 +684,8 @@ bool SceneTextReader::applyToModelLightingTemplate(templateModelLighting& o, con
 		{
 			o.emissionMap = "res/textures/" + fullLine.at(e_emissionMap) + ".png";
 		}
+
+		o.gravity = std::stof(fullLine.at(e_gravity));
 	}
 	catch (const std::exception& e)
 	{

@@ -1,8 +1,9 @@
+#include "pch.h"
+
 #include "rendering/Shader.h"
 
 #include <fstream>
 #include <sstream>
-#include <iostream>
 
 std::vector<std::shared_ptr<Shader>> ShaderManager::m_loadedShaders;
 
@@ -298,6 +299,9 @@ const std::string& Shader::getFilePath(int filePath) const
 
 	case e_GeometryShader:
 		return m_shaderFilePaths[e_GeometryShader];
+
+	default:
+		return m_shaderFilePaths[e_VertexShader]; // return vertex shader filepath by default
 
 	}
 }

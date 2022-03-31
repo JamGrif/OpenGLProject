@@ -5,10 +5,6 @@
 #include <glm\glm.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
-#include <vector>
-#include <string>
-#include <memory>
-
 class BaseAsset
 {
 public:

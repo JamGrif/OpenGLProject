@@ -1,6 +1,6 @@
-#include "rendering/CubeMap.h"
+#include "pch.h"
 
-#include <iostream>
+#include "rendering/CubeMap.h"
 
 #include "stb_image.h"
 

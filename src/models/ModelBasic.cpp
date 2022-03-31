@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "models/ModelBasic.h"
 
 #include "LightManager.h"
@@ -12,6 +14,11 @@ ModelBasic::ModelBasic()
 ModelBasic::~ModelBasic()
 {
 	m_localPointLight = nullptr;
+}
+
+void ModelBasic::initModel()
+{
+
 }
 
 void ModelBasic::updateModel()

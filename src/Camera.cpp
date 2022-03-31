@@ -1,6 +1,6 @@
-#include "Camera.h"
+#include "pch.h"
 
-#include <iostream>
+#include "Camera.h"
 
 #include "Input.h"
 #include "EngineStatics.h"

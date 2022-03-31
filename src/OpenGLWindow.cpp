@@ -1,6 +1,6 @@
-#include "OpenGLWindow.h"
+#include "pch.h"
 
-#include <iostream>
+#include "OpenGLWindow.h"
 
 #include "stb_image.h"
 #include "EngineStatics.h"

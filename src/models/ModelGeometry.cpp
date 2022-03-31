@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "models/ModelGeometry.h"
 
 #include "GameTimer.h"
@@ -13,6 +15,11 @@ ModelGeometry::ModelGeometry()
 ModelGeometry::~ModelGeometry()
 {
 	m_geometryTexture = nullptr;
+}
+
+void ModelGeometry::initModel()
+{
+
 }
 
 void ModelGeometry::updateModel()

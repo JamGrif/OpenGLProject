@@ -5,9 +5,6 @@
 
 #include <glm\gtc\matrix_transform.hpp>
 
-#include <memory>
-#include <string>
-
 // Forward Declarations
 class OpenGLWindow;
 class Input;

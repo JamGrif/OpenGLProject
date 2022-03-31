@@ -1,10 +1,11 @@
+#include "pch.h"
+
 #include "rendering/Mesh.h"
 
-#include <iostream>
 
-#include <assimp/Importer.hpp>		// Mesh loading
-#include <assimp/scene.h>			//
-#include <assimp/postprocess.h>		//
+#include <assimp/Importer.hpp>		// Importer interface
+#include <assimp/scene.h>			// Output data structure
+#include <assimp/postprocess.h>		// Post-processing flags
 
 struct Vertex
 {
@@ -97,7 +98,7 @@ const std::vector<unsigned int>& Mesh::getIndices() const
 bool Mesh::readMeshFromFile()
 {
 	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(m_filePath, aiProcess_Triangulate | aiProcess_CalcTangentSpace);
+	const aiScene* scene = import.ReadFile(m_filePath, aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -110,6 +111,10 @@ bool Mesh::readMeshFromFile()
 	}
 
 	aiMesh* mesh = scene->mMeshes[0];
+
+	m_meshNumVertices = mesh->mNumVertices;
+	std::cout << "num of vertices is " << m_meshNumVertices << std::endl;
+	//m_meshForCollision = mesh;
 
 	m_meshVertices.reserve(mesh->mNumVertices); // Reserve enough space to hold all the vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)

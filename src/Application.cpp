@@ -1,7 +1,6 @@
-#include "Application.h"
+#include "pch.h"
 
-#include <iostream>
-#include <string>
+#include "Application.h"
 
 #include "Framebuffer.h"
 #include "EngineStatics.h"
@@ -29,6 +28,8 @@ Application::~Application()
 	m_appWindow = nullptr;
 
 	glfwTerminate();
+
+	int x = 3;
 }
 
 /// <summary>

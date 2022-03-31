@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glm\glm.hpp>
-#include <vector>
 
 // Base class for all 3 lights - provides basic variables they all use
 struct Light

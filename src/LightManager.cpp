@@ -1,8 +1,8 @@
+#include "pch.h"
+
 #include "LightManager.h"
 
 #include "EngineStatics.h"
-
-#include <iostream>
 
 LightManager::LightManager()
 	:m_maxDirectionalLights(1), m_currentDirectionalLights(0),

@@ -11,6 +11,7 @@ public:
 	ModelGeometry();
 	~ModelGeometry();
 
+	void		initModel() override;
 	void		updateModel() override;
 	void		drawPassOne() override;
 	void		drawPassTwo() override;
