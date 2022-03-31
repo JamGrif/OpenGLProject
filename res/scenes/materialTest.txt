@@ -20,16 +20,16 @@ spotLight			0.0		0.0		0.0		0.8		0.8		0.8		1.0		1.0		1.0		0.0		0.0		0.0
 
 
 # modelLighting objects...
-#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap
-modelLighting	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
-modelLighting	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
-modelLighting	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
-modelLighting	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
-modelLighting	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
-modelLighting	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
-modelLighting	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
-modelLighting	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
-modelLighting	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null
+#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap	#Gravity
+modelLighting	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			0
+modelLighting	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			0
+modelLighting	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			0
+modelLighting	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			0
+modelLighting	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			0
+modelLighting	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			0
+modelLighting	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			0
+modelLighting	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			0
+modelLighting	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			0
 
 
 
