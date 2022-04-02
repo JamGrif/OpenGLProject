@@ -15,6 +15,7 @@ enum shaderFilePath
 
 enum ShaderType
 {
+	e_NoShaderType = -1,
 	e_NormalShaderType = 0,
 	e_TessellationShaderType = 1,
 	e_GeometryShaderType = 2
@@ -43,8 +44,8 @@ public:
 	void						setUniformMatrix3fv(const std::string& name, const glm::mat3& v0);
 
 	// Shader loading functions
-	inline void					readShaderFromFile();
-	inline void					loadShader();
+	void						readSourceCodeFromFile();
+	void						createShaderProgram();
 
 	inline void					setFilePath(const std::string& vertexPath, const std::string& fragmentPath);
 	inline void					setFilePath(const std::string& vertexPath, const std::string& tessellationControlPath, const std::string& tessellationEvaluationPath, const std::string& fragmentPath);
@@ -59,14 +60,10 @@ private:
 	inline const int			getUniformLocation(const std::string& name);
 
 	// Shader loading functions
-	inline void					compileAndCreateNormalShader();
-	inline void					compileAndCreateTesselationShader();
-	inline void					compileAndCreateGeometryShader();
 
-	
 	GLuint						m_shaderProgram;
 
-	int							m_shaderType;
+	ShaderType					m_shaderType;
 
 	std::string					m_shaderFilePaths[5];
 
@@ -75,6 +72,8 @@ private:
 	// Cache for uniform locations
 	std::unordered_map<std::string, int>	m_locationCache;
 };
+
+
 
 /// <summary>
 /// Stores created shader objects, only one version of a shader object will exist for each filepath set.

@@ -303,22 +303,5 @@ void ModelLighting::setHeightTexture(const std::string& texturePath, float heigh
 
 void ModelLighting::affectedByGravity(bool gravity)
 {
-	
 	m_collisionObject->affectedByGravity(gravity);
-	std::cout << std::endl;
-	//std::cout << m_position.x << std::endl;
-	//std::cout << m_position.y << std::endl;
-	//std::cout << m_position.z << std::endl;
-	//
-	//std::cout << m_scale.x << std::endl;
-	//std::cout << m_scale.y << std::endl;
-	//std::cout << m_scale.z << std::endl;
-	//
-	//std::cout << m_rotation.x << std::endl;
-	//std::cout << m_rotation.y << std::endl;
-	//std::cout << m_rotation.z << std::endl;
-	//std::cout << std::endl;
-
-	
 }
-
