@@ -17,10 +17,10 @@ enum Camera_Movement
 class GameTimer;
 
 // Default camera values
-constexpr GLfloat DEFAULT_YAW = -90.0f;
-constexpr GLfloat DEFAULT_PITCH = 0.0f;
-constexpr GLfloat DEFAULT_SPEED = 14.0f;
-constexpr GLfloat DEFAULT_SENSITIVTY = 0.25f;
+constexpr GLfloat Default_YAW = -90.0f;
+constexpr GLfloat Default_PITCH = 0.0f;
+constexpr GLfloat Default_SPEED = 14.0f;
+constexpr GLfloat Default_SENSITIVTY = 0.25f;
 
 // Camera class used to provide view matrix and allows input to alter position
 class Camera

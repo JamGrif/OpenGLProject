@@ -495,7 +495,7 @@ std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, 
 		}
 	}
 
-	// Otherwise, create new texture and add it to vector
+	// Otherwise, create new shader and add it to vector
 	std::cout << "SHADERMANAGER->" << vertexPath << " + " << geometryPath << " + " << fragmentPath << " program is being created" << std::endl;
 
 	std::shared_ptr<Shader> s = std::make_shared<Shader>();

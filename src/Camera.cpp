@@ -8,8 +8,9 @@
 
 Camera::Camera(glm::vec3 position)
     : m_position(position), m_front(glm::vec3(0.0f, 0.0f, -1.0f)), m_up(glm::vec3(0.0f,1.0f,0.0f)), m_right(glm::vec3(0.0f,0.0f,0.0f)), m_worldUp(m_up), m_lookAt(1.0f),
-	m_yaw(DEFAULT_YAW), m_pitch(DEFAULT_PITCH), m_movementSpeed(DEFAULT_SPEED), m_mouseSensitivity(DEFAULT_SENSITIVTY), m_cameraMoved(false)
+	m_yaw(Default_YAW), m_pitch(Default_PITCH), m_movementSpeed(Default_SPEED), m_mouseSensitivity(Default_SENSITIVTY), m_cameraMoved(false)
 {
+	PRINT_ERROR("Scene Camera Initialized");
     std::cout << "Scene Camera Initialized" << std::endl;
 
 	// Initialize default values

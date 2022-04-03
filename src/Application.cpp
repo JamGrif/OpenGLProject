@@ -10,6 +10,8 @@
 #include "Scene.h"
 #include "UI.h"
 
+#include "Log.h"
+
 Application::Application()
 	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0),
 	m_input(nullptr), m_UI(nullptr), m_loadedScene(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr), m_gameTimer(nullptr)
@@ -38,6 +40,10 @@ Application::~Application()
 /// <returns>Returns success or failure of initialization</returns>
 bool Application::appInit()
 {
+	Log::init();
+	//Log::getCoreLogger()->warn("Hello world!");
+	PRINT_ERROR("hello world");
+
 	// GLFW
 	if (!glfwInit())
 	{
@@ -62,6 +68,7 @@ bool Application::appInit()
 		return false;
 	}
 
+	PRINT_ERROR("Vendor is {0}", glGetString(GL_VENDOR));
 	std::cout << "Vendor is " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "Renderer is " << glGetString(GL_RENDERER) << std::endl;
 	std::cout << "Version is " << glGetString(GL_VERSION) << std::endl << std::endl;
