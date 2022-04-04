@@ -212,7 +212,7 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\GameTimer.cpp" />
+    <ClCompile Include="src\ApplicationClock.cpp" />
     <ClCompile Include="src\models\ModelGeometry.cpp" />
     <ClCompile Include="src\models\ModelSprite.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
@@ -242,7 +242,6 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClInclude Include="include\CollisionObject.h" />
     <ClInclude Include="include\Log.h" />
     <ClInclude Include="include\pch.h" />
-    <ClInclude Include="include\PerformanceTimer.h" />
     <ClInclude Include="include\rendering\BaseAsset.h" />
     <ClInclude Include="dependencies\imgui\imconfig.h" />
     <ClInclude Include="dependencies\imgui\imgui.h" />
@@ -253,7 +252,7 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
-    <ClInclude Include="include\GameTimer.h" />
+    <ClInclude Include="include\ApplicationClock.h" />
     <ClInclude Include="include\models\ModelGeometry.h" />
     <ClInclude Include="include\models\ModelSprite.h" />
     <ClInclude Include="include\Framebuffer.h" />
