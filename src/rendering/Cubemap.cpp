@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "rendering/CubeMap.h"
 
-#include "stb_image.h"
+#include "stb_image/stb_image.h"
 
 std::vector<std::shared_ptr<Cubemap>> CubemapManager::m_loadedCubemaps;
 

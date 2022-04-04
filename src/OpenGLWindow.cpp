@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "OpenGLWindow.h"
 
-#include "stb_image.h"
+#include "stb_image/stb_image.h"
 #include "EngineStatics.h"
 
 #include <GLFW/glfw3.h>

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "rendering/Texture.h"
 
-#include "stb_image.h" // Image loading
+#include "stb_image/stb_image.h" // Image loading
 
 std::vector<std::shared_ptr<Texture>> TextureManager::m_loadedTextures;
 
