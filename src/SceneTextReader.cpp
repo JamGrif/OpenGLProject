@@ -57,7 +57,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 
 	if (!fileStream) // Check if file opened correctly
 	{
-		std::cout << "Scene textfile not found - " << filename << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> textfile not found - {0}", filename);
 		m_status = false;
 		return;
 	}
@@ -176,7 +176,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		}
 		else
 		{
-			std::cout << "Could not determine objectType - " << fullLine.at(0) << " - FAILURE" << std::endl;
+			PRINT_WARN("SCENETEXTREADER-> Count not determine objectType - {0}", fullLine.at(0));
 		}
 
 	}// end of scene txt file read
@@ -479,7 +479,7 @@ bool SceneTextReader::applyToPointLight(templatePointLight& l, const std::vector
 	// Ensure text line is correct size
 	if (fullLine.size() != e_END_OF_POINT_LIGHT_ENUM)
 	{
-		std::cout << "SCENE->failed to add point light from textfile (line is incorrect length) - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add a point light from textfile (line is incorrect length)");
 		return false;
 	}
 
@@ -493,7 +493,7 @@ bool SceneTextReader::applyToPointLight(templatePointLight& l, const std::vector
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "SCENE->failed to add point light from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add point light from textfile ({0})", e.what());
 		return false;
 	}
 
@@ -515,7 +515,7 @@ bool SceneTextReader::applyToDirectionalLight(templateDirectionalLight& l, const
 	// Ensure text line is correct size
 	if (fullLine.size() != e_END_OF_DIRECTIONAL_LIGHT_ENUM)
 	{
-		std::cout << "SCENE->failed to add directional light from textfile (line is incorrect length) - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add a directional light from textfile (line is incorrect length)");
 		return false;
 	}
 
@@ -529,7 +529,7 @@ bool SceneTextReader::applyToDirectionalLight(templateDirectionalLight& l, const
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "SCENE->failed to add directional light from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add directional light from textfile ({0})", e.what());
 		return false;
 	}
 
@@ -551,7 +551,7 @@ bool SceneTextReader::applyToSpotLight(templateSpotLight& l, const std::vector<s
 	// Ensure text line is correct size
 	if (fullLine.size() != e_END_OF_SPOT_LIGHT_ENUM)
 	{
-		std::cout << "SCENE->failed to add spot light from textfile (line is incorrect length) - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add a spot light from textfile (line is incorrect length)");
 		return false;
 	}
 
@@ -565,7 +565,7 @@ bool SceneTextReader::applyToSpotLight(templateSpotLight& l, const std::vector<s
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "SCENE->failed to add spot light from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add spot light from textfile ({0})", e.what());
 		return false;
 	}
 
@@ -626,7 +626,7 @@ bool SceneTextReader::applyToModelLightingTemplate(templateModelLighting& o, con
 	// Ensure text line is correct size
 	if (fullLine.size() != e_END_OF_MODELLIGHTING_ENUM)
 	{
-		std::cout << "SCENE->failed to add modelLighting from textfile (line is incorrect length) - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelLighting from textfile (line is incorrect length)");
 		return false;
 	}
 
@@ -689,7 +689,7 @@ bool SceneTextReader::applyToModelLightingTemplate(templateModelLighting& o, con
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "SCENE->failed to add modelLighting from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelLighting from textfile ({0})", e.what());
 		return false;
 	}
 
@@ -710,7 +710,7 @@ bool SceneTextReader::applyToModelBasicTemplate(templateModelBasic& o, const std
 	// Ensure text line is correct size
 	if (fullLine.size() != e_END_OF_MODELBASIC_ENUM)
 	{
-		std::cout << "SCENE->failed to add modelBasic from textfile (line is incorrect length) - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelBasic from textfile (line is incorrect length)");
 		return false;
 	}
 
@@ -724,7 +724,7 @@ bool SceneTextReader::applyToModelBasicTemplate(templateModelBasic& o, const std
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "SCENE->failed to add modelBasic from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelBasic from textfile ({0})", e.what());
 		return false;
 	}
 
@@ -750,7 +750,7 @@ bool SceneTextReader::applyToModelTerrainTemplate(templateModelTerrain& o, const
 	// Ensure text line is correct size
 	if (fullLine.size() != e_END_OF_MODELTERRAIN_ENUM)
 	{
-		std::cout << "SCENE->failed to add modelTerrain from textfile (line is incorrect length) - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelTerrain from textfile (line is incorrect length)");
 		return false;
 	}
 
@@ -765,7 +765,7 @@ bool SceneTextReader::applyToModelTerrainTemplate(templateModelTerrain& o, const
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "SCENE->failed to add modelTerrain from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelTerrain from textfile ({0})", e.what());
 		return false;
 	}
 
@@ -784,7 +784,7 @@ bool SceneTextReader::applyToModelSpriteTemplate(templateModelSprite& o, const s
 	// Ensure text line is correct size
 	if (fullLine.size() != e_END_OF_MODELSPRITE_ENUM)
 	{
-		std::cout << "SCENE->failed to add modelSprite from textfile (line is incorrect length) - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelSprite from textfile (line is incorrect length)");
 		return false;
 	}
 
@@ -796,7 +796,7 @@ bool SceneTextReader::applyToModelSpriteTemplate(templateModelSprite& o, const s
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "SCENE->failed to add modelSprite from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelSprite from textfile ({0})", e.what());
 		return false;
 	}
 
@@ -819,7 +819,7 @@ bool SceneTextReader::applyToModelEnvironmentTemplate(templateModelEnvironment& 
 	// Ensure text line is correct size
 	if (fullLine.size() != e_END_OF_MODELENVIRONMENT_ENUM)
 	{
-		std::cout << "SCENE->failed to add modelEnvironment from textfile (line is incorrect length) - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelEnvironment from textfile (line is incorrect length)");
 		return false;
 	}
 
@@ -835,7 +835,7 @@ bool SceneTextReader::applyToModelEnvironmentTemplate(templateModelEnvironment& 
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "SCENE->failed to add modelEnvironment from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelEnvironment from textfile ({0})", e.what());
 		return false;
 	}
 
@@ -854,7 +854,7 @@ bool SceneTextReader::applyToModelGeometryTemplate(templateModelGeometry& o, con
 	// Ensure text line is correct size
 	if (fullLine.size() != e_END_OF_MODEGEOMETRY_ENUM)
 	{
-		std::cout << "SCENE->failed to add modelGeometry from textfile (line is incorrect length) - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelGeometry from textfile (line is incorrect length)");
 		return false;
 	}
 
@@ -866,7 +866,7 @@ bool SceneTextReader::applyToModelGeometryTemplate(templateModelGeometry& o, con
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "SCENE->failed to add modelGeometry from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelGeometry from textfile ({0})", e.what());
 		return false;
 	}
 
@@ -885,7 +885,7 @@ bool SceneTextReader::applyToModelSkyTemplate(templateModelSky& o, const std::ve
 	// Ensure text line is correct size
 	if (fullLine.size() != e_END_OF_MODELSKY_ENUM)
 	{
-		std::cout << "SCENE->failed to add modelSky from textfile (line is incorrect length) - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelSky from textfile (line is incorrect length)");
 		return false;
 	}
 
@@ -897,7 +897,7 @@ bool SceneTextReader::applyToModelSkyTemplate(templateModelSky& o, const std::ve
 	}
 	catch (const std::exception& e )
 	{
-		std::cout << "SCENE->failed to add modelSky from textfile (" << e.what() << ") - FAILURE" << std::endl;
+		PRINT_WARN("SCENETEXTREADER-> Failed to add modelSky from textfile ({0})", e.what());
 		return false;
 	}
 

@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "UI.h"
 
 #include "imgui.h"
@@ -7,19 +6,18 @@
 #include "imgui_impl_opengl3.h"
 
 #include "EngineStatics.h"
-#include "Input.h"
 #include "OpenGLWindow.h"
-#include "GameTimer.h"
 #include "LightManager.h"
+
 
 UI::UI(bool uiVisible)
 	:m_uiVisible(uiVisible), m_sceneNum(0),
 	m_directionalLightInScene(false), m_directionalLightActiveButton(true),
 	m_spotLightInScene(false), m_spotLightActiveButton(true),
 	m_pointLightInScene{ false, false, false, false }, m_pointLightActiveButton{ true, true, true, true },
-	m_appPostProcess(0), m_localLightManager(nullptr), m_localGameTimer(EngineStatics::getGameTimer())
+	m_appPostProcess(0), m_localLightManager(nullptr)
 {
-	std::cout << "UI Initialized" << std::endl;
+	PRINT_INFO("UI Initialized");
 
 	// Enable or Disable the mouse depending on UI visibility
 	m_uiVisible ? Input::enableMouse() : Input::disableMouse();
@@ -42,14 +40,13 @@ UI::UI(bool uiVisible)
 
 UI::~UI()
 {
+	PRINT_INFO("UI Destroyed");
+
 	m_localLightManager = nullptr;
-	m_localGameTimer = nullptr;
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-
-	std::cout << "UI destroyed" << std::endl;
 }
 
 /// <summary>
@@ -58,7 +55,7 @@ UI::~UI()
 void UI::startOfFrame()
 {
 	// Check if user wants to toggle UI visibility
-	if (Input::getKeyPressedOnce(GLFW_KEY_Q))
+	if (Input::getKeyPressedOnce(Keyboard::Q))
 	{
 		toggleUI();
 	}
@@ -214,10 +211,10 @@ void UI::drawInFrame()
 		Performance Metrics
 	*/
 
-	double x = m_localGameTimer->getDeltaTime();
+	double x = ApplicationClock::getDeltaTime();
 	std::string xxx = "Delta Time: " + std::to_string(x);
 
-	double y = m_localGameTimer->getFrameCount();
+	double y = ApplicationClock::getFrameCount();
 	std::string yyy = "FPS: " + std::to_string(y);
 
 	ImGui::Begin("Performance Metrics:");

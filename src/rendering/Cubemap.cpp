@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "rendering/CubeMap.h"
 
 #include "stb_image.h"
@@ -28,9 +27,6 @@ void Cubemap::readCubemapFromFile()
 	m_facesFilePath[e_cubeFaceFront] = "res/textures/sky/" + m_filePath + "_front.png";
 	m_facesFilePath[e_cubeFaceBack] = "res/textures/sky/" + m_filePath + "_back.png";
 
-	
-
-	//unsigned char* localBuffer;
 	for (unsigned int i = e_cubeFaceRight; i < e_END_OF_CUBEFACE_ENUM; i++)
 	{
 		stbi_set_flip_vertically_on_load_thread(0);
@@ -40,13 +36,7 @@ void Cubemap::readCubemapFromFile()
 		// Check if file loaded successfully
 		if (stbi_failure_reason() == "can't fopen")
 		{
-			std::cout << "CUBEMAP->" << m_facesFilePath[i] << " failed to load, loading default texture - FAILURE" << std::endl;
-			//stbi_image_free(m_localbuffer[i]);
-			//return false;
-		}
-		else
-		{
-			std::cout << "CUBEMAP->" << m_facesFilePath[i] << " successfully loaded - SUCCESS" << std::endl;
+			PRINT_WARN("CUBEMAP-> {0} failed to load, loading default texture", m_facesFilePath[i]);
 		}
 	}
 }

@@ -30,7 +30,8 @@ static const GLuint compileShader(int GLShaderType, const GLchar* source)
 		constexpr int errorLength = 512;
 		GLchar infoLog[errorLength];
 		glGetShaderInfoLog(tempID, errorLength, NULL, infoLog);
-		std::cout << "Shader->Failed to compile shader - " << infoLog << std::endl;
+
+		PRINT_WARN("SHADER-> Failed to compile shader - {0}", infoLog);
 	}
 
 	return tempID;
@@ -67,7 +68,8 @@ static const GLuint linkShaders(GLuint shader1 = 0, GLuint shader2 = 0, GLuint s
 		constexpr int errorLength = 512;
 		GLchar infoLog[errorLength];
 		glGetProgramInfoLog(tempProgram, errorLength, NULL, infoLog);
-		std::cout << "Shader->Failed to compile shader - " << infoLog << std::endl;
+
+		PRINT_WARN("SHADER-> Failed to link shader program - {0}", infoLog);
 	}
 
 	// Delete the shaders as they're linked into the program and no longer necessary
@@ -208,7 +210,7 @@ void Shader::readSourceCodeFromFile()
 	}
 	catch (std::ifstream::failure e)
 	{
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		PRINT_WARN("SHADER-> Failed to open and read shaders {0} , {1} with error {2}", m_shaderFilePaths[e_VertexShader], m_shaderFilePaths[e_FragmentShader], e.what());
 	}
 
 	m_shaderCode[e_VertexShader] = vertexCode.c_str();
@@ -254,7 +256,7 @@ void Shader::readSourceCodeFromFile()
 		}
 		catch (std::ifstream::failure e)
 		{
-			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+			PRINT_WARN("SHADER-> Failed to open and read shaders {0}, {1} with error {2}", m_shaderFilePaths[e_TessellationControlShader], m_shaderFilePaths[e_TessellationEvaluationShader], e.what());
 		}
 		m_shaderCode[e_TessellationControlShader] = tcCode.c_str();
 		m_shaderCode[e_TessellationEvaluationShader] = teCode.c_str();
@@ -291,7 +293,7 @@ void Shader::readSourceCodeFromFile()
 		}
 		catch (std::ifstream::failure e)
 		{
-			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+			PRINT_WARN("SHADER-> Failed to open and read shaders {0} with error {2}", m_shaderFilePaths[e_GeometryShader], e.what());
 		}
 		m_shaderCode[e_GeometryShader] = geoCode.c_str();
 	}
@@ -415,7 +417,7 @@ const int Shader::getUniformLocation(const std::string& name)
 	int location = glGetUniformLocation(m_shaderProgram, name.c_str());
 	if (location == -1)
 	{
-		std::cout << "SHADER->Uniform location " << name << " does not exist!" << std::endl;
+		PRINT_WARN("SHADER-> Uniform location {0} does not exist", name);
 	}
 	m_locationCache[name] = location;
 
@@ -440,7 +442,7 @@ std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, 
 	}
 
 	// Otherwise, create new shader and add it to vector
-	std::cout << "SHADERMANAGER->" << vertexPath << " + " << fragmentPath << " program is being created" << std::endl;
+	//PRINT_TRACE("SHADERMANAGER-> {0} + {1} program is being created", vertexPath, fragmentPath);
 
 	std::shared_ptr<Shader> s = std::make_shared<Shader>();
 	s->setFilePath(vertexPath, fragmentPath);
@@ -469,7 +471,7 @@ std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, 
 	}
 
 	// Otherwise, create new texture and add it to vector
-	std::cout << "SHADERMANAGER->" << vertexPath << " + " << tessellationControlPath << " + " << tessellationEvaluationPath << " + " << fragmentPath << " program is being created" << std::endl;
+	//PRINT_TRACE("SHADERMANAGER-> {0} + {1} + {2} + {3} program is being created", vertexPath, tessellationControlPath, tessellationEvaluationPath, fragmentPath);
 
 	std::shared_ptr<Shader> s = std::make_shared<Shader>();
 	s->setFilePath(vertexPath, tessellationControlPath, tessellationEvaluationPath, fragmentPath);
@@ -496,7 +498,7 @@ std::shared_ptr<Shader> ShaderManager::retrieveShader(const GLchar* vertexPath, 
 	}
 
 	// Otherwise, create new shader and add it to vector
-	std::cout << "SHADERMANAGER->" << vertexPath << " + " << geometryPath << " + " << fragmentPath << " program is being created" << std::endl;
+	//PRINT_TRACE("SHADERMANAGER-> {0} + {1} + {2} program is being created", vertexPath, geometryPath, fragmentPath);
 
 	std::shared_ptr<Shader> s = std::make_shared<Shader>();
 	s->setFilePath(vertexPath, geometryPath, fragmentPath);

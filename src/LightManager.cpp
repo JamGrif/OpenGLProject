@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "LightManager.h"
 
 #include "EngineStatics.h"
@@ -9,14 +8,13 @@ LightManager::LightManager()
 	m_maxPointLights(4), m_currentPointLights(0),
 	m_maxSpotLights(1), m_currentSpotLights(0)
 {
-	std::cout << "LightManager Initialized" << std::endl;
+	PRINT_INFO("LightManager Initialized");
 
-	//EngineStatics::setLightManager(this);
 }
 
 LightManager::~LightManager()
 {
-	std::cout << "LightManager Destroyed" << std::endl;
+	PRINT_INFO("LightManager Destroyed");
 
 	for (PointLight* pl : m_scenePointLights)
 	{
@@ -74,8 +72,10 @@ void LightManager::addDirectionalLight(const glm::vec3& ambient, const glm::vec3
 		DirectionalLight* dl = new DirectionalLight(ambient, diffuse, specular, direction);
 		m_sceneDirectionalLights.push_back(dl);
 		m_currentDirectionalLights++;
-
-		std::cout << "LIGHTMANAGER->New directional light created with direction " << direction.x << " " << direction.y << " " << direction.z << std::endl;
+	}
+	else
+	{
+		PRINT_WARN("LIGHTMANAGER-> Can't create new directional light with direction {0} , {1} , {2}", direction.x, direction.y, direction.z);
 	}
 }
 
@@ -142,8 +142,10 @@ void LightManager::addPointLight(const glm::vec3& ambient, const glm::vec3& diff
 		PointLight* point = new PointLight(ambient, diffuse, specular, position);
 		m_scenePointLights.push_back(point);
 		m_currentPointLights++;
-		
-		std::cout << "LIGHTMANAGER->New point light created at " << position.x << " " << position.y << " " << position.z << std::endl;
+	}
+	else
+	{
+		PRINT_WARN("LIGHTMANAGER-> Can't create new point light at position {0} , {1} , {2}", position.x, position.y, position.z);
 	}
 }
 
@@ -204,14 +206,16 @@ void LightManager::setSpotLight(float x, float y, float z, int index)
 /// <param name="z"></param>
 void LightManager::addSpotLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& position)
 {
-	//Ensure new point lights don't exceed the maximum amount allowed
+	//Ensure new spot lights don't exceed the maximum amount allowed
 	if (m_currentSpotLights < m_maxSpotLights)
 	{
 		SpotLight* spot = new SpotLight(ambient, diffuse, specular, position);
 		m_sceneSpotLights.push_back(spot);
 		m_currentSpotLights++;
-
-		std::cout << "LIGHTMANAGER->New spot light created at " << position.x << " " << position.y << " " << position.z << std::endl;
+	}
+	else
+	{
+		PRINT_WARN("LIGHTMANAGER-> Can't create spot light at {0} , {1} , {2}", position.x, position.y, position.z);
 	}
 }
 

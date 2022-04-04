@@ -1,7 +1,5 @@
 #include "pch.h"
-
 #include "rendering/Mesh.h"
-
 
 #include <assimp/Importer.hpp>		// Importer interface
 #include <assimp/scene.h>			// Output data structure
@@ -102,18 +100,14 @@ bool Mesh::readMeshFromFile()
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		std::cout << "MESH->" << m_filePath << " failed to load, loading default mesh - FAILURE" << std::endl;
+		PRINT_WARN("MESH-> {0} failed to load, loading default mesh", m_filePath);
 		return false;
-	}
-	else
-	{
-		std::cout << "MESH->" << m_filePath << " successfully loaded - SUCCESS" << std::endl;
 	}
 
 	aiMesh* mesh = scene->mMeshes[0];
 
 	m_meshNumVertices = mesh->mNumVertices;
-	std::cout << "num of vertices is " << m_meshNumVertices << std::endl;
+	//std::cout << "num of vertices is " << m_meshNumVertices << std::endl;
 	//m_meshForCollision = mesh;
 
 	m_meshVertices.reserve(mesh->mNumVertices); // Reserve enough space to hold all the vertices

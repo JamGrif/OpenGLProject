@@ -1,18 +1,16 @@
 #include "pch.h"
-
 #include "CollisionMaster.h"
 
 #include "CollisionObject.h"
-
 
 std::vector<CollisionObject*> CollisionMaster::m_sceneCollisionObjects;
 
 btDynamicsWorld* CollisionMaster::dynamicsWorld = nullptr;
 
-
 CollisionMaster::CollisionMaster()
 {
-	std::cout << "collisionMaster made" << std::endl;
+	//std::cout << "collisionMaster made" << std::endl;
+	PRINT_INFO("collisionMaster made");
 
 	///collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
 	collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -37,7 +35,8 @@ CollisionMaster::CollisionMaster()
 
 CollisionMaster::~CollisionMaster()
 {
-	std::cout << "collisionMaster destroyed" << std::endl;
+	//std::cout << "collisionMaster destroyed" << std::endl;
+	PRINT_INFO("collisionMaster destroyed");
 
 	delete dynamicsWorld;
 

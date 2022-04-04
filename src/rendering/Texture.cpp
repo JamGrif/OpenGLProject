@@ -1,7 +1,5 @@
 #include "pch.h"
-
 #include "rendering/Texture.h"
-
 
 #include "stb_image.h" // Image loading
 
@@ -50,16 +48,13 @@ bool Texture::readTextureFromFile()
 	// Check if file loaded successfully
 	if (stbi_failure_reason() == "can't fopen")
 	{
-		std::cout << "TEXTURE->" << m_filePath << " failed to load, using default texture - FAILURE" << std::endl;
+		PRINT_WARN("TEXTURE-> {0} failed to load, using default texture", m_filePath);
 		stbi_image_free(m_localbuffer);
 		m_localbuffer = nullptr;
 
 		return false;
 	}
-	else
-	{
-		std::cout << "TEXTURE->" << m_filePath << " successfully loaded - SUCCESS" << std::endl;
-	}
+
 	return true;
 }
 

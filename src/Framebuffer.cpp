@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "Framebuffer.h"
 
 #include "rendering/Shader.h"
@@ -53,7 +52,7 @@ Framebuffer::Framebuffer(bool multisampled)
 	// Check status of newly created framebuffer
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
-		std::cout << "Problem creating framebuffer!" << std::endl;
+		PRINT_WARN("FRAMEBUFFER-> Problem creating framebuffer");
 	}
 
 	// Unbind all
@@ -72,7 +71,7 @@ Framebuffer::Framebuffer(bool multisampled)
 Framebuffer::~Framebuffer()
 {
 	glDeleteFramebuffers(1, &m_FBO);
-	std::cout << "deleted framebuffer" << std::endl;
+	//std::cout << "deleted framebuffer" << std::endl;
 }
 
 /// <summary>

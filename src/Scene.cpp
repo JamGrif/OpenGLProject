@@ -1,17 +1,13 @@
 #include "pch.h"
-
 #include "Scene.h"
 
 #include <thread>
 
 #include "Camera.h"
 #include "EngineStatics.h"
-#include "Input.h"
 #include "SceneTextReader.h"
 #include "LightManager.h"
 #include "CollisionMaster.h"
-
-#include "PerformanceTimer.h"
 
 #include "models/Model.h"
 
@@ -22,11 +18,9 @@ static void createShaderThread(){ ShaderManager::readShadersFromFile(); }
 static void createCubemapThread(){ CubemapManager::readCubemapsFromFile(); }
 
 Scene::Scene(const std::string& sceneName)
-	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr),
-	m_materialLightMinZ(-5.0f), m_materialLightMaxZ(9.0f), m_materialLightMinX(-25.0f), m_materialLightMaxX(-13.0f), m_materialLightIncZ(true),
-	m_materialLightIncX(true), m_normalLightMaxZ(8.0f), m_normalLightMinZ(23.0f), m_normalLightIncZ(true), m_lightR(0.0f), m_lightG(0.0f), m_lightB(0.0f)
+	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr), m_sceneCollisionMaster(nullptr)
 {
-	std::cout << "Scene Initialized" << std::endl;
+	PRINT_INFO("Scene Initialized");
 
 	m_sceneModels.reserve(50);
 }
@@ -52,7 +46,7 @@ Scene::~Scene()
 
 	m_sceneCollisionMaster = nullptr; 
 
-	std::cout << "Scene Destroyed" << std::endl;
+	PRINT_INFO("Scene Destroyed");
 }
 
 /// <summary>
@@ -63,7 +57,6 @@ bool Scene::loadScene()
 	// Scene essentials - all scenes must contain these objects
 	addSceneCamera(0.0f, 2.0f, 0.0f);
 	addSceneLightManager();
-
 
 	m_sceneCollisionMaster = std::make_shared<CollisionMaster>();
 
@@ -95,12 +88,14 @@ bool Scene::loadScene()
 	MeshManager::createMeshes();
 	ShaderManager::createShaders();
 
+	t.stop();
+
 	for (auto& m : m_sceneModels)
 	{
 		m->initModel();
 	}
 
-
+	PRINT_INFO("SCENE-> {0} has fully loaded sucessfully", m_sceneName);
 	return true;
 }
 
@@ -112,6 +107,7 @@ void Scene::updateScene()
 	// Update functions
 	updateSceneLight();
 	updateOnInput();
+
 
 	m_sceneCollisionMaster->update();
 
