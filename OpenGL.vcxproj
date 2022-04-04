@@ -133,11 +133,11 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLFW\lib\debug;$(SolutionDir)dependencies\GLEW\lib\debug;$(SolutionDir)dependencies\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glew32sd.lib;opengl32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLFW\lib\debug;$(SolutionDir)dependencies\GLEW\lib\debug;$(SolutionDir)dependencies\assimp\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;glew32sd.lib;opengl32.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d $(ProjectDir)dependencies\assimp\lib\assimp-vc140-mt.dll $(TargetDir)
+      <Command>xcopy /y /d $(ProjectDir)dependencies\assimp\lib\assimp-vc143-mtd.dll $(TargetDir)
 mkdir $(TargetDir)res 
 xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     </PostBuildEvent>
@@ -161,11 +161,11 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLFW\lib\release;$(SolutionDir)dependencies\GLEW\lib\release;$(SolutionDir)dependencies\assimp\lib;$(SolutionDir)dependencies\bullet3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;assimp-vc140-mt.lib;BulletDynamics_vs2010_x64_release.lib;BulletCollision_vs2010_x64_release.lib;LinearMath_vs2010_x64_release.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLFW\lib\release;$(SolutionDir)dependencies\GLEW\lib\release;$(SolutionDir)dependencies\assimp\lib\release;$(SolutionDir)dependencies\bullet3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;assimp-vc143-mt.lib;BulletDynamics_vs2010_x64_release.lib;BulletCollision_vs2010_x64_release.lib;LinearMath_vs2010_x64_release.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d $(ProjectDir)dependencies\assimp\lib\assimp-vc140-mt.dll $(TargetDir)
+      <Command>xcopy /y /d $(ProjectDir)dependencies\assimp\lib\release\assimp-vc143-mt.dll $(TargetDir)
 mkdir $(TargetDir)res 
 xcopy /y /d $(ProjectDir)res $(TargetDir)res /S
 xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
