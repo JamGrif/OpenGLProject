@@ -1,8 +1,5 @@
 #include "pch.h"
-
 #include "models/ModelGeometry.h"
-
-#include "GameTimer.h"
 
 ModelGeometry::ModelGeometry()
 	:m_geometryTexture(nullptr), m_inflation(0), m_increasing(0)
@@ -19,12 +16,10 @@ ModelGeometry::~ModelGeometry()
 
 void ModelGeometry::initModel()
 {
-
 }
 
 void ModelGeometry::updateModel()
 {
-
 }
 
 /// <summary>
@@ -47,7 +42,7 @@ void ModelGeometry::drawPassTwo()
 	// Determine change of mesh inflation
 	if (m_increasing)
 	{
-		m_inflation += 0.025f * static_cast<float>(EngineStatics::getGameTimer()->getDeltaTime());
+		m_inflation += 0.025f * static_cast<float>(ApplicationClock::getDeltaTime());
 		if (m_inflation > 0.2f)
 		{
 			m_inflation = 0.2f;
@@ -56,7 +51,7 @@ void ModelGeometry::drawPassTwo()
 	}
 	else
 	{
-		m_inflation -= 0.025f * static_cast<float>(EngineStatics::getGameTimer()->getDeltaTime());
+		m_inflation -= 0.025f * static_cast<float>(ApplicationClock::getDeltaTime());
 		if (m_inflation < -0.2f)
 		{
 			m_inflation = -0.2f;

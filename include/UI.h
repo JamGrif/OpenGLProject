@@ -10,7 +10,6 @@ enum sceneNames
 };
 
 // Forward Declarations
-class GameTimer;
 class LightManager;
 
 // A wrapper around imGui to display UI elements to the window
@@ -58,6 +57,5 @@ private:
 
 	//Cached other classes
 	std::shared_ptr<LightManager>	m_localLightManager;
-	std::shared_ptr<GameTimer>		m_localGameTimer;
 };
 

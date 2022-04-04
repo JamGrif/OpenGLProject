@@ -1,30 +1,30 @@
 #include "pch.h"
-
 #include "Camera.h"
 
-#include "Input.h"
 #include "EngineStatics.h"
-#include "GameTimer.h"
+
+#include <glm/gtc/matrix_transform.hpp>
+
+// Default camera values
+constexpr float Default_YAW = -90.0f;
+constexpr float Default_PITCH = 0.0f;
+constexpr float Default_SPEED = 14.0f;
+constexpr float Default_SENSITIVTY = 0.25f;
 
 Camera::Camera(glm::vec3 position)
     : m_position(position), m_front(glm::vec3(0.0f, 0.0f, -1.0f)), m_up(glm::vec3(0.0f,1.0f,0.0f)), m_right(glm::vec3(0.0f,0.0f,0.0f)), m_worldUp(m_up), m_lookAt(1.0f),
 	m_yaw(Default_YAW), m_pitch(Default_PITCH), m_movementSpeed(Default_SPEED), m_mouseSensitivity(Default_SENSITIVTY), m_cameraMoved(false)
 {
-	PRINT_ERROR("Scene Camera Initialized");
-    std::cout << "Scene Camera Initialized" << std::endl;
+	PRINT_INFO("Scene Camera Initialized");
 
 	// Initialize default values
     updateCameraVectors();
 	m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up); 
-
-	m_localGameTimer = EngineStatics::getGameTimer();
 }
 
 Camera::~Camera()
 {
-    std::cout << "Scene Camera Destroyed" << std::endl;
-
-	m_localGameTimer = nullptr;
+	PRINT_INFO("Scene Camera Destroyed");
 }
 
 /// <summary>
@@ -35,15 +35,14 @@ void Camera::Update()
 {
 	m_cameraMoved = false;
 
-	if (Input::getKeyPressed(GLFW_KEY_W)) { processKeyboard(e_FORWARD); }
-	if (Input::getKeyPressed(GLFW_KEY_S)) { processKeyboard(e_BACKWARD); }
-	if (Input::getKeyPressed(GLFW_KEY_A)) { processKeyboard(e_LEFT); }
-	if (Input::getKeyPressed(GLFW_KEY_D)) { processKeyboard(e_RIGHT); }
+	if (Input::getKeyPressed(Keyboard::W)) { processKeyboard(e_FORWARD); }
+	if (Input::getKeyPressed(Keyboard::S)) { processKeyboard(e_BACKWARD); }
+	if (Input::getKeyPressed(Keyboard::A)) { processKeyboard(e_LEFT); }
+	if (Input::getKeyPressed(Keyboard::D)) { processKeyboard(e_RIGHT); }
 
-    if (Input::getKeyPressed(GLFW_KEY_R))
-    {
-        std::cout << "Position x - " << m_position.x << " Position y - " << m_position.y << " Position z - " << m_position.z << std::endl;
-    }
+    if (Input::getKeyPressed(Keyboard::R))
+		PRINT_TRACE("Position x - {0}, Position y - {1}, Position z - {2}", m_position.x, m_position.y, m_position.z);
+    
 
 	// Only check for mouse movement if cursor is disabled
 	if (!Input::getMouseEnabled())
@@ -54,17 +53,12 @@ void Camera::Update()
 
 		// Only process mouse movement if mouse has been moved
 		if (x != 0 || y != 0)
-		{
 			processMouse(static_cast<float>(x), static_cast<float>(y));
-		}
-		
 	}
     
 	// Calculate lookAt matrix
 	if (m_cameraMoved)
-	{
 		m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up);
-	}
 }
 
 const glm::mat4& Camera::getViewMatrix() const
@@ -89,28 +83,20 @@ const glm::vec3& Camera::getFront() const
 void Camera::processKeyboard(Camera_Movement direction)
 {
 	m_cameraMoved = true;
-	float velocity = m_movementSpeed * static_cast<float>(m_localGameTimer->getDeltaTime());
+	float velocity = m_movementSpeed * static_cast<float>(ApplicationClock::getDeltaTime());
 
-    //Multiple if statements to allow multiple keys pressed down
+    // Multiple if statements to allow multiple keys pressed down
     if (direction == e_FORWARD)
-    {
-        m_position += m_front * velocity;
-    }
-
+		m_position += m_front * velocity;
+    
     if (direction == e_BACKWARD)
-    {
-        m_position -= m_front * velocity;
-    }
-
+		m_position -= m_front * velocity;
+    
     if (direction == e_LEFT)
-    {
-        m_position -= m_right * velocity;
-    }
-
+		m_position -= m_right * velocity;
+    
     if (direction == e_RIGHT)
-    {
-        m_position += m_right * velocity;
-    }
+		m_position += m_right * velocity;
 }
 
 /// <summary>
@@ -131,7 +117,8 @@ void Camera::processMouse(float xOffset, float yOffset)
         xOffset = -100;
     if (yOffset < -100 && yOffset < 0)
         yOffset = -100;
-    
+
+	// Ensure mouse only moves by the sensitivity
     xOffset *= m_mouseSensitivity;
     yOffset *= m_mouseSensitivity;
     
@@ -140,13 +127,10 @@ void Camera::processMouse(float xOffset, float yOffset)
     
     // Make sure that when pitch is out of bounds, screen doesn't get flipped
     if (m_pitch > 89.0f)
-    {
-        m_pitch = 89.0;
-    }
+		m_pitch = 89.0;
+    
     if (m_pitch < -89.0f)
-    {
-        m_pitch = -89.0f;
-    }
+		m_pitch = -89.0f;
     
     // Update Front, Right and Up vectors using the updated Eular angles
     updateCameraVectors();
@@ -158,7 +142,6 @@ void Camera::processMouse(float xOffset, float yOffset)
 void Camera::updateCameraVectors()
 {
     // Calculate the new Front vector
-    //glm::vec3 front = { 0.0f,0.0f,0.0f };
     m_front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
     m_front.y = sin(glm::radians(m_pitch));
     m_front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));

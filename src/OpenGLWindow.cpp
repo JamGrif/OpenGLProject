@@ -1,9 +1,10 @@
 #include "pch.h"
-
 #include "OpenGLWindow.h"
 
 #include "stb_image.h"
 #include "EngineStatics.h"
+
+#include <GLFW/glfw3.h>
 
 OpenGLWindow::OpenGLWindow(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen)
 	:m_status(false), m_currentWindowWidth(windowWidth), m_currentWindowHeight(windowHeight), m_aspectRatio(0), m_Window(nullptr)

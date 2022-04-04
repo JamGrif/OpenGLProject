@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "models/ModelSky.h"
 
 ModelSky::ModelSky()

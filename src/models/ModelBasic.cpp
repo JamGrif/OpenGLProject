@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "models/ModelBasic.h"
 
 #include "LightManager.h"

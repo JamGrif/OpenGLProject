@@ -3,7 +3,6 @@
 // Forward Declarations
 class Shader;
 
-
 enum screenFilters
 {
 	screen_Default = 1,

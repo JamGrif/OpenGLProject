@@ -1,20 +1,16 @@
 #include "pch.h"
-
 #include "Application.h"
 
 #include "Framebuffer.h"
 #include "EngineStatics.h"
-#include "GameTimer.h"
 #include "OpenGLWindow.h"
-#include "Input.h"
 #include "Scene.h"
 #include "UI.h"
 
-#include "Log.h"
 
 Application::Application()
 	:m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0),
-	m_input(nullptr), m_UI(nullptr), m_loadedScene(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr), m_gameTimer(nullptr)
+	m_UI(nullptr), m_loadedScene(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr)
 {
 }
 
@@ -22,16 +18,12 @@ Application::~Application()
 {
 	EngineStatics::setProjectionMatrix(nullptr);
 
-	m_gameTimer = nullptr;
-
 	if (m_appVAO)
 		glDeleteVertexArrays(1, &m_appVAO);
 
 	m_appWindow = nullptr;
 
 	glfwTerminate();
-
-	int x = 3;
 }
 
 /// <summary>
@@ -41,13 +33,11 @@ Application::~Application()
 bool Application::appInit()
 {
 	Log::init();
-	//Log::getCoreLogger()->warn("Hello world!");
-	PRINT_ERROR("hello world");
 
 	// GLFW
 	if (!glfwInit())
 	{
-		std::cout << "GLFW failed to initialize" << std::endl;
+		PRINT_ERROR("GLFW failed to initialize");
 		return false;
 	}
 
@@ -55,7 +45,7 @@ bool Application::appInit()
 	m_appWindow = std::make_shared<OpenGLWindow>(1920, 1080, "OpenGL - Jamie", false);
 	if (!m_appWindow->getWindowStatus())
 	{
-		std::cout << "Window failed to initialize" << std::endl;
+		PRINT_ERROR("OpenGL window failed to initialize");
 		return false;
 	}
 	EngineStatics::setAppWindow(m_appWindow);
@@ -64,14 +54,13 @@ bool Application::appInit()
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
-		std::cout << "GLEW failed to initialize" << std::endl;
+		PRINT_ERROR("GLEW failed to initialize");
 		return false;
 	}
 
-	PRINT_ERROR("Vendor is {0}", glGetString(GL_VENDOR));
-	std::cout << "Vendor is " << glGetString(GL_VENDOR) << std::endl;
-	std::cout << "Renderer is " << glGetString(GL_RENDERER) << std::endl;
-	std::cout << "Version is " << glGetString(GL_VERSION) << std::endl << std::endl;
+	PRINT_TRACE("Vendor is {0}", glGetString(GL_VENDOR));
+	PRINT_TRACE("Renderer is {0}", glGetString(GL_RENDERER));
+	PRINT_TRACE("Version is {0}", glGetString(GL_VERSION));
 
 	/*
 		Set OpenGL Context Settings
@@ -90,7 +79,6 @@ bool Application::appInit()
 	glEnable(GL_MULTISAMPLE);
 
 	// Build applications projection matrix
-	//constexpr float SixtyDegrees = 1.0472f; //1.0472 = 60 degrees
 	m_projMatrix = glm::perspective(glm::radians(75.0f), m_appWindow->getAspectRatio(), 0.01f, 1000.0f);
 	EngineStatics::setProjectionMatrix(&m_projMatrix);
 
@@ -103,11 +91,10 @@ bool Application::appInit()
 	*/
 
 	// Create Game Timer object
-	m_gameTimer = std::make_shared<GameTimer>();
-	EngineStatics::setGameTimer(m_gameTimer);
+	ApplicationClock::init();
 
 	// Create Input object
-	m_input = std::make_unique<Input>();
+	Input::init();
 
 	// Create UI object
 	m_UI = std::make_unique<UI>(true);
@@ -131,13 +118,9 @@ bool Application::appInit()
 /// </summary>
 void Application::appLoop()
 {
-	if (m_gameTimer)
-		m_gameTimer->startGameTimer();
-
 	while (!glfwWindowShouldClose(m_appWindow->getWindow()))
 	{
-		if (m_gameTimer)
-			m_gameTimer->updateGameTimer();
+		ApplicationClock::tick();
 
 		glClear(GL_DEPTH_BUFFER_BIT); // Clear the screen buffers
 		glfwPollEvents();
@@ -186,8 +169,6 @@ void Application::appLoop()
 		glfwSwapBuffers(m_appWindow->getWindow());
 
 	}
-
-	m_gameTimer->stopGameTimer();
 }
 
 /// <summary>
@@ -198,7 +179,7 @@ void Application::appLoop()
 /// <param name="newHeight">New height of the window after resizing</param>
 void Application::windowResizeCALLBACK(GLFWwindow* window, int newWidth, int newHeight)
 {
-	std::cout << "called windowResizeCALLBACK function" << std::endl;
+	PRINT_TRACE("called windowResizeCALLBACK function");
 }
 
 /// <summary>
@@ -227,7 +208,7 @@ bool Application::setScene(int newSceneNumber)
 		newSceneFilePath = "res/scenes/shadowTest.txt";
 		break;
 	default:
-		std::cout << "Specified sceneNumber is out of range" << std::endl;
+		PRINT_WARN("Specified sceneNumber is out of range:{0}", newSceneNumber);
 		return false;
 	}
 
@@ -280,6 +261,6 @@ void Application::setScreenFilter(int newFilterNumber)
 		m_sceneFilterFramebuffer->setFrameFilter(screen_Drugs);
 		break;
 	default:
-		std::cout << "Specified filterNumber is out of range" << std::endl;
+		PRINT_WARN("Specified filterNumber is out of range:{0}", newFilterNumber);
 	};
 }

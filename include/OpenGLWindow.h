@@ -1,8 +1,7 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
+// Forward Declarations
+struct GLFWwindow;
 
 /// <summary>
 /// A wrapper class around the GLFWwindow variable, providing a way to create and destroy one, 

@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "models/Model.h"
 
 Model::Model()

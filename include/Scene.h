@@ -1,11 +1,8 @@
 #pragma once
 
-
-
 // Forward Declarations
 class Model;
 class Camera;
-class Framebuffer;
 class LightManager;
 class CollisionMaster;
 
@@ -32,18 +29,14 @@ private:
 	void					updateSceneLight();
 
 
-	std::string				m_sceneName;
+	const std::string					m_sceneName;
 
-	std::vector<std::shared_ptr<Model>>		m_sceneModels;
+	std::shared_ptr<Camera>				m_sceneCamera;
+	std::shared_ptr<LightManager>		m_sceneLightManager;
+	std::shared_ptr<CollisionMaster>	m_sceneCollisionMaster;
 
-	std::shared_ptr<Camera>					m_sceneCamera;
-
-	//LightManager*			m_sceneLightManager;
-	std::shared_ptr<LightManager> m_sceneLightManager;
-
-	std::shared_ptr<CollisionMaster> m_sceneCollisionMaster;
+	std::vector<std::shared_ptr<Model>>	m_sceneModels;
 	
-
 	/*
 		FMPscene.txt exclusive variables
 	*/
@@ -80,6 +73,4 @@ private:
 	float					m_lightR = 0.0f;
 	float					m_lightG = 0.0f;
 	float					m_lightB = 0.0f;
-
 };
-

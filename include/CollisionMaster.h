@@ -2,7 +2,6 @@
 
 #include "btBulletDynamicsCommon.h"
 
-
 class CollisionObject;
 
 

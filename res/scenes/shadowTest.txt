@@ -1,5 +1,5 @@
 # Jamie Map File
-#
+
 #directionalLight objects...
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#DirX	#DirY	#DirZ
 directionalLight	0.2		0.2		0.2		0.5		0.5		0.5		0.3		0.3		0.3		-2.0	-2.0	-1.0
@@ -11,22 +11,22 @@ modelSky		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			default
 # modelLighting objects...
 #ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap	#Gravity
 #Inner Ring
-#modelLighting	3.0		-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null		 			0.0						null					0.0					null			0
-#modelLighting	-3.0	-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	3.0		-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	-3.0	-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	9.0		-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	9.0		-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	9.0		-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	9.0		-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	3.0		-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	-3.0	-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	-9.0	-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	3.0		-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	-3.0	-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	-9.0	-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	-9.0	-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
-#modelLighting	-9.0	-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	3.0		-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null		 			0.0						null					0.0					null			0
+modelLighting	-3.0	-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	3.0		-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	-3.0	-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	9.0		-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	9.0		-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	9.0		-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	9.0		-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	3.0		-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	-3.0	-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	-9.0	-1.5	-9.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	3.0		-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	-3.0	-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	-9.0	-1.5	9.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	-9.0	-1.5	3.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
+modelLighting	-9.0	-1.5	-3.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null			0
 
 
 #Outer Ring
@@ -53,7 +53,4 @@ modelLighting	-3.0	-1.5	-15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_dif
 
 
 #Crate
-modelLighting	0.0		20.5		-16.0		0.0		0.0		0.0		1.0			1.0			1.0		ak47		ak47_diff				ak47_spec				ak47_norm				0.0						null					0.0					null			0
-
-
-
+modelLighting	0.0		2.5		-10.0		0.0		0.0		0.0		1.0			1.0			1.0		ak47		ak47_diff				ak47_spec				ak47_norm				0.0						null					0.0					null			0

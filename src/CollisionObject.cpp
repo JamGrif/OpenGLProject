@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "CollisionObject.h"
 
 #include <assimp/Importer.hpp>		// Mesh loading

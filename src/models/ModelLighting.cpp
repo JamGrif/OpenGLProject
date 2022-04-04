@@ -1,9 +1,7 @@
 #include "pch.h"
-
 #include "models/ModelLighting.h"
 
 #include "LightManager.h"
-
 
 ModelLighting::ModelLighting()
 	:m_modelTextures{nullptr, nullptr, nullptr, nullptr, nullptr},

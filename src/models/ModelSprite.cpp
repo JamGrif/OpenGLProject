@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "models/ModelSprite.h"
 
 ModelSprite::ModelSprite()

@@ -1,37 +1,32 @@
 #include "pch.h"
 
-#include "Input.h"
-
 #include "EngineStatics.h"
-
 #include "OpenGLWindow.h"
 
+#include <GLFW/glfw3.h>
+
 // Keyboard
-bool Input::m_keys[1024];
-int Input::m_lastKey = 0;
+bool	Input::m_keys[1024];
+int		Input::m_lastKey = 0;
 
 // Mouse
-double Input::m_lastX = 0;
-double Input::m_lastY = 0;
-bool Input::m_firstMouse = true;
-double Input::m_xOffset = 0;
-double Input::m_yOffset = 0;
+double	Input::m_lastX = 0;
+double	Input::m_lastY = 0;
+bool	Input::m_firstMouse = true;
+double	Input::m_xOffset = 0;
+double	Input::m_yOffset = 0;
 
-bool Input::m_mouseEnabled = false;
+bool	Input::m_mouseEnabled = false;
 
-Input::Input()
+/// <summary>
+/// Initializes the input of the program by setting up the input callbacks
+/// </summary>
+void Input::init()
 {
-	std::cout << "Input Initialized" << std::endl;
-	 
 	glfwSetKeyCallback(EngineStatics::getAppWindow()->getWindow(), keyCALLBACK);
 	glfwSetCursorPosCallback(EngineStatics::getAppWindow()->getWindow(), mouseCALLBACK);
 
-    glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-}
-
-Input::~Input()
-{
-	std::cout << "Input Destroyed" << std::endl;
+	glfwSetInputMode(EngineStatics::getAppWindow()->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 /// <summary>

@@ -1,8 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 enum Camera_Movement
 {
@@ -11,16 +9,6 @@ enum Camera_Movement
 	e_LEFT,
 	e_RIGHT
 };
-
-
-// Forward Declarations
-class GameTimer;
-
-// Default camera values
-constexpr GLfloat Default_YAW = -90.0f;
-constexpr GLfloat Default_PITCH = 0.0f;
-constexpr GLfloat Default_SPEED = 14.0f;
-constexpr GLfloat Default_SENSITIVTY = 0.25f;
 
 // Camera class used to provide view matrix and allows input to alter position
 class Camera
@@ -60,7 +48,4 @@ private:
 	float				m_mouseSensitivity;
 
 	bool				m_cameraMoved;
-
-	// Cached other classes
-	std::shared_ptr<GameTimer>	m_localGameTimer;
 };

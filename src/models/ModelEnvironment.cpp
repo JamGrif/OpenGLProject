@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "models/ModelEnvironment.h"
 
 ModelEnvironment::ModelEnvironment()

@@ -1,7 +1,5 @@
 #include "pch.h"
-
 #include "models/ModelTerrain.h"
-
 
 ModelTerrain::ModelTerrain()
 	:m_terrainTexture(nullptr), m_terrainHeight(nullptr), m_elevation(2.5), m_minElevation(-8), m_maxElevation(-3)

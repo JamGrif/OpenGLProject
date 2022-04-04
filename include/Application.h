@@ -7,11 +7,9 @@
 
 // Forward Declarations
 class OpenGLWindow;
-class Input;
 class Scene;
 class UI;
 class Framebuffer;
-class GameTimer;
 
 // Abstracts the program out of main.cpp, encapsulating the entire program
 class Application
@@ -38,15 +36,11 @@ private:
 
 	// Objects
 
-	std::unique_ptr<Input>			m_input;
-
 	std::unique_ptr<UI>				m_UI;
 
 	std::unique_ptr<Scene>			m_loadedScene;
 
 	std::unique_ptr<Framebuffer>	m_sceneMSAAFrameBuffer;		//Scene is drawn to this buffer with MSAA applied
 	std::unique_ptr<Framebuffer>	m_sceneFilterFramebuffer;	//Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen
-
-	std::shared_ptr<GameTimer>		m_gameTimer;
 };
 
