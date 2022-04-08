@@ -175,14 +175,14 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClCompile Include="dependencies\stb_image\include\stb_image\stb_image.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Rendering\Renderer.cpp" />
     <ClCompile Include="src\CollisionMaster.cpp" />
     <ClCompile Include="src\CollisionObject.cpp" />
-    <ClCompile Include="src\Log.cpp" />
+    <ClCompile Include="src\Core\Log.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\rendering\BaseAsset.cpp" />
     <ClCompile Include="dependencies\imgui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -211,38 +211,36 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\ApplicationClock.cpp" />
-    <ClCompile Include="src\models\ModelGeometry.cpp" />
-    <ClCompile Include="src\models\ModelSprite.cpp" />
-    <ClCompile Include="src\Framebuffer.cpp" />
-    <ClCompile Include="src\models\ModelEnvironment.cpp" />
-    <ClCompile Include="src\models\ModelSky.cpp" />
-    <ClCompile Include="src\models\ModelBasic.cpp" />
-    <ClCompile Include="src\models\ModelLighting.cpp" />
-    <ClCompile Include="src\LightManager.cpp" />
-    <ClCompile Include="src\EngineStatics.cpp" />
-    <ClCompile Include="src\models\Model.cpp" />
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\rendering\Cubemap.cpp" />
-    <ClCompile Include="src\Scene.cpp" />
-    <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\Input.cpp" />
-    <ClCompile Include="src\rendering\Mesh.cpp" />
+    <ClCompile Include="src\Core\ApplicationClock.cpp" />
+    <ClCompile Include="src\Scene\EntityTypes\GeometryEntity.cpp" />
+    <ClCompile Include="src\Rendering\OpenGLFramebuffer.cpp" />
+    <ClCompile Include="src\Scene\EntityTypes\EnvironmentEntity.cpp" />
+    <ClCompile Include="src\Scene\EntityTypes\SkyEntity.cpp" />
+    <ClCompile Include="src\Scene\EntityTypes\BasicEntity.cpp" />
+    <ClCompile Include="src\Scene\EntityTypes\LightingEntity.cpp" />
+    <ClCompile Include="src\Scene\SceneLightManager.cpp" />
+    <ClCompile Include="src\Core\EngineStatics.cpp" />
+    <ClCompile Include="src\Scene\EntityTypes\BaseEntity.cpp" />
+    <ClCompile Include="src\Core\Application.cpp" />
+    <ClCompile Include="src\Rendering\OpenGLCubemap.cpp" />
+    <ClCompile Include="src\Scene\Scene.cpp" />
+    <ClCompile Include="src\Scene\SceneCamera.cpp" />
+    <ClCompile Include="src\Core\Input.cpp" />
+    <ClCompile Include="src\Rendering\OpenGLMesh.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\SceneTextReader.cpp" />
-    <ClCompile Include="src\rendering\Shader.cpp" />
-    <ClCompile Include="src\rendering\Texture.cpp" />
-    <ClCompile Include="src\models\ModelTerrain.cpp" />
-    <ClCompile Include="src\OpenGLWindow.cpp" />
-    <ClCompile Include="src\UI.cpp" />
+    <ClCompile Include="src\Scene\SceneTextReader.cpp" />
+    <ClCompile Include="src\Rendering\OpenGLShader.cpp" />
+    <ClCompile Include="src\Rendering\OpenGLTexture.cpp" />
+    <ClCompile Include="src\Scene\EntityTypes\TerrainEntity.cpp" />
+    <ClCompile Include="src\Rendering\OpenGLWindow.cpp" />
+    <ClCompile Include="src\Core\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\stb_image\include\stb_image\stb_image.h" />
     <ClInclude Include="include\CollisionMaster.h" />
     <ClInclude Include="include\CollisionObject.h" />
-    <ClInclude Include="include\Log.h" />
+    <ClInclude Include="include\Core\Log.h" />
     <ClInclude Include="include\pch.h" />
-    <ClInclude Include="include\rendering\BaseAsset.h" />
     <ClInclude Include="dependencies\imgui\imconfig.h" />
     <ClInclude Include="dependencies\imgui\imgui.h" />
     <ClInclude Include="dependencies\imgui\imgui_impl_glfw.h" />
@@ -252,30 +250,30 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
-    <ClInclude Include="include\ApplicationClock.h" />
-    <ClInclude Include="include\models\ModelGeometry.h" />
-    <ClInclude Include="include\models\ModelSprite.h" />
-    <ClInclude Include="include\Framebuffer.h" />
-    <ClInclude Include="include\models\ModelEnvironment.h" />
-    <ClInclude Include="include\models\ModelSky.h" />
-    <ClInclude Include="include\models\ModelBasic.h" />
-    <ClInclude Include="include\models\ModelLighting.h" />
-    <ClInclude Include="include\rendering\Cubemap.h" />
+    <ClInclude Include="include\Core\ApplicationClock.h" />
+    <ClInclude Include="include\Scene\EntityTypes\GeometryEntity.h" />
+    <ClInclude Include="include\Rendering\OpenGLFramebuffer.h" />
+    <ClInclude Include="include\Scene\EntityTypes\EnvironmentEntity.h" />
+    <ClInclude Include="include\Scene\EntityTypes\SkyEntity.h" />
+    <ClInclude Include="include\Scene\EntityTypes\BasicEntity.h" />
+    <ClInclude Include="include\Scene\EntityTypes\LightingEntity.h" />
+    <ClInclude Include="include\Rendering\OpenGLCubemap.h" />
+    <ClInclude Include="include\Rendering\Renderer.h" />
     <ClInclude Include="res\icon\resource.h" />
-    <ClInclude Include="include\LightManager.h" />
-    <ClInclude Include="include\EngineStatics.h" />
-    <ClInclude Include="include\models\Model.h" />
-    <ClInclude Include="include\Application.h" />
-    <ClInclude Include="include\Scene.h" />
-    <ClInclude Include="include\Input.h" />
-    <ClInclude Include="include\rendering\Mesh.h" />
-    <ClInclude Include="include\Camera.h" />
-    <ClInclude Include="include\SceneTextReader.h" />
-    <ClInclude Include="include\rendering\Shader.h" />
-    <ClInclude Include="include\rendering\Texture.h" />
-    <ClInclude Include="include\models\ModelTerrain.h" />
-    <ClInclude Include="include\OpenGLWindow.h" />
-    <ClInclude Include="include\UI.h" />
+    <ClInclude Include="include\Scene\SceneLightManager.h" />
+    <ClInclude Include="include\Core\EngineStatics.h" />
+    <ClInclude Include="include\Scene\EntityTypes\BaseEntity.h" />
+    <ClInclude Include="include\Core\Application.h" />
+    <ClInclude Include="include\Scene\Scene.h" />
+    <ClInclude Include="include\Core\Input.h" />
+    <ClInclude Include="include\Rendering\OpenGLMesh.h" />
+    <ClInclude Include="include\Scene\SceneCamera.h" />
+    <ClInclude Include="include\Scene\SceneTextReader.h" />
+    <ClInclude Include="include\Rendering\OpenGLShader.h" />
+    <ClInclude Include="include\Rendering\OpenGLTexture.h" />
+    <ClInclude Include="include\Scene\EntityTypes\TerrainEntity.h" />
+    <ClInclude Include="include\Rendering\OpenGLWindow.h" />
+    <ClInclude Include="include\Core\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\icon\Icon.ico" />

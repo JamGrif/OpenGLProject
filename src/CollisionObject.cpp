@@ -23,7 +23,7 @@ CollisionObject::~CollisionObject()
 void CollisionObject::init(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation, const std::string& filepath)
 {
 	
-	m_shape = new btBoxShape(btVector3(4.0f, 4.0f, 4.0f));
+	m_shape = new btBoxShape(btVector3(btScalar(1.1f), btScalar(1.1f), btScalar(1.1f)));
 
 	btTransform m_transform;
 	m_transform.setIdentity();
@@ -63,6 +63,8 @@ void CollisionObject::update(glm::vec3& position, glm::vec3& scale, glm::vec3& r
 {
 	btTransform m_transform;
 	myMotionState->getWorldTransform(m_transform);
+
+	
 	float x = float(m_transform.getOrigin().getX());
 	float y = float(m_transform.getOrigin().getY());
 	float z = float(m_transform.getOrigin().getZ());

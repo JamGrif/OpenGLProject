@@ -1,0 +1,76 @@
+#pragma once
+
+// Forward Declarations
+class BaseEntity;
+class SceneCamera;
+class SceneLightManager;
+//class CollisionMaster;
+
+// Class that contains all the objects of a loaded level. Loops through them every frame, updating and drawing them
+class Scene
+{
+public:
+	Scene(const std::string& sceneName);
+	~Scene();
+
+	bool					loadScene();
+
+	void					updateScene();
+	void					drawScene();
+
+	const std::string&		getSceneName();
+
+private:
+
+	void					addSceneCamera(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+	void					addSceneLightManager();
+
+	void					updateOnInput();
+	void					updateSceneLight();
+
+
+	const std::string					m_sceneName;
+
+	std::shared_ptr<SceneCamera>				m_sceneCamera;
+	std::shared_ptr<SceneLightManager>		m_sceneLightManager;
+	//std::shared_ptr<CollisionMaster>	m_sceneCollisionMaster;
+
+	std::vector<std::shared_ptr<BaseEntity>>	m_sceneEntities;
+	
+	/*
+		FMPscene.txt exclusive variables
+	*/
+
+	// Light showing materials variables
+	float					m_materialLightMinZ = -5;
+	float					m_materialLightMaxZ = 9;
+	float					m_materialLightMinX = -25;
+	float					m_materialLightMaxX = -13;
+	bool					m_materialLightIncZ = true;
+	bool					m_materialLightIncX = true;
+
+	/*
+		lightTest.txt exclusive variables
+	*/
+
+	// Light showing materials variables
+	float					m_materialtestLightMinZ = -9;
+	float					m_materialtestLightMaxZ = 9;
+	float					m_materialtestLightMinX = -9;
+	float					m_materialtestLightMaxX = 9;
+	bool					m_materialtestLightIncZ = true;
+	bool					m_materialtestLightIncX = true;
+	float					m_materialtestlightR = 0.0f;
+	float					m_materialtestlightG = 0.0f;
+	float					m_materialtestlightB = 0.0f;
+
+	// Light showing normal maps variables
+	float					m_normalLightMaxZ = 8;
+	float					m_normalLightMinZ = 23;
+	bool					m_normalLightIncZ = true;
+
+	// Light showing coloured lighting variables
+	float					m_lightR = 0.0f;
+	float					m_lightG = 0.0f;
+	float					m_lightB = 0.0f;
+};

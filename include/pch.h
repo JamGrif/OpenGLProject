@@ -4,6 +4,6 @@
 #include <vector>
 #include <memory>
 
-#include "Log.h"
-#include "ApplicationClock.h"
-#include "Input.h"
+#include "Core/Log.h"
+#include "Core/ApplicationClock.h"
+#include "Core/Input.h"

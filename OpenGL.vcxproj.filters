@@ -18,70 +18,67 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rendering\Mesh.cpp">
+    <ClCompile Include="src\Rendering\OpenGLMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Input.cpp">
+    <ClCompile Include="src\Core\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Camera.cpp">
+    <ClCompile Include="src\Scene\SceneCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Application.cpp">
+    <ClCompile Include="src\Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene.cpp">
+    <ClCompile Include="src\Scene\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\Model.cpp">
+    <ClCompile Include="src\Scene\EntityTypes\BaseEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\EngineStatics.cpp">
+    <ClCompile Include="src\Core\EngineStatics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\LightManager.cpp">
+    <ClCompile Include="src\Scene\SceneLightManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rendering\Shader.cpp">
+    <ClCompile Include="src\Rendering\OpenGLShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rendering\Texture.cpp">
+    <ClCompile Include="src\Rendering\OpenGLTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\ModelBasic.cpp">
+    <ClCompile Include="src\Scene\EntityTypes\BasicEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\ModelLighting.cpp">
+    <ClCompile Include="src\Scene\EntityTypes\LightingEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\ModelSky.cpp">
+    <ClCompile Include="src\Scene\EntityTypes\SkyEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\ModelEnvironment.cpp">
+    <ClCompile Include="src\Scene\EntityTypes\EnvironmentEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Framebuffer.cpp">
+    <ClCompile Include="src\Rendering\OpenGLFramebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\ModelSprite.cpp">
+    <ClCompile Include="src\Scene\EntityTypes\TerrainEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\ModelTerrain.cpp">
+    <ClCompile Include="src\Scene\EntityTypes\GeometryEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\ModelGeometry.cpp">
+    <ClCompile Include="src\Scene\SceneTextReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SceneTextReader.cpp">
+    <ClCompile Include="src\Rendering\OpenGLWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGLWindow.cpp">
+    <ClCompile Include="src\Core\ApplicationClock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ApplicationClock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI.cpp">
+    <ClCompile Include="src\Core\UI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dependencies\imgui\imgui.cpp">
@@ -105,10 +102,7 @@
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rendering\BaseAsset.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\rendering\Cubemap.cpp">
+    <ClCompile Include="src\Rendering\OpenGLCubemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CollisionObject.cpp">
@@ -120,87 +114,84 @@
     <ClCompile Include="src\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\stb_image\stb_image.cpp">
+    <ClCompile Include="src\Core\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dependencies\stb_image\include\stb_image\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\rendering\Shader.h">
+    <ClInclude Include="include\Rendering\OpenGLShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Camera.h">
+    <ClInclude Include="include\Scene\SceneCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\rendering\Mesh.h">
+    <ClInclude Include="include\Rendering\OpenGLMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Input.h">
+    <ClInclude Include="include\Core\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Application.h">
+    <ClInclude Include="include\Core\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene.h">
+    <ClInclude Include="include\Scene\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\models\Model.h">
+    <ClInclude Include="include\Scene\EntityTypes\BaseEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\EngineStatics.h">
+    <ClInclude Include="include\Core\EngineStatics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\LightManager.h">
+    <ClInclude Include="include\Scene\SceneLightManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\rendering\Texture.h">
+    <ClInclude Include="include\Rendering\OpenGLTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="res\icon\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\models\ModelBasic.h">
+    <ClInclude Include="include\Scene\EntityTypes\BasicEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\models\ModelLighting.h">
+    <ClInclude Include="include\Scene\EntityTypes\LightingEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\models\ModelSky.h">
+    <ClInclude Include="include\Scene\EntityTypes\SkyEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\models\ModelEnvironment.h">
+    <ClInclude Include="include\Scene\EntityTypes\EnvironmentEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Framebuffer.h">
+    <ClInclude Include="include\Rendering\OpenGLFramebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\models\ModelSprite.h">
+    <ClInclude Include="include\Scene\EntityTypes\TerrainEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\models\ModelTerrain.h">
+    <ClInclude Include="include\Scene\EntityTypes\GeometryEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\models\ModelGeometry.h">
+    <ClInclude Include="include\Scene\SceneTextReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SceneTextReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\OpenGLWindow.h">
+    <ClInclude Include="include\Rendering\OpenGLWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\stb_image\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ApplicationClock.h">
+    <ClInclude Include="include\Core\ApplicationClock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\UI.h">
+    <ClInclude Include="include\Core\UI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\imgui\imstb_truetype.h">
@@ -227,10 +218,7 @@
     <ClInclude Include="dependencies\imgui\imstb_textedit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\rendering\BaseAsset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\rendering\Cubemap.h">
+    <ClInclude Include="include\Rendering\OpenGLCubemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\CollisionObject.h">
@@ -242,10 +230,13 @@
     <ClInclude Include="include\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Log.h">
+    <ClInclude Include="include\Core\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\stb_image\include\stb_image\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

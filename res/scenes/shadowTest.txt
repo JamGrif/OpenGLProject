@@ -53,4 +53,4 @@ modelLighting	-3.0	-1.5	-15.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_dif
 
 
 #Crate
-modelLighting	0.0		2.5		-10.0		0.0		0.0		0.0		1.0			1.0			1.0		ak47		ak47_diff				ak47_spec				ak47_norm				0.0						null					0.0					null			0
+modelLighting	0.0		21.5		-10.0		0.0		0.0		0.0		1.0			1.0			1.0		crate		crate_diff				crate_spec				crate_norm				0.0						null					0.0					null			1
