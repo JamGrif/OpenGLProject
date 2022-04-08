@@ -67,9 +67,6 @@ bool Application::appInit()
 /// </summary>
 void Application::appLoop()
 {
-	unsigned int windowWidth = EngineStatics::getAppWindow()->getWindowWidth();
-	unsigned int windowHeight = EngineStatics::getAppWindow()->getWindowHeight();
-
 	while (!EngineStatics::getAppWindow()->shouldClose())
 	{
 		ApplicationClock::tick();

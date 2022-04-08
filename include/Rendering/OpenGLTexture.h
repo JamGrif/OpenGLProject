@@ -24,7 +24,7 @@ public:
 
 private:
 
-	uint32_t						m_textureID;
+	uint32_t					m_textureID;
 
 	int							m_textureSlot;
 
@@ -45,10 +45,10 @@ public:
 
 	static std::shared_ptr<OpenGLTexture> retrieveTextureObject(const std::string& filePath);
 
-	static void						readTexturesFromFile();
-	static void						createTextures();
+	static void					readTexturesFromFile();
+	static void					createTextures();
 
-	static void						clearTextures();
+	static void					clearTextures();
 
 private:
 

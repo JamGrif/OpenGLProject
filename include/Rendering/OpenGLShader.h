@@ -60,7 +60,7 @@ private:
 
 	// Shader loading functions
 
-	uint32_t						m_shaderProgram;
+	uint32_t					m_shaderProgram;
 
 	ShaderType					m_shaderType;
 

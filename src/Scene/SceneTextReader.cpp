@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "Scene/SceneTextReader.h"
 
 #include "Scene/EntityTypes/BasicEntity.h"
@@ -15,9 +14,9 @@
 #include "Scene/SceneLightManager.h"
 
 SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<BaseEntity>>& sceneMeshes, std::shared_ptr<SceneLightManager>& sceneLightManager)
-	:m_filename(filename), m_status(false)
+	:m_status(false)
 {
-	std::ifstream fileStream(m_filename, std::ios::in);
+	std::ifstream fileStream(filename, std::ios::in);
 
 	if (!fileStream) // Check if file opened correctly
 	{

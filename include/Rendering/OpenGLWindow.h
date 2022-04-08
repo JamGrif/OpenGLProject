@@ -29,8 +29,8 @@ private:
 
 	bool		m_status;
 
-	int			m_currentWindowWidth;
-	int			m_currentWindowHeight;
+	uint32_t	m_currentWindowWidth;
+	uint32_t	m_currentWindowHeight;
 	float		m_aspectRatio;
 
 	GLFWwindow* m_Window;

@@ -29,11 +29,10 @@ private:
 	void					updateSceneLight();
 
 
-	const std::string					m_sceneName;
+	const std::string							m_sceneName;
 
 	std::shared_ptr<SceneCamera>				m_sceneCamera;
-	std::shared_ptr<SceneLightManager>		m_sceneLightManager;
-	//std::shared_ptr<CollisionMaster>	m_sceneCollisionMaster;
+	std::shared_ptr<SceneLightManager>			m_sceneLightManager;
 
 	std::vector<std::shared_ptr<BaseEntity>>	m_sceneEntities;
 	

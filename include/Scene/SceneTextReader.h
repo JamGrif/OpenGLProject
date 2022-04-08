@@ -10,15 +10,12 @@ class SceneLightManager;
 class SceneTextReader
 {
 public:
-
 	SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<BaseEntity>>& sceneMeshes, std::shared_ptr<SceneLightManager>& sceneLightManager);
 	~SceneTextReader();
 
 	bool getStatus();
 private:
 	bool m_status;
-
-	std::string m_filename;
 
 private:
 
