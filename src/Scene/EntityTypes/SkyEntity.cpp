@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Scene/EntityTypes/SkyEntity.h"
 
+#include <GL/glew.h>
+
 SkyEntity::SkyEntity()
 {
 	//m_skyTexture = TextureManager::retrieveCubeMap("default");

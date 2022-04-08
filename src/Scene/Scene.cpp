@@ -3,8 +3,8 @@
 
 #include <thread>
 
-#include "Scene/SceneCamera.h"
 #include "Core/EngineStatics.h"
+#include "Scene/SceneCamera.h"
 #include "Scene/SceneTextReader.h"
 #include "Scene/SceneLightManager.h"
 //#include "CollisionMaster.h"
@@ -123,14 +123,21 @@ void Scene::updateScene()
 }
 
 /// <summary>
-/// Draws the sceneModels by calling its second draw pass function
+/// Draws the sceneModels by calling its first and second draw pass function
 /// </summary>
 void Scene::drawScene()
 {
+	// Draw first pass of all models
+	for (std::shared_ptr<BaseEntity>& m : m_sceneEntities)
+	{
+		m->drawPassOne();
+	}
+
+
+
 	// Draw second pass of all models
 	for (std::shared_ptr<BaseEntity>& m : m_sceneEntities)
 	{
-		//m->setMatrixValues();
 		m->drawPassTwo();
 	}
 }

@@ -3,6 +3,8 @@
 
 #include "Scene/SceneLightManager.h"
 
+#include <glm\gtc\matrix_transform.hpp>
+
 LightingEntity::LightingEntity()
 	:m_modelUsingTextures{false, false, false, false, false},
 	m_specularShininess(0.0f), m_normalizeTexture(false), m_heightAmount(0.5)

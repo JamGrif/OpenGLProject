@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Scene/EntityTypes/BaseEntity.h"
 
+#include <glm\gtc\matrix_transform.hpp>
+
 BaseEntity::BaseEntity()
 	:m_modelMesh(nullptr), m_modelShaderPassOne(nullptr), m_modelShaderPassTwo(nullptr), 
 	m_position{ 0.0, 0.0, 0.0 }, m_rotation{ 0.0, 0.0, 0.0 }, m_scale{ 1.0f, 1.0f, 1.0f },
