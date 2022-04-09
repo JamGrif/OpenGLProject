@@ -4,21 +4,15 @@
 
 #include <unordered_map>
 
-enum shaderFilePath
+/// <summary>
+/// Used to indicate what type of shader program this shader object is
+/// </summary>
+enum class shaderProgramType
 {
-	e_VertexShader = 0,
-	e_FragmentShader = 1,
-	e_TessellationControlShader = 2,
-	e_TessellationEvaluationShader = 3,
-	e_GeometryShader = 4
-};
-
-enum ShaderType
-{
-	e_NoShaderType = -1,
-	e_NormalShaderType = 0,
-	e_TessellationShaderType = 1,
-	e_GeometryShaderType = 2
+	e_NoProgramType			  = -1,
+	e_NormalProgramType		  = 0, // vertex / fragment
+	e_TessellationProgramType = 1, // vertex / tess control / tess evaluation / fragment
+	e_GeometryProgramType	  = 2  // vertex / geometry / fragment
 };
 
 /// <summary>
@@ -51,7 +45,7 @@ public:
 	inline void					setFilePath(const std::string& vertexPath, const std::string& geometryPath, const std::string& fragmentPath);
 
 	inline const std::string&	getFilePath(int filePath) const;
-	inline const int			getShaderType() const;
+	inline const shaderProgramType		getShaderType() const;
 
 private:
 
@@ -62,7 +56,7 @@ private:
 
 	uint32_t					m_shaderProgram;
 
-	ShaderType					m_shaderType;
+	shaderProgramType			m_shaderType;
 
 	std::string					m_shaderFilePaths[5];
 

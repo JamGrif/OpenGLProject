@@ -13,6 +13,7 @@ public:
 	~OpenGLMesh();
 
 	// Drawing functions
+	void								BindJustPos() const;
 	void								Bind() const;
 	void								Unbind() const;
 

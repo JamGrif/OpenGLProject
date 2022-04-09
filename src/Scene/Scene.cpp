@@ -11,6 +11,8 @@
 
 #include "Scene/EntityTypes/BaseEntity.h"
 
+int entityDrawCount = 0;
+
 // ran from std::threads in .loadScene()
 static void createTextureThread(){ TextureManager::readTexturesFromFile(); }
 static void createMeshThread(){ MeshManager::readMeshesFromFile(); }
@@ -104,8 +106,8 @@ void Scene::updateScene()
 {
 	// Update functions
 	updateSceneLight();
-	updateOnInput();
 
+	m_sceneCamera->Update();
 
 	//m_sceneCollisionMaster->update();
 
@@ -122,24 +124,28 @@ void Scene::updateScene()
 	}
 }
 
-/// <summary>
-/// Draws the sceneModels by calling its first and second draw pass function
-/// </summary>
-void Scene::drawScene()
+void Scene::drawSceneFirstPass()
 {
 	// Draw first pass of all models
 	for (std::shared_ptr<BaseEntity>& m : m_sceneEntities)
 	{
 		m->drawPassOne();
 	}
+}
 
-
-
+/// <summary>
+/// Draws the sceneModels by calling its first and second draw pass function
+/// </summary>
+void Scene::drawSceneSecondPass()
+{
 	// Draw second pass of all models
 	for (std::shared_ptr<BaseEntity>& m : m_sceneEntities)
 	{
 		m->drawPassTwo();
 	}
+
+	//PRINT_TRACE("{0} entites were drawn this frame!", entityDrawCount);
+	//entityDrawCount = 0;
 }
 
 /// <summary>
@@ -151,17 +157,17 @@ const std::string& Scene::getSceneName()
 	return m_sceneName;
 }
 
-/// <summary>
-/// Checks for input and updates various game objects as a result of those inputs - called every scene update
-/// </summary>
-void Scene::updateOnInput()
-{
-	/*
-		Update scene camera
-	*/
-
-	m_sceneCamera->Update();
-}
+///// <summary>
+///// Checks for input and updates various game objects as a result of those inputs - called every scene update
+///// </summary>
+//void Scene::updateOnInput()
+//{
+//	/*
+//		Update scene camera
+//	*/
+//
+//	
+//}
 
 /// <summary>
 /// Alters the lights position or colour every frame 

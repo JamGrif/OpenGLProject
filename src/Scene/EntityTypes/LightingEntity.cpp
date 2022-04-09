@@ -12,9 +12,6 @@ LightingEntity::LightingEntity()
 	setShaderOne("res/shaders/lightingPassOne-vertex.glsl", "res/shaders/lightingPassOne-fragment.glsl");
 	setShaderTwo("res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
 
-	
-	//m_collisionObject = std::make_shared<CollisionObject>();
-	//affectedByGravity();
 }
 
 LightingEntity::~LightingEntity()
@@ -25,23 +22,18 @@ LightingEntity::~LightingEntity()
 		texture = nullptr;
 	}
 	m_modelTextures.clear();
-	
 
-	//m_collisionObject = nullptr;
+
 }
 
 void LightingEntity::initEntity()
 {
-	setMatrixValues(true);
+	setMatrixValues();
 	m_modelMesh->setVertexAttributes(true, true, true, true);
-	//m_collisionObject->init(m_position, m_scale, m_rotation, m_modelMesh->getFilePath());
 }
 
 void LightingEntity::updateEntity()
 {
-	//std::cout << m_position.y << std::endl;
-	//m_collisionObject->update(m_position, m_scale, m_rotation);
-	//std::cout << m_position.y << std::endl;
 }
 
 /// <summary>
@@ -49,22 +41,25 @@ void LightingEntity::updateEntity()
 /// </summary>
 void LightingEntity::drawPassOne()
 {
-	//// If no valid model or shader attached
-	//if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
-	//{
-	//	return;
-	//}
-	//
-	//m_modelShaderPassOne->Bind();
-	////m_modelShaderPassOne->setUniformMatrix4fv("lightSpaceMatrix", *EngineStatics::getLightSpaceMatrix());
-	//m_modelShaderPassOne->setUniformMatrix4fv("model", m_mMat);
-	//
-	//setVBOAttrib(true, false, false, false, false);
-	//
-	//// Draw
+	// If no valid model or shader attached
+	if (!m_modelMesh || !m_modelShaderPassOne)
+	{
+		return;
+	}
+	
+	m_modelShaderPassOne->Bind();
+	//m_modelShaderPassOne->setUniformMatrix4fv("lightSpaceMatrix", *EngineStatics::getLightSpaceMatrix());
+	m_modelShaderPassOne->setUniformMatrix4fv("model", m_mMat);
+
+	m_modelMesh->BindJustPos();
+	
+	// Draw
+	m_localRenderer->draw(m_modelMesh->getIndices().size());
 	//glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_modelMesh->getIndices().size()), GL_UNSIGNED_INT, 0);
-	//
-	//m_modelShaderPassOne->Unbind();
+
+	m_modelMesh->Unbind();
+	
+	m_modelShaderPassOne->Unbind();
 }
 
 /// <summary>

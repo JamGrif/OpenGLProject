@@ -50,7 +50,7 @@ void BaseEntity::setShaderTwo(const char* vertexPath, const char* fragmentPath)
 /// <summary>
 /// Resets and sets the matrix values of the model
 /// </summary>
-void BaseEntity::setMatrixValues(bool includeVmat)
+void BaseEntity::setMatrixValues()
 {
 	//Reset matrix values
 	m_mMat = glm::mat4(1.0f);
@@ -67,10 +67,9 @@ void BaseEntity::setMatrixValues(bool includeVmat)
 
 	m_mMat = m_tMat * m_rMat * m_sMat;
 
-	if (includeVmat)
-	{
-		m_vMat = EngineStatics::getCamera()->getViewMatrix(); //---------
-	}
+	
+	m_vMat = EngineStatics::getCamera()->getViewMatrix(); //---------
+	
 }
 
 void BaseEntity::SetXPos(float num) { m_position.x = num; }

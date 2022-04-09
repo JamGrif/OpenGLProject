@@ -46,6 +46,15 @@ OpenGLMesh::~OpenGLMesh()
 }
 
 
+void OpenGLMesh::BindJustPos() const
+{
+	glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+}
+
 /// <summary>
 /// Binds the meshes VBO and EBO and sets the shader vertex attributes
 /// </summary>

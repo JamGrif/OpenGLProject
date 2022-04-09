@@ -54,6 +54,8 @@ OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		PRINT_WARN("FRAMEBUFFER-> Problem creating framebuffer");
+		glDeleteFramebuffers(1, &m_FBO);
+		glDeleteRenderbuffers(1, &m_RBO);
 	}
 
 	// Unbind all
@@ -72,6 +74,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 OpenGLFramebuffer::~OpenGLFramebuffer()
 {
 	glDeleteFramebuffers(1, &m_FBO);
+	glDeleteRenderbuffers(1, &m_RBO);
 }
 
 /// <summary>
@@ -79,7 +82,7 @@ OpenGLFramebuffer::~OpenGLFramebuffer()
 /// </summary>
 void OpenGLFramebuffer::draw()
 {
-	if (m_screenShader == nullptr) // No shader attached
+	if (!m_screenShader) // No shader attached
 	{
 		return;
 	}

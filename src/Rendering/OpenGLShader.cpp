@@ -8,10 +8,20 @@
 #include <sstream>
 
 #include <GL/glew.h>
-//#include <GLFW/glfw3.h>
-
 
 std::vector<std::shared_ptr<OpenGLShader>> ShaderManager::m_loadedShaders;
+
+/// <summary>
+/// Specifies what type of shader the source code is
+/// </summary>
+enum shaderFilePath
+{
+	e_VertexShader					= 0,
+	e_FragmentShader				= 1,
+	e_TessellationControlShader		= 2,
+	e_TessellationEvaluationShader	= 3,
+	e_GeometryShader				= 4
+};
 
 /// <summary>
 /// Utility function to compile the given shader code into a shader and returns a OpenGL ID to it
@@ -54,15 +64,12 @@ static const GLuint linkShaders(GLuint shader1 = 0, GLuint shader2 = 0, GLuint s
 	GLuint tempProgram;
 	tempProgram = glCreateProgram();
 
-	if (shader1)
-		glAttachShader(tempProgram, shader1);
-	if (shader2)
-		glAttachShader(tempProgram, shader2);
-	if (shader3)
-		glAttachShader(tempProgram, shader3);
-	if (shader4)
-		glAttachShader(tempProgram, shader4);
-
+	// Attach valid shaders to program
+	if (shader1) { glAttachShader(tempProgram, shader1); }
+	if (shader2) { glAttachShader(tempProgram, shader2); }
+	if (shader3) { glAttachShader(tempProgram, shader3); }
+	if (shader4) { glAttachShader(tempProgram, shader4); }
+		
 	glLinkProgram(tempProgram);
 
 	// Check for linking errors and print any errors
@@ -78,21 +85,17 @@ static const GLuint linkShaders(GLuint shader1 = 0, GLuint shader2 = 0, GLuint s
 		PRINT_WARN("SHADER-> Failed to link shader program - {0}", infoLog);
 	}
 
-	// Delete the shaders as they're linked into the program and no longer necessary
-	if (shader1)
-		glDeleteShader(shader1);
-	if (shader2)
-		glDeleteShader(shader2);
-	if (shader3)
-		glDeleteShader(shader3);
-	if (shader4)
-		glDeleteShader(shader4);
-
+	// Delete valid shaders as they're linked into the program and no longer necessary
+	if (shader1) { glDeleteShader(shader1); }
+	if (shader2) { glDeleteShader(shader2); }
+	if (shader3) { glDeleteShader(shader3); }
+	if (shader4) { glDeleteShader(shader4); }
+		
 	return tempProgram;
 }
 
 OpenGLShader::OpenGLShader()
-	:m_shaderProgram(0), m_shaderType(e_NoShaderType)
+	:m_shaderProgram(0), m_shaderType(shaderProgramType::e_NoProgramType)
 {
 }
 
@@ -222,13 +225,13 @@ void OpenGLShader::readSourceCodeFromFile()
 	m_shaderCode[e_VertexShader] = vertexCode.c_str();
 	m_shaderCode[e_FragmentShader] = fragmentCode.c_str();
 
-	if (m_shaderType == e_NormalShaderType)
+	if (m_shaderType == shaderProgramType::e_NormalProgramType)
 	{
 		return;
 	}
 
 	// If a tessellation shader, also read and save from the tessellation shader text files
-	if (m_shaderType == e_TessellationShaderType)
+	if (m_shaderType == shaderProgramType::e_TessellationProgramType)
 	{
 		// Retrieve the vertex/fragment source code from filePath
 
@@ -271,7 +274,7 @@ void OpenGLShader::readSourceCodeFromFile()
 	}
 
 	// If a geometry shader, also read and save from the tessellation shader text files
-	if (m_shaderType == e_GeometryShaderType)
+	if (m_shaderType == shaderProgramType::e_GeometryProgramType)
 	{
 		// Retrieve the vertex/fragment source code from filePath
 		std::string geoCode;
@@ -315,18 +318,18 @@ void OpenGLShader::createShaderProgram()
 	GLuint vertex = compileShader(GL_VERTEX_SHADER, m_shaderCode[e_VertexShader].c_str());
 	GLuint fragment = compileShader(GL_FRAGMENT_SHADER, m_shaderCode[e_FragmentShader].c_str());
 
-	if (m_shaderType == e_NormalShaderType) // vertex / fragment
+	if (m_shaderType == shaderProgramType::e_NormalProgramType) // vertex / fragment
 	{
 		m_shaderProgram = linkShaders(vertex, fragment);
 	}
-	else if (m_shaderType == e_TessellationShaderType) // vertex / fragment / tControl / tEvaluation
+	else if (m_shaderType == shaderProgramType::e_TessellationProgramType) // vertex / fragment / tControl / tEvaluation
 	{
 		GLuint tcontrol = compileShader(GL_TESS_CONTROL_SHADER, m_shaderCode[e_TessellationControlShader].c_str());
 		GLuint tevaluaction = compileShader(GL_TESS_EVALUATION_SHADER, m_shaderCode[e_TessellationEvaluationShader].c_str());
 
 		m_shaderProgram = linkShaders(vertex, fragment, tcontrol, tevaluaction);
 	}
-	else if (m_shaderType == e_GeometryShaderType) // vertex / fragment / geometry
+	else if (m_shaderType == shaderProgramType::e_GeometryProgramType) // vertex / fragment / geometry
 	{
 		GLuint geometry = compileShader(GL_GEOMETRY_SHADER, m_shaderCode[e_GeometryShader].c_str());
 
@@ -339,7 +342,7 @@ void OpenGLShader::createShaderProgram()
 /// </summary>
 void OpenGLShader::setFilePath(const std::string& vertexPath, const std::string& fragmentPath)
 {
-	m_shaderType = e_NormalShaderType;
+	m_shaderType = shaderProgramType::e_NormalProgramType;
 
 	m_shaderFilePaths[e_VertexShader] = vertexPath;
 	m_shaderFilePaths[e_FragmentShader] = fragmentPath;
@@ -350,7 +353,7 @@ void OpenGLShader::setFilePath(const std::string& vertexPath, const std::string&
 /// </summary>
 void OpenGLShader::setFilePath(const std::string& vertexPath, const std::string& tessellationControlPath, const std::string& tessellationEvaluationPath, const std::string& fragmentPath)
 {
-	m_shaderType = e_TessellationShaderType;
+	m_shaderType = shaderProgramType::e_TessellationProgramType;
 
 	m_shaderFilePaths[e_VertexShader] = vertexPath;
 	m_shaderFilePaths[e_TessellationControlShader] = tessellationControlPath;
@@ -363,7 +366,7 @@ void OpenGLShader::setFilePath(const std::string& vertexPath, const std::string&
 /// </summary>
 void OpenGLShader::setFilePath(const std::string& vertexPath, const std::string& geometryPath, const std::string& fragmentPath)
 {
-	m_shaderType = e_GeometryShaderType;
+	m_shaderType = shaderProgramType::e_GeometryProgramType;
 
 	m_shaderFilePaths[e_VertexShader] = vertexPath;
 	m_shaderFilePaths[e_GeometryShader] = geometryPath;
@@ -403,7 +406,7 @@ const std::string& OpenGLShader::getFilePath(int filePath) const
 /// Returns if the shader is a normal, tessellation or geometry shader
 /// </summary>
 /// <returns></returns>
-const int OpenGLShader::getShaderType() const
+const shaderProgramType OpenGLShader::getShaderType() const
 {
 	return m_shaderType;
 }

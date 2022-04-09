@@ -44,7 +44,7 @@ private:
         e_heightTextureSlot     = 4
     };
 
-	//std::shared_ptr<CollisionObject> m_collisionObject;
+
 
 };
 

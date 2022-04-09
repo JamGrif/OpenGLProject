@@ -25,8 +25,10 @@ Application::~Application()
 /// <returns>Returns success or failure of initialization</returns>
 bool Application::appInit()
 {
+	// Initialize logger
 	Log::init();
 
+	// Initialize OpenGL renderer
 	m_renderer = std::make_shared<Renderer>();
 	if (!m_renderer->getStatus())
 	{
@@ -39,13 +41,13 @@ bool Application::appInit()
 		Create applications objects
 	*/
 
-	// Create Game Timer object
+	// Initialize the applications clock
 	ApplicationClock::init();
 
-	// Create Input object
+	// Initialize input
 	Input::init();
 
-	// Create UI object
+	// Initialize the UI
 	m_UI = std::make_unique<UI>(true);
 
 	// Create the apps Framebuffers
@@ -97,7 +99,10 @@ void Application::appLoop()
 			m_sceneMSAAFrameBuffer->bindFramebuffer();
 
 		if (m_loadedScene)
-			m_loadedScene->drawScene();
+			m_loadedScene->drawSceneFirstPass();
+
+		if (m_loadedScene)
+			m_loadedScene->drawSceneSecondPass();
 
 		// Reads from the MSAA buffer and writes it to the Filter buffer
 		if (m_sceneMSAAFrameBuffer && m_sceneFilterFramebuffer)

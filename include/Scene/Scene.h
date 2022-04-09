@@ -16,7 +16,9 @@ public:
 	bool					loadScene();
 
 	void					updateScene();
-	void					drawScene();
+
+	void					drawSceneFirstPass();
+	void					drawSceneSecondPass();
 
 	const std::string&		getSceneName();
 
@@ -25,7 +27,7 @@ private:
 	void					addSceneCamera(float x = 0.0f, float y = 0.0f, float z = 0.0f);
 	void					addSceneLightManager();
 
-	void					updateOnInput();
+	//void					updateOnInput();
 	void					updateSceneLight();
 
 

@@ -30,15 +30,14 @@ SceneCamera::~SceneCamera()
 /// <summary>
 /// Updates the camera depending on input from the keyboard or mouse
 /// </summary>
-/// <param name="deltaTime"></param>
 void SceneCamera::Update()
 {
 	m_cameraMoved = false;
 
-	if (Input::getKeyPressed(Keyboard::W)) { processKeyboard(e_FORWARD); }
-	if (Input::getKeyPressed(Keyboard::S)) { processKeyboard(e_BACKWARD); }
-	if (Input::getKeyPressed(Keyboard::A)) { processKeyboard(e_LEFT); }
-	if (Input::getKeyPressed(Keyboard::D)) { processKeyboard(e_RIGHT); }
+	if (Input::getKeyPressed(Keyboard::W)) { processKeyboard(Camera_Movement::e_FORWARD); }
+	if (Input::getKeyPressed(Keyboard::S)) { processKeyboard(Camera_Movement::e_BACKWARD); }
+	if (Input::getKeyPressed(Keyboard::A)) { processKeyboard(Camera_Movement::e_LEFT); }
+	if (Input::getKeyPressed(Keyboard::D)) { processKeyboard(Camera_Movement::e_RIGHT); }
 
     if (Input::getKeyPressed(Keyboard::R))
 		PRINT_TRACE("Position x - {0}, Position y - {1}, Position z - {2}", m_position.x, m_position.y, m_position.z);
@@ -86,38 +85,41 @@ void SceneCamera::processKeyboard(Camera_Movement direction)
 	float velocity = m_movementSpeed * static_cast<float>(ApplicationClock::getDeltaTime());
 
     // Multiple if statements to allow multiple keys pressed down
-    if (direction == e_FORWARD)
+    if (direction == Camera_Movement::e_FORWARD)
 		m_position += m_front * velocity;
     
-    if (direction == e_BACKWARD)
+    if (direction == Camera_Movement::e_BACKWARD)
 		m_position -= m_front * velocity;
     
-    if (direction == e_LEFT)
+    if (direction == Camera_Movement::e_LEFT)
 		m_position -= m_right * velocity;
     
-    if (direction == e_RIGHT)
+    if (direction == Camera_Movement::e_RIGHT)
 		m_position += m_right * velocity;
 }
 
 /// <summary>
 /// Moves the camera depending on user mouse input
 /// </summary>
-/// <param name="xOffset"></param>
-/// <param name="yOffset"></param>
+/// <param name="xOffset">X mouse movement</param>
+/// <param name="yOffset">Y mouse movement</param>
 void SceneCamera::processMouse(float xOffset, float yOffset)
 {
 	m_cameraMoved = true;
-    
-    if (xOffset > 100 && xOffset > 0)
-        xOffset = 100;
-    if (yOffset > 100 && yOffset > 0)
-        yOffset = 100;
-    
-    if (xOffset < -100 && xOffset < 0)
-        xOffset = -100;
-    if (yOffset < -100 && yOffset < 0)
-        yOffset = -100;
 
+	// Stop mouse from moving too fast
+	if (xOffset > 100)
+		xOffset = 100;
+	
+	if (yOffset > 100)
+		yOffset = 100;
+	
+	if (xOffset < -100)
+		xOffset = -100;
+
+	if (yOffset < -100)
+		yOffset = -100;
+	
 	// Ensure mouse only moves by the sensitivity
     xOffset *= m_mouseSensitivity;
     yOffset *= m_mouseSensitivity;
@@ -125,7 +127,7 @@ void SceneCamera::processMouse(float xOffset, float yOffset)
     m_yaw += xOffset;
     m_pitch += yOffset;
     
-    // Make sure that when pitch is out of bounds, screen doesn't get flipped
+	// Constrain pitch from flipping the screen
     if (m_pitch > 89.0f)
 		m_pitch = 89.0;
     

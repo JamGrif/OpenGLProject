@@ -3,12 +3,12 @@
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 
-enum Camera_Movement
+enum class Camera_Movement
 {
-	e_FORWARD,
-	e_BACKWARD,
-	e_LEFT,
-	e_RIGHT
+	e_FORWARD	= 0,
+	e_BACKWARD	= 1,
+	e_LEFT		= 2,
+	e_RIGHT		= 3
 };
 
 // Camera class used to provide view matrix and allows input to alter position
@@ -24,10 +24,10 @@ public:
 	const glm::vec3&	getPosition() const;
 	const glm::vec3&	getFront() const;
     
-    void				processKeyboard(Camera_Movement direction);
-    void				processMouse(float xOffset, float yOffset);
-
 private:
+
+	inline void			processKeyboard(Camera_Movement direction);
+	inline void			processMouse(float xOffset, float yOffset);
 
     inline void			updateCameraVectors();
 

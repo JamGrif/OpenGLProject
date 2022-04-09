@@ -49,7 +49,7 @@ public:
 	void			IncXScale(float num),	IncYScale(float num),	IncZScale(float num);
 	void			DecXScale(float num),	DecYScale(float num),	DecZScale(float num);
 
-	void			setMatrixValues(bool includeVmat = true);
+	void			setMatrixValues();
 
 protected:
 	

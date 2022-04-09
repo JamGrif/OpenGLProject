@@ -9,6 +9,8 @@
 
 #include <glm/ext/matrix_clip_space.hpp>
 
+extern int entityDrawCount;
+
 Renderer::Renderer()
 	:m_status(false), m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0)
 {
@@ -96,6 +98,7 @@ void Renderer::swapBuffers() const
 
 void Renderer::draw(size_t indicesCount) const
 {
+	entityDrawCount++;
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indicesCount), GL_UNSIGNED_INT, 0);
 }
 
