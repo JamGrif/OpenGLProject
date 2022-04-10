@@ -89,5 +89,4 @@ void PerformanceTimer::stop()
 	{
 		PRINT_TRACE("A timer finished - duration is {0}", ms);
 	}
-
 }

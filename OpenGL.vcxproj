@@ -137,7 +137,7 @@
       <AdditionalDependencies>glfw3.lib;glew32sd.lib;opengl32.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d $(ProjectDir)dependencies\assimp\lib\assimp-vc143-mtd.dll $(TargetDir)
+      <Command>xcopy /y /d $(ProjectDir)dependencies\assimp\lib\debug\assimp-vc143-mtd.dll $(TargetDir)
 mkdir $(TargetDir)res 
 xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
     </PostBuildEvent>
