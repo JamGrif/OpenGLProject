@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Rendering/OpenGLWindow.h"
 
-#include "stb_image/stb_image.h"
 #include "Core/EngineStatics.h"
+#include "Rendering/OpenGLErrorCheck.h"
+
+#include "stb_image/stb_image.h"
 
 #include <GLFW/glfw3.h>
 

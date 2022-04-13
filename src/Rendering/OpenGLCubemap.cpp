@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "rendering/OpenGLCubeMap.h"
 
+#include "Rendering/OpenGLErrorCheck.h"
+
 #include "stb_image/stb_image.h"
 
 #include <GL/glew.h>
@@ -17,8 +19,8 @@ OpenGLCubemap::OpenGLCubemap()
 
 OpenGLCubemap::~OpenGLCubemap()
 {
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glDeleteTextures(1, &m_texture);
+	glCall(glBindTexture(GL_TEXTURE_2D, 0));
+	glCall(glDeleteTextures(1, &m_texture));
 }
 
 
@@ -47,31 +49,29 @@ void OpenGLCubemap::readCubemapFromFile()
 
 bool OpenGLCubemap::loadCubemap()
 {
-	
-
 	// Generate texture buffer
-	glGenTextures(1, &m_texture);
+	glCall(glGenTextures(1, &m_texture));
 
-	glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
+	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture));
 
 	for (unsigned int i = e_cubeFaceRight; i < e_END_OF_CUBEFACE_ENUM; i++)
 	{
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_width[i], m_height[i], 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localbuffer[i]);
+		glCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_width[i], m_height[i], 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localbuffer[i]));
 		stbi_image_free(m_localbuffer[i]);
 	}
 	
 
 	// Specify what happens if texture is rendered on a different sized surface
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	glCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
 	// Specify what happens to texCoords outside 0-1 range
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+	glCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+	glCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
 
 	// Unbind
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
 
 	return true;
 }
@@ -82,8 +82,8 @@ bool OpenGLCubemap::loadCubemap()
 /// <param name="slot">Cubemap texture slot to bind to</param>
 void OpenGLCubemap::Bind() const
 {
-	glActiveTexture(GL_TEXTURE0 + m_textureSlot);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
+	glCall(glActiveTexture(GL_TEXTURE0 + m_textureSlot));
+	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture));
 }
 
 /// <summary>
@@ -91,7 +91,7 @@ void OpenGLCubemap::Bind() const
 /// </summary>
 void OpenGLCubemap::Unbind() const
 {
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
 }
 
 void OpenGLCubemap::setTextureSlot(int slot)

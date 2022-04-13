@@ -1,6 +1,7 @@
 #include "pch.h"
-
 #include "rendering/OpenGLShader.h"
+
+#include "Rendering/OpenGLErrorCheck.h"
 
 #include <glm\gtc\type_ptr.hpp>
 
@@ -33,19 +34,19 @@ static const GLuint compileShader(int GLShaderType, const GLchar* source)
 {
 	// Create OpenGL shader, give it the source code and compile it
 	GLuint tempID = glCreateShader(GLShaderType);
-	glShaderSource(tempID, 1, &source, NULL);
+	glCall(glShaderSource(tempID, 1, &source, NULL));
 
-	glCompileShader(tempID);
+	glCall(glCompileShader(tempID));
 
 	// Check for compiling errors and print any errors
 	GLint success;
-	glGetShaderiv(tempID, GL_COMPILE_STATUS, &success);
+	glCall(glGetShaderiv(tempID, GL_COMPILE_STATUS, &success));
 
 	if (!success)
 	{
 		constexpr int errorLength = 512;
 		GLchar infoLog[errorLength];
-		glGetShaderInfoLog(tempID, errorLength, NULL, infoLog);
+		glCall(glGetShaderInfoLog(tempID, errorLength, NULL, infoLog));
 
 		PRINT_WARN("SHADER-> Failed to compile shader - {0}", infoLog);
 	}
@@ -65,31 +66,31 @@ static const GLuint linkShaders(GLuint shader1 = 0, GLuint shader2 = 0, GLuint s
 	tempProgram = glCreateProgram();
 
 	// Attach valid shaders to program
-	if (shader1) { glAttachShader(tempProgram, shader1); }
-	if (shader2) { glAttachShader(tempProgram, shader2); }
-	if (shader3) { glAttachShader(tempProgram, shader3); }
-	if (shader4) { glAttachShader(tempProgram, shader4); }
+	if (shader1) { glCall(glAttachShader(tempProgram, shader1)); }
+	if (shader2) { glCall(glAttachShader(tempProgram, shader2)); }
+	if (shader3) { glCall(glAttachShader(tempProgram, shader3)); }
+	if (shader4) { glCall(glAttachShader(tempProgram, shader4)); }
 		
-	glLinkProgram(tempProgram);
+	glCall(glLinkProgram(tempProgram));
 
 	// Check for linking errors and print any errors
 	GLint success;
-	glGetProgramiv(tempProgram, GL_LINK_STATUS, &success);
+	glCall(glGetProgramiv(tempProgram, GL_LINK_STATUS, &success));
 
 	if (!success)
 	{
 		constexpr int errorLength = 512;
 		GLchar infoLog[errorLength];
-		glGetProgramInfoLog(tempProgram, errorLength, NULL, infoLog);
+		glCall(glGetProgramInfoLog(tempProgram, errorLength, NULL, infoLog));
 
 		PRINT_WARN("SHADER-> Failed to link shader program - {0}", infoLog);
 	}
 
 	// Delete valid shaders as they're linked into the program and no longer necessary
-	if (shader1) { glDeleteShader(shader1); }
-	if (shader2) { glDeleteShader(shader2); }
-	if (shader3) { glDeleteShader(shader3); }
-	if (shader4) { glDeleteShader(shader4); }
+	if (shader1) { glCall(glDeleteShader(shader1)); }
+	if (shader2) { glCall(glDeleteShader(shader2)); }
+	if (shader3) { glCall(glDeleteShader(shader3)); }
+	if (shader4) { glCall(glDeleteShader(shader4)); }
 		
 	return tempProgram;
 }
@@ -101,7 +102,7 @@ OpenGLShader::OpenGLShader()
 
 OpenGLShader::~OpenGLShader()
 {
-	glDeleteProgram(m_shaderProgram);
+	glCall(glDeleteProgram(m_shaderProgram));
 }
 
 /// <summary>
@@ -109,7 +110,7 @@ OpenGLShader::~OpenGLShader()
 /// </summary>
 void OpenGLShader::Bind() const
 {
-	glUseProgram(m_shaderProgram);
+	glCall(glUseProgram(m_shaderProgram));
 }
 
 /// <summary>
@@ -117,7 +118,7 @@ void OpenGLShader::Bind() const
 /// </summary>
 void OpenGLShader::Unbind() const
 {
-	glUseProgram(0);
+	glCall(glUseProgram(0));
 }
 
 /// <summary>
@@ -127,7 +128,7 @@ void OpenGLShader::Unbind() const
 /// <param name="v0">Value of int</param>
 void OpenGLShader::setUniform1i(const std::string& name, int v0)
 {
-	glUniform1i(getUniformLocation(name), v0);
+	glCall(glUniform1i(getUniformLocation(name), v0));
 }
 
 /// <summary>
@@ -137,7 +138,7 @@ void OpenGLShader::setUniform1i(const std::string& name, int v0)
 /// <param name="v0">Value of float</param>
 void OpenGLShader::setUniform1f(const std::string& name, float v0)
 {
-	glUniform1f(getUniformLocation(name), v0);
+	glCall(glUniform1f(getUniformLocation(name), v0));
 }
 
 /// <summary>
@@ -147,7 +148,7 @@ void OpenGLShader::setUniform1f(const std::string& name, float v0)
 /// <param name="v0">Value of the float 3</param>
 void OpenGLShader::setUniform3f(const std::string& name, const glm::vec3& v0)
 {
-	glUniform3f(getUniformLocation(name), v0.x, v0.y, v0.z);
+	glCall(glUniform3f(getUniformLocation(name), v0.x, v0.y, v0.z));
 }
 
 /// <summary>
@@ -157,7 +158,7 @@ void OpenGLShader::setUniform3f(const std::string& name, const glm::vec3& v0)
 /// <param name="v0">Value of the float 4</param>
 void OpenGLShader::setUniform4f(const std::string& name, const glm::vec4& v0)
 {
-	glUniform4f(getUniformLocation(name), v0.x, v0.y, v0.z, v0.w);
+	glCall(glUniform4f(getUniformLocation(name), v0.x, v0.y, v0.z, v0.w));
 }
 
 /// <summary>
@@ -167,7 +168,7 @@ void OpenGLShader::setUniform4f(const std::string& name, const glm::vec4& v0)
 /// <param name="v0">Value of the 4x4 matrix</param>
 void OpenGLShader::setUniformMatrix4fv(const std::string& name, const glm::mat4& v0)
 {
-	glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(v0));
+	glCall(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(v0)));
 }
 
 /// <summary>
@@ -177,7 +178,7 @@ void OpenGLShader::setUniformMatrix4fv(const std::string& name, const glm::mat4&
 /// <param name="v0">Value of the 4x4 matrix</param>
 void OpenGLShader::setUniformMatrix3fv(const std::string& name, const glm::mat3& v0)
 {
-	glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(v0));
+	glCall(glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(v0)));
 }
 
 /// <summary>

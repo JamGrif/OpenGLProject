@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "rendering/OpenGLTexture.h"
 
+#include "Rendering/OpenGLErrorCheck.h"
+
 #include "stb_image/stb_image.h" // Image loading
 
 #include <GL/glew.h>
-//#include <GLFW/glfw3.h>
-
 
 std::vector<std::shared_ptr<OpenGLTexture>> TextureManager::m_loadedTextures;
 
@@ -16,8 +16,8 @@ OpenGLTexture::OpenGLTexture()
 
 OpenGLTexture::~OpenGLTexture()
 {
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glDeleteTextures(1, &m_textureID);
+	glCall(glBindTexture(GL_TEXTURE_2D, 0));
+	glCall(glDeleteTextures(1, &m_textureID));
 }
 
 /// <summary>
@@ -25,8 +25,8 @@ OpenGLTexture::~OpenGLTexture()
 /// </summary>
 void OpenGLTexture::Bind() const
 {
-	glActiveTexture(GL_TEXTURE0 + m_textureSlot);
-	glBindTexture(GL_TEXTURE_2D, m_textureID);
+	glCall(glActiveTexture(GL_TEXTURE0 + m_textureSlot));
+	glCall(glBindTexture(GL_TEXTURE_2D, m_textureID));
 }
 
 /// <summary>
@@ -34,8 +34,8 @@ void OpenGLTexture::Bind() const
 /// </summary>
 void OpenGLTexture::Unbind() const
 {
-	glActiveTexture(GL_TEXTURE0 + m_textureSlot);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glCall(glActiveTexture(GL_TEXTURE0 + m_textureSlot));
+	glCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
 
@@ -75,32 +75,32 @@ bool OpenGLTexture::readTextureFromFile()
 void OpenGLTexture::loadTexture()
 {
 	// Generate texture buffer
-	glGenTextures(1, &m_textureID);
+	glCall(glGenTextures(1, &m_textureID));
 
-	glBindTexture(GL_TEXTURE_2D, m_textureID);
+	glCall(glBindTexture(GL_TEXTURE_2D, m_textureID));
 
 	// Specify what happens if texture is rendered on a different sized surface
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
 	// Specify what happens to texCoords outside 0-1 range
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT));
+	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT));
 
 	// Anisotropic filtering
 	if (glewIsSupported("GL_EXT_texture_filter_anisotropic")) //Ensure supported
 	{
 		GLfloat anisoSetting = 0.0f;
-		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &anisoSetting); //Set anisoSetting to maximum sampling support
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisoSetting); //Apply Anisotropic Filtering
+		glCall(glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &anisoSetting)); //Set anisoSetting to maximum sampling support
+		glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisoSetting)); //Apply Anisotropic Filtering
 	}
 
 	// Define the texture
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localbuffer);
-	glGenerateMipmap(GL_TEXTURE_2D);
+	glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localbuffer));
+	glCall(glGenerateMipmap(GL_TEXTURE_2D));
 
 	// Unbind
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glCall(glBindTexture(GL_TEXTURE_2D, 0));
 
 	if (m_localbuffer)
 	{

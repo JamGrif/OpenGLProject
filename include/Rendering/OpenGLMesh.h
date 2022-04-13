@@ -27,8 +27,6 @@ public:
 
 	inline void							setFilePath(const std::string& filePath);
 	inline const std::string&			getFilePath() const;
-
-	int getMeshNumVertices() {return m_meshNumVertices;}
 	
 private:
 
@@ -38,9 +36,6 @@ private:
 	void								bindVertexAttributes() const;
 
 	bool								m_vertexAttributesEnabled[4];
-
-	int									m_meshNumVertices;
-	//aiMesh*							m_meshForCollision;
 
 	std::vector<Vertex>					m_meshVertices;
 	std::vector<unsigned int>			m_meshIndices;

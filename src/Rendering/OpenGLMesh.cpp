@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "rendering/OpenGLMesh.h"
 
+#include "Rendering/OpenGLErrorCheck.h"
+
 #include <assimp/Importer.hpp>		// Importer interface
 #include <assimp/scene.h>			// Output data structure
 #include <assimp/postprocess.h>		// Post-processing flags
@@ -9,8 +11,6 @@
 #include <glm/vec3.hpp>
 
 #include <GL/glew.h>
-//#include <GLFW/glfw3.h>
-
 
 struct Vertex
 {
@@ -38,21 +38,21 @@ OpenGLMesh::OpenGLMesh()
 
 OpenGLMesh::~OpenGLMesh()
 {
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 
-	glDeleteBuffers(1, &m_meshVBO);
-	glDeleteBuffers(1, &m_meshEBO);
+	glCall(glDeleteBuffers(1, &m_meshVBO));
+	glCall(glDeleteBuffers(1, &m_meshEBO));
 }
 
 
 void OpenGLMesh::BindJustPos() const
 {
-	glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO);
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO));
 
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	glCall(glEnableVertexAttribArray(0));
+	glCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0));
 }
 
 /// <summary>
@@ -64,8 +64,8 @@ void OpenGLMesh::BindJustPos() const
 /// <param name="shaderTan">Use tangents and bitangents vertices?</param>
 void OpenGLMesh::Bind() const
 {
-	glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO);
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO));
 
 	bindVertexAttributes();
 }
@@ -75,8 +75,8 @@ void OpenGLMesh::Bind() const
 /// </summary>
 void OpenGLMesh::Unbind() const
 {
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
 
@@ -113,11 +113,6 @@ bool OpenGLMesh::readMeshFromFile()
 	}
 
 	aiMesh* mesh = scene->mMeshes[0];
-
-	m_meshNumVertices = mesh->mNumVertices;
-	//std::cout << "num of vertices is " << m_meshNumVertices << std::endl;
-	//m_meshForCollision = mesh;
-
 	m_meshVertices.reserve(mesh->mNumVertices); // Reserve enough space to hold all the vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -175,13 +170,13 @@ bool OpenGLMesh::readMeshFromFile()
 /// </summary>
 void OpenGLMesh::loadMesh()
 {
-	glGenBuffers(1, &m_meshVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO);
-	glBufferData(GL_ARRAY_BUFFER, m_meshVertices.size() * sizeof(Vertex), &m_meshVertices[0], GL_STATIC_DRAW);
+	glCall(glGenBuffers(1, &m_meshVBO));
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
+	glCall(glBufferData(GL_ARRAY_BUFFER, m_meshVertices.size() * sizeof(Vertex), &m_meshVertices[0], GL_STATIC_DRAW));
 
-	glGenBuffers(1, &m_meshEBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_meshIndices.size() * sizeof(unsigned int), &m_meshIndices[0], GL_STATIC_DRAW);
+	glCall(glGenBuffers(1, &m_meshEBO));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO));
+	glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_meshIndices.size() * sizeof(unsigned int), &m_meshIndices[0], GL_STATIC_DRAW));
 }
 
 /// <summary>
@@ -202,29 +197,29 @@ void OpenGLMesh::bindVertexAttributes() const
 {
 	if (m_vertexAttributesEnabled[e_ShaderPos]) // Position
 	{
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+		glCall(glEnableVertexAttribArray(0));
+		glCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0));
 	}
 
 	if (m_vertexAttributesEnabled[e_ShaderNorm]) // Normal
 	{
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+		glCall(glEnableVertexAttribArray(1));
+		glCall(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal)));
 	}
 
 	if (m_vertexAttributesEnabled[e_ShaderTex]) // Texture Coordinates
 	{
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+		glCall(glEnableVertexAttribArray(2));
+		glCall(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords)));
 	}
 
 	if (m_vertexAttributesEnabled[e_ShaderTanBi]) // Tangents & Bitangents
 	{
-		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+		glCall(glEnableVertexAttribArray(3));
+		glCall(glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent)));
 
-		glEnableVertexAttribArray(4);
-		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
+		glCall(glEnableVertexAttribArray(4));
+		glCall(glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent)));
 	}
 }
 

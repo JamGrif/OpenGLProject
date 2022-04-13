@@ -4,6 +4,7 @@
 #include "Rendering/OpenGLShader.h"
 #include "Core/EngineStatics.h"
 #include "Rendering/OpenGLWindow.h"
+#include "Rendering/OpenGLErrorCheck.h"
 
 #include <GL/glew.h>
 //#include <GLFW/glfw3.h>
@@ -13,68 +14,68 @@ OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 	m_quadVBO(0), m_screenFilter(1), m_screenWidth(EngineStatics::getAppWindow()->getWindowWidth()),
 	m_screenHeight(EngineStatics::getAppWindow()->getWindowHeight()), m_screenShader(nullptr)
 {
-	glGenFramebuffers(1, &m_FBO);
-	glGenRenderbuffers(1, &m_RBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO); // By binding to a GL_FRAMEBUFFER, all read and write framebuffer operations will be on newly bounded framebuffer
-	glBindRenderbuffer(GL_RENDERBUFFER, m_RBO);
+	glCall(glGenFramebuffers(1, &m_FBO));
+	glCall(glGenRenderbuffers(1, &m_RBO));
+	glCall(glBindFramebuffer(GL_FRAMEBUFFER, m_FBO)); // By binding to a GL_FRAMEBUFFER, all read and write framebuffer operations will be on newly bounded framebuffer
+	glCall(glBindRenderbuffer(GL_RENDERBUFFER, m_RBO));
 
-	glGenTextures(1, &m_frameColourTexture);
+	glCall(glGenTextures(1, &m_frameColourTexture));
 
 	// If specified create a framebuffer that can handle multiple samples in the same texel
 	if (multisampled)
 	{
 		// Create multisampled frame texture
-		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_frameColourTexture);
-		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, m_screenWidth, m_screenHeight, GL_TRUE);
-		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_frameColourTexture, 0);
+		glCall(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_frameColourTexture));
+		glCall(glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, m_screenWidth, m_screenHeight, GL_TRUE));
+		glCall(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0));
+		glCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_frameColourTexture, 0));
 
 		// Create render buffer object
-		glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, m_screenWidth, m_screenHeight);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
+		glCall(glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, m_screenWidth, m_screenHeight));
+		glCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO));
 
 	}
 	// Otherwise, create a normal framebuffer
 	else
 	{
 		// Create frame texture
-		glBindTexture(GL_TEXTURE_2D, m_frameColourTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_screenWidth, m_screenHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_frameColourTexture, 0);
+		glCall(glBindTexture(GL_TEXTURE_2D, m_frameColourTexture));
+		glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_screenWidth, m_screenHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
+		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+		glCall(glBindTexture(GL_TEXTURE_2D, 0));
+		glCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_frameColourTexture, 0));
 
 		// Create render buffer object
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_screenWidth, m_screenHeight);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
+		glCall(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_screenWidth, m_screenHeight));
+		glCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO));
 	}
 	
 	// Check status of newly created framebuffer
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		PRINT_WARN("FRAMEBUFFER-> Problem creating framebuffer");
-		glDeleteFramebuffers(1, &m_FBO);
-		glDeleteRenderbuffers(1, &m_RBO);
+		glCall(glDeleteFramebuffers(1, &m_FBO));
+		glCall(glDeleteRenderbuffers(1, &m_RBO));
 	}
 
 	// Unbind all
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+	glCall(glBindRenderbuffer(GL_RENDERBUFFER, 0));
 
 	// Set framebuffer shader
 	m_screenShader = ShaderManager::retrieveShader("res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
 
 	// Create the VBO object the screen will be drawn to
-	glGenBuffers(1, &m_quadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_quadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(m_quadVertices), &m_quadVertices, GL_STATIC_DRAW);
+	glCall(glGenBuffers(1, &m_quadVBO));
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_quadVBO));
+	glCall(glBufferData(GL_ARRAY_BUFFER, sizeof(m_quadVertices), &m_quadVertices, GL_STATIC_DRAW));
 }
 
 OpenGLFramebuffer::~OpenGLFramebuffer()
 {
-	glDeleteFramebuffers(1, &m_FBO);
-	glDeleteRenderbuffers(1, &m_RBO);
+	glCall(glDeleteFramebuffers(1, &m_FBO));
+	glCall(glDeleteRenderbuffers(1, &m_RBO));
 }
 
 /// <summary>
@@ -93,21 +94,19 @@ void OpenGLFramebuffer::draw()
 	m_screenShader->setUniform1i("screenTexture", 0);
 	m_screenShader->setUniform1i("screenFilter", m_screenFilter);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_frameColourTexture);
+	glCall(glActiveTexture(GL_TEXTURE0));
+	glCall(glBindTexture(GL_TEXTURE_2D, m_frameColourTexture));
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_quadVBO);
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_quadVBO));
 
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	glCall(glEnableVertexAttribArray(0));
+	glCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0));
+	glCall(glEnableVertexAttribArray(1));
+	glCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))));
 
-
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glCall(glDrawArrays(GL_TRIANGLES, 0, 6));
 
 	m_screenShader->Unbind();
-
 }
 
 /// <summary>
@@ -115,9 +114,9 @@ void OpenGLFramebuffer::draw()
 /// </summary>
 void OpenGLFramebuffer::bindFramebuffer()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
+	glCall(glBindFramebuffer(GL_FRAMEBUFFER, m_FBO));
+	glCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	glCall(glEnable(GL_DEPTH_TEST));
 }
 
 /// <summary>
@@ -125,9 +124,9 @@ void OpenGLFramebuffer::bindFramebuffer()
 /// </summary>
 void OpenGLFramebuffer::unbindFramebuffer()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glDisable(GL_DEPTH_TEST);
+	glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+	glCall(glClear(GL_COLOR_BUFFER_BIT));
+	glCall(glDisable(GL_DEPTH_TEST));
 }
 
 /// <summary>
@@ -135,7 +134,7 @@ void OpenGLFramebuffer::unbindFramebuffer()
 /// </summary>
 void OpenGLFramebuffer::bindReadFramebuffer()
 {
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FBO);
+	glCall(glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FBO));
 }
 
 /// <summary>
@@ -143,14 +142,14 @@ void OpenGLFramebuffer::bindReadFramebuffer()
 /// </summary>
 void OpenGLFramebuffer::bindWriteFramebuffer()
 {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_FBO);
+	glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_FBO));
 }
 
 
 void OpenGLFramebuffer::copyToFramebuffer()
 {
 	// Copies the contents of one framebuffer to another framebuffer
-	glBlitFramebuffer(0, 0, m_screenWidth, m_screenHeight, 0, 0, m_screenWidth, m_screenHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	glCall(glBlitFramebuffer(0, 0, m_screenWidth, m_screenHeight, 0, 0, m_screenWidth, m_screenHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST));
 }
 
 /// <summary>
