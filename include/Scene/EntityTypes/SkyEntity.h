@@ -2,6 +2,11 @@
 
 #include "Scene/EntityTypes/BaseEntity.h"
 
+struct templateSkyEntity : public templateBaseEntity
+{
+	std::string skyboxTexture = "";
+};
+
 // Class that is used for the Skybox by loading a cubemap and using an "inside out" cube
 class SkyEntity :
     public BaseEntity
@@ -9,6 +14,7 @@ class SkyEntity :
 public:
 
 	SkyEntity();
+	SkyEntity(templateSkyEntity object);
     ~SkyEntity();
 
 	void	initEntity() override;

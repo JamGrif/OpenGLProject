@@ -11,6 +11,20 @@ EnvironmentEntity::EnvironmentEntity()
 	m_skyTexture = CubemapManager::retrieveCubeMapObject();
 }
 
+EnvironmentEntity::EnvironmentEntity(templateEnvironmentEntity object)
+	:BaseEntity(object), m_skyTexture(nullptr), m_usingReflection(false), m_usingRefraction(false)
+{
+
+	setMesh(object.mesh);
+
+	toggleReflection(object.reflection);
+	toggleRefraction(object.refraction);
+
+
+	setShaderTwo("res/shaders/environmentMapping-vertex.glsl", "res/shaders/environmentMapping-fragment.glsl");
+	m_skyTexture = CubemapManager::retrieveCubeMapObject();
+}
+
 EnvironmentEntity::~EnvironmentEntity()
 {
 	m_skyTexture = nullptr;

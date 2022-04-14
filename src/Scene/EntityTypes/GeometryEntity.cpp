@@ -9,6 +9,17 @@ GeometryEntity::GeometryEntity()
 	m_geometryTexture = TextureManager::retrieveTextureObject("res/textures/barrel_diff.png");
 }
 
+GeometryEntity::GeometryEntity(templateGeometryEntity object)
+	:BaseEntity(object), m_geometryTexture(nullptr), m_inflation(0), m_increasing(0)
+{
+
+	setMesh(object.mesh);
+
+	setShaderTwo("res/shaders/geometry-vertex.glsl", "res/shaders/geometry-geometry.glsl", "res/shaders/geometry-fragment.glsl");
+
+	m_geometryTexture = TextureManager::retrieveTextureObject("res/textures/barrel_diff.png");
+}
+
 GeometryEntity::~GeometryEntity()
 {
 	m_geometryTexture = nullptr;

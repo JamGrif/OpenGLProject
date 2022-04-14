@@ -5,12 +5,21 @@
 // Forward Declarations
 struct PointLight;
 
+struct templateBasicEntity : public templateBaseEntity
+{
+	std::string mesh = "";
+
+	int lightToCopy = -1;
+};
+
+
 // Class allows the drawing of a mesh with no texturing or lighting instead a solid colour. Also gives the option to "copy" the values of a specified point light
 class BasicEntity :
     public BaseEntity
 {
 public:
 	BasicEntity();
+	BasicEntity(templateBasicEntity object);
     ~BasicEntity();
 
 	void		initEntity() override;

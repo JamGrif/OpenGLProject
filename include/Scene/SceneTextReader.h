@@ -4,13 +4,22 @@
 
 // Forward Declarations
 class BaseEntity;
+class LightingEntity;
 class SceneLightManager;
+
+struct templateBaseEntity;
+struct templateLightingEntity;
+struct templateSkyEntity;
+struct templateBasicEntity;
+struct templateTerrainEntity;
+struct templateEnvironmentEntity;
+struct templateGeometryEntity;
 
 // Class that reads from a scene text file, feeding the scene models vectors with created objects from the text file
 class SceneTextReader
 {
 public:
-	SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<BaseEntity>>& sceneMeshes, std::shared_ptr<SceneLightManager>& sceneLightManager);
+	SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<BaseEntity>>& sceneMeshes, std::vector<std::shared_ptr<LightingEntity>>& sceneLightingEntities, std::shared_ptr<SceneLightManager>& sceneLightManager);
 	~SceneTextReader();
 
 	bool getStatus();
@@ -60,73 +69,8 @@ private:
 		Model Objects
 	*/
 
-	struct templateBaseEntity
-	{
-		std::string objectType = ""; // ModelLighting, ModelBasic, ModelTerrain etc...
-
-		float PosX = 0.0f;
-		float PosY = 0.0f;
-		float PosZ = 0.0f;
-
-		float RotX = 0.0f;
-		float RotY = 0.0f;
-		float RotZ = 0.0f;
-
-		float ScaleX = 0.0f;
-		float ScaleY = 0.0f;
-		float ScaleZ = 0.0f;
-	};
-	struct templateLightingEntity : public templateBaseEntity
-	{
-		std::string mesh = "";
-
-		std::string diffuseMap = "";
-
-		std::string specularMap = "";
-
-		std::string normalMap = "";
-		bool normalMapNormalize = false;
-
-		std::string heightMap = "";
-		float heightMapHeight = 0.0f;
-
-		std::string emissionMap = "";
-
-		bool gravity = false;
-	};
-	struct templateBasicEntity : public templateBaseEntity
-	{
-		std::string mesh = "";
-
-		int lightToCopy = -1;
-	};
-	struct templateTerrainEntity : public templateBaseEntity
-	{
-		float elevation = 0.0f;
-
-		std::string terrainTextureMap = "";
-		std::string terrainHeightMap = "";
-	};
-	struct templateEnvironmentEntity : public templateBaseEntity
-	{
-		std::string mesh = "";
-
-		bool reflection = false;
-
-		bool refraction = false;
-	};
-	struct templateGeometryEntity : public templateBaseEntity
-	{
-		std::string mesh = "";
-	};
-	struct templateSkyEntity : public templateBaseEntity
-	{
-		std::string skyboxTexture = "";
-	};
-
-
 	std::vector<templateLightingEntity>		completedModelLightObjects;			// ModelLighting
-	std::vector<templateBasicEntity>			completedModelBasicObjects;			// ModelBasic
+	std::vector<templateBasicEntity>			completedModelBasicObjects;		// ModelBasic
 	std::vector<templateTerrainEntity>		completedModelTerrainObjects;		// ModelTerrain
 	std::vector<templateEnvironmentEntity>	completedModelEnvironmentObjects;	// ModelEnvironment
 	std::vector<templateGeometryEntity>		completedModelGeometryObjects;		// ModelGeometry

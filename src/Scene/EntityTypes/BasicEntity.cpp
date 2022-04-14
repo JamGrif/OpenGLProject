@@ -10,6 +10,18 @@ BasicEntity::BasicEntity()
 	setShaderTwo("res/shaders/basic-vertex.glsl", "res/shaders/basic-fragment.glsl");
 }
 
+BasicEntity::BasicEntity(templateBasicEntity object)
+	:BaseEntity(object), m_defaultColour(1.0, 1.0, 1.0), m_copyingLight(false), m_localPointLight(nullptr)
+{
+
+	setMesh(object.mesh);
+
+	copyPointLight(object.lightToCopy);
+
+
+	setShaderTwo("res/shaders/basic-vertex.glsl", "res/shaders/basic-fragment.glsl");
+}
+
 BasicEntity::~BasicEntity()
 {
 	m_localPointLight = nullptr;

@@ -13,6 +13,15 @@
 
 #include "Rendering/Renderer.h"
 
+struct templateBaseEntity
+{
+	std::string objectType = ""; // ModelLighting, ModelBasic, ModelTerrain etc...
+
+	glm::vec3 position;
+	glm::vec3 rotation;
+	glm::vec3 scale;
+};
+
 // Abstract model class - The different classes that derive from Model all have their own implementation of
 // drawing, such as different shader values, attributes and texture map types. Essentially, provides an
 // interface for all drawable objects while providing utility functions they all use.
@@ -20,6 +29,7 @@ class BaseEntity
 {
 public:
 	BaseEntity();
+	BaseEntity(templateBaseEntity object);
 	virtual ~BaseEntity();
 
 	virtual void	initEntity()	= 0;
@@ -51,6 +61,9 @@ public:
 
 	void			setMatrixValues();
 
+	void			setEntityType(const std::string& type);
+	std::string		getEntityType();
+
 protected:
 	
 	// Model properties
@@ -68,6 +81,8 @@ protected:
 	glm::mat4		m_tMat;		// Translation
 	glm::mat4		m_rMat;		// Rotation
 	glm::mat4		m_sMat;		// Scale
+
+	std::string		m_entityType;
 
 	//Cached other classes
 	std::shared_ptr<SceneLightManager>	m_localLightManager;

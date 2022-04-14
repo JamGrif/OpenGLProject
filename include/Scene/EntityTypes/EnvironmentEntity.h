@@ -2,12 +2,23 @@
 
 #include "Scene/EntityTypes/BaseEntity.h"
 
-// Class allows meshes to have a reflection environment map or a refraction environment map from the skybox
+struct templateEnvironmentEntity : public templateBaseEntity
+{
+	std::string mesh = "";
+
+	bool reflection = false;
+
+	bool refraction = false;
+};
+
+
+// Class allows meshes to have a reflection environment map or a refraction environment map from the Skybox
 class EnvironmentEntity :
     public BaseEntity
 {
 public:
 	EnvironmentEntity();
+	EnvironmentEntity(templateEnvironmentEntity object);
     ~EnvironmentEntity();
 
 	void		initEntity() override;

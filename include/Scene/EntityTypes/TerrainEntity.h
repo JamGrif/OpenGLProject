@@ -2,13 +2,21 @@
 
 #include "Scene/EntityTypes/BaseEntity.h"
 
+struct templateTerrainEntity : public templateBaseEntity
+{
+	float elevation = 0.0f;
+
+	std::string terrainTextureMap = "";
+	std::string terrainHeightMap = "";
+};
+
 // Class that uses tessellation shader to draw objects. Provides a way to alter the elevation of created terrain
 class TerrainEntity :
     public BaseEntity
 {
 public:
-
 	TerrainEntity();
+	TerrainEntity(templateTerrainEntity object);
     ~TerrainEntity();
 
 	void		initEntity() override;

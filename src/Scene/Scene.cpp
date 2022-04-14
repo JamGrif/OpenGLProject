@@ -2,6 +2,7 @@
 #include "Scene/Scene.h"
 
 #include <thread>
+#include <algorithm>
 
 #include "Core/EngineStatics.h"
 #include "Scene/SceneCamera.h"
@@ -10,6 +11,64 @@
 //#include "CollisionMaster.h"
 
 #include "Scene/EntityTypes/BaseEntity.h"
+#include "scene/EntityTypes/LightingEntity.h"
+
+// Variables are used to move various lights in different scenes
+static float	m_materialLightMinZ;
+static float	m_materialLightMaxZ;
+static float	m_materialLightMinX;
+static float	m_materialLightMaxX;
+static bool		m_materialLightIncZ;
+static bool		m_materialLightIncX;
+
+static float	m_materialtestLightMinZ;
+static float	m_materialtestLightMaxZ;
+static float	m_materialtestLightMinX;
+static float	m_materialtestLightMaxX;
+static bool		m_materialtestLightIncZ;
+static bool		m_materialtestLightIncX;
+static float	m_materialtestlightR;
+static float	m_materialtestlightG;
+static float	m_materialtestlightB;
+
+static float	m_normalLightMaxZ;
+static float	m_normalLightMinZ;
+static bool		m_normalLightIncZ;
+
+static float	m_lightR;
+static float	m_lightG;
+static float	m_lightB;
+
+// Resets the static variables above
+void resetSceneValues()
+{	
+	// FMPscene.txt exclusive variables
+	m_materialLightMinZ = -5;
+	m_materialLightMaxZ = 9;
+	m_materialLightMinX = -25;
+	m_materialLightMaxX = -13;
+	m_materialLightIncZ = true;
+	m_materialLightIncX = true;
+
+	// lightTest.txt exclusive variables
+	m_materialtestLightMinZ = -9;
+	m_materialtestLightMaxZ = 9;
+	m_materialtestLightMinX = -9;
+	m_materialtestLightMaxX = 9;
+	m_materialtestLightIncZ = true;
+	m_materialtestLightIncX = true;
+	m_materialtestlightR = 0.0f;
+	m_materialtestlightG = 0.0f;
+	m_materialtestlightB = 0.0f;
+
+	m_normalLightMaxZ = 8;
+	m_normalLightMinZ = 23;
+	m_normalLightIncZ = true;
+
+	m_lightR = 0.0f;
+	m_lightG = 0.0f;
+	m_lightB = 0.0f;
+}
 
 int entityDrawCount = 0;
 
@@ -23,11 +82,13 @@ Scene::Scene(const std::string& sceneName)
 	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr)
 {
 	m_sceneEntities.reserve(50);
+	resetSceneValues();
 }
  
 Scene::~Scene()
 {
 	m_sceneEntities.clear();
+	m_sceneLightingEntities.clear();
 
 	m_sceneCamera = nullptr;
 	EngineStatics::setCamera(nullptr);
@@ -61,7 +122,7 @@ bool Scene::loadScene()
 	PRINT_INFO("SCENE->Attempting to load scene {0}", m_sceneName);
 
 	// Run scene reader, giving it the scene objects vector and light manager to fill out
-	SceneTextReader txtReader(m_sceneName, m_sceneEntities, m_sceneLightManager);
+	SceneTextReader txtReader(m_sceneName, m_sceneEntities, m_sceneLightingEntities, m_sceneLightManager);
 
 	if (!txtReader.getStatus()) // Ensure textfile was read correctly
 	{
@@ -95,6 +156,11 @@ bool Scene::loadScene()
 		m->initEntity();
 	}
 
+	for (auto& m : m_sceneLightingEntities)
+	{
+		m->initEntity();
+	}
+
 	PRINT_INFO("SCENE->{0} has loaded sucessfully", m_sceneName);
 	return true;
 }
@@ -109,16 +175,25 @@ void Scene::updateScene()
 
 	m_sceneCamera->Update();
 
-	//m_sceneCollisionMaster->update();
 
-	// Draw second pass of all models
-	for (std::shared_ptr<BaseEntity>& m : m_sceneEntities)
+	for (auto& m : m_sceneEntities)
 	{
 		m->setMatrixValues();
 	}
 
-	// Draw second pass of all models
-	for (std::shared_ptr<BaseEntity>& m : m_sceneEntities)
+	for (auto& m : m_sceneLightingEntities)
+	{
+		m->setMatrixValues();
+	}
+
+	//
+
+	for (auto& m : m_sceneEntities)
+	{
+		m->updateEntity();
+	}
+
+	for (auto& m : m_sceneLightingEntities)
 	{
 		m->updateEntity();
 	}
@@ -127,9 +202,14 @@ void Scene::updateScene()
 void Scene::drawSceneFirstPass()
 {
 	// Draw first pass of all models
-	for (std::shared_ptr<BaseEntity>& m : m_sceneEntities)
+	for (auto& m : m_sceneEntities)
 	{
 		m->drawPassOne();
+	}
+
+	for (auto& m : m_sceneLightingEntities)
+	{
+		m->drawPassTwo();
 	}
 }
 
@@ -139,12 +219,17 @@ void Scene::drawSceneFirstPass()
 void Scene::drawSceneSecondPass()
 {
 	// Draw second pass of all models
-	for (std::shared_ptr<BaseEntity>& m : m_sceneEntities)
+	for (auto& m : m_sceneEntities)
 	{
 		m->drawPassTwo();
 	}
 
-	//PRINT_TRACE("{0} entites were drawn this frame!", entityDrawCount);
+	for (auto& m : m_sceneLightingEntities)
+	{
+		m->drawPassTwo();
+	}
+
+	//PRINT_TRACE("{0} entities were drawn this frame!", entityDrawCount);
 	//entityDrawCount = 0;
 }
 
@@ -155,6 +240,38 @@ void Scene::drawSceneSecondPass()
 const std::string& Scene::getSceneName()
 {
 	return m_sceneName;
+}
+
+size_t Scene::getEntityNum()
+{
+	return m_sceneLightingEntities.size();
+}
+
+
+std::shared_ptr<LightingEntity> Scene::getEntityAtIndex(int index)
+{
+	return m_sceneLightingEntities.at(index);
+}
+
+//const std::vector<std::shared_ptr<BaseEntity>>& Scene::getSceneEntityVector()
+//{
+//	return m_sceneEntities;
+//}
+
+const std::shared_ptr<SceneLightManager>& Scene::getSceneLightManager()
+{
+	return m_sceneLightManager;
+}
+
+
+const std::shared_ptr<SceneCamera>& Scene::getSceneCamera()
+{
+	return m_sceneCamera;
+}
+
+void Scene::deleteLightingEntityFromVector(int index)
+{
+	m_sceneLightingEntities.erase(m_sceneLightingEntities.begin() + index);
 }
 
 ///// <summary>
@@ -300,16 +417,18 @@ void Scene::updateSceneLight()
 		*/
 
 		PointLight* localPointLight = m_sceneLightManager->getPointLight(0);
+
+		float dt = static_cast<float>(ApplicationClock::getDeltaTime());
 	
-		m_materialtestlightR -= 0.001f;
+		m_materialtestlightR -= 0.1f * dt;
 		if (m_materialtestlightR <= 0.0f)
 			m_materialtestlightR = 1.0f;
 	
-		m_materialtestlightG += 0.003f;
+		m_materialtestlightG += 0.3f * dt;
 		if (m_materialtestlightG >= 1.0f)
 			m_materialtestlightG = 0.0f;
 	
-		m_materialtestlightB += 0.002f;
+		m_materialtestlightB += 0.2f * dt;
 		if (m_materialtestlightB >= 1.0f)
 			m_materialtestlightB = 0.0f;
 
@@ -325,7 +444,7 @@ void Scene::updateSceneLight()
 		{
 			if (localPointLight)
 			{
-				localPointLight->Position.z += 0.075f;
+				localPointLight->Position.z += 4.25f * dt;
 				if (localPointLight->Position.z >= m_materialtestLightMaxZ)
 				{
 					localPointLight->Position.z = m_materialtestLightMaxZ;
@@ -338,7 +457,7 @@ void Scene::updateSceneLight()
 		{
 			if (localPointLight)
 			{
-				localPointLight->Position.z -= 0.075f;
+				localPointLight->Position.z -= 4.25f * dt;
 				if (localPointLight->Position.z <= m_materialtestLightMinZ)
 				{
 					localPointLight->Position.z = m_materialtestLightMinZ;
@@ -352,7 +471,7 @@ void Scene::updateSceneLight()
 		{
 			if (localPointLight)
 			{
-				localPointLight->Position.x += 0.1f;
+				localPointLight->Position.x += 3.75f * dt;
 				if (localPointLight->Position.x >= m_materialtestLightMaxX)
 				{
 					localPointLight->Position.x = m_materialtestLightMaxX;
@@ -364,7 +483,7 @@ void Scene::updateSceneLight()
 		{
 			if (localPointLight)
 			{
-				localPointLight->Position.x -= 0.1f;
+				localPointLight->Position.x -= 3.75f * dt;
 				if (localPointLight->Position.x <= m_materialtestLightMinX)
 				{
 					localPointLight->Position.x = m_materialtestLightMinX;

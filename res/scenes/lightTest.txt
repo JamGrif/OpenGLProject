@@ -19,55 +19,55 @@ modelBasic		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			sphere	0
 modelSky		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			black
 
 # modelLighting objects...
-#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap	#Gravity
-modelLighting	-6.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-12.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-18.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-6.0	7.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-12.0	7.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-18.0	7.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
+#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap	
+modelLighting	-6.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-12.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-18.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-6.0	7.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-12.0	7.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-18.0	7.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
 
-modelLighting	-6.0	1.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-12.0	1.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-18.0	1.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-6.0	7.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-12.0	7.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-18.0	7.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
+modelLighting	-6.0	1.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-12.0	1.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-18.0	1.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-6.0	7.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-12.0	7.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-18.0	7.5		9.0		90.0	0.0		180.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
 
-modelLighting	-21.0	1.5		-6.0	90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-21.0	1.5		0.0		90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-21.0	1.5		6.0		90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-21.0	7.5		-6.0	90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-21.0	7.5		0.0		90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-21.0	7.5		6.0		90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
+modelLighting	-21.0	1.5		-6.0	90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-21.0	1.5		0.0		90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-21.0	1.5		6.0		90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-21.0	7.5		-6.0	90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-21.0	7.5		0.0		90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-21.0	7.5		6.0		90.0	0.0		-90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
 
-modelLighting	-3.0	1.5		-6.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-3.0	1.5		0.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-3.0	1.5		6.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-3.0	7.5		-6.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-3.0	7.5		0.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-3.0	7.5		6.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
+modelLighting	-3.0	1.5		-6.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-3.0	1.5		0.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-3.0	1.5		6.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-3.0	7.5		-6.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-3.0	7.5		0.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-3.0	7.5		6.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
 
-modelLighting	-18.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-18.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-18.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-12.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-12.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-12.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
+modelLighting	-18.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-18.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-18.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-12.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-12.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-12.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
 
-modelLighting	-18.0	10.5	6.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-18.0	10.5	0.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-18.0	10.5	-6.0	180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-12.0	10.5	6.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-12.0	10.5	0.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-12.0	10.5	-6.0	180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-6.0	10.5	6.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-6.0	10.5	0.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
-modelLighting	-6.0	10.5	-6.0	180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			0
+modelLighting	-18.0	10.5	6.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-18.0	10.5	0.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-18.0	10.5	-6.0	180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-12.0	10.5	6.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-12.0	10.5	0.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-12.0	10.5	-6.0	180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-6.0	10.5	6.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-6.0	10.5	0.0		180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
+modelLighting	-6.0	10.5	-6.0	180.0	0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null			
 
-modelLighting	-8.0	-2.75	0.0		0.0		90.0	0.0		0.6			0.6			0.6		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					/signs/sign13_emis			0
+modelLighting	-8.0	-2.75	0.0		0.0		90.0	0.0		0.6			0.6			0.6		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					/signs/sign13_emis	
 
 

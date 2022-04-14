@@ -9,9 +9,40 @@ LightingEntity::LightingEntity()
 	:m_modelUsingTextures{false, false, false, false, false},
 	m_specularShininess(0.0f), m_normalizeTexture(false), m_heightAmount(0.5)
 {
+
 	setShaderOne("res/shaders/lightingPassOne-vertex.glsl", "res/shaders/lightingPassOne-fragment.glsl");
 	setShaderTwo("res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
 
+}
+
+LightingEntity::LightingEntity(templateLightingEntity object)
+	:BaseEntity(object), m_modelUsingTextures{ false, false, false, false, false },
+	m_specularShininess(0.0f), m_normalizeTexture(false), m_heightAmount(0.5)
+{
+	setMesh(object.mesh);
+
+	object.diffuseMap != "null" ? setDiffuseTexture(object.diffuseMap) : setDiffuseTexture("res/textures/blank.png"); // Must have a diffuse map
+	object.specularMap != "null" ? setSpecularTexture(object.specularMap, 48.0f) : setSpecularTexture("res/textures/blank.png", 48.0f); // Must have a specular map
+
+
+	if (object.normalMap != "null")
+	{
+		setNormalTexture(object.normalMap, object.normalMapNormalize);
+	}
+
+	if (object.heightMap != "null")
+	{
+		setHeightTexture(object.heightMap, object.heightMapHeight);
+	}
+
+	if (object.emissionMap != "null")
+	{
+		setEmissionTexture(object.emissionMap);
+	}
+
+
+	setShaderOne("res/shaders/lightingPassOne-vertex.glsl", "res/shaders/lightingPassOne-fragment.glsl");
+	setShaderTwo("res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
 }
 
 LightingEntity::~LightingEntity()
@@ -22,8 +53,6 @@ LightingEntity::~LightingEntity()
 		texture = nullptr;
 	}
 	m_modelTextures.clear();
-
-
 }
 
 void LightingEntity::initEntity()
@@ -260,7 +289,7 @@ void LightingEntity::setHeightTexture(const std::string& texturePath, float heig
 	m_heightAmount = heightAmount;
 }
 
-void LightingEntity::affectedByGravity(bool gravity)
+std::shared_ptr<OpenGLTexture> LightingEntity::getTextureAtSlot(unsigned int index)
 {
-	//m_collisionObject->affectedByGravity(gravity);
+	return m_modelTextures.at(index);
 }

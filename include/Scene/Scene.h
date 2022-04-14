@@ -2,6 +2,7 @@
 
 // Forward Declarations
 class BaseEntity;
+class LightingEntity;
 class SceneCamera;
 class SceneLightManager;
 //class CollisionMaster;
@@ -13,21 +14,29 @@ public:
 	Scene(const std::string& sceneName);
 	~Scene();
 
-	bool					loadScene();
+	bool						loadScene();
 
-	void					updateScene();
+	void						updateScene();
 
-	void					drawSceneFirstPass();
-	void					drawSceneSecondPass();
+	void						drawSceneFirstPass();
+	void						drawSceneSecondPass();
 
-	const std::string&		getSceneName();
+	const std::string&			getSceneName();
+
+	size_t							getEntityNum();
+	std::shared_ptr<LightingEntity>	getEntityAtIndex(int index);
+
+
+	const std::shared_ptr<SceneLightManager>&	getSceneLightManager();
+	const std::shared_ptr<SceneCamera>&			getSceneCamera();
+
+	void					deleteLightingEntityFromVector(int index);
 
 private:
 
 	void					addSceneCamera(float x = 0.0f, float y = 0.0f, float z = 0.0f);
 	void					addSceneLightManager();
 
-	//void					updateOnInput();
 	void					updateSceneLight();
 
 
@@ -37,41 +46,7 @@ private:
 	std::shared_ptr<SceneLightManager>			m_sceneLightManager;
 
 	std::vector<std::shared_ptr<BaseEntity>>	m_sceneEntities;
-	
-	/*
-		FMPscene.txt exclusive variables
-	*/
 
-	// Light showing materials variables
-	float					m_materialLightMinZ = -5;
-	float					m_materialLightMaxZ = 9;
-	float					m_materialLightMinX = -25;
-	float					m_materialLightMaxX = -13;
-	bool					m_materialLightIncZ = true;
-	bool					m_materialLightIncX = true;
-
-	/*
-		lightTest.txt exclusive variables
-	*/
-
-	// Light showing materials variables
-	float					m_materialtestLightMinZ = -9;
-	float					m_materialtestLightMaxZ = 9;
-	float					m_materialtestLightMinX = -9;
-	float					m_materialtestLightMaxX = 9;
-	bool					m_materialtestLightIncZ = true;
-	bool					m_materialtestLightIncX = true;
-	float					m_materialtestlightR = 0.0f;
-	float					m_materialtestlightG = 0.0f;
-	float					m_materialtestlightB = 0.0f;
-
-	// Light showing normal maps variables
-	float					m_normalLightMaxZ = 8;
-	float					m_normalLightMinZ = 23;
-	bool					m_normalLightIncZ = true;
-
-	// Light showing coloured lighting variables
-	float					m_lightR = 0.0f;
-	float					m_lightG = 0.0f;
-	float					m_lightB = 0.0f;
+	// A separate vector to store just the LightingEntity objects as it makes it easier for the UI (will change to a better system eventually)
+	std::vector<std::shared_ptr<LightingEntity>> m_sceneLightingEntities;
 };

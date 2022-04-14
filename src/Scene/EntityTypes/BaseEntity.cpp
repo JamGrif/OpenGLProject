@@ -6,9 +6,22 @@
 BaseEntity::BaseEntity()
 	:m_modelMesh(nullptr), m_modelShaderPassOne(nullptr), m_modelShaderPassTwo(nullptr), 
 	m_position{ 0.0, 0.0, 0.0 }, m_rotation{ 0.0, 0.0, 0.0 }, m_scale{ 1.0f, 1.0f, 1.0f },
+	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f }, m_entityType(""),
+	m_localLightManager(EngineStatics::getLightManager()), m_localRenderer(EngineStatics::getRenderer()), m_localProjectionMatrix(EngineStatics::getProjectionMatrix())
+{
+	PRINT_INFO("bad base entity");
+}
+
+BaseEntity::BaseEntity(templateBaseEntity object)
+	:m_modelMesh(nullptr), m_modelShaderPassOne(nullptr), m_modelShaderPassTwo(nullptr),
 	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f },
 	m_localLightManager(EngineStatics::getLightManager()), m_localRenderer(EngineStatics::getRenderer()), m_localProjectionMatrix(EngineStatics::getProjectionMatrix())
 {
+	m_position = object.position;
+	m_rotation = object.rotation;
+	m_scale = object.scale;
+
+	m_entityType = object.objectType;
 }
 
 BaseEntity::~BaseEntity()
@@ -16,6 +29,8 @@ BaseEntity::~BaseEntity()
 	m_modelMesh = nullptr;
 	m_modelShaderPassOne = nullptr;
 	m_modelShaderPassTwo = nullptr;
+
+	PRINT_TRACE("Deleted a BaseEntity");
 }
 
 /// <summary>
@@ -70,6 +85,17 @@ void BaseEntity::setMatrixValues()
 	
 	m_vMat = EngineStatics::getCamera()->getViewMatrix(); //---------
 	
+}
+
+void BaseEntity::setEntityType(const std::string& type)
+{
+	m_entityType = type;
+}
+
+
+std::string BaseEntity::getEntityType()
+{
+	return m_entityType;
 }
 
 void BaseEntity::SetXPos(float num) { m_position.x = num; }

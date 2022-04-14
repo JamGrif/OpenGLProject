@@ -8,6 +8,18 @@ TerrainEntity::TerrainEntity()
 
 }
 
+TerrainEntity::TerrainEntity(templateTerrainEntity object)
+	:BaseEntity(object), m_terrainTexture(nullptr), m_terrainHeight(nullptr), m_elevation(2.5), m_minElevation(-8), m_maxElevation(-3)
+{
+	setElevation(object.elevation);
+
+	setTerrainTexture(object.terrainTextureMap);
+	setTerrainHeightTexture(object.terrainHeightMap);
+
+
+	setShaderTwo("res/shaders/terrain-vertex.glsl", "res/shaders/terrain-tessCont.glsl", "res/shaders/terrain-tessEval.glsl", "res/shaders/terrain-fragment.glsl");
+}
+
 TerrainEntity::~TerrainEntity()
 {
 	m_terrainTexture = nullptr;

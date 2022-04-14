@@ -2,13 +2,18 @@
 
 #include "Scene/EntityTypes/BaseEntity.h"
 
+struct templateGeometryEntity : public templateBaseEntity
+{
+	std::string mesh = "";
+};
+
 // Class that uses the geometry shader to simple "inflate/deflate" an object 
 class GeometryEntity
 	:public BaseEntity
 {
 public:
-
 	GeometryEntity();
+	GeometryEntity(templateGeometryEntity object);
 	~GeometryEntity();
 
 	void		initEntity() override;
