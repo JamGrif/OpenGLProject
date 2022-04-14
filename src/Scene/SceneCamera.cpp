@@ -19,7 +19,8 @@ SceneCamera::SceneCamera(glm::vec3 position)
 
 	// Initialize default values
     updateCameraVectors();
-	m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up); 
+	updateLookatMatrix();
+	//m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up); 
 }
 
 SceneCamera::~SceneCamera()
@@ -57,7 +58,8 @@ void SceneCamera::Update()
     
 	// Calculate lookAt matrix
 	if (m_cameraMoved)
-		m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up);
+		updateLookatMatrix();
+		//m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up);
 }
 
 const glm::mat4& SceneCamera::getViewMatrix() const
@@ -73,6 +75,17 @@ const glm::vec3& SceneCamera::getPosition() const
 const glm::vec3& SceneCamera::getFront() const
 {
     return m_front;
+}
+
+/// <summary>
+/// Updates the cameras positions and refreshes the cameras vectors as well
+/// </summary>
+void SceneCamera::setPosition(const glm::vec3& newPos)
+{
+	m_position = newPos;
+
+	updateCameraVectors();
+	updateLookatMatrix();
 }
 
 /// <summary>
@@ -152,4 +165,9 @@ void SceneCamera::updateCameraVectors()
     // Also re-calculate the Right and Up vector
     m_right = glm::normalize(glm::cross(m_front, m_worldUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     m_up = glm::normalize(glm::cross(m_right, m_front));
+}
+
+void SceneCamera::updateLookatMatrix()
+{
+	m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up);
 }

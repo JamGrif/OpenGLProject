@@ -30,7 +30,7 @@ private:
 
 	std::unique_ptr<UI>				m_UI;
 
-	std::unique_ptr<Scene>			m_loadedScene;
+	std::shared_ptr<Scene>			m_loadedScene;
 
 	std::unique_ptr<OpenGLFramebuffer>	m_sceneMSAAFrameBuffer;		//Scene is drawn to this buffer with MSAA applied
 	std::unique_ptr<OpenGLFramebuffer>	m_sceneFilterFramebuffer;	//Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen

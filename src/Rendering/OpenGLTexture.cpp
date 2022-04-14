@@ -44,6 +44,12 @@ void OpenGLTexture::setTextureSlot(int slot)
 	m_textureSlot = slot;
 }
 
+
+uint32_t OpenGLTexture::getTextureID()
+{
+	return m_textureID;
+}
+
 /// <summary>
 /// Uses the saved filepath (from .setFilePath()) to load the texture image into the object.
 /// Must be called BEFORE .loadTexture()

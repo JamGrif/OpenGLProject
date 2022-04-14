@@ -32,7 +32,6 @@ bool Application::appInit()
 	m_renderer = std::make_shared<Renderer>();
 	if (!m_renderer->getStatus())
 	{
-		PRINT_ERROR("Renderer failed to initialize");
 		return false;
 	}
 	EngineStatics::setRenderer(m_renderer);
@@ -48,7 +47,7 @@ bool Application::appInit()
 	Input::init();
 
 	// Initialize the UI
-	m_UI = std::make_unique<UI>(true);
+	m_UI = std::make_unique<UI>(true, m_loadedScene);
 
 	// Create the apps Framebuffers
 	m_sceneFilterFramebuffer = std::make_unique<OpenGLFramebuffer>(false);
@@ -75,21 +74,7 @@ void Application::appLoop()
 
 		m_renderer->startOfFrame();
 
-		if (m_UI)
-		{
-			m_UI->startOfFrame();
-
-			if (m_UI->getUiVisible())
-			{
-				// Check if loaded scene needs to change
-				if (m_UI->getSceneNum() != 0)
-					setScene(m_UI->getSceneNum());
-
-				// Check if applied screen filter needs to change
-				if (m_UI->getFilterNum() != 0)
-					setScreenFilter(m_UI->getFilterNum());
-			}
-		}
+		
 		
 		if (m_loadedScene)
 			m_loadedScene->updateScene();
@@ -117,7 +102,23 @@ void Application::appLoop()
 		}
 
 		if (m_UI)
-			m_UI->drawInFrame();
+		{
+			m_UI->startOfFrame();
+
+			if (m_UI->getUiVisible())
+			{
+				// Check if loaded scene needs to change
+				if (m_UI->getSceneNum() != 0)
+					setScene(m_UI->getSceneNum());
+
+				// Check if applied screen filter needs to change
+				if (m_UI->getFilterNum() != 0)
+					setScreenFilter(m_UI->getFilterNum());
+			}
+
+			m_UI->update();
+		}
+			
 
 		m_renderer->swapBuffers();
 	}
@@ -162,13 +163,18 @@ bool Application::setScene(int newSceneNumber)
 		}
 	}
 
-	m_loadedScene = std::make_unique<Scene>(newSceneFilePath);
+	m_loadedScene = nullptr;
+	m_UI->updateSceneHandle(nullptr);
+	m_loadedScene = std::make_shared<Scene>(newSceneFilePath);
 
 	if (m_loadedScene->loadScene())
 	{
 		// Scene successfully loaded
 		if (m_UI)
-			m_UI->refreshLightButtons();
+		{
+			m_UI->updateSceneHandle(m_loadedScene);
+			//m_UI->updateSceneInformation();
+		}
 
 		return true;
 	}

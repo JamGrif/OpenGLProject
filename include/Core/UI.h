@@ -10,17 +10,20 @@ enum sceneNames
 };
 
 // Forward Declarations
-class SceneLightManager;
+//class SceneLightManager;
+//class SceneCamera;
+class Scene;
+class LightingEntity;
 
 // A wrapper around imGui to display UI elements to the window
 class UI
 {
 public:
-	UI(bool uiVisible);
+	UI(bool uiVisible, std::shared_ptr<Scene> loadedScene);
 	~UI();
 
 	void	startOfFrame();
-	void	drawInFrame();
+	void	update();
 
 	void	toggleUI();
 
@@ -28,9 +31,24 @@ public:
 	int		getSceneNum() const;
 	int		getFilterNum() const;
 
-	void	refreshLightButtons();
+	// Scene stuff
+	void	updateSceneHandle(std::shared_ptr<Scene> newLoadedScene);
 
 private:
+
+	// Scene stuff
+	void	sceneOptionsPanel();
+	void	controlsPanel();
+	void	performanceMetricsPanel();
+	void	sceneEntitiesPanel();
+	void	entityPanel();
+
+	void	updateSceneInformation();
+
+	void	clearSelectedEntity();
+
+	bool			m_isEntitySelected;
+	int				m_selectedEntityIndex;
 
 	bool			m_uiVisible; // Dictates whether the UI will be drawn or not
 
@@ -55,7 +73,7 @@ private:
 
 	int				m_appPostProcess;
 
-	//Cached other classes
-	std::shared_ptr<SceneLightManager>	m_localLightManager;
+	// Cached other classes
+	std::shared_ptr<Scene>						m_sceneHandle;
 };
 

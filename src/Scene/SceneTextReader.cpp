@@ -13,7 +13,7 @@
 
 #include "Scene/SceneLightManager.h"
 
-SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<BaseEntity>>& sceneMeshes, std::shared_ptr<SceneLightManager>& sceneLightManager)
+SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<BaseEntity>>& sceneMeshes, std::vector<std::shared_ptr<LightingEntity>>& sceneLightingEntities, std::shared_ptr<SceneLightManager>& sceneLightManager)
 	:m_status(false)
 {
 	std::ifstream fileStream(filename, std::ios::in);
@@ -92,7 +92,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		else if (fullLine.at(0) == "modelBasic")
 		{
 			templateBasicEntity object;
-
+			
 			// Only add to list of modelbasic objects to create if was read successfully from file
 			if (applyToModelBasicTemplate(object, fullLine))
 				completedModelBasicObjects.emplace_back(object);
@@ -100,7 +100,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		else if (fullLine.at(0) == "modelTerrain")
 		{
 			templateTerrainEntity object;
-
+			
 			// Only add to list of modelterrain objects to create if was read successfully from file
 			if (applyToModelTerrainTemplate(object, fullLine))
 				completedModelTerrainObjects.emplace_back(object);
@@ -108,7 +108,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		else if (fullLine.at(0) == "modelEnvironment")
 		{
 			templateEnvironmentEntity object;
-
+			
 			// Only add to list of modelenvironment objects to create if was read successfully from file
 			if (applyToModelEnvironmentTemplate(object, fullLine))
 				completedModelEnvironmentObjects.emplace_back(object);
@@ -124,7 +124,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		else if (fullLine.at(0) == "modelSky")
 		{
 			templateSkyEntity object;
-
+			
 			// Only add to list of modelsky objects to create if was read successfully from file
 			if (applyToModelSkyTemplate(object, fullLine))
 				completedModelSkyObjects.emplace_back(object);
@@ -138,217 +138,77 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 
 	fileStream.close();
 
-	
-
 	/*
 		2. Use the temp objects to create and fill out the attributes of all the required objects in the scene
 		   and add it to the scene vector
 	*/
 
-	for (const auto& o : completedDirectionalLightObjects)
+	for (const auto& dLightTemplate : completedDirectionalLightObjects)
 	{
 		sceneLightManager->addDirectionalLight(
-			o.Ambient,
-			o.Diffuse,
-			o.Specular,
-			o.Direction
+			dLightTemplate.Ambient,
+			dLightTemplate.Diffuse,
+			dLightTemplate.Specular,
+			dLightTemplate.Direction
 		);
 	}
 
-	for (const auto& o : completedPointLightObjects)
+	for (const auto& pLightTemplate : completedPointLightObjects)
 	{
 		sceneLightManager->addPointLight(
-			o.Ambient,
-			o.Diffuse,
-			o.Specular,
-			o.Position
+			pLightTemplate.Ambient,
+			pLightTemplate.Diffuse,
+			pLightTemplate.Specular,
+			pLightTemplate.Position
 		);
 	}
 
-	for (const auto& o : completedSpotLightObjects)
+	for (const auto& sLightTemplate : completedSpotLightObjects)
 	{
 		sceneLightManager->addSpotLight(
-			o.Ambient,
-			o.Diffuse,
-			o.Specular,
-			o.Position
+			sLightTemplate.Ambient,
+			sLightTemplate.Diffuse,
+			sLightTemplate.Specular,
+			sLightTemplate.Position
 		);
 	}
 
-
-	for (const auto& o : completedModelSkyObjects)
+	for (const auto& skyObject : completedModelSkyObjects)
 	{
-		std::shared_ptr<SkyEntity> model = std::make_shared<SkyEntity>();
-
-		model->SetXPos(o.PosX);
-		model->SetYPos(o.PosY);
-		model->SetZPos(o.PosZ);
-
-		model->SetXRot(o.RotX);
-		model->SetYRot(o.RotY);
-		model->SetZRot(o.RotZ);
-
-		model->SetXScale(o.ScaleX);
-		model->SetYScale(o.ScaleY);
-		model->SetZScale(o.ScaleZ);
-
-		model->setSkyboxTexture(o.skyboxTexture);
-
+		std::shared_ptr<SkyEntity> model = std::make_shared<SkyEntity>(skyObject);
 		sceneMeshes.emplace_back(model);
 	}
 
-	
-
-	for (const auto& o : completedModelLightObjects)
+	for (const auto& lightObject : completedModelLightObjects)
 	{
-		std::shared_ptr<LightingEntity> model = std::make_shared<LightingEntity>();
-	
-		model->SetXPos(o.PosX);
-		model->SetYPos(o.PosY);
-		model->SetZPos(o.PosZ);
-	
-		model->SetXRot(o.RotX);
-		model->SetYRot(o.RotY);
-		model->SetZRot(o.RotZ);
-	
-		model->SetXScale(o.ScaleX);
-		model->SetYScale(o.ScaleY);
-		model->SetZScale(o.ScaleZ);
-	
-		model->setMesh(o.mesh);
-	
-		if (o.diffuseMap != "null")
-		{
-			model->setDiffuseTexture(o.diffuseMap);
-		}
-		else
-		{
-			model->setDiffuseTexture("res/textures/blank.png"); // Models have to have a diffuse map
-		}
-	
-		if (o.specularMap != "null")
-		{
-			model->setSpecularTexture(o.specularMap, 48.0f);
-		}
-		else
-		{
-			model->setSpecularTexture("res/textures/blank.png", 48.0f); // Models have to have a specular map
-		}
-	
-		if (o.normalMap != "null")
-		{
-			model->setNormalTexture(o.normalMap, o.normalMapNormalize);
-		}
-	
-		if (o.heightMap != "null")
-		{
-			model->setHeightTexture(o.heightMap, o.heightMapHeight);
-		}
-	
-		if (o.emissionMap != "null")
-		{
-			model->setEmissionTexture(o.emissionMap);
-		}
-
-		model->affectedByGravity(o.gravity);
-	
-		sceneMeshes.emplace_back(model);
+		std::shared_ptr<LightingEntity> model = std::make_shared<LightingEntity>(lightObject);
+		sceneLightingEntities.emplace_back(model);
 	}
 
-	for (const auto& o : completedModelBasicObjects)
+	for (const auto& basicObject : completedModelBasicObjects)
 	{
-		std::shared_ptr<BasicEntity> model = std::make_shared<BasicEntity>();
-
-		model->SetXPos(o.PosX);
-		model->SetYPos(o.PosY);
-		model->SetZPos(o.PosZ);
-
-		model->SetXRot(o.RotX);
-		model->SetYRot(o.RotY);
-		model->SetZRot(o.RotZ);
-
-		model->SetXScale(o.ScaleX);
-		model->SetYScale(o.ScaleY);
-		model->SetZScale(o.ScaleZ);
-
-		model->setMesh(o.mesh);
-
-		model->copyPointLight(o.lightToCopy);
-
+		std::shared_ptr<BasicEntity> model = std::make_shared<BasicEntity>(basicObject);
 		sceneMeshes.emplace_back(model);
 	}
-
 	
-	for (const auto& o : completedModelTerrainObjects)
+	
+	for (const auto& terrainObject : completedModelTerrainObjects)
 	{
-		std::shared_ptr<TerrainEntity> model = std::make_shared<TerrainEntity>();
-
-		model->SetXPos(o.PosX);
-		model->SetYPos(o.PosY);
-		model->SetZPos(o.PosZ);
-
-		model->SetXRot(o.RotX);
-		model->SetYRot(o.RotY);
-		model->SetZRot(o.RotZ);
-
-		model->SetXScale(o.ScaleX);
-		model->SetYScale(o.ScaleY);
-		model->SetZScale(o.ScaleZ);
-
-		model->setElevation(o.elevation);
-
-		model->setTerrainTexture(o.terrainTextureMap);
-		model->setTerrainHeightTexture(o.terrainHeightMap);
-
+		std::shared_ptr<TerrainEntity> model = std::make_shared<TerrainEntity>(terrainObject);
 		sceneMeshes.emplace_back(model);
 	}
-
-	for (const auto& o : completedModelEnvironmentObjects)
+	
+	for (const auto& environmentObject : completedModelEnvironmentObjects)
 	{
-		std::shared_ptr<EnvironmentEntity> model = std::make_shared<EnvironmentEntity>();
-
-		model->SetXPos(o.PosX);
-		model->SetYPos(o.PosY);
-		model->SetZPos(o.PosZ);
-
-		model->SetXRot(o.RotX);
-		model->SetYRot(o.RotY);
-		model->SetZRot(o.RotZ);
-
-		model->SetXScale(o.ScaleX);
-		model->SetYScale(o.ScaleY);
-		model->SetZScale(o.ScaleZ);
-
-		model->setMesh(o.mesh);
-
-		model->toggleReflection(o.reflection);
-		model->toggleRefraction(o.refraction);
-
+		std::shared_ptr<EnvironmentEntity> model = std::make_shared<EnvironmentEntity>(environmentObject);
 		sceneMeshes.emplace_back(model);
 	}
-
-	for (const auto& o : completedModelGeometryObjects)
+	
+	for (const auto& geometryObject : completedModelGeometryObjects)
 	{
-		std::shared_ptr<GeometryEntity> model = std::make_shared<GeometryEntity>();
-
-		model->SetXPos(o.PosX);
-		model->SetYPos(o.PosY);
-		model->SetZPos(o.PosZ);
-
-		model->SetXRot(o.RotX);
-		model->SetYRot(o.RotY);
-		model->SetZRot(o.RotZ);
-
-		model->SetXScale(o.ScaleX);
-		model->SetYScale(o.ScaleY);
-		model->SetZScale(o.ScaleZ);
-
-		model->setMesh(o.mesh);
-
+		std::shared_ptr<GeometryEntity> model = std::make_shared<GeometryEntity>(geometryObject);
 		sceneMeshes.emplace_back(model);
 	}
-
-	//worker.join();
 
 	m_status = true;
 }
@@ -509,14 +369,13 @@ void SceneTextReader::applyToModel(templateBaseEntity& o, const std::vector<std:
 	enum objectInfo
 	{
 		e_objectType = 0,
+
 		e_PosX = 1,
 		e_PosY = 2,
 		e_PosZ = 3,
-
 		e_RotX = 4,
 		e_RotY = 5,
 		e_RotZ = 6,
-
 		e_ScaleX = 7,
 		e_ScaleY = 8,
 		e_ScaleZ = 9,
@@ -524,17 +383,17 @@ void SceneTextReader::applyToModel(templateBaseEntity& o, const std::vector<std:
 
 	o.objectType = fullLine.at(e_objectType);
 
-	o.PosX = std::stof(fullLine.at(e_PosX));
-	o.PosY = std::stof(fullLine.at(e_PosY));
-	o.PosZ = std::stof(fullLine.at(e_PosZ));
+	o.position.x = std::stof(fullLine.at(e_PosX));
+	o.position.y = std::stof(fullLine.at(e_PosY));
+	o.position.z = std::stof(fullLine.at(e_PosZ));
 
-	o.RotX = std::stof(fullLine.at(e_RotX));
-	o.RotY = std::stof(fullLine.at(e_RotY));
-	o.RotZ = std::stof(fullLine.at(e_RotZ));
+	o.rotation.x = std::stof(fullLine.at(e_RotX));
+	o.rotation.y = std::stof(fullLine.at(e_RotY));
+	o.rotation.z = std::stof(fullLine.at(e_RotZ));
 
-	o.ScaleX = std::stof(fullLine.at(e_ScaleX));
-	o.ScaleY = std::stof(fullLine.at(e_ScaleY));
-	o.ScaleZ = std::stof(fullLine.at(e_ScaleZ));
+	o.scale.x = std::stof(fullLine.at(e_ScaleX));
+	o.scale.y = std::stof(fullLine.at(e_ScaleY));
+	o.scale.z = std::stof(fullLine.at(e_ScaleZ));
 }
 
 
@@ -550,7 +409,6 @@ bool SceneTextReader::applyToModelLightingTemplate(templateLightingEntity& o, co
 		e_heightMap = 15,
 		e_heightMapHeight = 16,
 		e_emissionMap = 17,
-		e_gravity = 18,
 
 		e_END_OF_MODELLIGHTING_ENUM
 	};
@@ -616,8 +474,6 @@ bool SceneTextReader::applyToModelLightingTemplate(templateLightingEntity& o, co
 		{
 			o.emissionMap = "res/textures/" + fullLine.at(e_emissionMap) + ".png";
 		}
-
-		o.gravity = std::stof(fullLine.at(e_gravity));
 	}
 	catch (const std::exception& e)
 	{
@@ -633,7 +489,6 @@ bool SceneTextReader::applyToModelBasicTemplate(templateBasicEntity& o, const st
 	enum objectInfo
 	{
 		e_mesh = 10,
-
 		e_lightToCopy = 11,
 
 		e_END_OF_MODELBASIC_ENUM
@@ -660,19 +515,14 @@ bool SceneTextReader::applyToModelBasicTemplate(templateBasicEntity& o, const st
 		return false;
 	}
 
-
-
-
 	return true;
 }
-
 
 bool SceneTextReader::applyToModelTerrainTemplate(templateTerrainEntity& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
 		e_Elevation = 10,
-
 		e_TerrainTextureMap = 11,
 		e_TerrainHeightMap = 12,
 
@@ -709,9 +559,7 @@ bool SceneTextReader::applyToModelEnvironmentTemplate(templateEnvironmentEntity&
 	enum objectInfo
 	{
 		e_mesh = 10,
-
 		e_reflection = 11,
-
 		e_refraction = 12,
 
 		e_END_OF_MODELENVIRONMENT_ENUM

@@ -23,6 +23,8 @@ public:
 	const glm::mat4&	getViewMatrix() const;
 	const glm::vec3&	getPosition() const;
 	const glm::vec3&	getFront() const;
+
+	void				setPosition(const glm::vec3& newPos);
     
 private:
 
@@ -30,6 +32,7 @@ private:
 	inline void			processMouse(float xOffset, float yOffset);
 
     inline void			updateCameraVectors();
+	inline void			updateLookatMatrix();
 
     // Camera Attributes
     glm::vec3			m_position;

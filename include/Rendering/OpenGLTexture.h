@@ -15,6 +15,8 @@ public:
 
 	void						setTextureSlot(int slot);
 
+	uint32_t					getTextureID();
+
 	// Texture loading functions
 	inline bool					readTextureFromFile();
 	inline void					loadTexture(); 
