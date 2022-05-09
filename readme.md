@@ -8,13 +8,22 @@ This project is a continuation of my Final Year Project for University where I c
 
 I have been further developing this project in my own time for fun by adding new features such as the ability to load scenes from textfiles, be able to switch between them during runtime and implementing a ImGui UI with buttons to edit the scene. This alongside the usual fixing of bugs and issues and further abstracting parts of the program.
 
+I have been further developing this project in my own time for fun by adding new features, fixing bugs and issues, and further abstracting away parts of the program.
+
 This project is mainly a fun way for me to experiment and test my OpenGL and C++ ability.
 
 **OLD** Renderer Showcase Video - https://www.youtube.com/watch?v=QOnscYxgrNQ
 
 # Features
+**New features over the original FMP version:**  
+Multithreading for asset loading (textures, meshes & shader sources)  
+Scene textfile loading during rutime
+ImGui interface with a simple scene editor (Change scene, change screen filter, adjust lights status, view and delete entity values)
+Improved logging with better timer and error handling  
 
-ADS Blinn-Phong Light Reflection Model, Diffuse Map, Specular Map, Emission Map, Height Map, Normal Map, scene textfile loading,  
+
+**Original features:**  
+ADS Blinn-Phong Light Reflection Model, Diffuse Map, Specular Map, Emission Map, Height Map, Normal Map,   
 skybox cubemap, Reflection Environment Map, Refraction Environment Map, Mountains via Height Map with Tessellation shaders,  
 Model inflation via Geometry shader, post-processing screen filters, coloured lighting, Directional/Point/Spot light, load external 3D models,  
 load external textures, load external shaders, Parallax mapping, sprite blending, mouse + keyboard input, camera movement on all 3 axis  
