@@ -18,7 +18,6 @@ class BasicEntity :
     public BaseEntity
 {
 public:
-	BasicEntity();
 	BasicEntity(templateBasicEntity object);
     ~BasicEntity();
 

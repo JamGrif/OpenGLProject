@@ -17,7 +17,6 @@ class EnvironmentEntity :
     public BaseEntity
 {
 public:
-	EnvironmentEntity();
 	EnvironmentEntity(templateEnvironmentEntity object);
     ~EnvironmentEntity();
 

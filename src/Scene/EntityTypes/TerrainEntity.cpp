@@ -1,21 +1,11 @@
-#include "pch.h"
+ #include "pch.h"
 #include "Scene/EntityTypes/TerrainEntity.h"
 
-TerrainEntity::TerrainEntity()
-	:m_terrainTexture(nullptr), m_terrainHeight(nullptr), m_elevation(2.5), m_minElevation(-8), m_maxElevation(-3)
-{
-	setShaderTwo("res/shaders/terrain-vertex.glsl", "res/shaders/terrain-tessCont.glsl", "res/shaders/terrain-tessEval.glsl", "res/shaders/terrain-fragment.glsl");
-
-}
-
 TerrainEntity::TerrainEntity(templateTerrainEntity object)
-	:BaseEntity(object), m_terrainTexture(nullptr), m_terrainHeight(nullptr), m_elevation(2.5), m_minElevation(-8), m_maxElevation(-3)
+	:BaseEntity(object), m_terrainTexture(nullptr), m_terrainHeight(nullptr), m_elevation(object.elevation), m_minElevation(-8), m_maxElevation(-3)
 {
-	setElevation(object.elevation);
-
 	setTerrainTexture(object.terrainTextureMap);
 	setTerrainHeightTexture(object.terrainHeightMap);
-
 
 	setShaderTwo("res/shaders/terrain-vertex.glsl", "res/shaders/terrain-tessCont.glsl", "res/shaders/terrain-tessEval.glsl", "res/shaders/terrain-fragment.glsl");
 }
@@ -28,23 +18,21 @@ TerrainEntity::~TerrainEntity()
 
 void TerrainEntity::initEntity()
 {
-
 }
 
 void TerrainEntity::updateEntity()
 {
-
 }
 
 /// <summary>
-/// Overridden method from Model base class - Unused in this class
+/// Overridden method from BaseEntity class - Unused in this class
 /// </summary>
 void TerrainEntity::drawPassOne()
 {
 }
 
 /// <summary>
-/// Overridden method from Model base class - Used to draw surrounding terrain with the tessellation shader
+/// Overridden method from BaseEntity class - Used to draw surrounding terrain with the tessellation shader
 /// </summary>
 void TerrainEntity::drawPassTwo()
 {

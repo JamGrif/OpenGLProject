@@ -15,7 +15,6 @@ class TerrainEntity :
     public BaseEntity
 {
 public:
-	TerrainEntity();
 	TerrainEntity(templateTerrainEntity object);
     ~TerrainEntity();
 
@@ -41,6 +40,4 @@ private:
 
 	const float					m_minElevation;
 	const float					m_maxElevation;
-
 };
-

@@ -3,21 +3,12 @@
 
 #include "Scene/SceneLightManager.h"
 
-BasicEntity::BasicEntity()
-	:m_defaultColour(1.0, 1.0, 1.0), m_copyingLight(false), m_localPointLight(nullptr)
-{
-	//setShaderOne--------
-	setShaderTwo("res/shaders/basic-vertex.glsl", "res/shaders/basic-fragment.glsl");
-}
-
 BasicEntity::BasicEntity(templateBasicEntity object)
 	:BaseEntity(object), m_defaultColour(1.0, 1.0, 1.0), m_copyingLight(false), m_localPointLight(nullptr)
 {
-
 	setMesh(object.mesh);
 
 	copyPointLight(object.lightToCopy);
-
 
 	setShaderTwo("res/shaders/basic-vertex.glsl", "res/shaders/basic-fragment.glsl");
 }
@@ -34,11 +25,10 @@ void BasicEntity::initEntity()
 
 void BasicEntity::updateEntity()
 {
-
 }
 
 /// <summary>
-/// Overridden method from Model base class - Unused in this class
+/// Overridden method from BaseEntity class - Unused in this class
 /// </summary>
 void BasicEntity::drawPassOne()
 {
@@ -50,7 +40,7 @@ void BasicEntity::drawPassOne()
 }
 
 /// <summary>
-/// Overridden method from Model base class - Used to draw a simple object with no lighting applied. Has the option to "copy" the position and colour of a point light
+/// Overridden method from BaseEntity class - Used to draw a simple object with no lighting applied. Has the option to "copy" the position and colour of a point light
 /// </summary>
 void BasicEntity::drawPassTwo()
 {
@@ -116,10 +106,9 @@ void BasicEntity::drawPassTwo()
 /// <param name="index">The index of the point light in the point light vector that will be copied</param>
 void BasicEntity::copyPointLight(unsigned int index)
 {
-	if (m_localLightManager->getPointLight(index) == nullptr) // If pointlight at specified index does not exist, ignore and return
+	if (!m_localLightManager->getPointLight(index)) // If pointlight at specified index does not exist, ignore and return
 		return;
 	
-
 	unsigned int totalCurrentPointLights = m_localLightManager->getCurrentPointLights();
 	if (index <= totalCurrentPointLights && totalCurrentPointLights != 0) // Ensure index is within the range of created point lights
 	{

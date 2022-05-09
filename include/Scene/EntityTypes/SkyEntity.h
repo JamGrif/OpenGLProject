@@ -12,8 +12,6 @@ class SkyEntity :
     public BaseEntity
 {
 public:
-
-	SkyEntity();
 	SkyEntity(templateSkyEntity object);
     ~SkyEntity();
 

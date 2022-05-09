@@ -1,25 +1,10 @@
 #include "pch.h"
 #include "Scene/EntityTypes/EnvironmentEntity.h"
 
-EnvironmentEntity::EnvironmentEntity()
-	:m_skyTexture(nullptr), m_usingReflection(false), m_usingRefraction(false)
-{
-	//setShaderOne--------
-	setShaderTwo("res/shaders/environmentMapping-vertex.glsl", "res/shaders/environmentMapping-fragment.glsl");
-
-	// Get the sky cubemap
-	m_skyTexture = CubemapManager::retrieveCubeMapObject();
-}
-
 EnvironmentEntity::EnvironmentEntity(templateEnvironmentEntity object)
-	:BaseEntity(object), m_skyTexture(nullptr), m_usingReflection(false), m_usingRefraction(false)
+	:BaseEntity(object), m_skyTexture(nullptr), m_usingReflection(object.reflection), m_usingRefraction(object.refraction)
 {
-
 	setMesh(object.mesh);
-
-	toggleReflection(object.reflection);
-	toggleRefraction(object.refraction);
-
 
 	setShaderTwo("res/shaders/environmentMapping-vertex.glsl", "res/shaders/environmentMapping-fragment.glsl");
 	m_skyTexture = CubemapManager::retrieveCubeMapObject();
@@ -38,11 +23,10 @@ void EnvironmentEntity::initEntity()
 
 void EnvironmentEntity::updateEntity()
 {
-
 }
 
 /// <summary>
-/// Overridden method from Model base class - Unused in this class
+/// Overridden method from BaseEntity class - Unused in this class
 /// </summary>
 void EnvironmentEntity::drawPassOne()
 {
@@ -54,7 +38,7 @@ void EnvironmentEntity::drawPassOne()
 }
 
 /// <summary>
-/// Overridden method from Model base class - Used for environment mapping by taking the Skybox texture and mapping it to the texture
+/// Overridden method from BaseEntity class - Used for environment mapping by taking the Skybox texture and mapping it to the texture
 /// </summary>
 void EnvironmentEntity::drawPassTwo()
 {

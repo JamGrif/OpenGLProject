@@ -1,18 +1,9 @@
 #include "pch.h"
 #include "Scene/EntityTypes/GeometryEntity.h"
 
-GeometryEntity::GeometryEntity()
-	:m_geometryTexture(nullptr), m_inflation(0), m_increasing(0)
-{
-	setShaderTwo("res/shaders/geometry-vertex.glsl", "res/shaders/geometry-geometry.glsl", "res/shaders/geometry-fragment.glsl");
-
-	m_geometryTexture = TextureManager::retrieveTextureObject("res/textures/barrel_diff.png");
-}
-
 GeometryEntity::GeometryEntity(templateGeometryEntity object)
 	:BaseEntity(object), m_geometryTexture(nullptr), m_inflation(0), m_increasing(0)
 {
-
 	setMesh(object.mesh);
 
 	setShaderTwo("res/shaders/geometry-vertex.glsl", "res/shaders/geometry-geometry.glsl", "res/shaders/geometry-fragment.glsl");
@@ -35,7 +26,7 @@ void GeometryEntity::updateEntity()
 }
 
 /// <summary>
-/// Overridden method from Model base class - Unused in this class
+/// Overridden method from BaseEntity class - Unused in this class
 /// </summary>
 void GeometryEntity::drawPassOne()
 {
@@ -103,7 +94,7 @@ void GeometryEntity::drawPassTwo()
 }
 
 /// <summary>
-/// Overloaded function from base model class which allows for geometry shader paths to be added
+/// Overloaded function from BaseEntity class which allows for geometry shader paths to be added
 /// </summary>
 /// <param name="vertexPath"></param>
 /// <param name="geometryPath"></param>

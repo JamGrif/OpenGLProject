@@ -35,7 +35,6 @@ class LightingEntity :
     public BaseEntity
 {
 public:
-	LightingEntity();
 	LightingEntity(templateLightingEntity object);
     ~LightingEntity();
 

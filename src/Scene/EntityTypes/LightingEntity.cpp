@@ -5,16 +5,6 @@
 
 #include <glm\gtc\matrix_transform.hpp>
 
-LightingEntity::LightingEntity()
-	:m_modelUsingTextures{false, false, false, false, false},
-	m_specularShininess(0.0f), m_normalizeTexture(false), m_heightAmount(0.5)
-{
-
-	setShaderOne("res/shaders/lightingPassOne-vertex.glsl", "res/shaders/lightingPassOne-fragment.glsl");
-	setShaderTwo("res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
-
-}
-
 LightingEntity::LightingEntity(templateLightingEntity object)
 	:BaseEntity(object), m_modelUsingTextures{ false, false, false, false, false },
 	m_specularShininess(0.0f), m_normalizeTexture(false), m_heightAmount(0.5)
@@ -40,14 +30,13 @@ LightingEntity::LightingEntity(templateLightingEntity object)
 		setEmissionTexture(object.emissionMap);
 	}
 
-
 	setShaderOne("res/shaders/lightingPassOne-vertex.glsl", "res/shaders/lightingPassOne-fragment.glsl");
 	setShaderTwo("res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
 }
 
 LightingEntity::~LightingEntity()
 {
-	for (auto texture : m_modelTextures)
+	for (auto& texture : m_modelTextures)
 	{
 		texture->Unbind();
 		texture = nullptr;
@@ -66,7 +55,8 @@ void LightingEntity::updateEntity()
 }
 
 /// <summary>
-/// Overridden method from Model base class - Used to render the scene to the shadow map depth texture
+/// Overridden method from BaseEntity class - Used to render the scene to the shadow map depth texture
+/// NOT PROPERLY IMPLEMENTED
 /// </summary>
 void LightingEntity::drawPassOne()
 {
@@ -84,7 +74,6 @@ void LightingEntity::drawPassOne()
 	
 	// Draw
 	m_localRenderer->draw(m_modelMesh->getIndices().size());
-	//glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_modelMesh->getIndices().size()), GL_UNSIGNED_INT, 0);
 
 	m_modelMesh->Unbind();
 	
@@ -92,7 +81,7 @@ void LightingEntity::drawPassOne()
 }
 
 /// <summary>
-/// Overridden method from Model base class - Used to light an object by taking values from all active lights, binding texture maps and drawing the object
+/// Overridden method from BaseEntity class - Used to light an object by taking values from all active lights, binding texture maps and drawing the object
 /// </summary>
 void LightingEntity::drawPassTwo()
 {
@@ -219,7 +208,6 @@ void LightingEntity::drawPassTwo()
 /// <summary>
 /// Assigns specified texture to the model to be used for a diffuse map
 /// </summary>
-/// <param name="texturePath"></param>
 void LightingEntity::setDiffuseTexture(const std::string& texturePath)
 {
 	std::shared_ptr<OpenGLTexture> text = TextureManager::retrieveTextureObject(texturePath);
@@ -232,7 +220,6 @@ void LightingEntity::setDiffuseTexture(const std::string& texturePath)
 /// <summary>
 /// Assigns specified texture to the model to be used for a specular map
 /// </summary>
-/// <param name="texturePath"></param>
 /// <param name="shininessAmount">Shiniess of the specular texture in the fragment shader</param>
 void LightingEntity::setSpecularTexture(const std::string& texturePath, float shininessAmount)
 {
@@ -248,7 +235,6 @@ void LightingEntity::setSpecularTexture(const std::string& texturePath, float sh
 /// <summary>
 /// Assigns specified texture to the model to be used for an emission map
 /// </summary>
-/// <param name="texturePath"></param>
 void LightingEntity::setEmissionTexture(const std::string& texturePath)
 {
 	std::shared_ptr<OpenGLTexture> text = TextureManager::retrieveTextureObject(texturePath);
@@ -261,7 +247,6 @@ void LightingEntity::setEmissionTexture(const std::string& texturePath)
 /// <summary>
 /// Assigns specified texture to the model to be used for a normal map
 /// </summary>
-/// <param name="texturePath"></param>
 /// <param name="normalize">Should the texture be normalized in the fragment shader</param>
 void LightingEntity::setNormalTexture(const std::string& texturePath, bool normalize)
 {
@@ -277,7 +262,6 @@ void LightingEntity::setNormalTexture(const std::string& texturePath, bool norma
 /// <summary>
 /// Assigns specified texture to the model to be used for a height map
 /// </summary>
-/// <param name="texturePath"></param>
 void LightingEntity::setHeightTexture(const std::string& texturePath, float heightAmount)
 {
 	std::shared_ptr<OpenGLTexture> text = TextureManager::retrieveTextureObject(texturePath);
@@ -289,6 +273,9 @@ void LightingEntity::setHeightTexture(const std::string& texturePath, float heig
 	m_heightAmount = heightAmount;
 }
 
+/// <summary>
+/// Returns the texture object at specified slot
+/// </summary>
 std::shared_ptr<OpenGLTexture> LightingEntity::getTextureAtSlot(unsigned int index)
 {
 	return m_modelTextures.at(index);

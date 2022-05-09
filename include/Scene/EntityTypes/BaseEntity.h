@@ -28,7 +28,6 @@ struct templateBaseEntity
 class BaseEntity
 {
 public:
-	BaseEntity();
 	BaseEntity(templateBaseEntity object);
 	virtual ~BaseEntity();
 
@@ -64,12 +63,18 @@ public:
 	void			setEntityType(const std::string& type);
 	std::string		getEntityType();
 
+	// Editor
+	bool			getTransformUpdated();
+	bool			getTextureUpdated();
+
 protected:
 	
 	// Model properties
 	std::shared_ptr<OpenGLMesh>			m_modelMesh;
 	std::shared_ptr<OpenGLShader>		m_modelShaderPassOne;
 	std::shared_ptr<OpenGLShader>		m_modelShaderPassTwo;
+
+	std::string		m_entityType;
 
 	//World Space
 	glm::vec3		m_position;
@@ -82,7 +87,11 @@ protected:
 	glm::mat4		m_rMat;		// Rotation
 	glm::mat4		m_sMat;		// Scale
 
-	std::string		m_entityType;
+	
+
+	// Editor
+	bool			m_transformUpdated = false;
+	bool			m_textureUpdated = false;
 
 	//Cached other classes
 	std::shared_ptr<SceneLightManager>	m_localLightManager;

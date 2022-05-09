@@ -3,20 +3,6 @@
 
 #include <GL/glew.h>
 
-SkyEntity::SkyEntity()
-{
-	//m_skyTexture = TextureManager::retrieveCubeMap("default");
-	PRINT_INFO("bad sky entity");
-
-	//setShaderOne--------
-	setShaderTwo("res/shaders/sky-vertex.glsl", "res/shaders/sky-fragment.glsl");
-
-	//Skybox uses its own VBO and attribute system to allow the use of a custom cube
-	glGenBuffers(1, &m_skyboxVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_skyboxVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(m_skyboxVertices), &m_skyboxVertices, GL_STATIC_DRAW);
-}
-
 SkyEntity::SkyEntity(templateSkyEntity object)
 	:BaseEntity(object)
 {
@@ -44,11 +30,10 @@ void SkyEntity::initEntity()
 
 void SkyEntity::updateEntity()
 {
-
 }
 
 /// <summary>
-/// Overridden method from Model base class - Unused in this class
+/// Overridden method from BaseEntity class - Unused in this class
 /// </summary>
 void SkyEntity::drawPassOne()
 {
@@ -60,7 +45,7 @@ void SkyEntity::drawPassOne()
 }
 
 /// <summary>
-/// Overridden method from Model base class - Used to draw the Skybox
+/// Overridden method from BaseEntity class - Used to draw the Skybox
 /// </summary>
 void SkyEntity::drawPassTwo()
 {

@@ -12,7 +12,6 @@ class GeometryEntity
 	:public BaseEntity
 {
 public:
-	GeometryEntity();
 	GeometryEntity(templateGeometryEntity object);
 	~GeometryEntity();
 

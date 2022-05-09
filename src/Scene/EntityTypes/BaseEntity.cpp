@@ -3,25 +3,12 @@
 
 #include <glm\gtc\matrix_transform.hpp>
 
-BaseEntity::BaseEntity()
-	:m_modelMesh(nullptr), m_modelShaderPassOne(nullptr), m_modelShaderPassTwo(nullptr), 
-	m_position{ 0.0, 0.0, 0.0 }, m_rotation{ 0.0, 0.0, 0.0 }, m_scale{ 1.0f, 1.0f, 1.0f },
-	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f }, m_entityType(""),
-	m_localLightManager(EngineStatics::getLightManager()), m_localRenderer(EngineStatics::getRenderer()), m_localProjectionMatrix(EngineStatics::getProjectionMatrix())
-{
-	PRINT_INFO("bad base entity");
-}
-
 BaseEntity::BaseEntity(templateBaseEntity object)
 	:m_modelMesh(nullptr), m_modelShaderPassOne(nullptr), m_modelShaderPassTwo(nullptr),
+	m_entityType(object.objectType), m_position(object.position), m_rotation(object.rotation), m_scale(object.scale),
 	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f },
 	m_localLightManager(EngineStatics::getLightManager()), m_localRenderer(EngineStatics::getRenderer()), m_localProjectionMatrix(EngineStatics::getProjectionMatrix())
 {
-	m_position = object.position;
-	m_rotation = object.rotation;
-	m_scale = object.scale;
-
-	m_entityType = object.objectType;
 }
 
 BaseEntity::~BaseEntity()
@@ -29,8 +16,6 @@ BaseEntity::~BaseEntity()
 	m_modelMesh = nullptr;
 	m_modelShaderPassOne = nullptr;
 	m_modelShaderPassTwo = nullptr;
-
-	PRINT_TRACE("Deleted a BaseEntity");
 }
 
 /// <summary>
@@ -87,22 +72,48 @@ void BaseEntity::setMatrixValues()
 	
 }
 
+/// <summary>
+/// Sets whether the entity type is LightingEntity, SkyEntity, TerrainEntity etc...
+/// </summary>
 void BaseEntity::setEntityType(const std::string& type)
 {
 	m_entityType = type;
 }
-
 
 std::string BaseEntity::getEntityType()
 {
 	return m_entityType;
 }
 
-void BaseEntity::SetXPos(float num) { m_position.x = num; }
+/// <summary>
+/// Returns if the transform part of the entity has been updated since the last time it was checked
+/// If it has been updated then return true, but set the status back to false
+/// </summary>
+/// <returns></returns>
+bool BaseEntity::getTransformUpdated()
+{
+	if (m_transformUpdated)
+	{
+		// If transform update is checked then reset it back to false after returning it
+		bool temp = m_transformUpdated;
+		m_transformUpdated = false;
+		return temp;
+	}
+	else
+	{
+		return m_transformUpdated;
+	}
+}
 
-void BaseEntity::SetYPos(float num) { m_position.y = num; }
+bool BaseEntity::getTextureUpdated()
+{
+}
 
-void BaseEntity::SetZPos(float num) { m_position.z = num; }
+void BaseEntity::SetXPos(float num) { m_position.x = num; m_transformUpdated = true; }
+
+void BaseEntity::SetYPos(float num) { m_position.y = num; m_transformUpdated = true; }
+
+void BaseEntity::SetZPos(float num) { m_position.z = num; m_transformUpdated = true; }
 
 float BaseEntity::GetXPos() const { return m_position.x; }
 
@@ -110,11 +121,11 @@ float BaseEntity::GetYPos() const { return m_position.y; }
 
 float BaseEntity::GetZPos() const { return m_position.z; }
 
-void BaseEntity::SetXRot(float num) { m_rotation.x = num; }
+void BaseEntity::SetXRot(float num) { m_rotation.x = num; m_transformUpdated = true; }
 
-void BaseEntity::SetYRot(float num) { m_rotation.y = num; }
+void BaseEntity::SetYRot(float num) { m_rotation.y = num; m_transformUpdated = true; }
 
-void BaseEntity::SetZRot(float num) { m_rotation.z = num; }
+void BaseEntity::SetZRot(float num) { m_rotation.z = num; m_transformUpdated = true; }
 
 float BaseEntity::GetXRot() const { return m_rotation.x; }
 
@@ -122,11 +133,11 @@ float BaseEntity::GetYRot() const { return m_rotation.y; }
 
 float BaseEntity::GetZRot() const { return m_rotation.z; }
 
-void BaseEntity::SetXScale(float num) { m_scale.x = num; }
+void BaseEntity::SetXScale(float num) { m_scale.x = num; m_transformUpdated = true;}
 
-void BaseEntity::SetYScale(float num) { m_scale.y = num; }
+void BaseEntity::SetYScale(float num) { m_scale.y = num; m_transformUpdated = true;}
 
-void BaseEntity::SetZScale(float num) { m_scale.z = num; }
+void BaseEntity::SetZScale(float num) { m_scale.z = num; m_transformUpdated = true;}
 
 float BaseEntity::GetXScale() const { return m_scale.x; }
 
@@ -134,38 +145,38 @@ float BaseEntity::GetYScale() const { return m_scale.y; }
 
 float BaseEntity::GetZScale() const { return m_scale.z; }
 
-void BaseEntity::IncXPos(float num) { m_position.x += num; }
+void BaseEntity::IncXPos(float num) { m_position.x += num; m_transformUpdated = true;}
 
-void BaseEntity::IncYPos(float num) { m_position.y += num; }
+void BaseEntity::IncYPos(float num) { m_position.y += num; m_transformUpdated = true;}
 
-void BaseEntity::IncZPos(float num) { m_position.z += num; }
+void BaseEntity::IncZPos(float num) { m_position.z += num; m_transformUpdated = true;}
 
-void BaseEntity::DecXPos(float num) { m_position.x -= num; }
+void BaseEntity::DecXPos(float num) { m_position.x -= num; m_transformUpdated = true;}
 
-void BaseEntity::DecYPos(float num) { m_position.y -= num; }
+void BaseEntity::DecYPos(float num) { m_position.y -= num; m_transformUpdated = true;}
 
-void BaseEntity::DecZPos(float num) { m_position.z -= num; }
+void BaseEntity::DecZPos(float num) { m_position.z -= num; m_transformUpdated = true;}
 
-void BaseEntity::IncXRot(float num) { m_rotation.x += num; }
+void BaseEntity::IncXRot(float num) { m_rotation.x += num; m_transformUpdated = true;}
 
-void BaseEntity::IncYRot(float num) { m_rotation.y += num; }
+void BaseEntity::IncYRot(float num) { m_rotation.y += num; m_transformUpdated = true;}
 
-void BaseEntity::IncZRot(float num) { m_rotation.z += num; }
+void BaseEntity::IncZRot(float num) { m_rotation.z += num; m_transformUpdated = true;}
 
-void BaseEntity::DecXRot(float num) { m_rotation.x -= num; }
+void BaseEntity::DecXRot(float num) { m_rotation.x -= num; m_transformUpdated = true;}
 
-void BaseEntity::DecYRot(float num) { m_rotation.y -= num; }
+void BaseEntity::DecYRot(float num) { m_rotation.y -= num; m_transformUpdated = true;}
 
-void BaseEntity::DecZRot(float num) { m_rotation.z -= num; }
+void BaseEntity::DecZRot(float num) { m_rotation.z -= num; m_transformUpdated = true;}
 
-void BaseEntity::IncXScale(float num) { m_scale.x += num; }
+void BaseEntity::IncXScale(float num) { m_scale.x += num; m_transformUpdated = true;}
 
-void BaseEntity::IncYScale(float num) { m_scale.y += num; }
+void BaseEntity::IncYScale(float num) { m_scale.y += num; m_transformUpdated = true;}
 
-void BaseEntity::IncZScale(float num) { m_scale.z += num; }
+void BaseEntity::IncZScale(float num) { m_scale.z += num; m_transformUpdated = true;}
 
-void BaseEntity::DecXScale(float num) { m_scale.x -= num; }
+void BaseEntity::DecXScale(float num) { m_scale.x -= num; m_transformUpdated = true;}
 
-void BaseEntity::DecYScale(float num) { m_scale.y -= num; }
+void BaseEntity::DecYScale(float num) { m_scale.y -= num; m_transformUpdated = true;}
 
-void BaseEntity::DecZScale(float num) { m_scale.z -= num; }
+void BaseEntity::DecZScale(float num) { m_scale.z -= num; m_transformUpdated = true;}
