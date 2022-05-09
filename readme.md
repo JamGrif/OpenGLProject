@@ -15,18 +15,26 @@ This project is mainly a fun way for me to experiment and test my OpenGL and C++
 **OLD** Renderer Showcase Video - https://www.youtube.com/watch?v=QOnscYxgrNQ
 
 # Features
-**New features over the original FMP version:**  
-Multithreading for asset loading (textures, meshes & shader sources)  
-Scene textfile loading during rutime
-ImGui interface with a simple scene editor (Change scene, change screen filter, adjust lights status, view and delete entity values)
-Improved logging with better timer and error handling  
 
+**New features over the original FMP version:**  
+- Multithreading for asset loading (textures, meshes & shader sources)  
+- Scene textfile loading during rutime  
+- ImGui interface with a simple scene editor (Change scene, change screen filter, adjust lights status, view and delete entity values)  
+- Improved logging with better timer and error handling  
 
 **Original features:**  
-ADS Blinn-Phong Light Reflection Model, Diffuse Map, Specular Map, Emission Map, Height Map, Normal Map,   
-skybox cubemap, Reflection Environment Map, Refraction Environment Map, Mountains via Height Map with Tessellation shaders,  
-Model inflation via Geometry shader, post-processing screen filters, coloured lighting, Directional/Point/Spot light, load external 3D models,  
-load external textures, load external shaders, Parallax mapping, sprite blending, mouse + keyboard input, camera movement on all 3 axis  
+- ADS Blinn-Phong Light Reflection Model  
+- Diffuse, Specular, Emission, Height, Normal texture maps
+- Coloured lighting from Directional/Point/Spot lights  
+- Skybox Cubemap  
+- Reflection Environment Map & Refraction Environment Map  
+- Mountains via Height Map with Tessellation shaders  
+- Model inflation via Geometry shader  
+- Post-processing screen filters  
+- Load external 3D models, textures & shaders  
+- Parallax mapping   
+- Sprite blending  
+- Mouse + keyboard input with camera movement on all 3 axis  
 
 # Controls
 
@@ -58,6 +66,8 @@ The project should be able to be built straight out of the box as the repository
 [glm](https://github.com/g-truc/glm)
 
 [imgui](https://github.com/ocornut/imgui)
+
+[spdlog](https://github.com/gabime/spdlog)
 
 [stb_image](https://github.com/nothings/stb)
 
