@@ -1,5 +1,7 @@
 ![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner1.jpg?raw=true)
 
+![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner4.jpg?raw=true)
+
 # OpenGL Project
 
 This project is a continuation of my Final Year Project for University where I created a 3D renderer using OpenGL which included a large variety of graphical features.
