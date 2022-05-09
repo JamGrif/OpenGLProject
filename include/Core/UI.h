@@ -10,10 +10,9 @@ enum sceneNames
 };
 
 // Forward Declarations
-//class SceneLightManager;
-//class SceneCamera;
 class Scene;
 class LightingEntity;
+struct selectedEntityCache;
 
 // A wrapper around imGui to display UI elements to the window
 class UI
@@ -60,20 +59,16 @@ private:
 	bool			m_spotLightInScene;
 	bool			m_spotLightActiveButton;
 
+	int				m_totalPointLights;
 	bool			m_pointLightInScene[4];
 	bool			m_pointLightActiveButton[4];
-
-	enum
-	{
-		e_FirstPointLight	= 0,
-		e_SecondPointLight	= 1,
-		e_ThirdPointLight	= 2,
-		e_FourthPointLight	= 3
-	};
 
 	int				m_appPostProcess;
 
 	// Cached other classes
 	std::shared_ptr<Scene>						m_sceneHandle;
+
+	// Cached selected entity
+	std::unique_ptr<selectedEntityCache>		m_selectedEntity;
 };
 

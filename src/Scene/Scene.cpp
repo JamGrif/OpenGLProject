@@ -8,7 +8,6 @@
 #include "Scene/SceneCamera.h"
 #include "Scene/SceneTextReader.h"
 #include "Scene/SceneLightManager.h"
-//#include "CollisionMaster.h"
 
 #include "Scene/EntityTypes/BaseEntity.h"
 #include "scene/EntityTypes/LightingEntity.h"
@@ -70,6 +69,7 @@ void resetSceneValues()
 	m_lightB = 0.0f;
 }
 
+// Counts the number of draw calls in a frame
 int entityDrawCount = 0;
 
 // ran from std::threads in .loadScene()
@@ -105,7 +105,7 @@ Scene::~Scene()
 	MeshManager::clearMeshes();
 	ShaderManager::clearShaders();
 
-	//m_sceneCollisionMaster = nullptr; 
+	PRINT_INFO("SCENE->{0} has unloaded sucessfully", m_sceneName);
 }
 
 /// <summary>
@@ -116,8 +116,6 @@ bool Scene::loadScene()
 	// Scene essentials - all scenes must contain these objects
 	addSceneCamera(0.0f, 2.0f, 0.0f);
 	addSceneLightManager();
-
-	//m_sceneCollisionMaster = std::make_shared<CollisionMaster>();
 
 	PRINT_INFO("SCENE->Attempting to load scene {0}", m_sceneName);
 

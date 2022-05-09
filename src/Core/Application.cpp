@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Core/Application.h"
 
-#include "Rendering/OpenGLWindow.h"
-#include "Rendering/OpenGLFramebuffer.h"
+#include "Core/UI.h"
 #include "Core/EngineStatics.h"
 #include "Scene/Scene.h"
-#include "Core/UI.h"
+#include "Rendering/OpenGLWindow.h"
+#include "Rendering/OpenGLFramebuffer.h"
 #include "Rendering/Renderer.h"
 
 Application::Application()
@@ -35,10 +35,6 @@ bool Application::appInit()
 		return false;
 	}
 	EngineStatics::setRenderer(m_renderer);
-
-	/*
-		Create applications objects
-	*/
 
 	// Initialize the applications clock
 	ApplicationClock::init();
@@ -73,8 +69,6 @@ void Application::appLoop()
 		ApplicationClock::tick();
 
 		m_renderer->startOfFrame();
-
-		
 		
 		if (m_loadedScene)
 			m_loadedScene->updateScene();
@@ -118,7 +112,6 @@ void Application::appLoop()
 
 			m_UI->update();
 		}
-			
 
 		m_renderer->swapBuffers();
 	}
@@ -173,7 +166,6 @@ bool Application::setScene(int newSceneNumber)
 		if (m_UI)
 		{
 			m_UI->updateSceneHandle(m_loadedScene);
-			//m_UI->updateSceneInformation();
 		}
 
 		return true;

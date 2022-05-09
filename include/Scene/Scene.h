@@ -5,7 +5,6 @@ class BaseEntity;
 class LightingEntity;
 class SceneCamera;
 class SceneLightManager;
-//class CollisionMaster;
 
 // Class that contains all the objects of a loaded level. Loops through them every frame, updating and drawing them
 class Scene

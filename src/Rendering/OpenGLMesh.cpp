@@ -45,7 +45,10 @@ OpenGLMesh::~OpenGLMesh()
 	glCall(glDeleteBuffers(1, &m_meshEBO));
 }
 
-
+/// <summary>
+/// Binds the meshes VBO and EBO and ONLY sets the position shader vertex attribute
+/// Only used during the first pass of drawing a LightingEntity (to allow shadows)
+/// </summary>
 void OpenGLMesh::BindJustPos() const
 {
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
@@ -58,10 +61,6 @@ void OpenGLMesh::BindJustPos() const
 /// <summary>
 /// Binds the meshes VBO and EBO and sets the shader vertex attributes
 /// </summary>
-/// <param name="shaderPos">Use position vertices?</param>
-/// <param name="shaderNorm">Use normal vertices?</param>
-/// <param name="shaderTex">Use texture coordinates vertices?</param>
-/// <param name="shaderTan">Use tangents and bitangents vertices?</param>
 void OpenGLMesh::Bind() const
 {
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
@@ -79,7 +78,10 @@ void OpenGLMesh::Unbind() const
 	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
-
+/// <summary>
+/// Sets what shader vertex attributes the mesh will use when rendering
+/// </summary>
+/// <param name="shaderPos"></param>
 void OpenGLMesh::setVertexAttributes(bool shaderPos, bool shaderNorm, bool shaderTex, bool shaderTanBi)
 {
 	m_vertexAttributesEnabled[e_ShaderPos] = shaderPos;
@@ -192,7 +194,9 @@ const std::string& OpenGLMesh::getFilePath() const
 	return m_filePath;
 }
 
-
+/// <summary>
+/// Binds the shader vertex attributes which have been previously set by setVertexAttributes()
+/// </summary>
 void OpenGLMesh::bindVertexAttributes() const
 {
 	if (m_vertexAttributesEnabled[e_ShaderPos]) // Position
