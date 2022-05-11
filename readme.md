@@ -16,7 +16,7 @@ This project is mainly a fun way for me to experiment and test my OpenGL and C++
 
 **New features over the original FMP version:**  
 - Multithreading for asset loading (textures, meshes & shader sources)  
-- Scene textfile loading during rutime  
+- Scene textfile loading during runtime  
 - ImGui interface with a simple scene editor (Change scene, change screen filter, adjust lights status, view and delete entity values)  
 - Improved logging with better timer and error handling  
 
