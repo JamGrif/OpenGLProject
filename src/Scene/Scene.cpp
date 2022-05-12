@@ -8,11 +8,11 @@
 #include "Scene/SceneCamera.h"
 #include "Scene/SceneTextReader.h"
 #include "Scene/SceneLightManager.h"
-
 #include "Scene/EntityTypes/BaseEntity.h"
 #include "scene/EntityTypes/LightingEntity.h"
 
 // Variables are used to move various lights in different scenes
+// will get redone eventually
 static float	m_materialLightMinZ;
 static float	m_materialLightMaxZ;
 static float	m_materialLightMinX;
@@ -207,7 +207,7 @@ void Scene::drawSceneFirstPass()
 
 	for (auto& m : m_sceneLightingEntities)
 	{
-		m->drawPassTwo();
+		m->drawPassOne();
 	}
 }
 

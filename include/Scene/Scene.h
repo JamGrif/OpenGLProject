@@ -13,14 +13,14 @@ public:
 	Scene(const std::string& sceneName);
 	~Scene();
 
-	bool						loadScene();
+	bool							loadScene();
 
-	void						updateScene();
+	void							updateScene();
 
-	void						drawSceneFirstPass();
-	void						drawSceneSecondPass();
+	void							drawSceneFirstPass();
+	void							drawSceneSecondPass();
 
-	const std::string&			getSceneName();
+	const std::string&				getSceneName();
 
 	size_t							getEntityNum();
 	std::shared_ptr<LightingEntity>	getEntityAtIndex(int index);
@@ -29,14 +29,14 @@ public:
 	const std::shared_ptr<SceneLightManager>&	getSceneLightManager();
 	const std::shared_ptr<SceneCamera>&			getSceneCamera();
 
-	void					deleteLightingEntityFromVector(int index);
+	void							deleteLightingEntityFromVector(int index);
 
 private:
 
-	void					addSceneCamera(float x = 0.0f, float y = 0.0f, float z = 0.0f);
-	void					addSceneLightManager();
+	void							addSceneCamera(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+	void							addSceneLightManager();
 
-	void					updateSceneLight();
+	void							updateSceneLight();
 
 
 	const std::string							m_sceneName;

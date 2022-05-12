@@ -73,8 +73,7 @@ bool Input::getKeyPressed(int key)
 /// <summary>
 /// Returns whether the specified key is pressed or not, but only once until the key is released
 /// </summary>
-/// <param name="key">Specified key to query (use GLFW_KEY_ macro)</param>
-/// <returns></returns>
+/// <param name="key">Specified key to query (use enum in Input.h macro)</param>
 bool Input::getKeyPressedOnce(int key)
 {
 	if (key != m_lastKey && m_keys[key]) // Key is not same as last key and key was pressed
@@ -101,7 +100,7 @@ void Input::mouseCALLBACK(GLFWwindow* window, double xPos, double yPos)
 	}
 
     m_xOffset = xPos - m_lastX;
-    m_yOffset = m_lastY - yPos; //Reversed as Y coordinates go from bottom to left
+    m_yOffset = m_lastY - yPos; //Reversed as Y coordinates go from bottom to top
 
     m_lastX = xPos;
     m_lastY = yPos;
@@ -110,8 +109,6 @@ void Input::mouseCALLBACK(GLFWwindow* window, double xPos, double yPos)
 /// <summary>
 /// Returns how much the mouse has moved since last function call
 /// </summary>
-/// <param name="xMouse"></param>
-/// <param name="yMouse"></param>
 void Input::getMouseMoved(double& xMouse, double& yMouse)
 {
 	xMouse = m_xOffset;
@@ -131,14 +128,14 @@ void Input::enableMouse()
 
     m_mouseEnabled = true;
 
+	glfwSetInputMode(EngineStatics::getAppWindow()->getRaw(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetCursorPos(EngineStatics::getAppWindow()->getRaw(), EngineStatics::getAppWindow()->getWindowWidth() / 2, EngineStatics::getAppWindow()->getWindowHeight() / 2);
+
 	// Reset any lingering mouse movement
 	m_lastX = 0;
 	m_lastY = 0;
 	m_xOffset = 0;
 	m_yOffset = 0;
-
-	glfwSetInputMode(EngineStatics::getAppWindow()->getRaw(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	glfwSetCursorPos(EngineStatics::getAppWindow()->getRaw(), EngineStatics::getAppWindow()->getWindowWidth() / 2, EngineStatics::getAppWindow()->getWindowHeight() / 2);
 }
 
 /// <summary>
@@ -150,6 +147,12 @@ void Input::disableMouse()
         return;
 
     m_mouseEnabled = false;
+
+	// Reset any lingering mouse movement
+	//m_lastX = 0;
+	//m_lastY = 0;
+	//m_xOffset = 0;
+	//m_yOffset = 0;
 
     glfwSetInputMode(EngineStatics::getAppWindow()->getRaw(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }

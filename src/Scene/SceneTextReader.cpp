@@ -86,48 +86,48 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 			templateLightingEntity object;
 
 			// Only add to list of modellighting objects to create if was read successfully from file
-			if (applyToModelLightingTemplate(object, fullLine))
-				completedModelLightObjects.emplace_back(object);
+			if (applyToLightingEntityTemplate(object, fullLine))
+				completedLightingEntityObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelBasic")
 		{
 			templateBasicEntity object;
 			
 			// Only add to list of modelbasic objects to create if was read successfully from file
-			if (applyToModelBasicTemplate(object, fullLine))
-				completedModelBasicObjects.emplace_back(object);
+			if (applyToBasicEntityTemplate(object, fullLine))
+				completedBasicEntityObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelTerrain")
 		{
 			templateTerrainEntity object;
 			
 			// Only add to list of modelterrain objects to create if was read successfully from file
-			if (applyToModelTerrainTemplate(object, fullLine))
-				completedModelTerrainObjects.emplace_back(object);
+			if (applyToTerrainEntityTemplate(object, fullLine))
+				completedTerrainEntityObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelEnvironment")
 		{
 			templateEnvironmentEntity object;
 			
 			// Only add to list of modelenvironment objects to create if was read successfully from file
-			if (applyToModelEnvironmentTemplate(object, fullLine))
-				completedModelEnvironmentObjects.emplace_back(object);
+			if (applyToEnvironmentEntityTemplate(object, fullLine))
+				completedEnvironmentEntityObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelGeometry")
 		{
 			templateGeometryEntity object;
 
 			// Only add to list of modelgeometry objects to create if was read successfully from file
-			if (applyToModelGeometryTemplate(object, fullLine))
-				completedModelGeometryObjects.emplace_back(object);
+			if (applyToGeometryEntityTemplate(object, fullLine))
+				completedGeometryEntityObjects.emplace_back(object);
 		}
 		else if (fullLine.at(0) == "modelSky")
 		{
 			templateSkyEntity object;
 			
 			// Only add to list of modelsky objects to create if was read successfully from file
-			if (applyToModelSkyTemplate(object, fullLine))
-				completedModelSkyObjects.emplace_back(object);
+			if (applyToSkyEntityTemplate(object, fullLine))
+				completedSkyEntityObjects.emplace_back(object);
 		}
 		else
 		{
@@ -173,38 +173,42 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		);
 	}
 
-	for (const auto& skyObject : completedModelSkyObjects)
+	for (const auto& skyObject : completedSkyEntityObjects)
 	{
 		std::shared_ptr<SkyEntity> model = std::make_shared<SkyEntity>(skyObject);
 		sceneMeshes.emplace_back(model);
 	}
 
-	for (const auto& lightObject : completedModelLightObjects)
+	int x = 0; // vector index - used in editor
+	for (const auto& lightObject : completedLightingEntityObjects)
 	{
 		std::shared_ptr<LightingEntity> model = std::make_shared<LightingEntity>(lightObject);
+		model->setEditorName("modelLighting" + std::to_string(x));
 		sceneLightingEntities.emplace_back(model);
+
+		x++;
 	}
 
-	for (const auto& basicObject : completedModelBasicObjects)
+	for (const auto& basicObject : completedBasicEntityObjects)
 	{
 		std::shared_ptr<BasicEntity> model = std::make_shared<BasicEntity>(basicObject);
 		sceneMeshes.emplace_back(model);
 	}
 	
 	
-	for (const auto& terrainObject : completedModelTerrainObjects)
+	for (const auto& terrainObject : completedTerrainEntityObjects)
 	{
 		std::shared_ptr<TerrainEntity> model = std::make_shared<TerrainEntity>(terrainObject);
 		sceneMeshes.emplace_back(model);
 	}
 	
-	for (const auto& environmentObject : completedModelEnvironmentObjects)
+	for (const auto& environmentObject : completedEnvironmentEntityObjects)
 	{
 		std::shared_ptr<EnvironmentEntity> model = std::make_shared<EnvironmentEntity>(environmentObject);
 		sceneMeshes.emplace_back(model);
 	}
 	
-	for (const auto& geometryObject : completedModelGeometryObjects)
+	for (const auto& geometryObject : completedGeometryEntityObjects)
 	{
 		std::shared_ptr<GeometryEntity> model = std::make_shared<GeometryEntity>(geometryObject);
 		sceneMeshes.emplace_back(model);
@@ -364,7 +368,7 @@ bool SceneTextReader::applyToSpotLight(templateSpotLight& l, const std::vector<s
 	return true;
 }
 
-void SceneTextReader::applyToModel(templateBaseEntity& o, const std::vector<std::string>& fullLine)
+void SceneTextReader::applyToBaseEntity(templateBaseEntity& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -397,7 +401,7 @@ void SceneTextReader::applyToModel(templateBaseEntity& o, const std::vector<std:
 }
 
 
-bool SceneTextReader::applyToModelLightingTemplate(templateLightingEntity& o, const std::vector<std::string>& fullLine)
+bool SceneTextReader::applyToLightingEntityTemplate(templateLightingEntity& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -422,7 +426,7 @@ bool SceneTextReader::applyToModelLightingTemplate(templateLightingEntity& o, co
 
 	try
 	{
-		applyToModel(o, fullLine);
+		applyToBaseEntity(o, fullLine);
 
 		o.mesh = "res/meshes/" + fullLine.at(e_mesh) + ".obj";
 
@@ -484,7 +488,7 @@ bool SceneTextReader::applyToModelLightingTemplate(templateLightingEntity& o, co
 	return true;
 }
 
-bool SceneTextReader::applyToModelBasicTemplate(templateBasicEntity& o, const std::vector<std::string>& fullLine)
+bool SceneTextReader::applyToBasicEntityTemplate(templateBasicEntity& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -503,7 +507,7 @@ bool SceneTextReader::applyToModelBasicTemplate(templateBasicEntity& o, const st
 
 	try
 	{
-		applyToModel(o, fullLine);
+		applyToBaseEntity(o, fullLine);
 
 		o.mesh = "res/meshes/" + fullLine.at(e_mesh) + ".obj";
 
@@ -518,7 +522,7 @@ bool SceneTextReader::applyToModelBasicTemplate(templateBasicEntity& o, const st
 	return true;
 }
 
-bool SceneTextReader::applyToModelTerrainTemplate(templateTerrainEntity& o, const std::vector<std::string>& fullLine)
+bool SceneTextReader::applyToTerrainEntityTemplate(templateTerrainEntity& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -538,7 +542,7 @@ bool SceneTextReader::applyToModelTerrainTemplate(templateTerrainEntity& o, cons
 
 	try
 	{
-		applyToModel(o, fullLine);
+		applyToBaseEntity(o, fullLine);
 
 		o.elevation = std::stof(fullLine.at(e_Elevation));
 
@@ -554,7 +558,7 @@ bool SceneTextReader::applyToModelTerrainTemplate(templateTerrainEntity& o, cons
 	return true;
 }
 
-bool SceneTextReader::applyToModelEnvironmentTemplate(templateEnvironmentEntity& o, const std::vector<std::string>& fullLine)
+bool SceneTextReader::applyToEnvironmentEntityTemplate(templateEnvironmentEntity& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -574,7 +578,7 @@ bool SceneTextReader::applyToModelEnvironmentTemplate(templateEnvironmentEntity&
 
 	try
 	{
-		applyToModel(o, fullLine);
+		applyToBaseEntity(o, fullLine);
 
 		o.mesh = "res/meshes/" + fullLine.at(e_mesh) + ".obj";
 
@@ -591,7 +595,7 @@ bool SceneTextReader::applyToModelEnvironmentTemplate(templateEnvironmentEntity&
 	return true;
 }
 
-bool SceneTextReader::applyToModelGeometryTemplate(templateGeometryEntity& o, const std::vector<std::string>& fullLine)
+bool SceneTextReader::applyToGeometryEntityTemplate(templateGeometryEntity& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -609,7 +613,7 @@ bool SceneTextReader::applyToModelGeometryTemplate(templateGeometryEntity& o, co
 
 	try
 	{
-		applyToModel(o, fullLine);
+		applyToBaseEntity(o, fullLine);
 
 		o.mesh = "res/meshes/" + fullLine.at(e_mesh) + ".obj";
 	}
@@ -622,7 +626,7 @@ bool SceneTextReader::applyToModelGeometryTemplate(templateGeometryEntity& o, co
 	return true;
 }
 
-bool SceneTextReader::applyToModelSkyTemplate(templateSkyEntity& o, const std::vector<std::string>& fullLine)
+bool SceneTextReader::applyToSkyEntityTemplate(templateSkyEntity& o, const std::vector<std::string>& fullLine)
 {
 	enum objectInfo
 	{
@@ -640,7 +644,7 @@ bool SceneTextReader::applyToModelSkyTemplate(templateSkyEntity& o, const std::v
 
 	try
 	{
-		applyToModel(o, fullLine);
+		applyToBaseEntity(o, fullLine);
 
 		o.skyboxTexture = fullLine.at(e_skyboxTexture);
 	}

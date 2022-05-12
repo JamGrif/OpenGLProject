@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glew.h> // glew.h must always be the first openGL header to be included (before glfw3.h)
+//#include <GL/glew.h> // glew.h must always be the first openGL header to be included (before glfw3.h)
 
 // Forward Declarations
 class Scene;
@@ -25,11 +25,11 @@ private:
 
 	// Objects
 
-	std::shared_ptr<Renderer>		m_renderer;
+	std::shared_ptr<Renderer>			m_renderer;
 
-	std::unique_ptr<UI>				m_UI;
+	std::unique_ptr<UI>					m_UI;
 
-	std::shared_ptr<Scene>			m_loadedScene;
+	std::shared_ptr<Scene>				m_loadedScene;
 
 	std::unique_ptr<OpenGLFramebuffer>	m_sceneMSAAFrameBuffer;		//Scene is drawn to this buffer with MSAA applied
 	std::unique_ptr<OpenGLFramebuffer>	m_sceneFilterFramebuffer;	//Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen

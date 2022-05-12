@@ -17,6 +17,10 @@ Application::~Application()
 {
 	m_renderer = nullptr;
 	EngineStatics::setRenderer(nullptr);
+
+	m_loadedScene = nullptr;
+
+	m_UI = nullptr;
 }
 
 /// <summary>
@@ -147,7 +151,7 @@ bool Application::setScene(int newSceneNumber)
 		return false;
 	}
 
-	if (m_loadedScene != nullptr)
+	if (m_loadedScene)
 	{
 		if (newSceneFilePath == m_loadedScene->getSceneName())
 		{

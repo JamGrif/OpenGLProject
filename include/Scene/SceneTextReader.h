@@ -66,22 +66,22 @@ private:
 	inline bool applyToSpotLight(templateSpotLight& l, const std::vector<std::string>& fullLine);
 
 	/*
-		Model Objects
+		Entity Objects
 	*/
 
-	std::vector<templateLightingEntity>		completedModelLightObjects;			// ModelLighting
-	std::vector<templateBasicEntity>			completedModelBasicObjects;		// ModelBasic
-	std::vector<templateTerrainEntity>		completedModelTerrainObjects;		// ModelTerrain
-	std::vector<templateEnvironmentEntity>	completedModelEnvironmentObjects;	// ModelEnvironment
-	std::vector<templateGeometryEntity>		completedModelGeometryObjects;		// ModelGeometry
-	std::vector<templateSkyEntity>			completedModelSkyObjects;			// ModelSky
+	std::vector<templateLightingEntity>		completedLightingEntityObjects;		// LightingEntity
+	std::vector<templateBasicEntity>		completedBasicEntityObjects;		// BasicEntity
+	std::vector<templateTerrainEntity>		completedTerrainEntityObjects;		// TerrainEntity
+	std::vector<templateEnvironmentEntity>	completedEnvironmentEntityObjects;	// EnvironmentEntity
+	std::vector<templateGeometryEntity>		completedGeometryEntityObjects;		// GeometryEntity
+	std::vector<templateSkyEntity>			completedSkyEntityObjects;			// SkyEntity
 
-	inline void applyToModel(templateBaseEntity& o, const std::vector<std::string>& fullLine);
+	inline void applyToBaseEntity(templateBaseEntity& o, const std::vector<std::string>& fullLine);
 
-	inline bool applyToModelLightingTemplate(templateLightingEntity& o, const std::vector<std::string>& fullLine);
-	inline bool applyToModelBasicTemplate(templateBasicEntity& o, const std::vector<std::string>& fullLine);
-	inline bool applyToModelTerrainTemplate(templateTerrainEntity& o, const std::vector<std::string>& fullLine);
-	inline bool applyToModelEnvironmentTemplate(templateEnvironmentEntity& o, const std::vector<std::string>& fullLine);
-	inline bool applyToModelGeometryTemplate(templateGeometryEntity& o, const std::vector<std::string>& fullLine);
-	inline bool applyToModelSkyTemplate(templateSkyEntity& o, const std::vector<std::string>& fullLine);
+	inline bool applyToLightingEntityTemplate(templateLightingEntity& o, const std::vector<std::string>& fullLine);
+	inline bool applyToBasicEntityTemplate(templateBasicEntity& o, const std::vector<std::string>& fullLine);
+	inline bool applyToTerrainEntityTemplate(templateTerrainEntity& o, const std::vector<std::string>& fullLine);
+	inline bool applyToEnvironmentEntityTemplate(templateEnvironmentEntity& o, const std::vector<std::string>& fullLine);
+	inline bool applyToGeometryEntityTemplate(templateGeometryEntity& o, const std::vector<std::string>& fullLine);
+	inline bool applyToSkyEntityTemplate(templateSkyEntity& o, const std::vector<std::string>& fullLine);
 };
