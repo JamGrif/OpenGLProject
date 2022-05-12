@@ -10,7 +10,6 @@
 #include "Rendering/OpenGLShader.h"
 #include "Rendering/OpenGLTexture.h"
 #include "Rendering/OpenGLCubemap.h"
-
 #include "Rendering/Renderer.h"
 
 struct templateBaseEntity
@@ -61,11 +60,16 @@ public:
 	void			setMatrixValues();
 
 	void			setEntityType(const std::string& type);
-	std::string		getEntityType();
+	std::string		getEntityType() const;
+
+
 
 	// Editor
 	bool			getTransformUpdated();
 	bool			getTextureUpdated();
+
+	void			setEditorName(const std::string& name);
+	std::string		getEditorName() const;
 
 protected:
 	
@@ -76,7 +80,7 @@ protected:
 
 	std::string		m_entityType;
 
-	//World Space
+	// World Space
 	glm::vec3		m_position;
 	glm::vec3		m_rotation;
 	glm::vec3		m_scale;
@@ -87,13 +91,14 @@ protected:
 	glm::mat4		m_rMat;		// Rotation
 	glm::mat4		m_sMat;		// Scale
 
-	
 
 	// Editor
-	bool			m_transformUpdated = false;
-	bool			m_textureUpdated = false;
+	bool			m_transformUpdated;
+	bool			m_textureUpdated;
 
-	//Cached other classes
+	std::string		m_editorName; // Name of the entity within the ImGui scene editor
+
+	// Cached other classes
 	std::shared_ptr<SceneLightManager>	m_localLightManager;
 	std::shared_ptr<Renderer>			m_localRenderer;
 	glm::mat4*							m_localProjectionMatrix;

@@ -49,19 +49,20 @@ public:
 	void							setNormalTexture(const std::string& texturePath, bool normalize);
     void							setHeightTexture(const std::string& texturePath, float heightAmount);
 
+	// Editor
+	std::shared_ptr<OpenGLMesh>		getMesh();
 	std::shared_ptr<OpenGLTexture>	getTextureAtSlot(unsigned int index);
+	std::size_t						getTextureAmount();
 
 private:
 
 	std::vector<std::shared_ptr<OpenGLTexture>> m_modelTextures;
-	bool						m_modelUsingTextures[5];
+	bool							m_modelUsingTextures[5];
 
-    float						m_specularShininess;
+    float							m_specularShininess;
 
-    bool						m_normalizeTexture;
-    float						m_heightAmount;
-
-   
+    bool							m_normalizeTexture;
+    float							m_heightAmount;
 
 };
 

@@ -7,6 +7,7 @@ BaseEntity::BaseEntity(templateBaseEntity object)
 	:m_modelMesh(nullptr), m_modelShaderPassOne(nullptr), m_modelShaderPassTwo(nullptr),
 	m_entityType(object.objectType), m_position(object.position), m_rotation(object.rotation), m_scale(object.scale),
 	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f },
+	m_transformUpdated(false), m_textureUpdated(false), m_editorName(""),
 	m_localLightManager(EngineStatics::getLightManager()), m_localRenderer(EngineStatics::getRenderer()), m_localProjectionMatrix(EngineStatics::getProjectionMatrix())
 {
 }
@@ -52,13 +53,13 @@ void BaseEntity::setShaderTwo(const char* vertexPath, const char* fragmentPath)
 /// </summary>
 void BaseEntity::setMatrixValues()
 {
-	//Reset matrix values
+	// Reset matrix values
 	m_mMat = glm::mat4(1.0f);
 	m_tMat = glm::mat4(1.0f);
 	m_rMat = glm::mat4(1.0f);
 	m_sMat = glm::mat4(1.0f);
 
-	//Set meshes matrices
+	// Set meshes matrices
 	m_tMat = glm::translate(m_tMat, m_position);
 	m_rMat = glm::rotate(m_rMat, glm::radians(m_rotation.x), glm::vec3(1.0, 0.0f, 0.0f));
 	m_rMat = glm::rotate(m_rMat, glm::radians(m_rotation.y), glm::vec3(0.0f, 1.0, 0.0f));
@@ -67,9 +68,7 @@ void BaseEntity::setMatrixValues()
 
 	m_mMat = m_tMat * m_rMat * m_sMat;
 
-	
-	m_vMat = EngineStatics::getCamera()->getViewMatrix(); //---------
-	
+	m_vMat = EngineStatics::getCamera()->getViewMatrix(); //---------	
 }
 
 /// <summary>
@@ -80,7 +79,7 @@ void BaseEntity::setEntityType(const std::string& type)
 	m_entityType = type;
 }
 
-std::string BaseEntity::getEntityType()
+std::string BaseEntity::getEntityType() const
 {
 	return m_entityType;
 }
@@ -89,7 +88,6 @@ std::string BaseEntity::getEntityType()
 /// Returns if the transform part of the entity has been updated since the last time it was checked
 /// If it has been updated then return true, but set the status back to false
 /// </summary>
-/// <returns></returns>
 bool BaseEntity::getTransformUpdated()
 {
 	if (m_transformUpdated)
@@ -107,6 +105,20 @@ bool BaseEntity::getTransformUpdated()
 
 bool BaseEntity::getTextureUpdated()
 {
+	//
+}
+
+/// <summary>
+/// Sets the name that will be used for this entity in the ImGui editor
+/// </summary>
+void BaseEntity::setEditorName(const std::string& name)
+{
+	m_editorName = name;
+}
+
+std::string BaseEntity::getEditorName() const
+{
+	return m_editorName;
 }
 
 void BaseEntity::SetXPos(float num) { m_position.x = num; m_transformUpdated = true; }

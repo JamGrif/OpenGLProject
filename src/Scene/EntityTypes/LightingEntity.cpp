@@ -60,24 +60,24 @@ void LightingEntity::updateEntity()
 /// </summary>
 void LightingEntity::drawPassOne()
 {
-	// If no valid model or shader attached
-	if (!m_modelMesh || !m_modelShaderPassOne)
-	{
-		return;
-	}
-	
-	m_modelShaderPassOne->Bind();
-	//m_modelShaderPassOne->setUniformMatrix4fv("lightSpaceMatrix", *EngineStatics::getLightSpaceMatrix());
-	m_modelShaderPassOne->setUniformMatrix4fv("model", m_mMat);
-
-	m_modelMesh->BindJustPos();
-	
-	// Draw
-	m_localRenderer->draw(m_modelMesh->getIndices().size());
-
-	m_modelMesh->Unbind();
-	
-	m_modelShaderPassOne->Unbind();
+	//// If no valid model or shader attached
+	//if (!m_modelMesh || !m_modelShaderPassOne)
+	//{
+	//	return;
+	//}
+	//
+	//m_modelShaderPassOne->Bind();
+	////m_modelShaderPassOne->setUniformMatrix4fv("lightSpaceMatrix", *EngineStatics::getLightSpaceMatrix());
+	//m_modelShaderPassOne->setUniformMatrix4fv("model", m_mMat);
+	//
+	//m_modelMesh->BindJustPos();
+	//
+	//// Draw
+	//m_localRenderer->draw(m_modelMesh->getIndices().size());
+	//
+	//m_modelMesh->Unbind();
+	//
+	//m_modelShaderPassOne->Unbind();
 }
 
 /// <summary>
@@ -206,7 +206,7 @@ void LightingEntity::drawPassTwo()
 }
 
 /// <summary>
-/// Assigns specified texture to the model to be used for a diffuse map
+/// Assigns specified texture to the entity to be used for a diffuse map
 /// </summary>
 void LightingEntity::setDiffuseTexture(const std::string& texturePath)
 {
@@ -218,7 +218,7 @@ void LightingEntity::setDiffuseTexture(const std::string& texturePath)
 }
 
 /// <summary>
-/// Assigns specified texture to the model to be used for a specular map
+/// Assigns specified texture to the entity to be used for a specular map
 /// </summary>
 /// <param name="shininessAmount">Shiniess of the specular texture in the fragment shader</param>
 void LightingEntity::setSpecularTexture(const std::string& texturePath, float shininessAmount)
@@ -233,7 +233,7 @@ void LightingEntity::setSpecularTexture(const std::string& texturePath, float sh
 }
 
 /// <summary>
-/// Assigns specified texture to the model to be used for an emission map
+/// Assigns specified texture to the entity to be used for an emission map
 /// </summary>
 void LightingEntity::setEmissionTexture(const std::string& texturePath)
 {
@@ -245,9 +245,9 @@ void LightingEntity::setEmissionTexture(const std::string& texturePath)
 }
 
 /// <summary>
-/// Assigns specified texture to the model to be used for a normal map
+/// Assigns specified texture to the entity to be used for a normal map
 /// </summary>
-/// <param name="normalize">Should the texture be normalized in the fragment shader</param>
+/// <param name="normalize">Should the texture be normalized in the fragment shader?</param>
 void LightingEntity::setNormalTexture(const std::string& texturePath, bool normalize)
 {
 	std::shared_ptr<OpenGLTexture> text = TextureManager::retrieveTextureObject(texturePath);
@@ -260,7 +260,7 @@ void LightingEntity::setNormalTexture(const std::string& texturePath, bool norma
 }
 
 /// <summary>
-/// Assigns specified texture to the model to be used for a height map
+/// Assigns specified texture to the entity to be used for a height map
 /// </summary>
 void LightingEntity::setHeightTexture(const std::string& texturePath, float heightAmount)
 {
@@ -274,9 +274,25 @@ void LightingEntity::setHeightTexture(const std::string& texturePath, float heig
 }
 
 /// <summary>
+/// Returns the pointer to the mesh object
+/// </summary>
+std::shared_ptr<OpenGLMesh> LightingEntity::getMesh()
+{
+	return m_modelMesh;
+}
+
+/// <summary>
 /// Returns the texture object at specified slot
 /// </summary>
 std::shared_ptr<OpenGLTexture> LightingEntity::getTextureAtSlot(unsigned int index)
 {
 	return m_modelTextures.at(index);
+}
+
+/// <summary>
+/// Returns the total amount of textures used by this LightingEntity
+/// </summary>
+std::size_t LightingEntity::getTextureAmount()
+{
+	return m_modelTextures.size();
 }

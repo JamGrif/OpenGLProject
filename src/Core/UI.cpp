@@ -16,7 +16,6 @@ static ImGuiWindowFlags commonResizeFlags = ImGuiWindowFlags_AlwaysAutoResize | 
 static ImGuiWindowFlags commonFlags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
 static ImGuiWindowFlags debugFlags = ImGuiWindowFlags_NoCollapse;
 
-
 /// <summary>
 /// This allows the properties of the selected entity to be found once and stored to allow faster retrieval of the selected entity information in the entity panel
 /// If a property of the entity gets updated through the editor, the stored entity values will get refreshed to reflect any changes
@@ -26,21 +25,22 @@ struct selectedEntityCache
 	selectedEntityCache(std::shared_ptr<LightingEntity> entity)
 		:entityPtr(entity)
 	{
-		PRINT_TRACE("created cached data");
+		//PRINT_TRACE("created cached data");
 
 		entityType = entityPtr->getEntityType();
+		editorName = entityPtr->getEditorName();
 
 		refreshTransformCachedData();
+		refreshMeshCachedData();
 		refreshTextureCachedData();
 	}
 	~selectedEntityCache()
 	{
-		PRINT_TRACE("deleted cached data");
+		//PRINT_TRACE("deleted cached data");
 	}
 
-	std::shared_ptr<LightingEntity> entityPtr; 
-
 	std::string entityType; // LightingEntity, BasicEntity, SkyEntity etc...
+	std::string editorName;	// Name in the Scene Entities panel
 
 	// Transform data stored as strings to allow easy use with ImGui
 	std::string posX;
@@ -55,11 +55,25 @@ struct selectedEntityCache
 	std::string scaleY;
 	std::string scaleZ;
 
-	std::string texture1Filepath;
-	uint32_t texture1OpenGLID;
+	std::string meshFilepath;
 
-	std::string texture2Filepath;
-	uint32_t texture2OpenGLID;
+	std::size_t totalTextures;
+	std::string textureFilepath[5];
+	uint32_t	textureOpenGLID[5];
+
+	inline void checkCachedDataForUpdate()
+	{
+		// If the transform part of the selected entity has been changed then refresh the entity transform values in the editor
+		if (entityPtr->getTransformUpdated())
+		{
+			refreshTransformCachedData();
+		}
+
+		// check and refresh mesh data
+
+		// check and refresh texture data
+
+	}
 
 	// Only updates the selected objects transform data
 	void refreshTransformCachedData()
@@ -77,15 +91,26 @@ struct selectedEntityCache
 		scaleZ = std::to_string(entityPtr->GetZScale());
 	}
 
+	// Only updates the selected objects mesh data
+	void refreshMeshCachedData()
+	{
+		meshFilepath = entityPtr->getMesh()->getFilePath();
+	}
+
 	// Only updates the selected objects texture data
 	void refreshTextureCachedData()
 	{
-		texture1Filepath = entityPtr->getTextureAtSlot(e_diffuseTextureSlot)->getFilePath().c_str();
-		texture1OpenGLID = entityPtr->getTextureAtSlot(e_diffuseTextureSlot)->getTextureID();
+		totalTextures = entityPtr->getTextureAmount();
 
-		texture2Filepath = entityPtr->getTextureAtSlot(e_specularTextureSlot)->getFilePath().c_str();
-		texture2OpenGLID = entityPtr->getTextureAtSlot(e_specularTextureSlot)->getTextureID();
+		for (int i = 0; i < totalTextures; i++)
+		{
+			textureFilepath[i] = entityPtr->getTextureAtSlot(i)->getFilePath().c_str();
+			textureOpenGLID[i] = entityPtr->getTextureAtSlot(i)->getTextureID();
+		}
 	}
+
+private:
+	std::shared_ptr<LightingEntity> entityPtr; // Pointer to the actual entity
 };
 
 UI::UI(bool uiVisible, std::shared_ptr<Scene> loadedScene)
@@ -101,19 +126,25 @@ UI::UI(bool uiVisible, std::shared_ptr<Scene> loadedScene)
 	m_uiVisible ? Input::enableMouse() : Input::disableMouse();
 
 	// Check the version
-	IMGUI_CHECKVERSION(); 
+	IMGUI_CHECKVERSION();
 
 	// Create the imgui context
-	ImGui::CreateContext();	
+	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	(void)io;
 
+	ImGuiStyle* style = &ImGui::GetStyle();
+	style->WindowRounding = 5.0f;
+	style->FrameRounding = 4.0f;
+	style->ScrollbarSize = 15.0f;
+	style->ScrollbarRounding = 9.0f;
+
 	// Connect ImGui to GLFW window
 	ImGui_ImplGlfw_InitForOpenGL(EngineStatics::getAppWindow()->getRaw(), true);
-	ImGui_ImplOpenGL3_Init("#version 430");
+	ImGui_ImplOpenGL3_Init("#version 460");
 
 	// Set ImGui colour style
-	ImGui::StyleColorsClassic(); 
+	ImGui::StyleColorsClassic();
 }
 
 UI::~UI()
@@ -140,7 +171,7 @@ void UI::startOfFrame()
 	// If UI is not visible then return
 	if (!m_uiVisible)
 		return;
-	
+
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -215,14 +246,11 @@ void UI::updateSceneHandle(std::shared_ptr<Scene> newLoadedScene)
 /// </summary>
 void UI::sceneOptionsPanel()
 {
-	/*
-		Scene Options TextBox
-	*/
-
 	// Reset variable
 	m_sceneNum = 0;
 
 	ImGui::Begin("Scene Options:", NULL, commonResizeFlags);
+
 	ImGui::Text("Change Scene:");
 	if (ImGui::Button("FMPscene.txt"))
 	{
@@ -312,15 +340,12 @@ void UI::sceneOptionsPanel()
 /// </summary>
 void UI::controlsPanel()
 {
-	/*
-		Controls TextBox
-	*/
-
 	ImGui::Begin("Controls:", NULL, commonResizeFlags);
+
 	ImGui::Text("W/A/S/D to move around the camera");
 	ImGui::Text("Moving the mouse moves the front facing vector of the camera");
 	ImGui::Text("Q to toggle the UI");
-	ImGui::Text("1/2/3/4/5 to change the screen filter applied to the drawn frame");
+
 	ImGui::End();
 }
 
@@ -329,16 +354,14 @@ void UI::controlsPanel()
 /// </summary>
 void UI::performanceMetricsPanel()
 {
-	/*
-		Performance Metrics
-	*/
-
 	std::string fps = "FPS: " + std::to_string(ApplicationClock::getFrameCount());
 	std::string delta = "Delta Time: " + std::to_string(ApplicationClock::getDeltaTime());
 
 	ImGui::Begin("Performance Metrics:", NULL, commonResizeFlags);
+
 	ImGui::Text(fps.c_str());
 	ImGui::Text(delta.c_str());
+
 	ImGui::End();
 }
 
@@ -350,7 +373,8 @@ void UI::sceneEntitiesPanel()
 	ImGui::Begin("Scene Entities:", NULL, commonFlags);
 	for (int i = 0; i < m_sceneHandle->getEntityNum(); i++)
 	{
-		std::string buttonName = m_sceneHandle->getEntityAtIndex(i)->getEntityType() + std::to_string(i);
+		//std::string buttonName = m_sceneHandle->getEntityAtIndex(i)->getEntityType() + std::to_string(i);
+		std::string buttonName = m_sceneHandle->getEntityAtIndex(i)->getEditorName();
 		if (ImGui::Button(buttonName.c_str()))
 		{
 			if (i != m_selectedEntityIndex)
@@ -369,21 +393,19 @@ void UI::sceneEntitiesPanel()
 	ImGui::End();
 }
 
-
 /// <summary>
 /// Renders the Entity ImGui window
 /// </summary>
 void UI::entityPanel()
 {
-	std::shared_ptr<LightingEntity> entity = m_sceneHandle->getEntityAtIndex(m_selectedEntityIndex);
-
-	// If the transform part of the selected entity has been changed then refresh the entity transform values in the editor
-	if (m_selectedEntity->entityPtr->getTransformUpdated())
-	{
-		m_selectedEntity->refreshTransformCachedData();
-	}
+	// Checks each component of the selected entity to check if any of the cached data needs to be updated
+	m_selectedEntity->checkCachedDataForUpdate();
 
 	ImGui::Begin("Entity:", NULL, commonFlags);
+
+	ImGui::Text("Entity Name:");
+	ImGui::SameLine(95);
+	ImGui::Text(m_selectedEntity->editorName.c_str());
 
 	ImGui::Text("Entity Type:");
 	ImGui::SameLine(95);
@@ -405,10 +427,19 @@ void UI::entityPanel()
 		camera->setPosition(glm::vec3(std::stoi(m_selectedEntity->posX), std::stoi(m_selectedEntity->posY)+1, std::stoi(m_selectedEntity->posZ)));
 	}
 
+	ImGui::SameLine(114);
+
+	if (ImGui::Button("close")) // Closes the entity panel
+	{
+		clearSelectedEntity();
+		ImGui::End();
+		return;
+	}
+
 	constexpr int sameLineSpacing = 70;
 	static bool transformHeaderState = true;
 	ImGui::SetNextTreeNodeOpen(transformHeaderState);
-	if (transformHeaderState = ImGui::CollapsingHeader("Transform"))
+	if (transformHeaderState = ImGui::CollapsingHeader("Entity Transform"))
 	{
 		ImGui::Text("Pos X:");
 		ImGui::SameLine(sameLineSpacing);
@@ -451,17 +482,24 @@ void UI::entityPanel()
 		ImGui::Text(m_selectedEntity->posZ.c_str());
 	}
 
+	static bool meshHeaderState = true;
+	ImGui::SetNextTreeNodeOpen(meshHeaderState);
+	if (meshHeaderState = ImGui::CollapsingHeader("Entity Mesh"))
+	{
+		ImGui::Text(m_selectedEntity->meshFilepath.c_str());
+	}
+
 	static bool textureHeaderState = true;
 	ImGui::SetNextTreeNodeOpen(textureHeaderState);
-	if (ImGui::CollapsingHeader("Entity Texture"))
+	if (textureHeaderState = ImGui::CollapsingHeader("Entity Texture"))
 	{
-		ImGui::Text(entity->getTextureAtSlot(e_diffuseTextureSlot)->getFilePath().c_str());
-		ImGui::Image(reinterpret_cast<void*>(entity->getTextureAtSlot(e_diffuseTextureSlot)->getTextureID()), ImVec2(128, 128));
-
-		ImGui::Separator();
-
-		ImGui::Text(entity->getTextureAtSlot(e_specularTextureSlot)->getFilePath().c_str());
-		ImGui::Image(reinterpret_cast<void*>(entity->getTextureAtSlot(e_specularTextureSlot)->getTextureID()), ImVec2(128, 128));
+		for (int i = 0; i < m_selectedEntity->totalTextures; i++)
+		{
+			ImGui::Text(m_selectedEntity->textureFilepath[i].c_str());
+			ImGui::Image(reinterpret_cast<void*>(m_selectedEntity->textureOpenGLID[i]), ImVec2(128, 128));
+			
+			ImGui::Separator();
+		}
 	}
 
 	ImGui::End();

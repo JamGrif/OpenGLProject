@@ -46,29 +46,29 @@ private:
 
 	void	clearSelectedEntity();
 
-	bool			m_isEntitySelected;
-	int				m_selectedEntityIndex;
+	bool	m_isEntitySelected;
+	int		m_selectedEntityIndex;
 
-	bool			m_uiVisible; // Dictates whether the UI will be drawn or not
+	bool	m_uiVisible; // Dictates whether the UI will be drawn or not
 
-	int				m_sceneNum; 
+	int		m_sceneNum; 
 
-	bool			m_directionalLightInScene; // Indicates if the button to toggle the light should be visible or not
-	bool			m_directionalLightActiveButton;
+	bool	m_directionalLightInScene; // Indicates if the button to toggle the light should be visible or not
+	bool	m_directionalLightActiveButton;
 
-	bool			m_spotLightInScene;
-	bool			m_spotLightActiveButton;
+	bool	m_spotLightInScene;
+	bool	m_spotLightActiveButton;
 
-	int				m_totalPointLights;
-	bool			m_pointLightInScene[4];
-	bool			m_pointLightActiveButton[4];
+	int		m_totalPointLights;
+	bool	m_pointLightInScene[4];
+	bool	m_pointLightActiveButton[4];
 
-	int				m_appPostProcess;
+	int		m_appPostProcess;
 
 	// Cached other classes
-	std::shared_ptr<Scene>						m_sceneHandle;
+	std::shared_ptr<Scene>					m_sceneHandle;
 
 	// Cached selected entity
-	std::unique_ptr<selectedEntityCache>		m_selectedEntity;
+	std::unique_ptr<selectedEntityCache>	m_selectedEntity;
 };
 
