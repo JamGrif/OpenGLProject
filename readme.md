@@ -22,7 +22,7 @@ This project is mainly a fun way for me to experiment and test my OpenGL and C++
 
 **Original features:**  
 - ADS Blinn-Phong Light Reflection Model  
-- Diffuse, Specular, Emission, Height, Normal texture maps
+- Diffuse, Specular, Emission, Height & Normal texture maps
 - Coloured lighting from Directional/Point/Spot lights  
 - Skybox Cubemap  
 - Reflection Environment Map & Refraction Environment Map  
