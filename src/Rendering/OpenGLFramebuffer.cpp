@@ -32,8 +32,6 @@ OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 
 		// Create render buffer object
 		glCall(glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, m_screenWidth, m_screenHeight));
-		glCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO));
-
 	}
 	// Otherwise, create a normal framebuffer
 	else
@@ -48,8 +46,9 @@ OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 
 		// Create render buffer object
 		glCall(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_screenWidth, m_screenHeight));
-		glCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO));
 	}
+
+	glCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO));
 	
 	// Check status of newly created framebuffer
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)

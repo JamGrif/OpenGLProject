@@ -6,15 +6,17 @@
 #include "Scene/SceneLightManager.h"
 #include "Rendering/Renderer.h"
 
-std::shared_ptr<OpenGLWindow> EngineStatics::m_appWindow		= nullptr;
 
-std::shared_ptr<SceneCamera>		 EngineStatics::m_camera	= nullptr;
+// .cpp file - Class Definition
+std::shared_ptr<OpenGLWindow> EngineStatics::m_appWindow = nullptr;
 
-glm::mat4* EngineStatics::m_projectionMatrix					= nullptr;
+std::shared_ptr<SceneCamera> EngineStatics::m_camera = nullptr;
 
-std::shared_ptr<SceneLightManager> EngineStatics::m_lightManager	= nullptr;
+glm::mat4* EngineStatics::m_projectionMatrix = nullptr;
 
-std::shared_ptr<Renderer>	EngineStatics::m_renderer			= nullptr;
+std::shared_ptr<SceneLightManager> EngineStatics::m_lightManager = nullptr;
+
+std::shared_ptr<Renderer> EngineStatics::m_renderer	= nullptr;
 
 
 const std::shared_ptr<OpenGLWindow>& EngineStatics::getAppWindow()

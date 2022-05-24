@@ -38,7 +38,7 @@ public:
 	PerformanceTimer(const char* tag = "");
 	~PerformanceTimer();
 
-	void stop();
+	void		stop();
 
 private:
 	std::chrono::time_point<std::chrono::high_resolution_clock> m_startTimepoint;

@@ -5,11 +5,11 @@ class OpenGLShader;
 
 enum screenFilters
 {
-	screen_Default = 1,
-	screen_Inverse,
-	screen_Greyscale,
-	screen_EdgeDetection,
-	screen_Drugs,
+	screen_Default			= 1,
+	screen_Inverse			= 2,
+	screen_Greyscale		= 3,
+	screen_EdgeDetection	= 4,
+	screen_Drugs			= 5,
 	END_OF_FILTER_ENUM
 };
 
@@ -35,7 +35,6 @@ public:
 	unsigned int	getFBO() const;
 
 private:
-
 	float m_quadVertices[24] =
 	{
 		//Pos		//Texcoords
@@ -58,6 +57,6 @@ private:
 
 	unsigned int	m_screenWidth, m_screenHeight;
 
-	std::shared_ptr<OpenGLShader>	m_screenShader;
+	std::shared_ptr<OpenGLShader> m_screenShader;
 };
 

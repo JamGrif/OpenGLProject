@@ -11,7 +11,7 @@ public:
 
 private:
 
-	static std::shared_ptr<spdlog::logger> s_CoreLogger;
+	static std::shared_ptr<spdlog::logger>	s_CoreLogger;
 
 	Log();
 };

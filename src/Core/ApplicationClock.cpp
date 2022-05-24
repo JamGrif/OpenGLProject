@@ -69,6 +69,9 @@ PerformanceTimer::~PerformanceTimer()
 		stop();
 }
 
+/// <summary>
+/// Guess what this does
+/// </summary>
 void PerformanceTimer::stop()
 {
 	m_stopped = true;

@@ -10,8 +10,8 @@ public:
 	void						readCubemapFromFile();
 	inline bool					loadCubemap();
 
-	void				Bind() const;
-	void				Unbind() const;
+	void						Bind() const;
+	void						Unbind() const;
 
 	void						setTextureSlot(int slot);
 
@@ -20,7 +20,6 @@ public:
 	inline const std::string&	getFilePath() const;
 
 private:
-
 	uint32_t					m_texture;
 
 	int							m_textureSlot;
@@ -32,12 +31,12 @@ private:
 
 	enum cubeFaces
 	{
-		e_cubeFaceRight = 0,
-		e_cubeFaceLeft = 1,
-		e_cubeFaceTop = 2,
-		e_cubeFaceBottom = 3,
-		e_cubeFaceFront = 4,
-		e_cubeFaceBack = 5,
+		e_cubeFaceRight		= 0,
+		e_cubeFaceLeft		= 1,
+		e_cubeFaceTop		= 2,
+		e_cubeFaceBottom	= 3,
+		e_cubeFaceFront		= 4,
+		e_cubeFaceBack		= 5,
 		e_END_OF_CUBEFACE_ENUM
 	};
 
@@ -51,10 +50,10 @@ public:
 
 	static std::shared_ptr<OpenGLCubemap> retrieveCubeMapObject(const std::string& filePath = "");
 
-	static void     readCubemapsFromFile();
-	static void		createCubemaps();
+	static void							  readCubemapsFromFile();
+	static void							  createCubemaps();
 
-	static void		clearCubemaps();
+	static void							  clearCubemaps();
 
 private:
 

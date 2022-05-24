@@ -29,7 +29,6 @@ public:
 	inline const std::string&			getFilePath() const;
 	
 private:
-
 	uint32_t							m_meshVBO;
 	uint32_t							m_meshEBO;
 
@@ -41,7 +40,6 @@ private:
 	std::vector<unsigned int>			m_meshIndices;
 
 	std::string							m_filePath;
-
 };
 
 /// <summary>
@@ -51,16 +49,14 @@ private:
 class MeshManager
 {
 public:
-
 	static std::shared_ptr<OpenGLMesh>	retrieveMeshObject(const std::string& filePath);
 
-	static void						readMeshesFromFile();
-	static void						createMeshes();
+	static void							readMeshesFromFile();
+	static void							createMeshes();
 
-	static void						clearMeshes();
+	static void							clearMeshes();
 
 private:
-
 	static std::vector<std::shared_ptr<OpenGLMesh>>	m_loadedMeshes;
 
 	MeshManager(); //Private so a class of this can't be initialized

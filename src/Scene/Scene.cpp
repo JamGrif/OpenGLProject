@@ -81,7 +81,7 @@ static void createCubemapThread(){ CubemapManager::readCubemapsFromFile(); }
 Scene::Scene(const std::string& sceneName)
 	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr)
 {
-	m_sceneEntities.reserve(50);
+	//m_sceneEntities.reserve(50);
 	resetSceneValues();
 }
  
@@ -118,6 +118,7 @@ bool Scene::loadScene()
 	addSceneLightManager();
 
 	PRINT_INFO("SCENE->Attempting to load scene {0}", m_sceneName);
+	PerformanceTimer t("Scene loading");
 
 	// Run scene reader, giving it the scene objects vector and light manager to fill out
 	SceneTextReader txtReader(m_sceneName, m_sceneEntities, m_sceneLightingEntities, m_sceneLightManager);
@@ -127,8 +128,6 @@ bool Scene::loadScene()
 		// Scene failed to load
 		return false;
 	}
-
-	PerformanceTimer t("AssetLoadingTime");
 
 	// Create threads to read assets from their files
 	std::thread textureLoadThread(createTextureThread);
@@ -147,8 +146,6 @@ bool Scene::loadScene()
 	MeshManager::createMeshes();
 	ShaderManager::createShaders();
 
-	t.stop();
-
 	for (auto& m : m_sceneEntities)
 	{
 		m->initEntity();
@@ -159,7 +156,9 @@ bool Scene::loadScene()
 		m->initEntity();
 	}
 
+	t.stop();
 	PRINT_INFO("SCENE->{0} has loaded sucessfully", m_sceneName);
+
 	return true;
 }
 
@@ -271,18 +270,6 @@ void Scene::deleteLightingEntityFromVector(int index)
 {
 	m_sceneLightingEntities.erase(m_sceneLightingEntities.begin() + index);
 }
-
-///// <summary>
-///// Checks for input and updates various game objects as a result of those inputs - called every scene update
-///// </summary>
-//void Scene::updateOnInput()
-//{
-//	/*
-//		Update scene camera
-//	*/
-//
-//	
-//}
 
 /// <summary>
 /// Alters the lights position or colour every frame 

@@ -45,12 +45,12 @@ class TextureManager
 {
 public:
 
-	static std::shared_ptr<OpenGLTexture> retrieveTextureObject(const std::string& filePath);
+	static std::shared_ptr<OpenGLTexture>	retrieveTextureObject(const std::string& filePath);
 
-	static void					readTexturesFromFile();
-	static void					createTextures();
+	static void								readTexturesFromFile();
+	static void								createTextures();
 
-	static void					clearTextures();
+	static void								clearTextures();
 
 private:
 

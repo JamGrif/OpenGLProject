@@ -103,9 +103,13 @@ bool BaseEntity::getTransformUpdated()
 	}
 }
 
+/// <summary>
+/// Returns if the texture part of the entity has been updated since the last time it was checked
+/// </summary>
 bool BaseEntity::getTextureUpdated()
 {
-	//
+	// TO DO
+	return false;
 }
 
 /// <summary>

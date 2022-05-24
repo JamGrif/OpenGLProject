@@ -13,7 +13,7 @@
 
 #include "Scene/SceneLightManager.h"
 
-SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<BaseEntity>>& sceneMeshes, std::vector<std::shared_ptr<LightingEntity>>& sceneLightingEntities, std::shared_ptr<SceneLightManager>& sceneLightManager)
+SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::shared_ptr<BaseEntity>>& sceneNonLightingEntities, std::vector<std::shared_ptr<LightingEntity>>& sceneLightingEntities, std::shared_ptr<SceneLightManager>& sceneLightManager)
 	:m_status(false)
 {
 	std::ifstream fileStream(filename, std::ios::in);
@@ -143,6 +143,8 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		   and add it to the scene vector
 	*/
 
+
+
 	for (const auto& dLightTemplate : completedDirectionalLightObjects)
 	{
 		sceneLightManager->addDirectionalLight(
@@ -173,45 +175,53 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		);
 	}
 
+	// Reserve enough space to hold all of the created entities in the vectors once (stops the vector being constantly resized as new entities are added)
+
+	size_t newSize = completedBasicEntityObjects.size() + completedTerrainEntityObjects.size() + completedEnvironmentEntityObjects.size()
+					 + completedGeometryEntityObjects.size() + completedSkyEntityObjects.size();
+	sceneNonLightingEntities.reserve(newSize);
+
+	size_t newLightingEntitySize = completedLightingEntityObjects.size();
+	sceneLightingEntities.reserve(newLightingEntitySize);
+
 	for (const auto& skyObject : completedSkyEntityObjects)
 	{
 		std::shared_ptr<SkyEntity> model = std::make_shared<SkyEntity>(skyObject);
-		sceneMeshes.emplace_back(model);
+		sceneNonLightingEntities.emplace_back(model);
 	}
 
-	int x = 0; // vector index - used in editor
+	int index = 0; // vector index - used in editor to set the entities name
 	for (const auto& lightObject : completedLightingEntityObjects)
 	{
 		std::shared_ptr<LightingEntity> model = std::make_shared<LightingEntity>(lightObject);
-		model->setEditorName("modelLighting" + std::to_string(x));
+		model->setEditorName("modelLighting" + std::to_string(index));
 		sceneLightingEntities.emplace_back(model);
 
-		x++;
+		index++;
 	}
 
 	for (const auto& basicObject : completedBasicEntityObjects)
 	{
 		std::shared_ptr<BasicEntity> model = std::make_shared<BasicEntity>(basicObject);
-		sceneMeshes.emplace_back(model);
+		sceneNonLightingEntities.emplace_back(model);
 	}
-	
 	
 	for (const auto& terrainObject : completedTerrainEntityObjects)
 	{
 		std::shared_ptr<TerrainEntity> model = std::make_shared<TerrainEntity>(terrainObject);
-		sceneMeshes.emplace_back(model);
+		sceneNonLightingEntities.emplace_back(model);
 	}
 	
 	for (const auto& environmentObject : completedEnvironmentEntityObjects)
 	{
 		std::shared_ptr<EnvironmentEntity> model = std::make_shared<EnvironmentEntity>(environmentObject);
-		sceneMeshes.emplace_back(model);
+		sceneNonLightingEntities.emplace_back(model);
 	}
 	
 	for (const auto& geometryObject : completedGeometryEntityObjects)
 	{
 		std::shared_ptr<GeometryEntity> model = std::make_shared<GeometryEntity>(geometryObject);
-		sceneMeshes.emplace_back(model);
+		sceneNonLightingEntities.emplace_back(model);
 	}
 
 	m_status = true;

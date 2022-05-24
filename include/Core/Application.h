@@ -15,13 +15,13 @@ public:
 	Application();
 	~Application();
 
-	bool			appInit();
-	void			appLoop();
+	bool	appInit();
+	void	appLoop();
 
 private:
 
-	bool			setScene(int newSceneNumber);
-	void			setScreenFilter(int newFilterNumber);
+	bool	setScene(int newSceneNumber);
+	void	setScreenFilter(int newFilterNumber);
 
 	// Objects
 
