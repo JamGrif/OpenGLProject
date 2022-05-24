@@ -9,6 +9,7 @@ GeometryEntity::GeometryEntity(templateGeometryEntity object)
 	setShaderTwo("res/shaders/geometry-vertex.glsl", "res/shaders/geometry-geometry.glsl", "res/shaders/geometry-fragment.glsl");
 
 	m_geometryTexture = TextureManager::retrieveTextureObject("res/textures/barrel_diff.png");
+	m_geometryTexture->setTextureSlot(0);
 }
 
 GeometryEntity::~GeometryEntity()
