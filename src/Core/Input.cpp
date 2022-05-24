@@ -63,11 +63,7 @@ void Input::keyCALLBACK(GLFWwindow* window, int key, int scancode, int action, i
 /// <returns>If the key is pressed or not</returns>
 bool Input::getKeyPressed(int key)
 {
-    if (m_keys[key])
-    {
-        return true;
-    }
-	return false;
+	return m_keys[key];
 }
 
 /// <summary>
