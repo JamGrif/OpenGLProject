@@ -81,7 +81,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 			if (applyToSpotLight(object, fullLine))
 				completedSpotLightObjects.emplace_back(object);
 		}
-		else if (fullLine.at(0) == "modelLighting") 
+		else if (fullLine.at(0) == "LightingEntity") 
 		{
 			templateLightingEntity object;
 
@@ -89,7 +89,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 			if (applyToLightingEntityTemplate(object, fullLine))
 				completedLightingEntityObjects.emplace_back(object);
 		}
-		else if (fullLine.at(0) == "modelBasic")
+		else if (fullLine.at(0) == "BasicEntity")
 		{
 			templateBasicEntity object;
 			
@@ -97,7 +97,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 			if (applyToBasicEntityTemplate(object, fullLine))
 				completedBasicEntityObjects.emplace_back(object);
 		}
-		else if (fullLine.at(0) == "modelTerrain")
+		else if (fullLine.at(0) == "TerrainEntity")
 		{
 			templateTerrainEntity object;
 			
@@ -105,7 +105,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 			if (applyToTerrainEntityTemplate(object, fullLine))
 				completedTerrainEntityObjects.emplace_back(object);
 		}
-		else if (fullLine.at(0) == "modelEnvironment")
+		else if (fullLine.at(0) == "EnvironmentEntity")
 		{
 			templateEnvironmentEntity object;
 			
@@ -113,7 +113,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 			if (applyToEnvironmentEntityTemplate(object, fullLine))
 				completedEnvironmentEntityObjects.emplace_back(object);
 		}
-		else if (fullLine.at(0) == "modelGeometry")
+		else if (fullLine.at(0) == "GeometryEntity")
 		{
 			templateGeometryEntity object;
 
@@ -121,7 +121,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 			if (applyToGeometryEntityTemplate(object, fullLine))
 				completedGeometryEntityObjects.emplace_back(object);
 		}
-		else if (fullLine.at(0) == "modelSky")
+		else if (fullLine.at(0) == "SkyEntity")
 		{
 			templateSkyEntity object;
 			
@@ -142,8 +142,6 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 		2. Use the temp objects to create and fill out the attributes of all the required objects in the scene
 		   and add it to the scene vector
 	*/
-
-
 
 	for (const auto& dLightTemplate : completedDirectionalLightObjects)
 	{
@@ -176,7 +174,6 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 	}
 
 	// Reserve enough space to hold all of the created entities in the vectors once (stops the vector being constantly resized as new entities are added)
-
 	size_t newSize = completedBasicEntityObjects.size() + completedTerrainEntityObjects.size() + completedEnvironmentEntityObjects.size()
 					 + completedGeometryEntityObjects.size() + completedSkyEntityObjects.size();
 	sceneNonLightingEntities.reserve(newSize);
@@ -194,7 +191,7 @@ SceneTextReader::SceneTextReader(const std::string& filename, std::vector<std::s
 	for (const auto& lightObject : completedLightingEntityObjects)
 	{
 		std::shared_ptr<LightingEntity> model = std::make_shared<LightingEntity>(lightObject);
-		model->setEditorName("modelLighting" + std::to_string(index));
+		model->setEditorName("LightingEntity" + std::to_string(index));
 		sceneLightingEntities.emplace_back(model);
 
 		index++;
