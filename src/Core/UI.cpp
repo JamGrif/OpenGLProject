@@ -205,7 +205,7 @@ void UI::update()
 void UI::toggleUI()
 {
 	// Flip variable state
-	m_uiVisible = m_uiVisible == true ? false : true;
+	m_uiVisible = !m_uiVisible;
 
 	// Toggle mouse depending on UI visibility
 	m_uiVisible ? Input::enableMouse() : Input::disableMouse();
