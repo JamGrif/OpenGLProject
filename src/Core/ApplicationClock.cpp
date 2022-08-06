@@ -10,6 +10,9 @@ int			ApplicationClock::m_frameCount = 0;
 int			ApplicationClock::m_frameCountToDisplay = 0;
 double		ApplicationClock::m_currentFrame = 0;
 
+/// <summary>
+/// Done once on program start
+/// </summary>
 void ApplicationClock::init()
 {
 	m_previousTime = glfwGetTime();
@@ -17,6 +20,9 @@ void ApplicationClock::init()
 	m_currentFrame = 0;
 }
 
+/// <summary>
+/// Called every frame
+/// </summary>
 void ApplicationClock::tick()
 {
 	// Delta time
@@ -36,11 +42,19 @@ void ApplicationClock::tick()
 	}
 }
 
+/// <summary>
+/// Updated every .tick()
+/// </summary>
+/// <returns></returns>
 double ApplicationClock::getDeltaTime()
 {
 	return m_deltaTime;
 }
 
+/// <summary>
+/// Current FPS
+/// Updated every .tick()
+/// </summary>
 int ApplicationClock::getFrameCount()
 {
 	return m_frameCountToDisplay;

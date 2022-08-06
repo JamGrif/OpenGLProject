@@ -64,7 +64,8 @@ bool Application::appInit()
 }
 
 /// <summary>
-/// Entire application loop of program
+/// Entire loop of program
+/// Called every frame
 /// </summary>
 void Application::appLoop()
 {
@@ -125,7 +126,6 @@ void Application::appLoop()
 /// Function changes the scene to specified scene number, unloads the currently loaded scene and refreshes the UI light buttons
 /// </summary>
 /// <param name="newSceneNumber">Specified scene to change to (use sceneNames enum)</param>
-/// <returns></returns>
 bool Application::setScene(int newSceneNumber)
 {
 	std::string newSceneFilePath = "";

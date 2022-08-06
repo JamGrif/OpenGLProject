@@ -156,7 +156,6 @@ void Input::disableMouse()
 /// <summary>
 /// Returns true if cursor is enabled and false if not
 /// </summary>
-/// <returns></returns>
 bool Input::getMouseEnabled()
 {
 	return m_mouseEnabled;
