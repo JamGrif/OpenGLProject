@@ -51,7 +51,7 @@ Moving the mouse moves the front facing vector of the camera
 Built exe is available at (ProjectDirectory)->bin->x64->Release/Debug->OpenGL.exe  
 Program can only be compiled in 64bit mode in Visual Studio.  
 The Release version is recommended as while both versions are visually the same, the Release version has superior performance and loading times.  
-The project should be able to be built straight out of the box as the repository contains the required dependencies  
+The project should be able to be built straight out of the box as the repository contains the required dependencies.  
 
 **This OpenGL Project is dependant on:**
 
