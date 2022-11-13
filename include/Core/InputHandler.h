@@ -3,38 +3,44 @@
 struct GLFWwindow;
 
 // Static functions allows the checking of key presses anywhere in the program
-class Input
+class InputHandler
 {
 public:
-	static void		init();
+	void		init();
+	static void	keyCALLBACK(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-	static void		keyCALLBACK(GLFWwindow* window, int key, int scancode, int action, int mode);
-	static bool		getKeyPressed(int key);
-	static bool		getKeyPressedOnce(int key);
+	bool		getKeyPressed(int key);
+	bool		getKeyPressedOnce(int key);
 
-	static void		mouseCALLBACK(GLFWwindow* window, double xPos, double yPos);
-	static void		getMouseMoved(double& xMouse, double& yMouse);
+	static void	mouseCALLBACK(GLFWwindow* window, double xPos, double yPos);
+	void		getMouseMoved(double& xMouse, double& yMouse);
 
-	static void		enableMouse();
-	static void		disableMouse();
-	static bool		getMouseEnabled();
+	void		enableMouse();
+	void		disableMouse();
+	bool		getMouseEnabled();
+
+	static InputHandler* Instance()
+	{
+		static InputHandler* s_pInstance = new InputHandler;
+		return s_pInstance;
+	}
 
 private:
 
 	// Keyboard
-	static bool		m_keys[1024];
+	static bool	m_keys[1024];
 	static int		m_lastKey;
 
 	// Mouse
 	static double	m_lastX;
 	static double	m_lastY;
-	static bool		m_firstMouse;
+	static bool	m_firstMouse;
 	static double	m_xOffset;
 	static double	m_yOffset;
 
 	static bool		m_mouseEnabled;
 
-	Input();
+	InputHandler() {}
 };
 
 // Replaces the GLFW_KEY_x from glfw3.h

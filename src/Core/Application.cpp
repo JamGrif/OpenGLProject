@@ -6,21 +6,25 @@
 #include "Scene/Scene.h"
 #include "Rendering/OpenGLWindow.h"
 #include "Rendering/OpenGLFramebuffer.h"
-#include "Rendering/Renderer.h"
+#include "Rendering/OpenGLRenderer.h"
+#include "Core/InputHandler.h"
 
 Application::Application()
-	:m_renderer(nullptr), m_UI(nullptr), m_loadedScene(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr)
+	:m_UI(nullptr), m_loadedScene(nullptr), m_sceneMSAAFrameBuffer(nullptr), m_sceneFilterFramebuffer(nullptr)
 {
 }
 
 Application::~Application()
 {
-	m_renderer = nullptr;
-	EngineStatics::setRenderer(nullptr);
+	//m_renderer = nullptr;
+	//EngineStatics::setRenderer(nullptr);
+	TheOpenGLRenderer::Instance()->clean();
 
 	m_loadedScene = nullptr;
 
 	m_UI = nullptr;
+
+	TheOpenGLWindow::Instance()->clean();
 }
 
 /// <summary>
@@ -33,23 +37,18 @@ bool Application::appInit()
 	Log::init();
 
 	// Initialize OpenGL renderer
-	m_renderer = std::make_shared<Renderer>();
-	if (!m_renderer->getStatus())
-	{
-		return false;
-	}
-	EngineStatics::setRenderer(m_renderer);
+	TheOpenGLRenderer::Instance()->init();
 
 	// Initialize the applications clock
 	ApplicationClock::init();
 
 	// Initialize input
-	Input::init();
+	InputHandler::Instance()->init();
 
 	// Initialize the UI
-	m_UI = std::make_unique<UI>(true, m_loadedScene);
+	m_UI = std::make_unique<UI>(false, m_loadedScene);
 
-	// Create the apps Framebuffers
+	// Create the apps Frame buffers
 	m_sceneFilterFramebuffer = std::make_unique<OpenGLFramebuffer>(false);
 	m_sceneMSAAFrameBuffer = std::make_unique<OpenGLFramebuffer>(true);
 
@@ -69,11 +68,12 @@ bool Application::appInit()
 /// </summary>
 void Application::appLoop()
 {
-	while (!EngineStatics::getAppWindow()->shouldClose())
+	while (!TheOpenGLWindow::Instance()->shouldClose())
 	{
 		ApplicationClock::tick();
 
-		m_renderer->startOfFrame();
+		//m_renderer->startOfFrame();
+		TheOpenGLRenderer::Instance()->startOfFrame();
 		
 		if (m_loadedScene)
 			m_loadedScene->updateScene();
@@ -118,7 +118,8 @@ void Application::appLoop()
 			m_UI->update();
 		}
 
-		m_renderer->swapBuffers();
+		//m_renderer->swapBuffers();
+		TheOpenGLRenderer::Instance()->swapBuffers();
 	}
 }
 

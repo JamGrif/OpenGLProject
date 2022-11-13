@@ -9,7 +9,8 @@
 #include "Rendering/OpenGLWindow.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneLightManager.h"
-#include "Scene/EntityTypes/LightingEntity.h"
+#include "Rendering/Model.h"
+#include "Core/InputHandler.h"
 
 // Flags for each ImGui window used
 static ImGuiWindowFlags commonResizeFlags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
@@ -22,7 +23,7 @@ static ImGuiWindowFlags debugFlags = ImGuiWindowFlags_NoCollapse;
 /// </summary>
 struct selectedEntityCache
 {
-	selectedEntityCache(std::shared_ptr<LightingEntity> entity)
+	selectedEntityCache(std::shared_ptr<Model> entity)
 		:entityPtr(entity)
 	{
 		//PRINT_TRACE("created cached data");
@@ -94,23 +95,23 @@ struct selectedEntityCache
 	// Only updates the selected objects mesh data
 	void refreshMeshCachedData()
 	{
-		meshFilepath = entityPtr->getMesh()->getFilePath();
+		//meshFilepath = entityPtr->getMesh()->getFilePath();
 	}
 
 	// Only updates the selected objects texture data
 	void refreshTextureCachedData()
 	{
-		totalTextures = entityPtr->getTextureAmount();
+		//totalTextures = entityPtr->getTextureAmount();
 
 		for (int i = 0; i < totalTextures; i++)
 		{
-			textureFilepath[i] = entityPtr->getTextureAtSlot(i)->getFilePath().c_str();
-			textureOpenGLID[i] = entityPtr->getTextureAtSlot(i)->getTextureID();
+			//textureFilepath[i] = entityPtr->getTextureAtSlot(i)->getFilePath().c_str();
+			//textureOpenGLID[i] = entityPtr->getTextureAtSlot(i)->getTextureID();
 		}
 	}
 
 private:
-	std::shared_ptr<LightingEntity> entityPtr; // Pointer to the actual entity
+	std::shared_ptr<Model> entityPtr; // Pointer to the actual entity
 };
 
 UI::UI(bool uiVisible, std::shared_ptr<Scene> loadedScene)
@@ -123,7 +124,7 @@ UI::UI(bool uiVisible, std::shared_ptr<Scene> loadedScene)
 	PRINT_TRACE("UI Initialized");
 
 	// Enable or Disable the mouse depending on UI visibility
-	m_uiVisible ? Input::enableMouse() : Input::disableMouse();
+	m_uiVisible ? InputHandler::Instance()->enableMouse() : InputHandler::Instance()->disableMouse();
 
 	// Check the version
 	IMGUI_CHECKVERSION();
@@ -140,7 +141,7 @@ UI::UI(bool uiVisible, std::shared_ptr<Scene> loadedScene)
 	style->ScrollbarRounding = 9.0f;
 
 	// Connect ImGui to GLFW window
-	ImGui_ImplGlfw_InitForOpenGL(EngineStatics::getAppWindow()->getRaw(), true);
+	ImGui_ImplGlfw_InitForOpenGL(TheOpenGLWindow::Instance()->getWindowPtr(), true);
 	ImGui_ImplOpenGL3_Init("#version 460");
 
 	// Set ImGui colour style
@@ -163,7 +164,7 @@ UI::~UI()
 void UI::startOfFrame()
 {
 	// Check if user wants to toggle UI visibility
-	if (Input::getKeyPressedOnce(Keyboard::Q))
+	if (InputHandler::Instance()->getKeyPressedOnce(Keyboard::Q))
 	{
 		toggleUI();
 	}
@@ -208,7 +209,7 @@ void UI::toggleUI()
 	m_uiVisible = !m_uiVisible;
 
 	// Toggle mouse depending on UI visibility
-	m_uiVisible ? Input::enableMouse() : Input::disableMouse();
+	m_uiVisible ? InputHandler::Instance()->enableMouse() : InputHandler::Instance()->disableMouse();
 }
 
 bool UI::getUiVisible() const
@@ -283,7 +284,8 @@ void UI::sceneOptionsPanel()
 		ImGui::Checkbox("DirectionalLight", &m_directionalLightActiveButton);
 
 		// Set the active state of the DirectionalLight depending on the check box status
-		sceneLM->getDirectionalLight(0)->lightActive = m_directionalLightActiveButton ? true : false;
+		sceneLM->getDirectionalLight(0).lock()->m_lightActive = m_directionalLightActiveButton ? true : false;
+
 	}
 
 	if (m_spotLightInScene)
@@ -292,7 +294,7 @@ void UI::sceneOptionsPanel()
 		ImGui::Checkbox("SpotLight", &m_spotLightActiveButton);
 
 		// Set the active state of the SpotLight depending on the check box status
-		sceneLM->getSpotLight(0)->lightActive = m_spotLightActiveButton ? true : false;
+		sceneLM->getSpotLight(0).lock()->m_lightActive = m_spotLightActiveButton ? true : false;
 	}
 
 	for (int i = 0; i < m_totalPointLights; i++)
@@ -303,7 +305,7 @@ void UI::sceneOptionsPanel()
 			ImGui::Checkbox(nameTemp.c_str(), &m_pointLightActiveButton[i]);
 
 			// Set the active state of the pointLight depending on the check box status
-			sceneLM->getPointLight(i)->lightActive = m_pointLightActiveButton[i] ? true : false;
+			sceneLM->getPointLight(i).lock()->m_lightActive = m_pointLightActiveButton[i] ? true : false;
 		}
 	}
 

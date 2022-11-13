@@ -6,7 +6,7 @@
 class Scene;
 class UI;
 class OpenGLFramebuffer;
-class Renderer;
+class OpenGLRenderer;
 
 // Abstracts the program out of main.cpp, encapsulating the entire program
 class Application
@@ -25,7 +25,7 @@ private:
 
 	// Objects
 
-	std::shared_ptr<Renderer>			m_renderer;
+	//std::shared_ptr<OpenGLRenderer>			m_renderer;
 
 	std::unique_ptr<UI>					m_UI;
 

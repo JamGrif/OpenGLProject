@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Core/InputHandler.h"
 
 #include "Core/EngineStatics.h"
 #include "Rendering/OpenGLWindow.h"
@@ -6,27 +7,27 @@
 #include <GLFW/glfw3.h>
 
 // Keyboard
-bool	Input::m_keys[1024];
-int		Input::m_lastKey = 0;
+bool	InputHandler::m_keys[1024];
+int		InputHandler::m_lastKey = 0;
 
 // Mouse
-double	Input::m_lastX = 0;
-double	Input::m_lastY = 0;
-bool	Input::m_firstMouse = true;
-double	Input::m_xOffset = 0;
-double	Input::m_yOffset = 0;
+double	InputHandler::m_lastX = 0;
+double	InputHandler::m_lastY = 0;
+bool	InputHandler::m_firstMouse = true;
+double	InputHandler::m_xOffset = 0;
+double	InputHandler::m_yOffset = 0;
 
-bool	Input::m_mouseEnabled = false;
+bool	InputHandler::m_mouseEnabled = false;
 
 /// <summary>
 /// Initializes the input of the program by setting up the input callbacks
 /// </summary>
-void Input::init()
+void InputHandler::init()
 {
-	glfwSetKeyCallback(EngineStatics::getAppWindow()->getRaw(), keyCALLBACK);
-	glfwSetCursorPosCallback(EngineStatics::getAppWindow()->getRaw(), mouseCALLBACK);
+	glfwSetKeyCallback(TheOpenGLWindow::Instance()->getWindowPtr(), keyCALLBACK);
+	glfwSetCursorPosCallback(TheOpenGLWindow::Instance()->getWindowPtr(), mouseCALLBACK);
 
-	glfwSetInputMode(EngineStatics::getAppWindow()->getRaw(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(TheOpenGLWindow::Instance()->getWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 /// <summary>
@@ -34,7 +35,7 @@ void Input::init()
 /// </summary>
 /// <param name="window">The window that has input</param>
 /// <param name="key">Key pressed</param>
-void Input::keyCALLBACK(GLFWwindow* window, int key, int scancode, int action, int mode)
+void InputHandler::keyCALLBACK(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
     {
@@ -61,7 +62,7 @@ void Input::keyCALLBACK(GLFWwindow* window, int key, int scancode, int action, i
 /// </summary>
 /// <param name="key">Specified key to query</param>
 /// <returns>If the key is pressed or not</returns>
-bool Input::getKeyPressed(int key)
+bool InputHandler::getKeyPressed(int key)
 {
 	return m_keys[key];
 }
@@ -70,7 +71,7 @@ bool Input::getKeyPressed(int key)
 /// Returns whether the specified key is pressed or not, but only once until the key is released
 /// </summary>
 /// <param name="key">Specified key to query (use enum in Input.h macro)</param>
-bool Input::getKeyPressedOnce(int key)
+bool InputHandler::getKeyPressedOnce(int key)
 {
 	if (key != m_lastKey && m_keys[key]) // Key is not same as last key and key was pressed
 	{
@@ -86,7 +87,7 @@ bool Input::getKeyPressedOnce(int key)
 /// <param name="window">The window that has input</param>
 /// <param name="xPos">New mouse X position</param>
 /// <param name="yPos">New mouse Y position</param>
-void Input::mouseCALLBACK(GLFWwindow* window, double xPos, double yPos)
+void InputHandler::mouseCALLBACK(GLFWwindow* window, double xPos, double yPos)
 {
 	if (m_firstMouse)
 	{
@@ -105,7 +106,7 @@ void Input::mouseCALLBACK(GLFWwindow* window, double xPos, double yPos)
 /// <summary>
 /// Returns how much the mouse has moved since last function call
 /// </summary>
-void Input::getMouseMoved(double& xMouse, double& yMouse)
+void InputHandler::getMouseMoved(double& xMouse, double& yMouse)
 {
 	xMouse = m_xOffset;
 	yMouse = m_yOffset;
@@ -117,15 +118,15 @@ void Input::getMouseMoved(double& xMouse, double& yMouse)
 /// <summary>
 /// Enables the mouse cursor and sets it to the centre of the window
 /// </summary>
-void Input::enableMouse()
+void InputHandler::enableMouse()
 {
     if (m_mouseEnabled) // If already enabled, leave function
         return;
 
     m_mouseEnabled = true;
 
-	glfwSetInputMode(EngineStatics::getAppWindow()->getRaw(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	glfwSetCursorPos(EngineStatics::getAppWindow()->getRaw(), EngineStatics::getAppWindow()->getWindowWidth() / 2, EngineStatics::getAppWindow()->getWindowHeight() / 2);
+	glfwSetInputMode(TheOpenGLWindow::Instance()->getWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetCursorPos(TheOpenGLWindow::Instance()->getWindowPtr(), TheOpenGLWindow::Instance()->getWindowWidth() / 2, TheOpenGLWindow::Instance()->getWindowHeight() / 2);
 
 	// Reset any lingering mouse movement
 	m_lastX = 0;
@@ -137,7 +138,7 @@ void Input::enableMouse()
 /// <summary>
 /// Disables the mouse cursor
 /// </summary>
-void Input::disableMouse()
+void InputHandler::disableMouse()
 {
     if (!m_mouseEnabled) // If already disabled, leave function
         return;
@@ -150,13 +151,13 @@ void Input::disableMouse()
 	//m_xOffset = 0;
 	//m_yOffset = 0;
 
-    glfwSetInputMode(EngineStatics::getAppWindow()->getRaw(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(TheOpenGLWindow::Instance()->getWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 /// <summary>
 /// Returns true if cursor is enabled and false if not
 /// </summary>
-bool Input::getMouseEnabled()
+bool InputHandler::getMouseEnabled()
 {
 	return m_mouseEnabled;
 }
