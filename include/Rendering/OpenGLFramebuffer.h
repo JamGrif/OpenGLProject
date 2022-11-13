@@ -1,8 +1,5 @@
 #pragma once
 
-// Forward Declarations
-class OpenGLShader;
-
 enum screenFilters
 {
 	screen_Default			= 1,
@@ -57,6 +54,6 @@ private:
 
 	unsigned int	m_screenWidth, m_screenHeight;
 
-	std::shared_ptr<OpenGLShader> m_screenShader;
+	std::string m_shaderID;
 };
 

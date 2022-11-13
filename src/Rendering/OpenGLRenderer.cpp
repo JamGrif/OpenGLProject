@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Rendering/Renderer.h"
+#include "Rendering/OpenGLRenderer.h"
 
 #include "Core/EngineStatics.h"
 #include "Rendering/OpenGLWindow.h"
@@ -13,34 +13,32 @@
 // Scene.cpp
 extern int entityDrawCount;
 
-Renderer::Renderer()
-	:m_status(false), m_appWindow(nullptr), m_projMatrix{ 1.0f }, m_appVAO(0)
+OpenGLRenderer::OpenGLRenderer()
+	:m_projMatrix{ 1.0f }, m_appVAO(0)
+{
+}
+
+OpenGLRenderer::~OpenGLRenderer()
+{
+}
+
+bool OpenGLRenderer::init()
 {
 	// GLFW
 	if (!glfwInit())
 	{
 		PRINT_ERROR("GLFW failed to initialize");
-		m_status = false;
-		return;
+		return false;
 	}
 
-	// OpenGL Window
-	m_appWindow = std::make_shared<OpenGLWindow>(1920, 1080, "OpenGL - Jamie", false);
-	if (!m_appWindow->getWindowStatus())
-	{
-		PRINT_ERROR("OpenGL window failed to initialize");
-		m_status = false;
-		return;
-	}
-	EngineStatics::setAppWindow(m_appWindow);
+	TheOpenGLWindow::Instance()->init(1920, 1080, "OpenGL - Jamie", false);
 
 	// GLEW
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
 		PRINT_ERROR("GLEW failed to initialize");
-		m_status = false;
-		return;
+		return false;
 	}
 
 	PRINT_TRACE("Vendor is {0}", glGetString(GL_VENDOR));
@@ -55,61 +53,58 @@ Renderer::Renderer()
 	glCall(glEnable(GL_DEPTH_TEST));
 	glCall(glDepthFunc(GL_LEQUAL));
 
-	// Backface Culling
+	// Back face Culling
 	glCall(glEnable(GL_CULL_FACE));
 	glCall(glFrontFace(GL_CCW));
 	glCall(glCullFace(GL_BACK));
 
-	// Multisampling
+	// Multi sampling
 	glCall(glEnable(GL_MULTISAMPLE));
 
 	// Build applications projection matrix
-	m_projMatrix = glm::perspective(glm::radians(75.0f), m_appWindow->getAspectRatio(), 0.01f, 1000.0f);
+	m_projMatrix = glm::perspective(glm::radians(75.0f), TheOpenGLWindow::Instance()->getAspectRatio(), 0.01f, 1000.0f);
 	EngineStatics::setProjectionMatrix(&m_projMatrix);
 
 	// Build applications VAO
 	glCall(glGenVertexArrays(1, &m_appVAO));
 	glCall(glBindVertexArray(m_appVAO));
 
-	m_status = true;
+	return true;
 }
 
-Renderer::~Renderer()
+bool OpenGLRenderer::clean()
 {
-	m_appWindow = nullptr;
-	EngineStatics::setAppWindow(nullptr);
-
-	EngineStatics::setProjectionMatrix(nullptr);
-
 	if (m_appVAO)
 		glDeleteVertexArrays(1, &m_appVAO);
 
 	glCall(glfwTerminate());
+
+	return true;
 }
 
-void Renderer::startOfFrame() const
+void OpenGLRenderer::startOfFrame() const
 {
 	glCall(glClear(GL_DEPTH_BUFFER_BIT)); // Clear the screen buffers
 	glCall(glfwPollEvents());
 }
 
-void Renderer::swapBuffers() const
+void OpenGLRenderer::swapBuffers() const
 {
-	glCall(glfwSwapBuffers(m_appWindow->getRaw()));
+	glCall(glfwSwapBuffers(TheOpenGLWindow::Instance()->getWindowPtr()));
 }
 
 /// <summary>
 /// Assumes all appropriate meshes, shaders and textures have been binded correctly
 /// </summary>
 /// <param name="indicesCount"></param>
-void Renderer::draw(size_t indicesCount) const
+void OpenGLRenderer::draw(size_t indicesCount) const
 {
 	entityDrawCount++;
 
 	glCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indicesCount), GL_UNSIGNED_INT, 0));
 }
 
-void Renderer::drawCubemap(size_t vertexCount) const
+void OpenGLRenderer::drawCubemap(size_t vertexCount) const
 {
 	// Disables writing to the depth buffer
 	glCall(glDepthFunc(GL_LEQUAL));
@@ -117,13 +112,8 @@ void Renderer::drawCubemap(size_t vertexCount) const
 	glCall(glDepthFunc(GL_LESS));
 }
 
-void Renderer::drawTerrain(size_t vertexCount) const
+void OpenGLRenderer::drawTerrain(size_t vertexCount) const
 {
 	glCall(glPatchParameteri(GL_PATCH_VERTICES, static_cast<GLsizei>(vertexCount)));
 	glCall(glDrawArrays(GL_PATCHES, 0, static_cast<GLsizei>(vertexCount)));
-}
-
-bool Renderer::getStatus()
-{
-	return m_status;
 }

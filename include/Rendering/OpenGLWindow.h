@@ -10,10 +10,11 @@ struct GLFWwindow;
 class OpenGLWindow
 {
 public:
-	OpenGLWindow(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen);
-	~OpenGLWindow();
 
-	GLFWwindow* getRaw() const;
+	bool		init(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen);
+	bool		clean();
+
+	GLFWwindow* getWindowPtr() const;
 
 	bool		shouldClose() const;
 
@@ -23,16 +24,22 @@ public:
 	int			getWindowWidth() const;
 	int			getWindowHeight() const;
 	float		getAspectRatio() const;
-	bool		getWindowStatus() const;
+
+	static OpenGLWindow* Instance()
+	{
+		static OpenGLWindow* s_pInstance = new OpenGLWindow;
+		return s_pInstance;
+	}
 
 private:
-
-	bool		m_status;
+	OpenGLWindow() :m_currentWindowWidth(0), m_currentWindowHeight(0), m_aspectRatio(0), m_window(nullptr) {};
+	~OpenGLWindow() {};
 
 	uint32_t	m_currentWindowWidth;
 	uint32_t	m_currentWindowHeight;
 	float		m_aspectRatio;
 
-	GLFWwindow* m_Window;
+	GLFWwindow* m_window;
 
 };
+typedef OpenGLWindow TheOpenGLWindow;

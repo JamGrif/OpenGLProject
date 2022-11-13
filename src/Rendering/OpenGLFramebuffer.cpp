@@ -1,18 +1,18 @@
 #include "pch.h"
 #include "Rendering/OpenGLFramebuffer.h"
 
-#include "Rendering/OpenGLShader.h"
 #include "Core/EngineStatics.h"
 #include "Rendering/OpenGLWindow.h"
 #include "Rendering/OpenGLErrorCheck.h"
+#include "Rendering/ShaderManager.h"
 
 #include <GL/glew.h>
 //#include <GLFW/glfw3.h>
 
 OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 	:m_FBO(0), m_frameColourTexture(0), m_RBO(0),
-	m_quadVBO(0), m_screenFilter(1), m_screenWidth(EngineStatics::getAppWindow()->getWindowWidth()),
-	m_screenHeight(EngineStatics::getAppWindow()->getWindowHeight()), m_screenShader(nullptr)
+	m_quadVBO(0), m_screenFilter(1), m_screenWidth(TheOpenGLWindow::Instance()->getWindowWidth()),
+	m_screenHeight(TheOpenGLWindow::Instance()->getWindowHeight())
 {
 	glCall(glGenFramebuffers(1, &m_FBO));
 	glCall(glGenRenderbuffers(1, &m_RBO));
@@ -63,7 +63,9 @@ OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 	glCall(glBindRenderbuffer(GL_RENDERBUFFER, 0));
 
 	// Set framebuffer shader
-	m_screenShader = ShaderManager::retrieveShader("res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
+	//m_screenShader = OpenGLShaderManager::retrieveShader("res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
+	m_shaderID = "screenbufferShader";
+	TheShaderManager::Instance()->createShader(m_shaderID, "res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
 
 	// Create the VBO object the screen will be drawn to
 	glCall(glGenBuffers(1, &m_quadVBO));
@@ -82,16 +84,17 @@ OpenGLFramebuffer::~OpenGLFramebuffer()
 /// </summary>
 void OpenGLFramebuffer::draw()
 {
-	if (!m_screenShader) // No shader attached
-	{
-		return;
-	}
+	//if (!m_screenShader) // No shader attached
+	//{
+	//	return;
+	//}
 
-	m_screenShader->Bind();
+	Shader* temp = TheShaderManager::Instance()->getShaderAtID(m_shaderID);
+	temp->bindShader();
 
 	// Sets shader values, texture and vertex attributes
-	m_screenShader->setUniform1i("screenTexture", 0);
-	m_screenShader->setUniform1i("screenFilter", m_screenFilter);
+	temp->setUniform1i("screenTexture", 0);
+	temp->setUniform1i("screenFilter", m_screenFilter);
 
 	glCall(glActiveTexture(GL_TEXTURE0));
 	glCall(glBindTexture(GL_TEXTURE_2D, m_frameColourTexture));
@@ -105,7 +108,7 @@ void OpenGLFramebuffer::draw()
 
 	glCall(glDrawArrays(GL_TRIANGLES, 0, 6));
 
-	m_screenShader->Unbind();
+	temp->unbindShader();
 }
 
 /// <summary>
