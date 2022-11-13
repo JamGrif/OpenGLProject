@@ -1,10 +1,11 @@
 #pragma once
 
 // Forward Declarations
-class BaseEntity;
-class LightingEntity;
+class Model;
 class SceneCamera;
 class SceneLightManager;
+
+class SceneSky;
 
 // Class that contains all the objects of a loaded level. Loops through them every frame, updating and drawing them
 class Scene
@@ -23,7 +24,7 @@ public:
 	const std::string&				getSceneName();
 
 	size_t							getEntityNum();
-	std::shared_ptr<LightingEntity>	getEntityAtIndex(int index);
+	std::shared_ptr<Model>	getEntityAtIndex(int index);
 
 
 	const std::shared_ptr<SceneLightManager>&	getSceneLightManager();
@@ -44,8 +45,10 @@ private:
 	std::shared_ptr<SceneCamera>				m_sceneCamera;
 	std::shared_ptr<SceneLightManager>			m_sceneLightManager;
 
-	std::vector<std::shared_ptr<BaseEntity>>	m_sceneEntities;
+	//std::vector<std::shared_ptr<BaseEntity>>	m_sceneEntities;
+
+	SceneSky*									m_sceneSky;
 
 	// A separate vector to store just the LightingEntity objects as it makes it easier for the UI (will change to a better system eventually)
-	std::vector<std::shared_ptr<LightingEntity>> m_sceneLightingEntities;
+	std::vector<std::shared_ptr<Model>> m_sceneLightingEntities;
 };

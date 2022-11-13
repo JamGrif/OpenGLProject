@@ -2,6 +2,7 @@
 #include "Scene/SceneCamera.h"
 
 #include "Core/EngineStatics.h"
+#include "Core/InputHandler.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -35,21 +36,21 @@ void SceneCamera::Update()
 {
 	m_cameraMoved = false;
 
-	if (Input::getKeyPressed(Keyboard::W)) { processKeyboard(Camera_Movement::e_FORWARD); }
-	if (Input::getKeyPressed(Keyboard::S)) { processKeyboard(Camera_Movement::e_BACKWARD); }
-	if (Input::getKeyPressed(Keyboard::A)) { processKeyboard(Camera_Movement::e_LEFT); }
-	if (Input::getKeyPressed(Keyboard::D)) { processKeyboard(Camera_Movement::e_RIGHT); }
+	if (InputHandler::Instance()->getKeyPressed(Keyboard::W)) { processKeyboard(Camera_Movement::e_FORWARD); }
+	if (InputHandler::Instance()->getKeyPressed(Keyboard::S)) { processKeyboard(Camera_Movement::e_BACKWARD); }
+	if (InputHandler::Instance()->getKeyPressed(Keyboard::A)) { processKeyboard(Camera_Movement::e_LEFT); }
+	if (InputHandler::Instance()->getKeyPressed(Keyboard::D)) { processKeyboard(Camera_Movement::e_RIGHT); }
 
-    if (Input::getKeyPressed(Keyboard::R))
+    if (InputHandler::Instance()->getKeyPressed(Keyboard::R))
 		PRINT_TRACE("Position x - {0}, Position y - {1}, Position z - {2}", m_position.x, m_position.y, m_position.z);
     
 
 	// Only check for mouse movement if cursor is disabled
-	if (!Input::getMouseEnabled())
+	if (!InputHandler::Instance()->getMouseEnabled())
 	{
 		// Get mouse movement
 		double x, y;
-		Input::getMouseMoved(x, y);
+		InputHandler::Instance()->getMouseMoved(x, y);
 
 		// Only process mouse movement if mouse has been moved
 		if (x != 0 || y != 0)

@@ -4,33 +4,18 @@
 #include "Core/EngineStatics.h"
 
 SceneLightManager::SceneLightManager()
-	:m_maxDirectionalLights(1), m_currentDirectionalLights(0),
-	m_maxPointLights(4), m_currentPointLights(0),
-	m_maxSpotLights(1), m_currentSpotLights(0)
+	:m_maxDirectionalLights(1),
+	m_maxPointLights(4),
+	m_maxSpotLights(1)
 {
 }
 
 SceneLightManager::~SceneLightManager()
 {
-	for (PointLight* pl : m_scenePointLights)
-	{
-		delete pl;
-		pl = nullptr;
-	}
 	m_scenePointLights.clear();
 
-	for (DirectionalLight* dl : m_sceneDirectionalLights)
-	{
-		delete dl; 
-		dl = nullptr;
-	}
 	m_sceneDirectionalLights.clear();
 
-	for (SpotLight* sl : m_sceneSpotLights)
-	{
-		delete sl;
-		sl = nullptr;
-	}
 	m_sceneSpotLights.clear();
 
 	EngineStatics::setLightManager(nullptr);
@@ -46,32 +31,25 @@ SceneLightManager::~SceneLightManager()
 /// <param name="index">Index of the light within the directional light vector</param>
 void SceneLightManager::setDirectionalLight(float x, float y, float z, int index)
 {
-	if (m_sceneDirectionalLights.at(index) != nullptr)
+	if (m_sceneDirectionalLights.at(index))
 	{
-		m_sceneDirectionalLights.at(index)->Direction.x = x;
-		m_sceneDirectionalLights.at(index)->Direction.y = y;
-		m_sceneDirectionalLights.at(index)->Direction.z = z;
+		m_sceneDirectionalLights.at(index)->m_Direction.x = x;
+		m_sceneDirectionalLights.at(index)->m_Direction.y = y;
+		m_sceneDirectionalLights.at(index)->m_Direction.z = z;
 	}
 }
 
-/// <summary>
-/// Creates a new directional light if max limit has not been reached
-/// </summary>
-/// <param name="x"></param>
-/// <param name="y"></param>
-/// <param name="z"></param>
-void SceneLightManager::addDirectionalLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& direction)
+
+void SceneLightManager::addDirectionalLight(DirectionalLoaderParams* pParams)
 {
 	// Ensure new directional lights don't exceed the maximum amount allowed
-	if (m_currentDirectionalLights < m_maxDirectionalLights)
+	if (m_sceneDirectionalLights.size() < m_maxDirectionalLights)
 	{
-		DirectionalLight* dl = new DirectionalLight(ambient, diffuse, specular, direction);
-		m_sceneDirectionalLights.push_back(dl);
-		m_currentDirectionalLights++;
+		m_sceneDirectionalLights.emplace_back(std::make_shared<DirectionalLight>(pParams));
 	}
 	else
 	{
-		PRINT_WARN("LIGHTMANAGER-> Can't create new directional light with direction {0} , {1} , {2}", direction.x, direction.y, direction.z);
+		PRINT_WARN("LIGHTMANAGER-> Can't create new directional light with direction {0} , {1} , {2}", pParams->direction.x, pParams->direction.y, pParams->direction.z);
 	}
 }
 
@@ -80,12 +58,12 @@ void SceneLightManager::addDirectionalLight(const glm::vec3& ambient, const glm:
 /// </summary>
 /// <param name="index"></param>
 /// <returns></returns>
-DirectionalLight* SceneLightManager::getDirectionalLight(int index) const
+std::weak_ptr<DirectionalLight> SceneLightManager::getDirectionalLight(int index) const
 {
 	// No directional lights exists
-	if (m_currentDirectionalLights == 0)
+	if (m_sceneDirectionalLights.size() == 0)
 	{
-		return nullptr;
+		return {};
 	}
 
 	// Ensure index number is valid
@@ -94,17 +72,8 @@ DirectionalLight* SceneLightManager::getDirectionalLight(int index) const
 		return m_sceneDirectionalLights.at(index);
 	}
 	 
-	return nullptr;
+	return {};
 	
-}
-
-/// <summary>
-/// Returns the amount of directional lights active in scene
-/// </summary>
-/// <returns></returns>
-unsigned int SceneLightManager::getCurrentDirectionalLights() const
-{
-	return m_currentDirectionalLights;
 }
 
 /// <summary>
@@ -116,46 +85,37 @@ unsigned int SceneLightManager::getCurrentDirectionalLights() const
 /// <param name="index">Index of the light within the point light vector</param>
 void SceneLightManager::setPointLight(float x, float y, float z, int index)
 {
-	if (m_scenePointLights.at(index) != nullptr)
+	if (m_scenePointLights.at(index))
 	{
-		m_scenePointLights.at(index)->Position.x = x;
-		m_scenePointLights.at(index)->Position.y = y;
-		m_scenePointLights.at(index)->Position.z = z;
+		m_scenePointLights.at(index)->m_Position.x = x;
+		m_scenePointLights.at(index)->m_Position.y = y;
+		m_scenePointLights.at(index)->m_Position.z = z;
 	}
 }
 
-/// <summary>
-/// Creates a new point light if max limit has not been reached
-/// </summary>
-/// <param name="x"></param>
-/// <param name="y"></param>
-/// <param name="z"></param>
-void SceneLightManager::addPointLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& position)
+
+void SceneLightManager::addPointLight(PointLoaderParams* pParams)
 {
-	//Ensure new point lights don't exceed the maximum amount allowed
-	if (m_currentPointLights < m_maxPointLights)
+	// Ensure new point lights don't exceed the maximum amount allowed
+	if (m_scenePointLights.size() < m_maxPointLights)
 	{
-		PointLight* point = new PointLight(ambient, diffuse, specular, position);
-		m_scenePointLights.push_back(point);
-		m_currentPointLights++;
+		m_scenePointLights.emplace_back(std::make_shared<PointLight>(pParams));
 	}
 	else
 	{
-		PRINT_WARN("LIGHTMANAGER-> Can't create new point light at position {0} , {1} , {2}", position.x, position.y, position.z);
+		PRINT_WARN("LIGHTMANAGER-> Can't create new point light with direction {0} , {1} , {2}", pParams->position.x, pParams->position.y, pParams->position.z);
 	}
 }
 
 /// <summary>
 /// Gets a specified directional light from the vector
 /// </summary>
-/// <param name="index"></param>
-/// <returns></returns>
-PointLight* SceneLightManager::getPointLight(int index) const
+std::weak_ptr<PointLight> SceneLightManager::getPointLight(int index) const
 {
 	//No point lights exists
-	if (m_currentPointLights == 0)
+	if (m_scenePointLights.size() == 0)
 	{
-		return nullptr;
+		return {};
 	}
 
 	//Ensure index number is valid
@@ -164,68 +124,44 @@ PointLight* SceneLightManager::getPointLight(int index) const
 		return m_scenePointLights.at(index);
 	}
 
-	return nullptr;
-	
+	return {};
 }
 
 /// <summary>
-/// Returns the amount of point lights active in scene
-/// </summary>
-/// <returns></returns>
-unsigned int SceneLightManager::getCurrentPointLights() const
-{
-	return m_currentPointLights;
-}
-
-/// <summary>
-/// Sets the XYZ position of a specified spot light
-/// </summary>
-/// <param name="x"></param>
-/// <param name="y"></param>
-/// <param name="z"></param>
-/// <param name="index">Index of the light within the spot light vector</param>
+/// Set the position of a specified spot light
 void SceneLightManager::setSpotLight(float x, float y, float z, int index)
 {
-	if (m_sceneSpotLights.at(index) != nullptr)
+	if (m_sceneSpotLights.at(index))
 	{
-		m_sceneSpotLights.at(index)->Position.x = x;
-		m_sceneSpotLights.at(index)->Position.y = y;
-		m_sceneSpotLights.at(index)->Position.z = z;
+		m_sceneSpotLights.at(index)->m_Position.x = x;
+		m_sceneSpotLights.at(index)->m_Position.y = y;
+		m_sceneSpotLights.at(index)->m_Position.z = z;
 	}
 }
 
-/// <summary>
-/// Creates a new spot light if max limit has not been reached
-/// </summary>
-/// <param name="x"></param>
-/// <param name="y"></param>
-/// <param name="z"></param>
-void SceneLightManager::addSpotLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const glm::vec3& position)
+
+void SceneLightManager::addSpotLight(SpotLoaderParams* pParams)
 {
 	//Ensure new spot lights don't exceed the maximum amount allowed
-	if (m_currentSpotLights < m_maxSpotLights)
+	if (m_sceneSpotLights.size() < m_maxSpotLights)
 	{
-		SpotLight* spot = new SpotLight(ambient, diffuse, specular, position);
-		m_sceneSpotLights.push_back(spot);
-		m_currentSpotLights++;
+		m_sceneSpotLights.emplace_back(std::make_shared<SpotLight>(pParams));
 	}
 	else
 	{
-		PRINT_WARN("LIGHTMANAGER-> Can't create spot light at {0} , {1} , {2}", position.x, position.y, position.z);
+		PRINT_WARN("LIGHTMANAGER-> Can't create spot light at {0} , {1} , {2}", pParams->position.x, pParams->position.y, pParams->position.z);
 	}
 }
 
 /// <summary>
-/// Gets a specified spot light from the vector
+/// Gets a specified spot light
 /// </summary>
-/// <param name="index"></param>
-/// <returns></returns>
-SpotLight* SceneLightManager::getSpotLight(int index) const
+std::weak_ptr<SpotLight> SceneLightManager::getSpotLight(int index) const
 {
 	// No point lights exists
-	if (m_currentSpotLights == 0)
+	if (m_sceneSpotLights.size() == 0)
 	{
-		return nullptr;
+		return {};
 	}
 
 	// Ensure index number is valid
@@ -234,16 +170,7 @@ SpotLight* SceneLightManager::getSpotLight(int index) const
 		return m_sceneSpotLights.at(index);
 	}
 
-	return nullptr;
-}
-
-/// <summary>
-/// Returns the amount of spot lights active in scene
-/// </summary>
-/// <returns></returns>
-unsigned int SceneLightManager::getCurrentSpotLights() const
-{
-	return m_currentSpotLights;
+	return {};
 }
 
 
