@@ -7,29 +7,30 @@
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
 pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		0.0		3.0		0.0
 
-#objectType	    #PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh	#LightToCopy
-BasicEntity		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
+#Materials
+#Type	 #materialID	#DiffuseMapID	#SpecularMapID	#NormalMapID	#NormalMapNormalize #HeightMapID		#HeightMapHeight	#EmissionMap
+material wood			stairs_diff		stairs_spec		stairs_norm		0.0					null				0.0					null
 
 #spotLight objects...
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
 spotLight			0.0		0.0		0.0		0.8		0.8		0.8		1.0		1.0		1.0		0.0		0.0		0.0
 
 #Skybox objects...
-#ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#SkyboxTexture
-#SkyEntity		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			black
+#ObjectType		#SkyboxTexture
+SceneSky		black
 
 
 # modelLighting objects...
-#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap	
-LightingEntity	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			
-LightingEntity	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			
-LightingEntity	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			
-LightingEntity	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			
-LightingEntity	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			
-LightingEntity	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			
-LightingEntity	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			
-LightingEntity	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			
-LightingEntity	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null			
+#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#material	#Mesh		
+LightingEntity	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			wood		plane		
+LightingEntity	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			wood		plane		
+LightingEntity	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			wood		plane		
+LightingEntity	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			wood		plane		
+LightingEntity	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			wood		plane		
+LightingEntity	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			wood		plane		
+LightingEntity	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			wood		plane		
+LightingEntity	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			wood		plane		
+LightingEntity	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			wood		plane		
 
 
 

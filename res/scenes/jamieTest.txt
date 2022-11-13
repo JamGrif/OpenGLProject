@@ -8,23 +8,25 @@ directionalLight	0.2		0.2		0.2		0.4		0.4		0.4		0.3		0.3		0.3		-2.0	-3.0	-1.0
 pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		0.0		3.0		0.0
 
 #Skybox objects...
-#ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#SkyboxTexture
-SkyEntity		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			basic
+#ObjectType		#SkyboxTexture
+SceneSky		basic
 
-#objectType	    #PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh	#LightToCopy
-BasicEntity		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
+
+#Materials
+#Type	 #materialID		#DiffuseMapID			#SpecularMapID			#NormalMapID			#NormalMapNormalize		#HeightMapID			#HeightMapHeight	#EmissionMap
+material knife				knife_diff				knife_spec				knife_norm				0.0						null					0.0					null			
 
 # modelLighting objects...
-#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap	
-LightingEntity	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null			
-LightingEntity	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null			
-LightingEntity	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null			
-LightingEntity	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null			
-LightingEntity	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null			
-LightingEntity	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null			
-LightingEntity	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null			
-LightingEntity	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null			
-LightingEntity	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null			
+#ModelType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Material	#Mesh		
+LightingEntity	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			knife		plane		
+LightingEntity	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			knife		plane		
+LightingEntity	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			knife		plane		
+LightingEntity	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			knife		plane		
+LightingEntity	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			knife		plane		
+LightingEntity	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			knife		plane		
+LightingEntity	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			knife		plane		
+LightingEntity	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			knife		plane		
+LightingEntity	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			knife		plane		
 
 
 

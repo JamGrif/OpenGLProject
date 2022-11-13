@@ -15,236 +15,259 @@ pointLight			0.2		0.2		0.2		1.0		1.0		1.0		0.4		0.4		0.4		-20.0	2.0		20.0
 #ObjectType			#AmbR	#AmbG	#AmbB	#DiffR	#DiffG	#DiffB	#SpecR	#SpecG	#SpecB	#PosX	#PosY	#PosZ
 spotLight			0.0		0.0		0.0		0.8		0.8		0.8		1.0		1.0		1.0		0.0		0.0		0.0
 
-#Skybox objects...
-#ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#SkyboxTexture
-SkyEntity		0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			default
+#Materials
+#Type	 #materialID		#DiffuseMapID			#SpecularMapID			#NormalMapID			#NormalMapNormalize		#HeightMapID			#HeightMapHeight	#EmissionMap
+material grass				grass_diff				grass_spec				null					0.0						null					0.0					null
+material shed				shed_diff				shed_spec				shed_norm				0.0						null					0.0					null
+material cottage			cottage_diff			cottage_spec			cottage_norm			0.0						null					0.0					null
+material carpet				carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null		
+material crate				crate_diff				crate_spec				crate_norm				0.0						null					0.0					null		
+material housewall			woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
+material concrete			concreteSlab_diff		concreteSlab_spec		concreteSlab_norm		0.0						concreteSlab_height		0.01				null		
+material whitebrick			concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
+material metal2				metal2_diff				metal2_spec				metal2_norm				0.0						null					0.0					null		
+material dresser			dresser_diff			dresser_spec			dresser_norm			0.0						null					0.0					null		
+material stairs				stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null		
+material watchtower			watchTower_diff			watchTower_spec			watchTower_norm			0.0						null					0.0					null		
+material bed				bed_diff				bed_spec				bed_norm				0.0						null					0.0					null		
+material table				table_diff				table_spec				null					0.0						null					0.0					null		
+material knife				knife_diff				knife_spec				knife_norm				0.0						null					0.0					null		
+material leatherNorm		leather_diff			leather_spec			leather_norm			0.0						null					0.0					null					
+material leatherNoNorm		leather_diff			leather_spec			null					0.0						null					0.0					null					
+material concreteNorm		concreteExample_diff	concreteExample_spec	concreteExample_norm	0.0						null					0.0					null					
+material concreteNoNorm		concreteExample_diff	concreteExample_spec	null					0.0						null					0.0					null					
+material brickNorm			cartoonBricks_diff		cartoonBricks_spec		cartoonBricks_norm		0.0						null					0.0					null					
+material brickNoNorm		cartoonBricks_diff		cartoonBricks_spec		null					0.0						null					0.0					null						
+material metalExample		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null		
+material tileExample		tile_diff				tile_spec				tile_norm				0.0						null					0.0					null			
+material sandExample		sand_diff				sand_spec				sand_norm				0.0						null					0.0					null			
+material lavaExample		lava_diff				lava_spec				lava_norm				0.0						null					0.0					lava_emis		
+material hieroglyphsExample	hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null		
+material metalExample		metalHammer_diff		metalHammer_spec		metalHammer_norm		0.0						null					0.0					null		
+material skullExample		skullGround_diff		skullGround_spec		skullGround_norm		1.0						null					0.0					null		
+material rockExample		rock_diff				rock_spec				rock_norm				1.0						null					0.0					null			
+material concrete2Example	concrete2_diff			concrete2_spec			concrete2_norm			1.0						null					0.0					null		
+material sign1				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign1_emis
+material sign2				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign2_emis
+material sign3				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign3_emis
+material sign4				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign4_emis
+material sign5				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign5_emis
+material sign6				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign6_emis
+material sign7				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign7_emis
+material sign8				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign8_emis
+material sign9				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign9_emis
+material sign10				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign10_emis
+material sign11				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign11_emis
+material sign12				sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign12_emis
+
+
+#ObjectType		#SkyboxTexture
+SceneSky		default
 
 # modelLighting objects...
-#ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh		#DiffuseMap				#SpecularMap			#NormalMap				#NormalMapNormalize		#HeightMap				#HeightMapHeight	#EmissionMap
+#ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Material	#Mesh		
 #Grass
-LightingEntity	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
+LightingEntity	0.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	6.0		-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-6.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	0.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	6.0		-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-6.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	0.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	6.0		-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-6.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
 
-LightingEntity	-18.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-12.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-24.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-18.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-12.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-24.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-18.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-12.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-24.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
+LightingEntity	-18.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-12.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-24.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-18.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-12.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-24.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-18.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-12.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-24.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
 
-LightingEntity	18.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	12.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	24.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	18.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	12.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	24.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	18.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	12.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	24.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
+LightingEntity	18.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	12.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	24.0	-1.5	0.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	18.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	12.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	24.0	-1.5	6.0		0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	18.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	12.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	24.0	-1.5	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
 
-LightingEntity	0.0		-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	6.0		-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-6.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	0.0		-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	6.0		-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-6.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	0.0		-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	6.0		-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-6.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
+LightingEntity	0.0		-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	6.0		-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-6.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	0.0		-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	6.0		-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-6.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	0.0		-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	6.0		-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-6.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
 
-LightingEntity	-18.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-12.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-24.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-18.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-12.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-24.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-18.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-12.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	-24.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
+LightingEntity	-18.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-12.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-24.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-18.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-12.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-24.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-18.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-12.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	-24.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
 
-LightingEntity	18.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	12.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	24.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	18.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	12.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	24.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	18.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	12.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
-LightingEntity	24.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		grass_diff				grass_spec				null					0.0						null					0.0					null		
+LightingEntity	18.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	12.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	24.0	-1.5	18.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	18.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	12.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	24.0	-1.5	24.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	18.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	12.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
+LightingEntity	24.0	-1.5	12.0	0.0		0.0		0.0		1.0			1.0			1.0			grass		plane		
 
 #Shed
-LightingEntity	-38.0	1.0		0.0		0.0		210.0	0.0		1.0			1.0			1.0			shed		shed_diff				shed_spec				shed_norm				0.0						null					0.0					null		
-LightingEntity	38.0	1.0		10.0	0.0		-210.0	0.0		1.0			1.0			1.0			shed		shed_diff				shed_spec				shed_norm				0.0						null					0.0					null		
-LightingEntity	13.0	14.0	-67.0	0.0		-210.0	0.0		1.0			1.0			1.0			shed		shed_diff				shed_spec				shed_norm				0.0						null					0.0					null		
+LightingEntity	-38.0	1.0		0.0		0.0		210.0	0.0		1.0			1.0			1.0			shed		shed		
+LightingEntity	38.0	1.0		10.0	0.0		-210.0	0.0		1.0			1.0			1.0			shed		shed		
+LightingEntity	13.0	14.0	-67.0	0.0		-210.0	0.0		1.0			1.0			1.0			shed		shed		
 
-##Cottage
-LightingEntity	-23.0	0.0		-20.0	0.0		130.0	0.0		1.0			1.0			1.0			cottage		cottage_diff			cottage_spec			cottage_norm			0.0						null					0.0					null		
-LightingEntity	20.0	1.0		37.0	0.0		45.0	0.0		1.0			1.0			1.0			cottage		cottage_diff			cottage_spec			cottage_norm			0.0						null					0.0					null		
+#Cottage
+LightingEntity	-23.0	0.0		-20.0	0.0		130.0	0.0		1.0			1.0			1.0			cottage		cottage		
+LightingEntity	20.0	1.0		37.0	0.0		45.0	0.0		1.0			1.0			1.0			cottage		cottage		
 
-##Carpet
-LightingEntity	0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null		
-LightingEntity	6.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null		
-LightingEntity	-6.0	0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null		
-LightingEntity	0.0		0.0		6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null		
-LightingEntity	6.0		0.0		6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null		
-LightingEntity	-6.0	0.0		6.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null		
-LightingEntity	0.0		0.0		-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null		
-LightingEntity	6.0		0.0		-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null		
-LightingEntity	-6.0	0.0		-6.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		carpet_diff				carpet_spec				carpet_norm				0.0						carpet_height			0.05				null		
+#Carpet
+LightingEntity	0.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			carpet		plane		
+LightingEntity	6.0		0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			carpet		plane		
+LightingEntity	-6.0	0.0		0.0		0.0		0.0		0.0		1.0			1.0			1.0			carpet		plane		
+LightingEntity	0.0		0.0		6.0		0.0		0.0		0.0		1.0			1.0			1.0			carpet		plane		
+LightingEntity	6.0		0.0		6.0		0.0		0.0		0.0		1.0			1.0			1.0			carpet		plane		
+LightingEntity	-6.0	0.0		6.0		0.0		0.0		0.0		1.0			1.0			1.0			carpet		plane		
+LightingEntity	0.0		0.0		-6.0	0.0		0.0		0.0		1.0			1.0			1.0			carpet		plane		
+LightingEntity	6.0		0.0		-6.0	0.0		0.0		0.0		1.0			1.0			1.0			carpet		plane		
+LightingEntity	-6.0	0.0		-6.0	0.0		0.0		0.0		1.0			1.0			1.0			carpet		plane		
 
-##Crates
-LightingEntity	7.75	0.0		7.75	0.0		0.0		0.0		1.0			1.0			1.0			crate		crate_diff				crate_spec				crate_norm				0.0						null					0.0					null		
-LightingEntity	5.75	0.0		7.75	0.0		0.0		0.0		1.0			1.0			1.0			crate		crate_diff				crate_spec				crate_norm				0.0						null					0.0					null		
-LightingEntity	7.25	0.0		5.1		0.0		30.0	0.0		1.0			1.0			1.0			crate		crate_diff				crate_spec				crate_norm				0.0						null					0.0					null		
-LightingEntity	7.5		2.0		7.5		0.0		60.0	0.0		1.0			1.0			1.0			crate		crate_diff				crate_spec				crate_norm				0.0						null					0.0					null		
+#Crates
+LightingEntity	7.75	0.0		7.75	0.0		0.0		0.0		1.0			1.0			1.0			crate		crate		
+LightingEntity	5.75	0.0		7.75	0.0		0.0		0.0		1.0			1.0			1.0			crate		crate		
+LightingEntity	7.25	0.0		5.1		0.0		30.0	0.0		1.0			1.0			1.0			crate		crate		
+LightingEntity	7.5		2.0		7.5		0.0		60.0	0.0		1.0			1.0			1.0			crate		crate		
 
-##House wall
-LightingEntity	-9.0	2.8		-6.0	90.0	0.0		-90.0	1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
-LightingEntity	-9.0	2.8		0.0		90.0	0.0		-90.0	1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
-LightingEntity	-9.0	2.8		6.0		90.0	0.0		-90.0	1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
-LightingEntity	9.0		2.8		-6.0	90.0	0.0		90.0	1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
-LightingEntity	9.0		2.8		0.0		90.0	0.0		90.0	1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
-LightingEntity	9.0		2.8		6.0		90.0	0.0		90.0	1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
-LightingEntity	-6.0	2.8		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
-LightingEntity	0.0		2.8		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
-LightingEntity	6.0		2.8		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
-LightingEntity	-6.0	2.8		9.0		-90.0	180.0	0.0		1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
-LightingEntity	6.0		2.8		9.0		-90.0	180.0	0.0		1.0			1.0			1.0			wall		woodWall_diff			woodWall_spec			woodWall_norm			0.0						woodWall_height			0.04				null		
+#House wall
+LightingEntity	-9.0	2.8		-6.0	90.0	0.0		-90.0	1.0			1.0			1.0			housewall	wall		
+LightingEntity	-9.0	2.8		0.0		90.0	0.0		-90.0	1.0			1.0			1.0			housewall	wall		
+LightingEntity	-9.0	2.8		6.0		90.0	0.0		-90.0	1.0			1.0			1.0			housewall	wall		
+LightingEntity	9.0		2.8		-6.0	90.0	0.0		90.0	1.0			1.0			1.0			housewall	wall		
+LightingEntity	9.0		2.8		0.0		90.0	0.0		90.0	1.0			1.0			1.0			housewall	wall		
+LightingEntity	9.0		2.8		6.0		90.0	0.0		90.0	1.0			1.0			1.0			housewall	wall		
+LightingEntity	-6.0	2.8		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			housewall	wall		
+LightingEntity	0.0		2.8		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			housewall	wall		
+LightingEntity	6.0		2.8		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			housewall	wall		
+LightingEntity	-6.0	2.8		9.0		-90.0	180.0	0.0		1.0			1.0			1.0			housewall	wall		
+LightingEntity	6.0		2.8		9.0		-90.0	180.0	0.0		1.0			1.0			1.0			housewall	wall		
 
 #Concrete below grass
-LightingEntity	0.0		-0.8	0.0		0.0		0.0		0.0		1.0			1.0			1.0			slab		concreteSlab_diff		concreteSlab_spec		concreteSlab_norm		0.0						concreteSlab_height		0.01				null		
-LightingEntity	6.0		-0.8	0.0		0.0		0.0		0.0		1.0			1.0			1.0			slab		concreteSlab_diff		concreteSlab_spec		concreteSlab_norm		0.0						concreteSlab_height		0.01				null		
-LightingEntity	-6.0	-0.8	0.0		0.0		0.0		0.0		1.0			1.0			1.0			slab		concreteSlab_diff		concreteSlab_spec		concreteSlab_norm		0.0						concreteSlab_height		0.01				null		
-LightingEntity	0.0		-0.8	6.0		0.0		0.0		0.0		1.0			1.0			1.0			slab		concreteSlab_diff		concreteSlab_spec		concreteSlab_norm		0.0						concreteSlab_height		0.01				null		
-LightingEntity	6.0		-0.8	6.0		0.0		0.0		0.0		1.0			1.0			1.0			slab		concreteSlab_diff		concreteSlab_spec		concreteSlab_norm		0.0						concreteSlab_height		0.01				null		
-LightingEntity	-6.0	-0.8	6.0		0.0		0.0		0.0		1.0			1.0			1.0			slab		concreteSlab_diff		concreteSlab_spec		concreteSlab_norm		0.0						concreteSlab_height		0.01				null		
-LightingEntity	0.0		-0.8	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			slab		concreteSlab_diff		concreteSlab_spec		concreteSlab_norm		0.0						concreteSlab_height		0.01				null		
-LightingEntity	6.0		-0.8	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			slab		concreteSlab_diff		concreteSlab_spec		concreteSlab_norm		0.0						concreteSlab_height		0.01				null		
-LightingEntity	-6.0	-0.8	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			slab		concreteSlab_diff		concreteSlab_spec		concreteSlab_norm		0.0						concreteSlab_height		0.01				null		
+LightingEntity	0.0		-0.8	0.0		0.0		0.0		0.0		1.0			1.0			1.0			concrete	slab		
+LightingEntity	6.0		-0.8	0.0		0.0		0.0		0.0		1.0			1.0			1.0			concrete	slab		
+LightingEntity	-6.0	-0.8	0.0		0.0		0.0		0.0		1.0			1.0			1.0			concrete	slab		
+LightingEntity	0.0		-0.8	6.0		0.0		0.0		0.0		1.0			1.0			1.0			concrete	slab		
+LightingEntity	6.0		-0.8	6.0		0.0		0.0		0.0		1.0			1.0			1.0			concrete	slab		
+LightingEntity	-6.0	-0.8	6.0		0.0		0.0		0.0		1.0			1.0			1.0			concrete	slab		
+LightingEntity	0.0		-0.8	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			concrete	slab		
+LightingEntity	6.0		-0.8	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			concrete	slab		
+LightingEntity	-6.0	-0.8	-6.0	0.0		0.0		0.0		1.0			1.0			1.0			concrete	slab		
 
 #Peremeter Wall
-LightingEntity	-12.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	-18.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	-24.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
+LightingEntity	-12.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			whitebrick plane		
+LightingEntity	-18.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			whitebrick plane		
+LightingEntity	-24.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			whitebrick plane		
 
-LightingEntity	-27.0	1.5		-6.0	90.0	0.0		-90.0		1.0			1.0			1.0		plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	-27.0	1.5		0.0		90.0	0.0		-90.0		1.0			1.0			1.0		plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	-27.0	1.5		6.0		90.0	0.0		-90.0		1.0			1.0			1.0		plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	-27.0	1.5		12.0	90.0	0.0		-90.0		1.0			1.0			1.0		plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	-27.0	1.5		18.0	90.0	0.0		-90.0		1.0			1.0			1.0		plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	-27.0	1.5		24.0	90.0	0.0		-90.0		1.0			1.0			1.0		plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
+LightingEntity	-27.0	1.5		-6.0	90.0	0.0		-90.0		1.0			1.0			1.0		whitebrick	plane		
+LightingEntity	-27.0	1.5		0.0		90.0	0.0		-90.0		1.0			1.0			1.0		whitebrick	plane		
+LightingEntity	-27.0	1.5		6.0		90.0	0.0		-90.0		1.0			1.0			1.0		whitebrick	plane		
+LightingEntity	-27.0	1.5		12.0	90.0	0.0		-90.0		1.0			1.0			1.0		whitebrick	plane		
+LightingEntity	-27.0	1.5		18.0	90.0	0.0		-90.0		1.0			1.0			1.0		whitebrick	plane		
+LightingEntity	-27.0	1.5		24.0	90.0	0.0		-90.0		1.0			1.0			1.0		whitebrick	plane		
 
-LightingEntity	-24.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	-18.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	-12.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	-6.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	0.0		1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	6.0		1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	12.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	18.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	24.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
+LightingEntity	-24.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
+LightingEntity	-18.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
+LightingEntity	-12.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
+LightingEntity	-6.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
+LightingEntity	0.0		1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
+LightingEntity	6.0		1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
+LightingEntity	12.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
+LightingEntity	18.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
+LightingEntity	24.0	1.5		27.0	-90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
 
-LightingEntity	27.0	1.5		24.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	27.0	1.5		18.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	27.0	1.5		12.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	27.0	1.5		6.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	27.0	1.5		0.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	27.0	1.5		-6.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
+LightingEntity	27.0	1.5		24.0	90.0	0.0		90.0	1.0			1.0			1.0			whitebrick	 plane		
+LightingEntity	27.0	1.5		18.0	90.0	0.0		90.0	1.0			1.0			1.0			whitebrick	 plane		
+LightingEntity	27.0	1.5		12.0	90.0	0.0		90.0	1.0			1.0			1.0			whitebrick	 plane		
+LightingEntity	27.0	1.5		6.0		90.0	0.0		90.0	1.0			1.0			1.0			whitebrick	 plane		
+LightingEntity	27.0	1.5		0.0		90.0	0.0		90.0	1.0			1.0			1.0			whitebrick	 plane		
+LightingEntity	27.0	1.5		-6.0	90.0	0.0		90.0	1.0			1.0			1.0			whitebrick	 plane		
 
-LightingEntity	12.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	18.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
-LightingEntity	24.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			plane		concreteBrick_diff		concreteBrick_spec		concreteBrick_norm		0.0						concreteBrick_height	0.01				null		
+LightingEntity	12.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
+LightingEntity	18.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
+LightingEntity	24.0	1.5		-9.0	90.0	0.0		0.0		1.0			1.0			1.0			whitebrick	plane		
 
 #Metal Roof
-LightingEntity	0.0		5.8		0.0		0.0		0.0		180.0	1.0			1.0			1.0			wall		metal2_diff				metal2_spec				metal2_norm				0.0						null					0.0					null		
-LightingEntity	6.0		5.8		0.0		0.0		0.0		180.0	1.0			1.0			1.0			wall		metal2_diff				metal2_spec				metal2_norm				0.0						null					0.0					null		
-LightingEntity	-6.0	5.8		0.0		0.0		0.0		180.0	1.0			1.0			1.0			wall		metal2_diff				metal2_spec				metal2_norm				0.0						null					0.0					null		
-LightingEntity	0.0		5.8		6.0		0.0		0.0		180.0	1.0			1.0			1.0			wall		metal2_diff				metal2_spec				metal2_norm				0.0						null					0.0					null		
-LightingEntity	6.0		5.8		6.0		0.0		0.0		180.0	1.0			1.0			1.0			wall		metal2_diff				metal2_spec				metal2_norm				0.0						null					0.0					null		
-LightingEntity	-6.0	5.8		6.0		0.0		0.0		180.0	1.0			1.0			1.0			wall		metal2_diff				metal2_spec				metal2_norm				0.0						null					0.0					null		
-LightingEntity	0.0		5.8		-6.0	0.0		0.0		180.0	1.0			1.0			1.0			wall		metal2_diff				metal2_spec				metal2_norm				0.0						null					0.0					null		
-LightingEntity	6.0		5.8		-6.0	0.0		0.0		180.0	1.0			1.0			1.0			wall		metal2_diff				metal2_spec				metal2_norm				0.0						null					0.0					null		
-LightingEntity	-6.0	5.8		-6.0	0.0		0.0		180.0	1.0			1.0			1.0			wall		metal2_diff				metal2_spec				metal2_norm				0.0						null					0.0					null		
+LightingEntity	0.0		5.8		0.0		0.0		0.0		180.0	1.0			1.0			1.0			metal2	wall		
+LightingEntity	6.0		5.8		0.0		0.0		0.0		180.0	1.0			1.0			1.0			metal2	wall		
+LightingEntity	-6.0	5.8		0.0		0.0		0.0		180.0	1.0			1.0			1.0			metal2	wall		
+LightingEntity	0.0		5.8		6.0		0.0		0.0		180.0	1.0			1.0			1.0			metal2	wall		
+LightingEntity	6.0		5.8		6.0		0.0		0.0		180.0	1.0			1.0			1.0			metal2	wall		
+LightingEntity	-6.0	5.8		6.0		0.0		0.0		180.0	1.0			1.0			1.0			metal2	wall		
+LightingEntity	0.0		5.8		-6.0	0.0		0.0		180.0	1.0			1.0			1.0			metal2	wall		
+LightingEntity	6.0		5.8		-6.0	0.0		0.0		180.0	1.0			1.0			1.0			metal2	wall		
+LightingEntity	-6.0	5.8		-6.0	0.0		0.0		180.0	1.0			1.0			1.0			metal2	wall		
 
 #Dresser
-LightingEntity	0.0		0.0		-7.75	0.0		0.0		0.0		1.0			1.0			1.0			dresser		dresser_diff			dresser_spec			dresser_norm			0.0						null					0.0					null		
+LightingEntity	0.0		0.0		-7.75	0.0		0.0		0.0		1.0			1.0			1.0			dresser	dresser		
 
 #Front Stair
-LightingEntity	0.0		-2.25	10.0	0.0		90.0	0.0		1.0			1.0			1.0			stairs		stairs_diff				stairs_spec				stairs_norm				0.0						null					0.0					null		
+LightingEntity	0.0		-2.25	10.0	0.0		90.0	0.0		1.0			1.0			1.0			stairs stairs		
 
 #WatchTower
-LightingEntity	-32.0	-1.0	32.0	0.0		90.0	0.0		2.5			2.5			2.5			watchTower	watchTower_diff			watchTower_spec			watchTower_norm			0.0						null					0.0					null		
+LightingEntity	-32.0	-1.0	32.0	0.0		90.0	0.0		2.5			2.5			2.5			watchtower	watchTower	
 
 #Bed
-LightingEntity	-7.0	-0.2	6.0		0.0		180.0	0.0		1.0			1.0			1.0			bed			bed_diff				bed_spec				bed_norm				0.0						null					0.0					null		
+LightingEntity	-7.0	-0.2	6.0		0.0		180.0	0.0		1.0			1.0			1.0			bed	bed			
 
 #Table
-LightingEntity	-7.5	-1.0	0.0		0.0		90.0	0.0		1.0			1.0			1.0			table		table_diff				table_spec				null					0.0						null					0.0					null		
+LightingEntity	-7.5	-1.0	0.0		0.0		90.0	0.0		1.0			1.0			1.0			table	table		
 
 #Knife
-LightingEntity	-7.5	1.9		0.0		0.0		50.0	0.0		1.5			1.5			1.5			knife		knife_diff				knife_spec				knife_norm				0.0						null					0.0					null		
+LightingEntity	-7.5	1.9		0.0		0.0		50.0	0.0		1.5			1.5			1.5			knife	knife		
 
 #Normal vs no normal showcase
-LightingEntity	25.0	1.0		6.0		90.0	0.0		90.0	1.0			1.0			1.0			plane		leather_diff			leather_spec			leather_norm			0.0						null					0.0					null					
-LightingEntity	25.0	1.0		12.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		leather_diff			leather_spec			null					0.0						null					0.0					null					
-LightingEntity	25.0	1.0		18.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteExample_diff	concreteExample_spec	concreteExample_norm	0.0						null					0.0					null					
-LightingEntity	25.0	1.0		24.0	90.0	0.0		90.0	1.0			1.0			1.0			plane		concreteExample_diff	concreteExample_spec	null					0.0						null					0.0					null					
-LightingEntity	22.0	1.0		26.0	90.0	0.0		180.0	1.0			1.0			1.0			plane		cartoonBricks_diff		cartoonBricks_spec		cartoonBricks_norm		0.0						null					0.0					null					
-LightingEntity	16.0	1.0		26.0	90.0	0.0		180.0	1.0			1.0			1.0			plane		cartoonBricks_diff		cartoonBricks_spec		null					0.0						null					0.0					null					
+LightingEntity	25.0	1.0		6.0		90.0	0.0		90.0	1.0			1.0			1.0			leatherNorm		plane							
+LightingEntity	25.0	1.0		12.0	90.0	0.0		90.0	1.0			1.0			1.0			leatherNoNorm	plane							
+LightingEntity	25.0	1.0		18.0	90.0	0.0		90.0	1.0			1.0			1.0			concreteNorm	plane							
+LightingEntity	25.0	1.0		24.0	90.0	0.0		90.0	1.0			1.0			1.0			concreteNoNorm	plane							
+LightingEntity	22.0	1.0		26.0	90.0	0.0		180.0	1.0			1.0			1.0			brickNorm		plane							
+LightingEntity	16.0	1.0		26.0	90.0	0.0		180.0	1.0			1.0			1.0			brickNoNorm		plane							
 
 #Material showcase
-LightingEntity	-24.0	-1.25	-4.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		metal_diff				metal_spec				metal_norm				0.0						null					0.0					null		
-LightingEntity	-18.0	-1.25	-4.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		tile_diff				tile_spec				tile_norm				0.0						null					0.0					null		
-LightingEntity	-12.0	-1.25	-4.0	0.0		0.0		0.0		1.0			1.0			1.0			plane		sand_diff				sand_spec				sand_norm				0.0						null					0.0					null		
-LightingEntity	-24.0	-1.25	2.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		lava_diff				lava_spec				lava_norm				0.0						null					0.0					lava_emis	
-LightingEntity	-18.0	-1.25	2.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		hieroglyphs_diff		hieroglyphs_spec		hieroglyphs_norm		0.0						null					0.0					null		
-LightingEntity	-18.0	-1.25	8.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		metalHammer_diff		metalHammer_spec		metalHammer_norm		0.0						null					0.0					null		
-LightingEntity	-24.0	-1.25	8.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		skullGround_diff		skullGround_spec		skullGround_norm		1.0						null					0.0					null		
-LightingEntity	-12.0	-1.25	2.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		rock_diff				rock_spec				rock_norm				1.0						null					0.0					null		
-LightingEntity	-12.0	-1.25	8.0		0.0		0.0		0.0		1.0			1.0			1.0			plane		concrete2_diff			concrete2_spec			concrete2_norm			1.0						null					0.0					null		
+LightingEntity	-24.0	-1.25	-4.0	0.0		0.0		0.0		1.0			1.0			1.0			metalExample		plane		
+LightingEntity	-18.0	-1.25	-4.0	0.0		0.0		0.0		1.0			1.0			1.0			tileExample			plane		
+LightingEntity	-12.0	-1.25	-4.0	0.0		0.0		0.0		1.0			1.0			1.0			sandExample			plane		
+LightingEntity	-24.0	-1.25	2.0		0.0		0.0		0.0		1.0			1.0			1.0			lavaExample			plane		
+LightingEntity	-18.0	-1.25	2.0		0.0		0.0		0.0		1.0			1.0			1.0			hieroglyphsExample	plane		
+LightingEntity	-18.0	-1.25	8.0		0.0		0.0		0.0		1.0			1.0			1.0			metalExample		plane		
+LightingEntity	-24.0	-1.25	8.0		0.0		0.0		0.0		1.0			1.0			1.0			skullExample		plane		
+LightingEntity	-12.0	-1.25	2.0		0.0		0.0		0.0		1.0			1.0			1.0			rockExample			plane		
+LightingEntity	-12.0	-1.25	8.0		0.0		0.0		0.0		1.0			1.0			1.0			concrete2Example	plane		
 
 #Signs
-LightingEntity	2.0		-3.0	25.75	0.0		180.0	0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign1_emis		
-LightingEntity	-3.0	-1.3	-4.0	0.0		30.0	0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign2_emis		
-LightingEntity	7.0		-1.3	-4.5	0.0		-90.0	0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign3_emis		
-LightingEntity	3.0		-1.3	-4.0	0.0		-30.0	0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign4_emis		
-LightingEntity	11.0	-3.0	-4.75	0.0		30.0	0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign5_emis		
-LightingEntity	25.0	-3.0	-4.75	0.0		-30.0	0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign6_emis		
-LightingEntity	25.0	-3.0	15.0	0.0		-90.0	0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign7_emis		
-LightingEntity	-15.0	-3.0	-8.25	0.0		0.0		0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign8_emis		
-LightingEntity	-26.0	-3.0	17.75	0.0		90.0	0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign9_emis		
-LightingEntity	-23.0	-3.0	-8.25	0.0		0.0		0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign10_emis		
-LightingEntity	0.0		-1.3	-4.0	0.0		0.0		0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign11_emis		
-LightingEntity	0.0		1.0		-8.0	0.0		0.0		0.0		0.75		0.75		0.75		signpost	sign_diff				sign_spec				sign_norm				0.0						null					0.0					signs/sign12_emis		
-
-#modelBasic objects...
-#objectType	    #PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Mesh	#LightToCopy
-BasicEntity		2.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	0
-BasicEntity		4.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	1
-BasicEntity		6.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	2
-BasicEntity		8.0		0.0		0.0		0.0		0.0		0.0		0.3			0.3			0.3			cube	3
-
-#modelTerrain objects...
-#ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#Elevation	#TerrainTexture		#TerrainHeightMap
-TerrainEntity	0.0		22.0	0.0		180.0	0.0		0.0		150.0		10.0		150.0		3.0			grass_diff		terrain_height
-TerrainEntity	125.0	20.0	-30.0	180.0	180.0	0.0		50.0		10.0		200.0		-4.5		terrain_diff		terrain_height2
-TerrainEntity	30.0	20.0	-125.0	180.0	90.0	0.0		50.0		10.0		200.0		-4.5		terrain_diff		terrain_height3
-
-#modelEnvironment objects...
-#ObjectType			#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#mesh	#reflection		#refraction
-EnvironmentEntity	14.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	1.0				0.0
-EnvironmentEntity	22.0	0.5		-7.0	0.0		0.0		0.0		1.0			1.0			1.0			heart	0.0				1.0
-
-#modelGeometry objects...
-#ObjectType		#PosX	#PosY	#PosZ	#RotX	#RotY	#RotZ	#ScaleX		#ScaleY		#ScaleZ		#mesh
-GeometryEntity	-1.0	-1.5	23.0	0.0		0.0		0.0		1.5			1.5			1.5			barrel
+LightingEntity	2.0		-3.0	25.75	0.0		180.0	0.0		0.75		0.75		0.75		sign1				signpost	
+LightingEntity	-3.0	-1.3	-4.0	0.0		30.0	0.0		0.75		0.75		0.75		sign2				signpost	
+LightingEntity	7.0		-1.3	-4.5	0.0		-90.0	0.0		0.75		0.75		0.75		sign3				signpost	
+LightingEntity	3.0		-1.3	-4.0	0.0		-30.0	0.0		0.75		0.75		0.75		sign4				signpost	
+LightingEntity	11.0	-3.0	-4.75	0.0		30.0	0.0		0.75		0.75		0.75		sign5				signpost	
+LightingEntity	25.0	-3.0	-4.75	0.0		-30.0	0.0		0.75		0.75		0.75		sign6				signpost	
+LightingEntity	25.0	-3.0	15.0	0.0		-90.0	0.0		0.75		0.75		0.75		sign7				signpost	
+LightingEntity	-15.0	-3.0	-8.25	0.0		0.0		0.0		0.75		0.75		0.75		sign8				signpost	
+LightingEntity	-26.0	-3.0	17.75	0.0		90.0	0.0		0.75		0.75		0.75		sign9				signpost	
+LightingEntity	-23.0	-3.0	-8.25	0.0		0.0		0.0		0.75		0.75		0.75		sign10				signpost	
+LightingEntity	0.0		-1.3	-4.0	0.0		0.0		0.0		0.75		0.75		0.75		sign11				signpost	
+LightingEntity	0.0		1.0		-8.0	0.0		0.0		0.0		0.75		0.75		0.75		sign12				signpost	
