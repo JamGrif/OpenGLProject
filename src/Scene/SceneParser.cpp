@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Scene/SceneParser.h"
 
+#include "tinyXML/tinyxml.h"	// Read the level data
+
 #include "Rendering/Model.h"
 #include "Scene/SceneSky.h"
 
@@ -24,6 +26,15 @@ SceneParser::SceneParser(const std::string& filename, std::vector<std::shared_pt
 		m_status = false;
 		return;
 	}
+
+	// Create the TinyXML document and load the map XML
+	TiXmlDocument levelDocument;
+
+	if (!levelDocument.LoadFile("test"))
+	{
+		std::cout << levelDocument.ErrorDesc() << std::endl;
+	}
+
 
 	/*
 		1. Read the text file, determining all the objectTypes present in the scene and fill out temp objects
