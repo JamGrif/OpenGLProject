@@ -28,8 +28,8 @@ struct selectedEntityCache
 	{
 		//PRINT_TRACE("created cached data");
 
-		entityType = entityPtr->getEntityType();
-		editorName = entityPtr->getEditorName();
+		//entityType = entityPtr->getEntityType();
+		//editorName = entityPtr->getEditorName();
 
 		refreshTransformCachedData();
 		refreshMeshCachedData();
@@ -65,10 +65,10 @@ struct selectedEntityCache
 	inline void checkCachedDataForUpdate()
 	{
 		// If the transform part of the selected entity has been changed then refresh the entity transform values in the editor
-		if (entityPtr->getTransformUpdated())
-		{
-			refreshTransformCachedData();
-		}
+		//if (entityPtr->getTransformUpdated())
+		//{
+		//	refreshTransformCachedData();
+		//}
 
 		// check and refresh mesh data
 
@@ -191,10 +191,10 @@ void UI::update()
 	sceneOptionsPanel();
 	controlsPanel();
 	performanceMetricsPanel();
-	sceneEntitiesPanel();
+	//sceneEntitiesPanel();
 
-	if (m_isEntitySelected)
-		entityPanel();
+	//if (m_isEntitySelected)
+	//	entityPanel();
 	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -370,142 +370,142 @@ void UI::performanceMetricsPanel()
 /// <summary>
 /// Renders the Scene Entities ImGui window
 /// </summary>
-void UI::sceneEntitiesPanel()
-{
-	ImGui::Begin("Scene Entities:", NULL, commonFlags);
-	for (int i = 0; i < m_sceneHandle->getEntityNum(); i++)
-	{
-		//std::string buttonName = m_sceneHandle->getEntityAtIndex(i)->getEntityType() + std::to_string(i);
-		std::string buttonName = m_sceneHandle->getEntityAtIndex(i)->getEditorName();
-		if (ImGui::Button(buttonName.c_str()))
-		{
-			if (i != m_selectedEntityIndex)
-			{
-				// First, clear any information on the currently selected entity
-				clearSelectedEntity();
-
-				// Now cache the information on the selected entity
-				m_selectedEntityIndex = i;
-				m_isEntitySelected = true;
-				m_selectedEntity = std::make_unique<selectedEntityCache>(m_sceneHandle->getEntityAtIndex(i));
-			}
-		}
-	}
-	
-	ImGui::End();
-}
+//void UI::sceneEntitiesPanel()
+//{
+//	ImGui::Begin("Scene Entities:", NULL, commonFlags);
+//	for (int i = 0; i < m_sceneHandle->getEntityNum(); i++)
+//	{
+//		//std::string buttonName = m_sceneHandle->getEntityAtIndex(i)->getEntityType() + std::to_string(i);
+//		std::string buttonName = m_sceneHandle->getEntityAtIndex(i)->getEditorName();
+//		if (ImGui::Button(buttonName.c_str()))
+//		{
+//			if (i != m_selectedEntityIndex)
+//			{
+//				// First, clear any information on the currently selected entity
+//				clearSelectedEntity();
+//
+//				// Now cache the information on the selected entity
+//				m_selectedEntityIndex = i;
+//				m_isEntitySelected = true;
+//				m_selectedEntity = std::make_unique<selectedEntityCache>(m_sceneHandle->getEntityAtIndex(i));
+//			}
+//		}
+//	}
+//	
+//	ImGui::End();
+//}
 
 /// <summary>
 /// Renders the Entity ImGui window
 /// </summary>
-void UI::entityPanel()
-{
-	// Checks each component of the selected entity to check if any of the cached data needs to be updated
-	m_selectedEntity->checkCachedDataForUpdate();
-
-	ImGui::Begin("Entity:", NULL, commonFlags);
-
-	ImGui::Text("Entity Name:");
-	ImGui::SameLine(95);
-	ImGui::Text(m_selectedEntity->editorName.c_str());
-
-	ImGui::Text("Entity Type:");
-	ImGui::SameLine(95);
-	ImGui::Text(m_selectedEntity->entityType.c_str());
-
-	if (ImGui::Button("delete")) // Delete entity
-	{
-		m_sceneHandle->deleteLightingEntityFromVector(m_selectedEntityIndex);
-		clearSelectedEntity();
-		ImGui::End();
-		return;
-	}
-
-	ImGui::SameLine(65);
-
-	if (ImGui::Button("go to")) // Moves the camera to the entities position
-	{
-		std::shared_ptr<SceneCamera> camera = m_sceneHandle->getSceneCamera();
-		camera->setPosition(glm::vec3(std::stoi(m_selectedEntity->posX), std::stoi(m_selectedEntity->posY)+1, std::stoi(m_selectedEntity->posZ)));
-	}
-
-	ImGui::SameLine(114);
-
-	if (ImGui::Button("close")) // Closes the entity panel
-	{
-		clearSelectedEntity();
-		ImGui::End();
-		return;
-	}
-
-	constexpr int sameLineSpacing = 70;
-	static bool transformHeaderState = true;
-	ImGui::SetNextTreeNodeOpen(transformHeaderState);
-	if (transformHeaderState = ImGui::CollapsingHeader("Entity Transform"))
-	{
-		ImGui::Text("Pos X:");
-		ImGui::SameLine(sameLineSpacing);
-		ImGui::Text(m_selectedEntity->posX.c_str());
-
-		ImGui::Text("Pos Y:");
-		ImGui::SameLine(sameLineSpacing);
-		ImGui::Text(m_selectedEntity->posY.c_str());
-
-		ImGui::Text("Pos Z:");
-		ImGui::SameLine(sameLineSpacing);
-		ImGui::Text(m_selectedEntity->posZ.c_str());
-
-		ImGui::Separator();
-
-		ImGui::Text("Rot X:");
-		ImGui::SameLine(sameLineSpacing);
-		ImGui::Text(m_selectedEntity->rotX.c_str());
-
-		ImGui::Text("Rot Y:");
-		ImGui::SameLine(sameLineSpacing);
-		ImGui::Text(m_selectedEntity->rotY.c_str());
-
-		ImGui::Text("Pos Z:");
-		ImGui::SameLine(sameLineSpacing);
-		ImGui::Text(m_selectedEntity->rotZ.c_str());
-
-		ImGui::Separator();
-
-		ImGui::Text("Scale X:");
-		ImGui::SameLine(sameLineSpacing);
-		ImGui::Text(m_selectedEntity->scaleX.c_str());
-
-		ImGui::Text("Scale Y:");
-		ImGui::SameLine(sameLineSpacing);
-		ImGui::Text(m_selectedEntity->scaleY.c_str());
-
-		ImGui::Text("Scale Z:");
-		ImGui::SameLine(sameLineSpacing);
-		ImGui::Text(m_selectedEntity->posZ.c_str());
-	}
-
-	static bool meshHeaderState = true;
-	ImGui::SetNextTreeNodeOpen(meshHeaderState);
-	if (meshHeaderState = ImGui::CollapsingHeader("Entity Mesh"))
-	{
-		ImGui::Text(m_selectedEntity->meshFilepath.c_str());
-	}
-
-	static bool textureHeaderState = true;
-	ImGui::SetNextTreeNodeOpen(textureHeaderState);
-	if (textureHeaderState = ImGui::CollapsingHeader("Entity Texture"))
-	{
-		for (int i = 0; i < m_selectedEntity->totalTextures; i++)
-		{
-			ImGui::Text(m_selectedEntity->textureFilepath[i].c_str());
-			ImGui::Image(reinterpret_cast<void*>(m_selectedEntity->textureOpenGLID[i]), ImVec2(128, 128));
-			
-			ImGui::Separator();
-		}
-	}
-
-	ImGui::End();
-}
+//void UI::entityPanel()
+//{
+//	// Checks each component of the selected entity to check if any of the cached data needs to be updated
+//	m_selectedEntity->checkCachedDataForUpdate();
+//
+//	ImGui::Begin("Entity:", NULL, commonFlags);
+//
+//	ImGui::Text("Entity Name:");
+//	ImGui::SameLine(95);
+//	ImGui::Text(m_selectedEntity->editorName.c_str());
+//
+//	ImGui::Text("Entity Type:");
+//	ImGui::SameLine(95);
+//	ImGui::Text(m_selectedEntity->entityType.c_str());
+//
+//	if (ImGui::Button("delete")) // Delete entity
+//	{
+//		m_sceneHandle->deleteLightingEntityFromVector(m_selectedEntityIndex);
+//		clearSelectedEntity();
+//		ImGui::End();
+//		return;
+//	}
+//
+//	ImGui::SameLine(65);
+//
+//	if (ImGui::Button("go to")) // Moves the camera to the entities position
+//	{
+//		std::shared_ptr<SceneCamera> camera = m_sceneHandle->getSceneCamera();
+//		camera->setPosition(glm::vec3(std::stoi(m_selectedEntity->posX), std::stoi(m_selectedEntity->posY)+1, std::stoi(m_selectedEntity->posZ)));
+//	}
+//
+//	ImGui::SameLine(114);
+//
+//	if (ImGui::Button("close")) // Closes the entity panel
+//	{
+//		clearSelectedEntity();
+//		ImGui::End();
+//		return;
+//	}
+//
+//	constexpr int sameLineSpacing = 70;
+//	static bool transformHeaderState = true;
+//	ImGui::SetNextTreeNodeOpen(transformHeaderState);
+//	if (transformHeaderState = ImGui::CollapsingHeader("Entity Transform"))
+//	{
+//		ImGui::Text("Pos X:");
+//		ImGui::SameLine(sameLineSpacing);
+//		ImGui::Text(m_selectedEntity->posX.c_str());
+//
+//		ImGui::Text("Pos Y:");
+//		ImGui::SameLine(sameLineSpacing);
+//		ImGui::Text(m_selectedEntity->posY.c_str());
+//
+//		ImGui::Text("Pos Z:");
+//		ImGui::SameLine(sameLineSpacing);
+//		ImGui::Text(m_selectedEntity->posZ.c_str());
+//
+//		ImGui::Separator();
+//
+//		ImGui::Text("Rot X:");
+//		ImGui::SameLine(sameLineSpacing);
+//		ImGui::Text(m_selectedEntity->rotX.c_str());
+//
+//		ImGui::Text("Rot Y:");
+//		ImGui::SameLine(sameLineSpacing);
+//		ImGui::Text(m_selectedEntity->rotY.c_str());
+//
+//		ImGui::Text("Pos Z:");
+//		ImGui::SameLine(sameLineSpacing);
+//		ImGui::Text(m_selectedEntity->rotZ.c_str());
+//
+//		ImGui::Separator();
+//
+//		ImGui::Text("Scale X:");
+//		ImGui::SameLine(sameLineSpacing);
+//		ImGui::Text(m_selectedEntity->scaleX.c_str());
+//
+//		ImGui::Text("Scale Y:");
+//		ImGui::SameLine(sameLineSpacing);
+//		ImGui::Text(m_selectedEntity->scaleY.c_str());
+//
+//		ImGui::Text("Scale Z:");
+//		ImGui::SameLine(sameLineSpacing);
+//		ImGui::Text(m_selectedEntity->posZ.c_str());
+//	}
+//
+//	static bool meshHeaderState = true;
+//	ImGui::SetNextTreeNodeOpen(meshHeaderState);
+//	if (meshHeaderState = ImGui::CollapsingHeader("Entity Mesh"))
+//	{
+//		ImGui::Text(m_selectedEntity->meshFilepath.c_str());
+//	}
+//
+//	static bool textureHeaderState = true;
+//	ImGui::SetNextTreeNodeOpen(textureHeaderState);
+//	if (textureHeaderState = ImGui::CollapsingHeader("Entity Texture"))
+//	{
+//		for (int i = 0; i < m_selectedEntity->totalTextures; i++)
+//		{
+//			ImGui::Text(m_selectedEntity->textureFilepath[i].c_str());
+//			ImGui::Image(reinterpret_cast<void*>(m_selectedEntity->textureOpenGLID[i]), ImVec2(128, 128));
+//			
+//			ImGui::Separator();
+//		}
+//	}
+//
+//	ImGui::End();
+//}
 
 /// <summary>
 /// Function is called every time the current scene changes. It updates the available buttons light buttons depending on what lights the scene has

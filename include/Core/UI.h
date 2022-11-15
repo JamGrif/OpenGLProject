@@ -39,8 +39,8 @@ private:
 	void	sceneOptionsPanel();
 	void	controlsPanel();
 	void	performanceMetricsPanel();
-	void	sceneEntitiesPanel();
-	void	entityPanel();
+	//void	sceneEntitiesPanel();
+	//void	entityPanel();
 
 	void	updateSceneInformation();
 
