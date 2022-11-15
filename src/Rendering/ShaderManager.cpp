@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Rendering/ShaderManager.h"
 
-bool ShaderManager::createShader(const std::string& shaderID, const std::string& vertexPath, const std::string& fragmentPath)
+bool ShaderManager::parseShader(const std::string& shaderID, const std::string& vertexPath, const std::string& fragmentPath)
 {
 	// Check if material with ID already exists
 	if (m_shaderMap.find(shaderID) != m_shaderMap.end())
@@ -9,10 +9,19 @@ bool ShaderManager::createShader(const std::string& shaderID, const std::string&
 
 	//PRINT_TRACE("created shader with ID {0}", shaderID);
 
-	Shader* pShader = new Shader(vertexPath, fragmentPath);
+	Shader* pShader = new Shader();
+	pShader->parseShader(vertexPath, fragmentPath);
 	m_shaderMap.insert({ shaderID, pShader });
 
 	return true;
+}
+
+void ShaderManager::createAllShaders()
+{
+	for (const auto& [key, value] : m_shaderMap)
+	{
+		value->createShader();
+	}
 }
 
 Shader* ShaderManager::getShaderAtID(const std::string& shaderID)

@@ -13,8 +13,6 @@ Model::Model(ModelLoaderParams pParams)
 	m_transformUpdated(false), m_textureUpdated(false), m_editorName(""),
 	m_localLightManager(EngineStatics::getLightManager()), m_localProjectionMatrix(EngineStatics::getProjectionMatrix())
 {
-
-	m_entityType = pParams.objectType;
 	m_position = pParams.position;
 	m_rotation = pParams.rotation;
 	m_scale = pParams.scale;
@@ -23,7 +21,7 @@ Model::Model(ModelLoaderParams pParams)
 
 	m_meshID = pParams.meshID;
 
-	MeshManager::Instance()->createMesh(m_meshID, pParams.meshFilepath);
+	MeshManager::Instance()->parseMesh(m_meshID);
 	
 
 }
@@ -92,56 +90,56 @@ void Model::setMatrixValues()
 /// <summary>
 /// Sets whether the entity type is LightingEntity, SkyEntity, TerrainEntity etc...
 /// </summary>
-void Model::setEntityType(const std::string& type)
-{
-	m_entityType = type;
-}
+//void Model::setEntityType(const std::string& type)
+//{
+//	m_entityType = type;
+//}
 
-std::string Model::getEntityType() const
-{
-	return m_entityType;
-}
+//std::string Model::getEntityType() const
+//{
+//	return m_entityType;
+//}
 
 /// <summary>
 /// Returns if the transform part of the entity has been updated since the last time it was checked
 /// If it has been updated then return true, but set the status back to false
 /// </summary>
-bool Model::getTransformUpdated()
-{
-	if (m_transformUpdated)
-	{
-		// If transform update is checked then reset it back to false after returning it
-		bool temp = m_transformUpdated;
-		m_transformUpdated = false;
-		return temp;
-	}
-	else
-	{
-		return m_transformUpdated;
-	}
-}
+//bool Model::getTransformUpdated()
+//{
+//	if (m_transformUpdated)
+//	{
+//		// If transform update is checked then reset it back to false after returning it
+//		bool temp = m_transformUpdated;
+//		m_transformUpdated = false;
+//		return temp;
+//	}
+//	else
+//	{
+//		return m_transformUpdated;
+//	}
+//}
 
 /// <summary>
 /// Returns if the texture part of the entity has been updated since the last time it was checked
 /// </summary>
-bool Model::getTextureUpdated()
-{
-	// TO DO
-	return false;
-}
+//bool Model::getTextureUpdated()
+//{
+//	// TO DO
+//	return false;
+//}
 
 /// <summary>
 /// Sets the name that will be used for this entity in the ImGui editor
 /// </summary>
-void Model::setEditorName(const std::string& name)
-{
-	m_editorName = name;
-}
+//void Model::setEditorName(const std::string& name)
+//{
+//	m_editorName = name;
+//}
 
-std::string Model::getEditorName() const
-{
-	return m_editorName;
-}
+//std::string Model::getEditorName() const
+//{
+//	return m_editorName;
+//}
 
 void Model::SetXPos(float num) { m_position.x = num; m_transformUpdated = true; }
 

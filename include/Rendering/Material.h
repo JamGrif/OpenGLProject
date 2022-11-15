@@ -18,24 +18,13 @@ struct MaterialLoaderParams
 	std::string materialID;
 
 	std::string diffuseMapID;
-	std::string diffuseMapPath;
-
 	std::string specularMapID;
-	std::string specularMapPath;
-
 	std::string normalMapID;
-	std::string normalMapPath;
-
-	float		normalMapNormalize;
-
 	std::string heightMapID;
-	std::string heightMapPath;
-
-	float		heightMapHeight;
-
 	std::string emissionMapID;
-	std::string emissionMapPath;
 
+	bool		normalMapNormalize;
+	float		heightMapHeight;
 };
 
 class Material
@@ -55,15 +44,13 @@ private:
 	std::string m_specularMapID;
 	std::string m_normalMapID;
 
-	float m_normalMapNormalize;
+	bool m_normalMapNormalize;
 
 	std::string m_heightMapID;
 
 	float m_heightMapHeight;
 
 	std::string m_emissionMapID;
-
-	//std::shared_ptr<OpenGLShader> m_materialShader;
 
 	bool m_bUsingNormal = false;
 	bool m_bUsingHeight = false;

@@ -14,8 +14,11 @@ enum class TextureType
 class Texture
 {
 public:
-	Texture(const std::string& filepath, TextureType textureType);
+	Texture();
 	~Texture();
+
+	void parseTexture(const std::string& filepath, TextureType textureType);
+	void createTexture();
 
 	void bindTexture();
 	void unbindTexture();

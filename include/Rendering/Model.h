@@ -11,8 +11,6 @@
 
 struct ModelLoaderParams
 {
-	std::string objectType = ""; // ModelLighting, ModelBasic, ModelTerrain etc...
-
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
@@ -20,7 +18,6 @@ struct ModelLoaderParams
 	std::string materialID;
 
 	std::string meshID;
-	std::string meshFilepath;
 };
 
 
@@ -56,17 +53,17 @@ public:
 
 	void			setMatrixValues();
 
-	void			setEntityType(const std::string& type);
-	std::string		getEntityType() const;
+	//void			setEntityType(const std::string& type);
+	//std::string		getEntityType() const;
 
 	void			setMaterialID(const std::string& materialID) { m_materialID = materialID; }
 
 	// Editor
-	bool			getTransformUpdated();
-	bool			getTextureUpdated();
+	//bool			getTransformUpdated();
+	//bool			getTextureUpdated();
 
-	void			setEditorName(const std::string& name);
-	std::string		getEditorName() const;
+	//void			setEditorName(const std::string& name);
+	//std::string		getEditorName() const;
 
 
 private:

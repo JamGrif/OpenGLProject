@@ -1,10 +1,12 @@
 #pragma once
 
-#include <glm\vec3.hpp>
-
 class Model;
 class SceneLightManager;
 class SceneSky;
+
+class TiXmlElement;
+
+struct LightLoaderParams;
 
 /// <summary>
 /// This class reads in a textfile containing all of the scene information from res/scenes/
@@ -22,11 +24,17 @@ class SceneParser
 {
 public:
 	SceneParser(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneLightingEntities, std::shared_ptr<SceneLightManager>& sceneLightManager, SceneSky** sceneSky);
-	~SceneParser();
+	~SceneParser() {};
 
 	bool getStatus() { return m_status; }
 
 private:
+	void parseMaterials(TiXmlElement* pMaterialsRoot);
+	void parseLights(TiXmlElement* pLightsRoot, std::shared_ptr<SceneLightManager>& sceneLightManager);
+	void parseModels(TiXmlElement* pModelRoot, std::vector<std::shared_ptr<Model>>& sceneLightingEntities);
+
+	void parseBaseLight(TiXmlElement* e, LightLoaderParams* pParams);
+
 	bool m_status;
 
 };

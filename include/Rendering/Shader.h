@@ -5,8 +5,11 @@
 class Shader
 {
 public:
-	Shader(const std::string& vertexPath, const std::string& fragmentPath);
+	Shader();
 	~Shader();
+
+	void parseShader(const std::string& vertexPath, const std::string& fragmentPath);
+	void createShader();
 
 	void bindShader();
 	void unbindShader();
@@ -24,6 +27,8 @@ private:
 
 	// Shader loading functions
 
+	//std::string shaderVertexPath;
+
 	uint32_t						m_shaderProgram = 0;
 
 	//shaderProgramType				m_shaderType;
@@ -34,6 +39,9 @@ private:
 
 	// Cache for uniform locations
 	std::unordered_map<std::string, int> m_locationCache;
+
+	std::string vertexShaderCode;
+	std::string fragmentShaderCode;
 
 
 };

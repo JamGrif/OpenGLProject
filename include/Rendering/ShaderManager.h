@@ -7,7 +7,9 @@ class ShaderManager
 {
 public:
 
-	bool createShader(const std::string& shaderID, const std::string& vertexPath, const std::string& fragmentPath);
+	bool parseShader(const std::string& shaderID, const std::string& vertexPath, const std::string& fragmentPath);
+
+	void createAllShaders();
 
 	Shader* getShaderAtID(const std::string& shaderID);
 

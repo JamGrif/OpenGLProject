@@ -7,7 +7,19 @@
 
 #include <GL/glew.h>
 
-Texture::Texture(const std::string& filepath, TextureType textureType)
+Texture::Texture()
+{
+	//PRINT_TRACE("created texture object with id of {0}", m_textureID);
+}
+
+Texture::~Texture()
+{
+	//PRINT_TRACE("deleted texture");
+	glCall(glBindTexture(GL_TEXTURE_2D, 0));
+	glCall(glDeleteTextures(1, &m_textureID));
+}
+
+void Texture::parseTexture(const std::string& filepath, TextureType textureType)
 {
 	m_filePath = filepath;
 	stbi_set_flip_vertically_on_load_thread(1); // Flips texture on Y-Axis
@@ -24,6 +36,11 @@ Texture::Texture(const std::string& filepath, TextureType textureType)
 		return;
 	}
 
+	m_textureType = textureType;
+}
+
+void Texture::createTexture()
+{
 	// Generate texture buffer
 	glCall(glGenTextures(1, &m_textureID));
 
@@ -58,16 +75,7 @@ Texture::Texture(const std::string& filepath, TextureType textureType)
 		m_localbuffer = nullptr;
 	}
 
-	m_textureType = textureType;
-
 	//PRINT_TRACE("created texture at filepath {0}", m_filePath);
-}
-
-Texture::~Texture()
-{
-	//PRINT_TRACE("deleted texture");
-	glCall(glBindTexture(GL_TEXTURE_2D, 0));
-	glCall(glDeleteTextures(1, &m_textureID));
 }
 
 void Texture::bindTexture()

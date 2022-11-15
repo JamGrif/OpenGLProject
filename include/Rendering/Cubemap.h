@@ -1,8 +1,23 @@
 #pragma once
+
+enum cubeFaces
+{
+	e_START_OF_CUBEFACE_ENUM = 0,
+	e_cubeFaceRight = 0,
+	e_cubeFaceLeft = 1,
+	e_cubeFaceTop = 2,
+	e_cubeFaceBottom = 3,
+	e_cubeFaceFront = 4,
+	e_cubeFaceBack = 5,
+	e_END_OF_CUBEFACE_ENUM = 6
+};
+
+typedef std::array<std::string, 6> CubemapFaces;
+
 class Cubemap
 {
 public:
-	Cubemap(const std::string& filepath);
+	Cubemap(const CubemapFaces& facesFilepath);
 	~Cubemap();
 
 	void bindCubemap();
@@ -20,16 +35,7 @@ private:
 
 	int							m_width[6], m_height[6], m_BPP[6];
 
-	enum cubeFaces
-	{
-		e_cubeFaceRight = 0,
-		e_cubeFaceLeft = 1,
-		e_cubeFaceTop = 2,
-		e_cubeFaceBottom = 3,
-		e_cubeFaceFront = 4,
-		e_cubeFaceBack = 5,
-		e_END_OF_CUBEFACE_ENUM
-	};
+	
 
 	unsigned char* m_localbuffer[6];
 

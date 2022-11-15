@@ -5,8 +5,11 @@ struct Vertex;
 class Mesh
 {
 public:
-	Mesh(const std::string& filepath);
+	Mesh();
 	~Mesh();
+
+	void parseMesh(const std::string& filepath);
+	void createMesh();
 
 	void bindMesh();
 	void unbindMesh();

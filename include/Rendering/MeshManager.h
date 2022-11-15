@@ -8,7 +8,9 @@ class MeshManager
 {
 public:
 
-	bool createMesh(const std::string& meshID, const std::string& meshFilepath);
+	bool parseMesh(const std::string& meshID);
+
+	void createAllMeshes();
 
 	Mesh* getMeshAtID(const std::string& meshID);
 

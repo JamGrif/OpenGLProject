@@ -14,22 +14,22 @@ Material::Material(const MaterialLoaderParams& pParams)
 {
 	m_materialID = pParams.materialID;
 
-	m_diffuseMapID = pParams.diffuseMapPath;
+	m_diffuseMapID = pParams.diffuseMapID;
 	if (m_diffuseMapID != "null")
 	{
-		TheTextureManager::Instance()->createTexture(m_diffuseMapID, pParams.diffuseMapPath, TextureType::DIFFUSE_TEXTURE);
+		TheTextureManager::Instance()->parseTexture(m_diffuseMapID, TextureType::DIFFUSE_TEXTURE);
 	}
 
 	m_specularMapID = pParams.specularMapID;
 	if (m_specularMapID != "null")
 	{
-		TheTextureManager::Instance()->createTexture(m_specularMapID, pParams.specularMapPath, TextureType::SPECULAR_TEXTURE);
+		TheTextureManager::Instance()->parseTexture(m_specularMapID, TextureType::SPECULAR_TEXTURE);
 	}
 
 	m_normalMapID = pParams.normalMapID;
 	if (m_normalMapID != "null")
 	{
-		TheTextureManager::Instance()->createTexture(m_normalMapID, pParams.normalMapPath, TextureType::NORMAL_TEXTURE);
+		TheTextureManager::Instance()->parseTexture(m_normalMapID, TextureType::NORMAL_TEXTURE);
 		m_bUsingNormal = true;
 	}
 
@@ -38,7 +38,7 @@ Material::Material(const MaterialLoaderParams& pParams)
 	m_heightMapID = pParams.heightMapID;
 	if (m_heightMapID != "null")
 	{
-		TheTextureManager::Instance()->createTexture(m_heightMapID, pParams.heightMapPath, TextureType::HEIGHT_TEXTURE);
+		TheTextureManager::Instance()->parseTexture(m_heightMapID, TextureType::HEIGHT_TEXTURE);
 		m_bUsingHeight = true;
 	}
 
@@ -47,16 +47,13 @@ Material::Material(const MaterialLoaderParams& pParams)
 	m_emissionMapID = pParams.emissionMapID;
 	if (m_emissionMapID != "null")
 	{
-		TheTextureManager::Instance()->createTexture(m_emissionMapID, pParams.emissionMapPath, TextureType::EMISSION_TEXTURE);
+		TheTextureManager::Instance()->parseTexture(m_emissionMapID, TextureType::EMISSION_TEXTURE);
 		m_bUsingEmission = true;
 	}
 
 
-	// Materials always use lightingPassTwo shaders
-	//m_materialShader = OpenGLShaderManager::retrieveShader("res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
-
 	m_shaderID = "lightingShader";
-	TheShaderManager::Instance()->createShader(m_shaderID, "res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
+	TheShaderManager::Instance()->parseShader(m_shaderID, "res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
 
 	//PRINT_TRACE("created material with diffusepath of {0}", m_diffuseMapID);
 }

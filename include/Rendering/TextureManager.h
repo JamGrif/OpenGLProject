@@ -8,8 +8,10 @@ class TextureManager
 {
 public:
 
-	bool createTexture(const std::string& textureID, const std::string& textureFilepath, TextureType textureType);
-	bool createCubemap(const std::string& cubemapID, const std::string& cubemapFilepath);
+	bool parseTexture(const std::string& textureID, TextureType textureType);
+	bool createCubemap(const std::string& cubemapID);
+
+	void createAllTextures();
 
 	Texture* getTextureAtID(const std::string textureID);
 	Cubemap* getCubemapAtID(const std::string cubemapID);

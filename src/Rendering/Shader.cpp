@@ -81,7 +81,25 @@ static const GLuint linkShaders(GLuint shader1 = 0, GLuint shader2 = 0, GLuint s
 	return tempProgram;
 }
 
-Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
+Shader::Shader()
+{
+	//shaderVertexPath = vertexPath;
+
+	//parseShader(vertexPath, fragmentPath);
+	//createShader();
+
+	
+	
+
+}
+
+Shader::~Shader()
+{
+	glCall(glDeleteProgram(m_shaderProgram));
+	//PRINT_ERROR("shader deleted with vertex path {0}", shaderVertexPath);
+}
+
+void Shader::parseShader(const std::string& vertexPath, const std::string& fragmentPath)
 {
 	// All shader types will have both a vertex and fragment shader
 
@@ -119,25 +137,20 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 		PRINT_WARN("SHADER-> Failed to open and read shaders {0} , {1} with error {2}", vertexPath, fragmentPath, e.what());
 	}
 
-	std::string vertexShaderCode = vertexCode.c_str();
-	std::string fragmentShaderCode = fragmentCode.c_str();
+	vertexShaderCode = vertexCode.c_str();
+	fragmentShaderCode = fragmentCode.c_str();
 	//m_shaderCode[e_VertexShader] = vertexCode.c_str();
 	//m_shaderCode[e_FragmentShader] = fragmentCode.c_str();
 
+}
+
+void Shader::createShader()
+{
 	// All shaders contain both vertex and fragment shaders
 	GLuint vertex = compileShader(GL_VERTEX_SHADER, vertexShaderCode.c_str());
 	GLuint fragment = compileShader(GL_FRAGMENT_SHADER, fragmentShaderCode.c_str());
 
 	m_shaderProgram = linkShaders(vertex, fragment);
-
-
-
-	
-}
-
-Shader::~Shader()
-{
-	glCall(glDeleteProgram(m_shaderProgram));
 }
 
 void Shader::bindShader()

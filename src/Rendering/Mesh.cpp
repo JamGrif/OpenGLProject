@@ -29,7 +29,21 @@ enum vertexAttributes
 	e_ShaderTanBi = 3
 };
 
-Mesh::Mesh(const std::string& filepath)
+Mesh::Mesh()
+{
+	//PRINT_TRACE("created mesh object");
+}
+
+Mesh::~Mesh()
+{
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+
+	glCall(glDeleteBuffers(1, &m_meshVBO));
+	glCall(glDeleteBuffers(1, &m_meshEBO));
+}
+
+void Mesh::parseMesh(const std::string& filepath)
 {
 	m_filePath = filepath;
 
@@ -41,7 +55,7 @@ Mesh::Mesh(const std::string& filepath)
 		PRINT_WARN("MESH-> {0} failed to load, loading default mesh", m_filePath);
 		return;
 	}
-	
+
 
 	aiMesh* mesh = scene->mMeshes[0];
 	m_meshVertices.reserve(mesh->mNumVertices); // Reserve enough space to hold all the vertices
@@ -92,7 +106,10 @@ Mesh::Mesh(const std::string& filepath)
 			m_meshIndices.push_back(face.mIndices[j]);
 		}
 	}
+}
 
+void Mesh::createMesh()
+{
 	glCall(glGenBuffers(1, &m_meshVBO));
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
 	glCall(glBufferData(GL_ARRAY_BUFFER, m_meshVertices.size() * sizeof(Vertex), &m_meshVertices[0], GL_STATIC_DRAW));
@@ -102,16 +119,6 @@ Mesh::Mesh(const std::string& filepath)
 	glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_meshIndices.size() * sizeof(unsigned int), &m_meshIndices[0], GL_STATIC_DRAW));
 
 	//PRINT_TRACE("{0}", m_filePath);
-
-}
-
-Mesh::~Mesh()
-{
-	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
-	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-
-	glCall(glDeleteBuffers(1, &m_meshVBO));
-	glCall(glDeleteBuffers(1, &m_meshEBO));
 }
 
 void Mesh::bindMesh()

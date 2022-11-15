@@ -7,30 +7,20 @@
 
 #include <GL/glew.h>
 
-Cubemap::Cubemap(const std::string& filepath)
+Cubemap::Cubemap(const CubemapFaces& facesFilepath)
 {
-	m_filePath = filepath;
-
-
-	m_facesFilePath[e_cubeFaceRight] = "res/textures/sky/" + m_filePath + "_right.png";
-	m_facesFilePath[e_cubeFaceLeft] = "res/textures/sky/" + m_filePath + "_left.png";
-	m_facesFilePath[e_cubeFaceTop] = "res/textures/sky/" + m_filePath + "_top.png";
-	m_facesFilePath[e_cubeFaceBottom] = "res/textures/sky/" + m_filePath + "_bottom.png";
-	m_facesFilePath[e_cubeFaceFront] = "res/textures/sky/" + m_filePath + "_front.png";
-	m_facesFilePath[e_cubeFaceBack] = "res/textures/sky/" + m_filePath + "_back.png";
-
 	//PRINT_TRACE("created cubemap at filepath {0}", m_filePath);
 
-	for (unsigned int i = e_cubeFaceRight; i < e_END_OF_CUBEFACE_ENUM; i++)
+	for (unsigned int i = e_START_OF_CUBEFACE_ENUM; i < e_END_OF_CUBEFACE_ENUM; i++)
 	{
 		stbi_set_flip_vertically_on_load_thread(0);
 
-		m_localbuffer[i] = stbi_load(m_facesFilePath[i].c_str(), &m_width[i], &m_height[i], &m_BPP[i], 0);
+		m_localbuffer[i] = stbi_load(facesFilepath[i].c_str(), &m_width[i], &m_height[i], &m_BPP[i], 0);
 
 		// Check if file loaded successfully
 		if (stbi_failure_reason() == "can't fopen")
 		{
-			PRINT_WARN("CUBEMAP-> {0} failed to load, loading default texture", m_facesFilePath[i]);
+			PRINT_WARN("CUBEMAP-> {0} failed to load, loading default texture", facesFilepath[i]);
 		}
 	}
 
@@ -39,7 +29,7 @@ Cubemap::Cubemap(const std::string& filepath)
 
 	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture));
 
-	for (unsigned int i = e_cubeFaceRight; i < e_END_OF_CUBEFACE_ENUM; i++)
+	for (unsigned int i = e_START_OF_CUBEFACE_ENUM; i < e_END_OF_CUBEFACE_ENUM; i++)
 	{
 		glCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_width[i], m_height[i], 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localbuffer[i]));
 		stbi_image_free(m_localbuffer[i]);
