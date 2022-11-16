@@ -5,7 +5,6 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-#include "Core/EngineStatics.h"
 #include "Rendering/OpenGLWindow.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneLightManager.h"
@@ -21,101 +20,101 @@ static ImGuiWindowFlags debugFlags = ImGuiWindowFlags_NoCollapse;
 /// This allows the properties of the selected entity to be found once and stored to allow faster retrieval of the selected entity information in the entity panel
 /// If a property of the entity gets updated through the editor, the stored entity values will get refreshed to reflect any changes
 /// </summary>
-struct selectedEntityCache
-{
-	selectedEntityCache(std::shared_ptr<Model> entity)
-		:entityPtr(entity)
-	{
-		//PRINT_TRACE("created cached data");
-
-		//entityType = entityPtr->getEntityType();
-		//editorName = entityPtr->getEditorName();
-
-		refreshTransformCachedData();
-		refreshMeshCachedData();
-		refreshTextureCachedData();
-	}
-	~selectedEntityCache()
-	{
-		//PRINT_TRACE("deleted cached data");
-	}
-
-	std::string entityType; // LightingEntity, BasicEntity, SkyEntity etc...
-	std::string editorName;	// Name in the Scene Entities panel
-
-	// Transform data stored as strings to allow easy use with ImGui
-	std::string posX;
-	std::string posY;
-	std::string posZ;
-
-	std::string rotX;
-	std::string rotY;
-	std::string rotZ;
-
-	std::string scaleX;
-	std::string scaleY;
-	std::string scaleZ;
-
-	std::string meshFilepath;
-
-	std::size_t totalTextures;
-	std::string textureFilepath[5];
-	uint32_t	textureOpenGLID[5];
-
-	inline void checkCachedDataForUpdate()
-	{
-		// If the transform part of the selected entity has been changed then refresh the entity transform values in the editor
-		//if (entityPtr->getTransformUpdated())
-		//{
-		//	refreshTransformCachedData();
-		//}
-
-		// check and refresh mesh data
-
-		// check and refresh texture data
-
-	}
-
-	// Only updates the selected objects transform data
-	void refreshTransformCachedData()
-	{
-		posX = std::to_string(entityPtr->GetXPos());
-		posY = std::to_string(entityPtr->GetYPos());
-		posZ = std::to_string(entityPtr->GetZPos());
-
-		rotX = std::to_string(entityPtr->GetXRot());
-		rotY = std::to_string(entityPtr->GetYRot());
-		rotZ = std::to_string(entityPtr->GetZRot());
-
-		scaleX = std::to_string(entityPtr->GetXScale());
-		scaleY = std::to_string(entityPtr->GetYScale());
-		scaleZ = std::to_string(entityPtr->GetZScale());
-	}
-
-	// Only updates the selected objects mesh data
-	void refreshMeshCachedData()
-	{
-		//meshFilepath = entityPtr->getMesh()->getFilePath();
-	}
-
-	// Only updates the selected objects texture data
-	void refreshTextureCachedData()
-	{
-		//totalTextures = entityPtr->getTextureAmount();
-
-		for (int i = 0; i < totalTextures; i++)
-		{
-			//textureFilepath[i] = entityPtr->getTextureAtSlot(i)->getFilePath().c_str();
-			//textureOpenGLID[i] = entityPtr->getTextureAtSlot(i)->getTextureID();
-		}
-	}
-
-private:
-	std::shared_ptr<Model> entityPtr; // Pointer to the actual entity
-};
+//struct selectedEntityCache
+//{
+//	selectedEntityCache(std::shared_ptr<Model> entity)
+//		:entityPtr(entity)
+//	{
+//		//PRINT_TRACE("created cached data");
+//
+//		//entityType = entityPtr->getEntityType();
+//		//editorName = entityPtr->getEditorName();
+//
+//		refreshTransformCachedData();
+//		refreshMeshCachedData();
+//		refreshTextureCachedData();
+//	}
+//	~selectedEntityCache()
+//	{
+//		//PRINT_TRACE("deleted cached data");
+//	}
+//
+//	std::string entityType; // LightingEntity, BasicEntity, SkyEntity etc...
+//	std::string editorName;	// Name in the Scene Entities panel
+//
+//	// Transform data stored as strings to allow easy use with ImGui
+//	std::string posX;
+//	std::string posY;
+//	std::string posZ;
+//
+//	std::string rotX;
+//	std::string rotY;
+//	std::string rotZ;
+//
+//	std::string scaleX;
+//	std::string scaleY;
+//	std::string scaleZ;
+//
+//	std::string meshFilepath;
+//
+//	std::size_t totalTextures;
+//	std::string textureFilepath[5];
+//	uint32_t	textureOpenGLID[5];
+//
+//	inline void checkCachedDataForUpdate()
+//	{
+//		// If the transform part of the selected entity has been changed then refresh the entity transform values in the editor
+//		//if (entityPtr->getTransformUpdated())
+//		//{
+//		//	refreshTransformCachedData();
+//		//}
+//
+//		// check and refresh mesh data
+//
+//		// check and refresh texture data
+//
+//	}
+//
+//	// Only updates the selected objects transform data
+//	void refreshTransformCachedData()
+//	{
+//		posX = std::to_string(entityPtr->GetXPos());
+//		posY = std::to_string(entityPtr->GetYPos());
+//		posZ = std::to_string(entityPtr->GetZPos());
+//
+//		rotX = std::to_string(entityPtr->GetXRot());
+//		rotY = std::to_string(entityPtr->GetYRot());
+//		rotZ = std::to_string(entityPtr->GetZRot());
+//
+//		scaleX = std::to_string(entityPtr->GetXScale());
+//		scaleY = std::to_string(entityPtr->GetYScale());
+//		scaleZ = std::to_string(entityPtr->GetZScale());
+//	}
+//
+//	// Only updates the selected objects mesh data
+//	void refreshMeshCachedData()
+//	{
+//		//meshFilepath = entityPtr->getMesh()->getFilePath();
+//	}
+//
+//	// Only updates the selected objects texture data
+//	void refreshTextureCachedData()
+//	{
+//		//totalTextures = entityPtr->getTextureAmount();
+//
+//		for (int i = 0; i < totalTextures; i++)
+//		{
+//			//textureFilepath[i] = entityPtr->getTextureAtSlot(i)->getFilePath().c_str();
+//			//textureOpenGLID[i] = entityPtr->getTextureAtSlot(i)->getTextureID();
+//		}
+//	}
+//
+//private:
+//	std::shared_ptr<Model> entityPtr; // Pointer to the actual entity
+//};
 
 UI::UI(bool uiVisible, std::shared_ptr<Scene> loadedScene)
-	:m_isEntitySelected(false), m_selectedEntityIndex(-1), m_uiVisible(uiVisible), m_sceneHandle(loadedScene), m_sceneNum(0),
+	:m_uiVisible(uiVisible), m_sceneHandle(loadedScene), m_sceneNum(0),
 	m_directionalLightInScene(false), m_directionalLightActiveButton(true),
 	m_spotLightInScene(false), m_spotLightActiveButton(true),
 	m_totalPointLights(0), m_pointLightInScene{ false, false, false, false }, m_pointLightActiveButton{ true, true, true, true },
@@ -536,15 +535,15 @@ void UI::updateSceneInformation()
 	m_pointLightInScene[e_ThirdPointLight] = m_totalPointLights >= 3 ? true : false;
 	m_pointLightInScene[e_FourthPointLight] = m_totalPointLights >= 4 ? true : false;
 
-	clearSelectedEntity();
+	//clearSelectedEntity();
 }
 
 /// <summary>
 /// Clears the information for the entityPanel()
 /// </summary>
-void UI::clearSelectedEntity()
-{
-	m_isEntitySelected = false;
-	m_selectedEntityIndex = -1;
-	m_selectedEntity = nullptr;
-}
+//void UI::clearSelectedEntity()
+//{
+//	m_isEntitySelected = false;
+//	m_selectedEntityIndex = -1;
+//	m_selectedEntity = nullptr;
+//}

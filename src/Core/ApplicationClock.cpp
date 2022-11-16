@@ -100,10 +100,10 @@ void PerformanceTimer::stop()
 
 	if (m_tag != "")
 	{
-		PRINT_TRACE("{0} timer finished - duration is {1}", m_tag, ms);
+		PRINT_TRACE("{0} timer finished - duration is {1}ms", m_tag, ms);
 	}
 	else
 	{
-		PRINT_TRACE("A timer finished - duration is {0}", ms);
+		PRINT_TRACE("A timer finished - duration is {0}ms", ms);
 	}
 }

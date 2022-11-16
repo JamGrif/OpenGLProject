@@ -9,6 +9,8 @@ public:
 	bool				init();
 	bool				clean();
 
+	const glm::mat4& getProjectionMatrix() { return m_projMatrix; }
+
 	void				startOfFrame() const;
 	void				swapBuffers() const;
 

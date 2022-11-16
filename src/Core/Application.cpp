@@ -2,7 +2,6 @@
 #include "Core/Application.h"
 
 #include "Core/UI.h"
-#include "Core/EngineStatics.h"
 #include "Scene/Scene.h"
 #include "Rendering/OpenGLWindow.h"
 #include "Rendering/OpenGLFramebuffer.h"
@@ -16,8 +15,6 @@ Application::Application()
 
 Application::~Application()
 {
-	//m_renderer = nullptr;
-	//EngineStatics::setRenderer(nullptr);
 	TheOpenGLRenderer::Instance()->clean();
 
 	m_loadedScene = nullptr;
@@ -83,10 +80,7 @@ void Application::appLoop()
 			m_sceneMSAAFrameBuffer->bindFramebuffer();
 
 		if (m_loadedScene)
-			m_loadedScene->drawSceneFirstPass();
-
-		if (m_loadedScene)
-			m_loadedScene->drawSceneSecondPass();
+			m_loadedScene->drawScene();
 
 		// Reads from the MSAA buffer and writes it to the Filter buffer
 		if (m_sceneMSAAFrameBuffer && m_sceneFilterFramebuffer)
@@ -118,7 +112,6 @@ void Application::appLoop()
 			m_UI->update();
 		}
 
-		//m_renderer->swapBuffers();
 		TheOpenGLRenderer::Instance()->swapBuffers();
 	}
 }
@@ -133,19 +126,19 @@ bool Application::setScene(int newSceneNumber)
 	switch (newSceneNumber)
 	{
 	case e_FMPscene:
-		newSceneFilePath = "res/scenes/FMPscene.txt";
+		newSceneFilePath = "res/scenes/FMPscene.xml";
 		break;
 	case e_jamieTest:
-		newSceneFilePath = "res/scenes/jamieTest.txt";
+		newSceneFilePath = "res/scenes/jamieTest.xml";
 		break;
 	case e_lightTest:
-		newSceneFilePath = "res/scenes/lightTest.txt";
+		newSceneFilePath = "res/scenes/lightTest.xml";
 		break;
 	case e_materialTest:
-		newSceneFilePath = "res/scenes/materialTest.txt";
+		newSceneFilePath = "res/scenes/materialTest.xml";
 		break;
 	case e_shadowTest:
-		newSceneFilePath = "res/scenes/shadowTest.txt";
+		newSceneFilePath = "res/scenes/shadowTest.xml";
 		break;
 	default:
 		PRINT_WARN("Specified sceneNumber is out of range:{0}", newSceneNumber);

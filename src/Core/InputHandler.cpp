@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Core/InputHandler.h"
 
-#include "Core/EngineStatics.h"
 #include "Rendering/OpenGLWindow.h"
 
 #include <GLFW/glfw3.h>

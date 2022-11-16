@@ -12,7 +12,7 @@ enum sceneNames
 // Forward Declarations
 class Scene;
 class Model;
-struct selectedEntityCache;
+//struct selectedEntityCache;
 
 // A wrapper around imGui to display UI elements to the window
 class UI
@@ -44,10 +44,10 @@ private:
 
 	void	updateSceneInformation();
 
-	void	clearSelectedEntity();
+	//void	clearSelectedEntity();
 
-	bool	m_isEntitySelected;
-	int		m_selectedEntityIndex;
+	//bool	m_isEntitySelected;
+	//int		m_selectedEntityIndex;
 
 	bool	m_uiVisible; // Dictates whether the UI will be drawn or not
 
@@ -69,6 +69,6 @@ private:
 	std::shared_ptr<Scene>					m_sceneHandle;
 
 	// Cached selected entity
-	std::unique_ptr<selectedEntityCache>	m_selectedEntity;
+	//std::unique_ptr<selectedEntityCache>	m_selectedEntity;
 };
 

@@ -1,6 +1,5 @@
 #pragma once
 
-//#include <GL/glew.h> // glew.h must always be the first openGL header to be included (before glfw3.h)
 
 // Forward Declarations
 class Scene;

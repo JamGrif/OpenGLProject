@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Rendering/OpenGLRenderer.h"
 
-#include "Core/EngineStatics.h"
 #include "Rendering/OpenGLWindow.h"
 #include "Rendering/OpenGLErrorCheck.h"
 
@@ -10,8 +9,6 @@
 
 #include <glm/ext/matrix_clip_space.hpp>
 
-// Scene.cpp
-extern int entityDrawCount;
 
 OpenGLRenderer::OpenGLRenderer()
 	:m_projMatrix{ 1.0f }, m_appVAO(0)
@@ -63,7 +60,6 @@ bool OpenGLRenderer::init()
 
 	// Build applications projection matrix
 	m_projMatrix = glm::perspective(glm::radians(75.0f), TheOpenGLWindow::Instance()->getAspectRatio(), 0.01f, 1000.0f);
-	EngineStatics::setProjectionMatrix(&m_projMatrix);
 
 	// Build applications VAO
 	glCall(glGenVertexArrays(1, &m_appVAO));
@@ -99,8 +95,6 @@ void OpenGLRenderer::swapBuffers() const
 /// <param name="indicesCount"></param>
 void OpenGLRenderer::draw(size_t indicesCount) const
 {
-	entityDrawCount++;
-
 	glCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indicesCount), GL_UNSIGNED_INT, 0));
 }
 

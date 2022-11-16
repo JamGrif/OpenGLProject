@@ -13,7 +13,6 @@ public:
 
 	void clearAllMaterials();
 
-
 	static MaterialManager* Instance()
 	{
 		static MaterialManager* s_pInstance = new MaterialManager;
@@ -22,7 +21,6 @@ public:
 private:
 
 	std::unordered_map<std::string, Material*> m_materialMap;
-
 
 	MaterialManager() {}
 	~MaterialManager() {}

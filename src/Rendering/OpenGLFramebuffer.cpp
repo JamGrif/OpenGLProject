@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Rendering/OpenGLFramebuffer.h"
 
-#include "Core/EngineStatics.h"
 #include "Rendering/OpenGLWindow.h"
 #include "Rendering/OpenGLErrorCheck.h"
 #include "Rendering/ShaderManager.h"
