@@ -25,7 +25,7 @@ SceneParser::SceneParser(const std::string& filename, std::vector<std::shared_pt
 	TiXmlDocument levelDocument;
 
 	// Load scene file and check status
-	if (!levelDocument.LoadFile("res/scenes/shadowTest.xml", TIXML_ENCODING_UTF8))
+	if (!levelDocument.LoadFile(filename, TIXML_ENCODING_UTF8))
 	{
 		PRINT_TRACE("{0}", levelDocument.ErrorDesc());
 		m_status = false;
@@ -51,7 +51,6 @@ SceneParser::SceneParser(const std::string& filename, std::vector<std::shared_pt
 			materialRoot = e;
 			continue;;
 		}
-			
 		
 		// <lights> node
 		if (strcmp(e->Value(), "lights") == STRCMP_SUCCESS)
@@ -68,9 +67,7 @@ SceneParser::SceneParser(const std::string& filename, std::vector<std::shared_pt
 		}
 	}
 
-	//parseMaterials(materialRoot);
-	//parseModels(modelRoot, sceneLightingEntities);
-
+	// Parse all the assets used in scene
 	PerformanceTimer parseTimer("Asset Parsing");
 	std::thread materialThread(&SceneParser::parseMaterials, this, materialRoot);
 	std::thread modelThread(&SceneParser::parseModels, this, std::ref(modelRoot), std::ref(sceneLightingEntities));
@@ -82,6 +79,7 @@ SceneParser::SceneParser(const std::string& filename, std::vector<std::shared_pt
 
 	parseTimer.stop();
 
+	// Create all assets used in scene
 	PerformanceTimer creationTimer("Asset creating");
 	TheShaderManager::Instance()->createAllShaders();
 	TheTextureManager::Instance()->createAllTextures();
@@ -106,8 +104,6 @@ void SceneParser::parseMaterials(TiXmlElement* pMaterialsRoot)
 
 		// Fill out materials loading parameters
 		MaterialLoaderParams tempLoaderParams;
-		
-		e->QueryStringAttribute("id", &tempLoaderParams.materialID);
 
 		e->QueryStringAttribute("diffuseid", &tempLoaderParams.diffuseMapID);
 		e->QueryStringAttribute("specularid", &tempLoaderParams.specularMapID);
@@ -116,11 +112,10 @@ void SceneParser::parseMaterials(TiXmlElement* pMaterialsRoot)
 		e->QueryStringAttribute("emissionid", &tempLoaderParams.emissionMapID);
 
 		e->QueryBoolAttribute("normalmapNormalize", &tempLoaderParams.normalMapNormalize);
-
 		e->QueryFloatAttribute("heightmapHeight", &tempLoaderParams.heightMapHeight);
 
 		// Create material using filled out loading parameters and assign the id to it
-		TheMaterialManager::Instance()->createMaterial(tempLoaderParams.materialID, tempLoaderParams);
+		TheMaterialManager::Instance()->createMaterial(e->Attribute("id"), tempLoaderParams);
 	}
 }
 
@@ -198,17 +193,17 @@ void SceneParser::parseModels(TiXmlElement* pModelRoot, std::vector<std::shared_
 		e->QueryStringAttribute("material", &tempLoaderParams.materialID);
 		e->QueryStringAttribute("mesh", &tempLoaderParams.meshID);
 
-		e->QueryFloatAttribute("posX", &tempLoaderParams.position.x);
-		e->QueryFloatAttribute("posY", &tempLoaderParams.position.y);
-		e->QueryFloatAttribute("posZ", &tempLoaderParams.position.z);
+		e->QueryFloatAttribute("posX", &tempLoaderParams.posX);
+		e->QueryFloatAttribute("posY", &tempLoaderParams.posY);
+		e->QueryFloatAttribute("posZ", &tempLoaderParams.posZ);
 		
-		e->QueryFloatAttribute("rotX", &tempLoaderParams.rotation.x);
-		e->QueryFloatAttribute("rotY", &tempLoaderParams.rotation.y);
-		e->QueryFloatAttribute("rotZ", &tempLoaderParams.rotation.z);
+		e->QueryFloatAttribute("rotX", &tempLoaderParams.rotX);
+		e->QueryFloatAttribute("rotY", &tempLoaderParams.rotY);
+		e->QueryFloatAttribute("rotZ", &tempLoaderParams.rotZ);
 
-		e->QueryFloatAttribute("scaleX", &tempLoaderParams.scale.x);
-		e->QueryFloatAttribute("scaleY", &tempLoaderParams.scale.y);
-		e->QueryFloatAttribute("scaleZ", &tempLoaderParams.scale.z);
+		e->QueryFloatAttribute("scaleX", &tempLoaderParams.scaleX);
+		e->QueryFloatAttribute("scaleY", &tempLoaderParams.scaleY);
+		e->QueryFloatAttribute("scaleZ", &tempLoaderParams.scaleZ);
 		
 		sceneLightingEntities.emplace_back(std::make_shared<Model>(tempLoaderParams));
 	}

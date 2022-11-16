@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene skyid="basic">
+  <materials>
+    <material id="knife" diffuseid="knife_diff" specularid="knife_spec" normalid="knife_norm" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+  </materials>
+  <lights>
+    <light type="direction" ambR="0.2" ambG="0.2" ambB="0.2" difR="0.4" difG="0.4" difB="0.4" speR="0.3" speG="0.3" speB="0.3" dirX="-2.0" dirY="-3.0" dirZ="-1.0"/>
+    <light type="point" ambR="0.2" ambG="0.2" ambB="0.2" difR="1.0" difG="1.0" difB="1.0" speR="0.4" speG="0.4" speB="0.4" posX="0.0" posY="3.0" posZ="0.0"/>
+  </lights>
+  <models>
+    <model material="knife" mesh="plane" posX="0.0" posY="-1.5" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="knife" mesh="plane" posX="6.0" posY="-1.5" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="knife" mesh="plane" posX="-6.0" posY="-1.5" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="knife" mesh="plane" posX="0.0" posY="-1.5" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="knife" mesh="plane" posX="6.0" posY="-1.5" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="knife" mesh="plane" posX="-6.0" posY="-1.5" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="knife" mesh="plane" posX="0.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="knife" mesh="plane" posX="6.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="knife" mesh="plane" posX="-6.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+  </models>
+</scene>
+

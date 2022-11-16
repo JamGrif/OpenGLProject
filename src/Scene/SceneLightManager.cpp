@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Scene/SceneLightManager.h"
 
-#include "Core/EngineStatics.h"
 
 SceneLightManager::SceneLightManager()
 	:m_maxDirectionalLights(1),
@@ -18,7 +17,7 @@ SceneLightManager::~SceneLightManager()
 
 	m_sceneSpotLights.clear();
 
-	EngineStatics::setLightManager(nullptr);
+	//EngineStatics::setLightManager(nullptr);
 }
 
 

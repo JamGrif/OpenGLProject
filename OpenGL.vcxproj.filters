@@ -30,9 +30,6 @@
     <ClCompile Include="src\Scene\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\EngineStatics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Scene\SceneLightManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -132,6 +129,9 @@
     <ClCompile Include="dependencies\tinyXML\src\tinyxmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Vector3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Scene\SceneCamera.h">
@@ -144,9 +144,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Scene\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\EngineStatics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Scene\SceneLightManager.h">
@@ -251,6 +248,9 @@
     <ClInclude Include="dependencies\tinyXML\include\tinyXML\tinyxml.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Vector3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\jeff.jpg">
@@ -289,10 +289,10 @@
     <None Include="res\shaders\geometry-fragment.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="res\scenes\FMPscene.txt" />
-    <Text Include="res\scenes\jamieTest.txt" />
-    <Text Include="res\scenes\materialTest.txt" />
-    <Text Include="res\scenes\lightTest.txt" />
-    <Text Include="res\scenes\shadowTest.txt" />
+    <Xml Include="res\scenes\shadowTest.xml" />
+    <Xml Include="res\scenes\FMPscene.xml" />
+    <Xml Include="res\scenes\materialTest.xml" />
+    <Xml Include="res\scenes\jamieTest.xml" />
+    <Xml Include="res\scenes\lightTest.xml" />
   </ItemGroup>
 </Project>

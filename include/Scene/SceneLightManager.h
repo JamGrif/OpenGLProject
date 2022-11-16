@@ -4,21 +4,21 @@
 
 struct LightLoaderParams
 {
-	glm::vec3 ambient;
-	glm::vec3 diffuse;
-	glm::vec3 specular;
+	glm::vec3 ambient{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 diffuse{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 specular{ 0.0f, 0.0f, 0.0f };
 };
 
 struct PointLoaderParams
 	: public virtual LightLoaderParams
 {
-	glm::vec3 position;
+	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
 };
 
 struct DirectionalLoaderParams
 	: public virtual LightLoaderParams
 {
-	glm::vec3 direction;
+	glm::vec3 direction{ 0.0f, 0.0f, 0.0f };
 };
 
 struct SpotLoaderParams
@@ -113,7 +113,6 @@ public:
 	void							addDirectionalLight(DirectionalLoaderParams* pParams);
 	std::weak_ptr<DirectionalLight>	getDirectionalLight(int index = 0) const;
 
-
 	unsigned int getCurrentDirectionalLights() const { return static_cast<unsigned int>(m_sceneDirectionalLights.size()); }
 
 	// Point Lights
@@ -121,14 +120,12 @@ public:
 	void							addPointLight(PointLoaderParams* pParams);
 	std::weak_ptr<PointLight>		getPointLight(int index = 0) const;
 
-
 	unsigned int getCurrentPointLights() const { return static_cast<unsigned int>(m_scenePointLights.size()); }
 
 	// Spot Lights
 	void							setSpotLight(float x, float y, float z, int index = 0);
 	void							addSpotLight(SpotLoaderParams* pParams);
 	std::weak_ptr<SpotLight>		getSpotLight(int index = 0) const;
-
 
 	unsigned int getCurrentSpotLights() const{ return static_cast<unsigned int>(m_sceneSpotLights.size()); }
 

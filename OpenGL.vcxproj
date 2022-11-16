@@ -243,7 +243,6 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClCompile Include="src\Scene\SceneSky.cpp" />
     <ClCompile Include="src\Rendering\Model.cpp" />
     <ClCompile Include="src\Scene\SceneLightManager.cpp" />
-    <ClCompile Include="src\Core\EngineStatics.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneCamera.cpp" />
@@ -254,6 +253,7 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClCompile Include="src\Core\UI.cpp" />
     <ClCompile Include="src\Rendering\Texture.cpp" />
     <ClCompile Include="src\Rendering\TextureManager.cpp" />
+    <ClCompile Include="src\Core\Vector3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\tinyXML\include\tinyXML\tinystr.h" />
@@ -283,7 +283,6 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClInclude Include="include\Rendering\MeshManager.h" />
     <ClInclude Include="res\icon\resource.h" />
     <ClInclude Include="include\Scene\SceneLightManager.h" />
-    <ClInclude Include="include\Core\EngineStatics.h" />
     <ClInclude Include="include\Core\Application.h" />
     <ClInclude Include="include\Scene\Scene.h" />
     <ClInclude Include="include\Core\InputHandler.h" />
@@ -295,6 +294,7 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClInclude Include="include\Rendering\TextureManager.h" />
     <ClInclude Include="include\Rendering\Shader.h" />
     <ClInclude Include="include\Rendering\ShaderManager.h" />
+    <ClInclude Include="include\Core\Vector3D.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\icon\Icon.ico" />
@@ -327,11 +327,11 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <None Include="res\shaders\terrain-vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="res\scenes\FMPscene.txt" />
-    <Text Include="res\scenes\jamieTest.txt" />
-    <Text Include="res\scenes\lightTest.txt" />
-    <Text Include="res\scenes\materialTest.txt" />
-    <Text Include="res\scenes\shadowTest.txt" />
+    <Xml Include="res\scenes\FMPscene.xml" />
+    <Xml Include="res\scenes\jamieTest.xml" />
+    <Xml Include="res\scenes\lightTest.xml" />
+    <Xml Include="res\scenes\materialTest.xml" />
+    <Xml Include="res\scenes\shadowTest.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

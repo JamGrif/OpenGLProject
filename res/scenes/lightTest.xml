@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene skyid="black">
+  <materials>
+    <material id="metal" diffuseid="metal_diff" specularid="metal_spec" normalid="metal_norm" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="sign" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="/signs/sign13_emis"/>
+  </materials>
+  <lights>
+    <light type="point" ambR="0.3" ambG="0.0" ambB="0.0" difR="1.0" difG="0.0" difB="0.0" speR="0.6" speG="0.0" speB="0.0" posX="-12.0" posY="3.0" posZ="0.0"/>
+  </lights>
+  <models>
+    <model material="metal" mesh="plane" posX="-6.0" posY="1.5" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-12.0" posY="1.5" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-18.0" posY="1.5" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-6.0" posY="7.5" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-12.0" posY="7.5" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-18.0" posY="7.5" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-6.0" posY="1.5" posZ="9.0	" rotX="90.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-12.0" posY="1.5" posZ="9.0" rotX="90.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-18.0" posY="1.5" posZ="9.0" rotX="90.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-6.0" posY="7.5" posZ="9.0" rotX="90.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-12.0" posY="7.5" posZ="9.0" rotX="90.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-18.0" posY="7.5" posZ="9.0" rotX="90.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-21.0" posY="1.5" posZ="-6.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-21.0" posY="1.5" posZ="0.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-21.0" posY="1.5" posZ="6.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-21.0" posY="7.5" posZ="-6.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-21.0" posY="7.5" posZ="0.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-21.0" posY="7.5" posZ="6.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-3.0" posY="1.5" posZ="-6.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-3.0" posY="1.5" posZ="0.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-3.0" posY="1.5" posZ="6.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-3.0" posY="7.5" posZ="-6.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-3.0" posY="7.5" posZ="0.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-3.0" posY="7.5" posZ="6.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-18.0" posY="-1.5" posZ="6.0" rotX="0.0	" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-18.0" posY="-1.5" posZ="0.0" rotX="0.0	" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-18.0" posY="-1.5" posZ="-6.0" rotX="0.0	" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-12.0" posY="-1.5" posZ="6.0" rotX="0.0	" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-12.0" posY="-1.5" posZ="0.0" rotX="0.0	" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-12.0" posY="-1.5" posZ="-6.0" rotX="0.0	" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-6.0" posY="-1.5" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-6.0" posY="-1.5" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-6.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-18.0" posY="10.5" posZ="6.0" rotX="180.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-18.0" posY="10.5" posZ="0.0" rotX="180.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-18.0" posY="10.5" posZ="-6.0" rotX="180.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-12.0" posY="10.5" posZ="6.0" rotX="180.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-12.0" posY="10.5" posZ="0.0" rotX="180.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-12.0" posY="10.5" posZ="-6.0" rotX="180.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-6.0" posY="10.5" posZ="6.0" rotX="180.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-6.0" posY="10.5" posZ="0.0" rotX="180.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal" mesh="plane" posX="-6.0" posY="10.5" posZ="-6.0" rotX="180.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+
+    <model material="sign" mesh="signpost" posX="-8.0" posY="-2.75" posZ="0.0" rotX="0.0" rotY="90.0" rotZ="0.0" scaleX="0.6" scaleY="0.6" scaleZ="0.6"/>
+  </models>
+</scene>
+

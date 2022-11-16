@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene skyid="default">
+  <materials>
+    <material id="grass" diffuseid="grass_diff" specularid="grass_spec" normalid="null" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="shed" diffuseid="shed_diff" specularid="shed_spec" normalid="shed_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="cottage" diffuseid="cottage_diff" specularid="cottage_spec" normalid="cottage_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="carpet" diffuseid="carpet_diff" specularid="carpet_spec" normalid="carpet_norm" normalmapNormalize="0.0" heightid="carpet_height" heightmapHeight="0.05" emissionid="null"/>
+    <material id="crate" diffuseid="crate_diff" specularid="crate_spec" normalid="crate_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="housewall" diffuseid="woodWall_diff" specularid="woodWall_spec" normalid="woodWall_norm" normalmapNormalize="0.0" heightid="woodWall_height" heightmapHeight="0.04" emissionid="null"/>
+    <material id="concrete" diffuseid="concreteSlab_diff" specularid="concreteSlab_spec" normalid="concreteSlab_norm" normalmapNormalize="0.0" heightid="concreteSlab_height" heightmapHeight="0.01" emissionid="null"/>
+    <material id="whitebrick" diffuseid="concreteBrick_diff" specularid="concreteBrick_spec" normalid="concreteBrick_norm" normalmapNormalize="0.0" heightid="concreteBrick_height" heightmapHeight="0.01" emissionid="null"/>
+    <material id="metal2" diffuseid="metal2_diff" specularid="metal2_spec" normalid="metal2_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="dresser" diffuseid="dresser_diff" specularid="dresser_spec" normalid="dresser_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="stairs" diffuseid="stairs_diff" specularid="stairs_spec" normalid="stairs_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="watchtower" diffuseid="watchTower_diff" specularid="watchTower_spec" normalid="watchTower_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="bed" diffuseid="bed_diff" specularid="bed_spec" normalid="bed_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="table" diffuseid="table_diff" specularid="table_spec" normalid="null" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="knife" diffuseid="knife_diff" specularid="knife_spec" normalid="knife_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="leatherNorm" diffuseid="leather_diff" specularid="leather_spec" normalid="leather_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="leatherNoNorm" diffuseid="leather_diff" specularid="leather_spec" normalid="null" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="concreteNorm" diffuseid="concreteExample_diff" specularid="concreteExample_spec" normalid="concreteExample_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="concreteNoNorm" diffuseid="concreteExample_diff" specularid="concreteExample_spec" normalid="null" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="brickNorm" diffuseid="cartoonBricks_diff" specularid="cartoonBricks_spec" normalid="cartoonBricks_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="brickNoNorm" diffuseid="cartoonBricks_diff" specularid="cartoonBricks_spec" normalid="null" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="metalExample" diffuseid="metal_diff" specularid="metal_spec" normalid="metal_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="tileExample" diffuseid="tile_diff" specularid="tile_spec" normalid="tile_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="sandExample" diffuseid="sand_diff" specularid="sand_spec" normalid="sand_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="lavaExample" diffuseid="lava_diff" specularid="lava_spec" normalid="lava_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="lava_emis"/>
+    <material id="hieroglyphsExample" diffuseid="hieroglyphs_diff" specularid="hieroglyphs_spec" normalid="hieroglyphs_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="metalExample" diffuseid="metalHammer_diff" specularid="metalHammer_spec" normalid="metalHammer_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="skullExample" diffuseid="skullGround_diff" specularid="skullGround_spec" normalid="skullGround_norm" normalmapNormalize="1.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="rockExample" diffuseid="rock_diff" specularid="rock_spec" normalid="rock_norm" normalmapNormalize="1.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="concrete2Example" diffuseid="concrete2_diff" specularid="concrete2_spec" normalid="concrete2_norm" normalmapNormalize="1.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="sign1" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign1_emis"/>
+    <material id="sign2" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign2_emis"/>
+    <material id="sign3" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign3_emis"/>
+    <material id="sign4" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign4_emis"/>
+    <material id="sign5" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign5_emis"/>
+    <material id="sign6" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign6_emis"/>
+    <material id="sign7" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign7_emis"/>
+    <material id="sign8" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign8_emis"/>
+    <material id="sign9" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign9_emis"/>
+    <material id="sign10" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign10_emis"/>
+    <material id="sign11" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign11_emis"/>
+    <material id="sign12" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign12_emis"/>
+  </materials>
+  <lights>
+    <light type="direction" ambR="0.2" ambG="0.2" ambB="0.2" difR="0.5" difG="0.5" difB="0.5" speR="0.3" speG="0.3" speB="0.3" dirX="-2.0" dirY="-2.0" dirZ="-1.0"/>
+    <light type="point" ambR="0.2" ambG="0.2" ambB="0.2" difR="1.0" difG="1.0" difB="1.0" speR="0.4" speG="0.4" speB="0.4" posX="0.0	" posY="3.0" posZ="0.0"/>
+    <light type="point" ambR="0.2" ambG="0.2" ambB="0.2" difR="1.0" difG="1.0" difB="1.0" speR="0.4" speG="0.4" speB="0.4" posX="-20.0" posY="2.0" posZ="0.0"/>
+    <light type="point" ambR="0.2" ambG="0.2" ambB="0.2" difR="1.0" difG="1.0" difB="1.0" speR="0.4" speG="0.4" speB="0.4" posX="22.0" posY="2.0" posZ="22.0"/>
+    <light type="point" ambR="0.2" ambG="0.2" ambB="0.2" difR="1.0" difG="1.0" difB="1.0" speR="0.4" speG="0.4" speB="0.4" posX="-20.0" posY="2.0" posZ="20.0"/>
+    <light type="spot" ambR="0.0" ambG="0.0" ambB="0.0" difR="0.8" difG="0.8" difB="0.8" speR="1.0" speG="1.0" speB="1.0" posX="-0.0" posY="0.0" posZ="0.0" dirX="0.0" dirY="0.0" dirZ="0.0"/>
+  </lights>
+  <models>
+    <model material="grass" mesh="plane" posX="0.0" posY="-1.5" posZ="0.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="6.0" posY="-1.5" posZ="0.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-6.0" posY="-1.5" posZ="0.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="0.0" posY="-1.5" posZ="6.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="6.0" posY="-1.5" posZ="6.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-6.0" posY="-1.5" posZ="6.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="0.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="6.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-6.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-18.0" posY="-1.5" posZ="0.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-12.0" posY="-1.5" posZ="0.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-24.0" posY="-1.5" posZ="0.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-18.0" posY="-1.5" posZ="6.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-12.0" posY="-1.5" posZ="6.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-24.0" posY="-1.5" posZ="6.0	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-18.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-12.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-24.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="18.0" posY="-1.5" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="12.0" posY="-1.5" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="24.0" posY="-1.5" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="18.0" posY="-1.5" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="12.0" posY="-1.5" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="24.0" posY="-1.5" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="18.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="12.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="24.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="0.0" posY="-1.5" posZ="18.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="6.0" posY="-1.5" posZ="18.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-6.0" posY="-1.5" posZ="18.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="0.0" posY="-1.5" posZ="24.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="6.0" posY="-1.5" posZ="24.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-6.0" posY="-1.5" posZ="24.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="0.0" posY="-1.5" posZ="12.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="6.0" posY="-1.5" posZ="12.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-6.0" posY="-1.5" posZ="12.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-18.0" posY="-1.5" posZ="18.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-12.0" posY="-1.5" posZ="18.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-24.0" posY="-1.5" posZ="18.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-18.0" posY="-1.5" posZ="24.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-12.0" posY="-1.5" posZ="24.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-24.0" posY="-1.5" posZ="24.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-18.0" posY="-1.5" posZ="12.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-12.0" posY="-1.5" posZ="12.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="-24.0" posY="-1.5" posZ="12.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="18.0" posY="-1.5" posZ="18.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="12.0" posY="-1.5" posZ="18.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="24.0" posY="-1.5" posZ="18.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="18.0" posY="-1.5" posZ="24.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="12.0" posY="-1.5" posZ="24.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="24.0" posY="-1.5" posZ="24.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="18.0" posY="-1.5" posZ="12.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="12.0" posY="-1.5" posZ="12.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="grass" mesh="plane" posX="24.0" posY="-1.5" posZ="12.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="shed" mesh="shed" posX="-38.0" posY="1.0" posZ="0.0" rotX="0.0" rotY="210.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="shed" mesh="shed" posX="38.0	" posY="1.0	" posZ="10.0" rotX="0.0" rotY="-210.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="shed" mesh="shed" posX="13.0	" posY="14.0" posZ="-67.0" rotX="0.0" rotY="-210.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="cottage" mesh="cottage" posX="-23.0" posY="0.0" posZ="-20.0" rotX="0.0" rotY="130.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="cottage" mesh="cottage" posX="20.0" posY="1.0" posZ="37.0" rotX="0.0" rotY="45.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="carpet" mesh="plane" posX="0.0" posY="0.0" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="carpet" mesh="plane" posX="6.0" posY="0.0" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="carpet" mesh="plane" posX="-6.0" posY="0.0" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="carpet" mesh="plane" posX="0.0" posY="0.0" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="carpet" mesh="plane" posX="6.0" posY="0.0" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="carpet" mesh="plane" posX="-6.0" posY="0.0" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="carpet" mesh="plane" posX="0.0" posY="0.0" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="carpet" mesh="plane" posX="6.0" posY="0.0" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="carpet" mesh="plane" posX="-6.0" posY="0.0" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="crate" mesh="crate" posX="7.75" posY="0.0" posZ="7.75" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="crate" mesh="crate" posX="5.75" posY="0.0" posZ="7.75" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="crate" mesh="crate" posX="7.25" posY="0.0" posZ="5.1" rotX="0.0" rotY="30.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="crate" mesh="crate" posX="7.5" posY="2.0" posZ="7.5" rotX="0.0" rotY="60.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="-9.0" posY="2.8" posZ="-6.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="-9.0" posY="2.8" posZ="0.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="-9.0" posY="2.8" posZ="6.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="9.0" posY="2.8" posZ="-6.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="9.0" posY="2.8" posZ="0.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="9.0" posY="2.8" posZ="6.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="-6.0" posY="2.8" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="0.0" posY="2.8" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="6.0" posY="2.8" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="-6.0" posY="2.8" posZ="9.0" rotX="-90.0" rotY="180.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="housewall" mesh="wall" posX="6.0" posY="2.8" posZ="9.0" rotX="-90.0" rotY="180.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concrete" mesh="slab" posX="0.0" posY="-0.8" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concrete" mesh="slab" posX="6.0" posY="-0.8" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concrete" mesh="slab" posX="-6.0" posY="-0.8" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concrete" mesh="slab" posX="0.0" posY="-0.8" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concrete" mesh="slab" posX="6.0" posY="-0.8" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concrete" mesh="slab" posX="-6.0" posY="-0.8" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concrete" mesh="slab" posX="0.0" posY="-0.8" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concrete" mesh="slab" posX="6.0" posY="-0.8" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concrete" mesh="slab" posX="-6.0" posY="-0.8" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-12.0" posY="1.5" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-18.0" posY="1.5" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-24.0" posY="1.5" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-27.0" posY="1.5" posZ="-6.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-27.0" posY="1.5" posZ="0.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-27.0" posY="1.5" posZ="6.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-27.0" posY="1.5" posZ="12.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-27.0" posY="1.5" posZ="18.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-27.0" posY="1.5" posZ="24.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-24.0" posY="1.5" posZ="27.0" rotX="-90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-18.0" posY="1.5" posZ="27.0" rotX="-90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-12.0" posY="1.5" posZ="27.0" rotX="-90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="-6.0" posY="1.5" posZ="27.0" rotX="-90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="0.0" posY="1.5" posZ="27.0" rotX="-90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="6.0" posY="1.5" posZ="27.0" rotX="-90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="12.0" posY="1.5" posZ="27.0" rotX="-90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="18.0" posY="1.5" posZ="27.0" rotX="-90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="24.0" posY="1.5" posZ="27.0" rotX="-90.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="27.0" posY="1.5" posZ="24.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="27.0" posY="1.5" posZ="18.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="27.0" posY="1.5" posZ="12.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="27.0" posY="1.5" posZ="6.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="27.0" posY="1.5" posZ="0.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="27.0" posY="1.5" posZ="-6.0" rotX="90.0	" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="12.0" posY="1.5" posZ="-9.0" rotX="90.0	" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="18.0" posY="1.5" posZ="-9.0" rotX="90.0	" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="whitebrick" mesh="plane" posX="24.0" posY="1.5" posZ="-9.0" rotX="90.0	" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal2" mesh="wall" posX="0.0" posY="5.8" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal2" mesh="wall" posX="6.0" posY="5.8" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal2" mesh="wall" posX="-6.0" posY="5.8" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal2" mesh="wall" posX="0.0" posY="5.8" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal2" mesh="wall" posX="6.0" posY="5.8" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal2" mesh="wall" posX="-6.0" posY="5.8" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal2" mesh="wall" posX="0.0" posY="5.8" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal2" mesh="wall" posX="6.0" posY="5.8" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metal2" mesh="wall" posX="-6.0" posY="5.8" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="dresser" mesh="dresser" posX="0.0" posY="0.0" posZ="-7.75" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="stairs" mesh="stairs" posX="0.0" posY="-2.25" posZ="10.0" rotX="0.0" rotY="90.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="watchtower" mesh="watchTower" posX="-32.0" posY="-1.0" posZ="32.0" rotX="0.0" rotY="90.0" rotZ="0.0" scaleX="2.5" scaleY="2.5" scaleZ="2.5"/>
+    <model material="bed" mesh="bed" posX="-7.0" posY="-0.2" posZ="6.0" rotX="0.0" rotY="180.0" rotZ="0.0" scaleX="1.0	" scaleY="1.0" scaleZ="1.0"/>
+    <model material="table" mesh="table" posX="-7.5" posY="-1.0" posZ="0.0" rotX="0.0" rotY="90.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="knife" mesh="knife" posX="-7.5" posY="1.9" posZ="0.0" rotX="0.0" rotY="50.0" rotZ="0.0" scaleX="1.5" scaleY="1.5" scaleZ="1.5"/>
+    <model material="leatherNorm" mesh="plane" posX="25.0" posY="1.0" posZ="6.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="leatherNoNorm" mesh="plane" posX="25.0" posY="1.0" posZ="12.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concreteNorm" mesh="plane" posX="25.0" posY="1.0" posZ="18.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concreteNoNorm" mesh="plane" posX="25.0" posY="1.0" posZ="24.0" rotX="90.0" rotY="0.0" rotZ="90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="brickNorm" mesh="plane" posX="22.0" posY="1.0" posZ="26.0" rotX="90.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="brickNoNorm" mesh="plane" posX="16.0" posY="1.0" posZ="26.0" rotX="90.0" rotY="0.0" rotZ="180.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metalExample" mesh="plane" posX="-24.0" posY="-1.25" posZ="-4.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="tileExample" mesh="plane" posX="-18.0" posY="-1.25" posZ="-4.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="sandExample" mesh="plane" posX="-12.0" posY="-1.25" posZ="-4.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="lavaExample" mesh="plane" posX="-24.0" posY="-1.25" posZ="2.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="hieroglyphsExample" mesh="plane" posX="-18.0" posY="-1.25" posZ="2.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="metalExample" mesh="plane" posX="-18.0" posY="-1.25" posZ="8.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="skullExample" mesh="plane" posX="-24.0" posY="-1.25" posZ="8.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="rockExample" mesh="plane" posX="-12.0" posY="-1.25" posZ="2.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="concrete2Example" mesh="plane" posX="-12.0" posY="-1.25" posZ="8.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="sign1" mesh="signpost" posX="2.0" posY="-3.0" posZ="25.75" rotX="0.0" rotY="180.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign2" mesh="signpost" posX="-3.0" posY="-1.3" posZ="-4.0" rotX="0.0" rotY="30.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign3" mesh="signpost" posX="7.0" posY="-1.3" posZ="-4.5" rotX="0.0" rotY="-90.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign4" mesh="signpost" posX="3.0" posY="-1.3" posZ="-4.0" rotX="0.0" rotY="-30.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign5" mesh="signpost" posX="11.0" posY="-3.0" posZ="-4.75" rotX="0.0" rotY="30.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign6" mesh="signpost" posX="25.0" posY="-3.0" posZ="-4.75" rotX="0.0" rotY="-30.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign7" mesh="signpost" posX="25.0" posY="-3.0" posZ="15.0" rotX="0.0" rotY="-90.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign8" mesh="signpost" posX="-15.0" posY="-3.0" posZ="-8.25" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign9" mesh="signpost" posX="-26.0" posY="-3.0" posZ="17.75" rotX="0.0" rotY="90.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign10" mesh="signpost" posX="-23.0" posY="-3.0" posZ="-8.25	" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign11" mesh="signpost" posX="0.0" posY="-1.3" posZ="-4.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+    <model material="sign12" mesh="signpost" posX="0.0" posY="1.0" posZ="-8.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75"/>
+  </models>
+</scene>
+

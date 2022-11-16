@@ -1,10 +1,9 @@
 #pragma once
 
-// Forward Declarations
 class Model;
+
 class SceneCamera;
 class SceneLightManager;
-
 class SceneSky;
 
 // Class that contains all the objects of a loaded level. Loops through them every frame, updating and drawing them
@@ -17,38 +16,27 @@ public:
 	bool							loadScene();
 
 	void							updateScene();
+	void							drawScene();
 
-	void							drawSceneFirstPass();
-	void							drawSceneSecondPass();
+	const std::string& getSceneName() { return m_sceneName; }
 
-	const std::string&				getSceneName();
-
-	size_t							getEntityNum();
-	std::shared_ptr<Model>	getEntityAtIndex(int index);
-
-
-	const std::shared_ptr<SceneLightManager>&	getSceneLightManager();
-	const std::shared_ptr<SceneCamera>&			getSceneCamera();
-
-	void							deleteLightingEntityFromVector(int index);
+	const std::shared_ptr<SceneLightManager>& getSceneLightManager() { return m_sceneLightManager; }
 
 private:
 
-	void							addSceneCamera(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+	void							addSceneCamera(Vector3D position);
 	void							addSceneLightManager();
 
 	void							updateSceneLight();
 
 
-	const std::string							m_sceneName;
+	const std::string&					m_sceneName;
 
-	std::shared_ptr<SceneCamera>				m_sceneCamera;
-	std::shared_ptr<SceneLightManager>			m_sceneLightManager;
+	std::shared_ptr<SceneCamera>		m_sceneCamera;
+	std::shared_ptr<SceneLightManager>	m_sceneLightManager; 
 
-	//std::vector<std::shared_ptr<BaseEntity>>	m_sceneEntities;
-
-	SceneSky*									m_sceneSky;
+	SceneSky*							m_sceneSky;
 
 	// A separate vector to store just the LightingEntity objects as it makes it easier for the UI (will change to a better system eventually)
-	std::vector<std::shared_ptr<Model>> m_sceneLightingEntities;
+	std::vector<std::shared_ptr<Model>>	m_sceneModels;
 };

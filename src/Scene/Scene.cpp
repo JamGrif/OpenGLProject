@@ -4,7 +4,6 @@
 #include <thread>
 #include <algorithm>
 
-#include "Core/EngineStatics.h"
 #include "Scene/SceneCamera.h"
 #include "Scene/SceneParser.h"
 #include "Scene/SceneLightManager.h"
@@ -74,43 +73,22 @@ void resetSceneValues()
 	m_lightB = 0.0f;
 }
 
-// Counts the number of draw calls in a frame
-int entityDrawCount = 0;
-
-// ran from std::threads in .loadScene()
-//static void createTextureThread(){ OpenGLTextureManager::readTexturesFromFile(); }
-//static void createMeshThread(){ OpenGLMeshManager::readMeshesFromFile(); }
-//static void createShaderThread(){ OpenGLShaderManager::readShadersFromFile(); }
-//static void createCubemapThread(){ CubemapManager::readCubemapsFromFile(); }
-
 Scene::Scene(const std::string& sceneName)
 	:m_sceneName(sceneName), m_sceneCamera(nullptr), m_sceneLightManager(nullptr)
 {
-	//m_sceneEntities.reserve(50);
 	resetSceneValues();
 }
  
 Scene::~Scene()
 {
-	//m_sceneEntities.clear();
-	m_sceneLightingEntities.clear();
+	m_sceneModels.clear();
 
 	m_sceneCamera = nullptr;
-	EngineStatics::setCamera(nullptr);
 
 	m_sceneLightManager = nullptr;
-	EngineStatics::setLightManager(nullptr);
 
 	delete m_sceneSky;
 
-	/*
-		By not deleting all the scenes assets, it allows for quicker scene change after the content has been initially loaded
-	*/
-
-	//OpenGLTextureManager::clearTextures();
-	//CubemapManager::clearCubemaps();
-	//OpenGLMeshManager::clearMeshes();
-	//OpenGLShaderManager::clearShaders();
 
 	TheMeshManager::Instance()->clearAllMeshes();
 	TheMaterialManager::Instance()->clearAllMaterials();
@@ -127,14 +105,14 @@ Scene::~Scene()
 bool Scene::loadScene()
 {
 	// Scene essentials - all scenes must contain these objects
-	addSceneCamera(0.0f, 2.0f, 0.0f);
+	addSceneCamera(Vector3D(0.0f, 2.0f, 0.0));
 	addSceneLightManager();
 
 	PRINT_INFO("SCENE->Attempting to load scene {0}", m_sceneName);
-	PerformanceTimer t("Scene loading");
+	//PerformanceTimer t("Scene loading");
 
 	// Run scene reader, giving it the scene objects vector and light manager to fill out
-	SceneParser txtReader(m_sceneName, m_sceneLightingEntities, m_sceneLightManager, &m_sceneSky);
+	SceneParser txtReader(m_sceneName, m_sceneModels, m_sceneLightManager, &m_sceneSky);
 
 
 	if (!txtReader.getStatus()) // Ensure textfile was read correctly
@@ -143,32 +121,19 @@ bool Scene::loadScene()
 		return false;
 	}
 
-	// Create threads to read assets from their files
-	//std::thread textureLoadThread(createTextureThread);
-	//std::thread meshLoadThread(createMeshThread);
-	//std::thread shaderLoadThread(createShaderThread);
-	//std::thread cubemapLoadThread(createCubemapThread);
-	
-	//textureLoadThread.join();
-	//meshLoadThread.join();
-	//shaderLoadThread.join();
-	//cubemapLoadThread.join();
 
-	// Once the files have been read and saved into the objects, use them to create the OpenGL objects
-	//OpenGLTextureManager::createTextures();
-	//CubemapManager::createCubemaps();
-	//OpenGLMeshManager::createMeshes();
-	//OpenGLShaderManager::createShaders();
-
-
-	for (auto& m : m_sceneLightingEntities)
+	for (const auto& m : m_sceneModels)
 	{
-		m->initEntity();
+		m->setModelPointers(m_sceneCamera.get(), m_sceneLightManager.get());
 	}
+
+	m_sceneSky->setCameraPointer(m_sceneCamera.get());
 
 	//m_sceneSky->initEntity();
 
-	t.stop();
+	//TheMaterialManager::Instance()->setAllMaterialPointers(m_sceneCamera.get());
+
+	//t.stop();
 	PRINT_INFO("SCENE->{0} has loaded sucessfully", m_sceneName);
 
 	return true;
@@ -182,45 +147,27 @@ void Scene::updateScene()
 	// Update functions
 	updateSceneLight();
 
+
 	m_sceneCamera->Update();
 
-
-
-	for (auto& m : m_sceneLightingEntities)
+	for (const auto& m : m_sceneModels)
 	{
 		m->setMatrixValues();
-	}
-
-	//
-
-
-	for (auto& m : m_sceneLightingEntities)
-	{
-		m->updateEntity();
+		m->updateModel();
 	}
 }
 
-void Scene::drawSceneFirstPass()
-{
-	// Draw first pass of all models
-	
-
-	for (auto& m : m_sceneLightingEntities)
-	{
-		m->drawPassOne();
-	}
-}
 
 /// <summary>
 /// Draws the sceneModels by calling its first and second draw pass function
 /// </summary>
-void Scene::drawSceneSecondPass()
+void Scene::drawScene()
 {
 	// Draw second pass of all models
 
-	for (auto& m : m_sceneLightingEntities)
+	for (const auto& m : m_sceneModels)
 	{
-		m->drawPassTwo();
+		m->drawModel();
 	}
 
 
@@ -235,47 +182,6 @@ void Scene::drawSceneSecondPass()
 }
 
 /// <summary>
-/// Returns the scenes text file name
-/// </summary>
-/// <returns></returns>
-const std::string& Scene::getSceneName()
-{
-	return m_sceneName;
-}
-
-size_t Scene::getEntityNum()
-{
-	return m_sceneLightingEntities.size();
-}
-
-
-std::shared_ptr<Model> Scene::getEntityAtIndex(int index)
-{
-	return m_sceneLightingEntities.at(index);
-}
-
-//const std::vector<std::shared_ptr<BaseEntity>>& Scene::getSceneEntityVector()
-//{
-//	return m_sceneEntities;
-//}
-
-const std::shared_ptr<SceneLightManager>& Scene::getSceneLightManager()
-{
-	return m_sceneLightManager;
-}
-
-
-const std::shared_ptr<SceneCamera>& Scene::getSceneCamera()
-{
-	return m_sceneCamera;
-}
-
-void Scene::deleteLightingEntityFromVector(int index)
-{
-	m_sceneLightingEntities.erase(m_sceneLightingEntities.begin() + index);
-}
-
-/// <summary>
 /// Alters the lights position or colour every frame 
 /// </summary>
 void Scene::updateSceneLight()
@@ -286,7 +192,7 @@ void Scene::updateSceneLight()
 		Light over material showcase
 	*/
 
-	if (m_sceneName == "res/scenes/FMPscene.txt")
+	if (m_sceneName == "res/scenes/FMPscene.xml")
 	{
 		std::shared_ptr<PointLight> localFirstPointLight = m_sceneLightManager->getPointLight(1).lock();
 		std::shared_ptr<PointLight> localSecondPointLight = m_sceneLightManager->getPointLight(2).lock();
@@ -399,7 +305,7 @@ void Scene::updateSceneLight()
 	}
 
 
-	if (m_sceneName == "res/scenes/materialTest.txt")
+	if (m_sceneName == "res/scenes/materialTest.xml")
 	{
 		/*
 			Coloured Lighting
@@ -489,10 +395,9 @@ void Scene::updateSceneLight()
 /// <param name="x">Starting X position of camera</param>
 /// <param name="y">Starting Y position of camera</param>
 /// <param name="z">Starting Z position of camera</param>
-void Scene::addSceneCamera(float x, float y, float z)
+void Scene::addSceneCamera(Vector3D position)
 {
-	m_sceneCamera = std::make_shared<SceneCamera>(glm::vec3{ x,y,z });
-	EngineStatics::setCamera(m_sceneCamera);
+	m_sceneCamera = std::make_shared<SceneCamera>(glm::vec3{ position.getX(), position.getY(), position.getZ() });
 }
 
 /// <summary>
@@ -501,5 +406,4 @@ void Scene::addSceneCamera(float x, float y, float z)
 void Scene::addSceneLightManager()
 {
 	m_sceneLightManager = std::make_shared<SceneLightManager>();
-	EngineStatics::setLightManager(m_sceneLightManager);
 }

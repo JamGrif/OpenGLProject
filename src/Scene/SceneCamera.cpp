@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Scene/SceneCamera.h"
 
-#include "Core/EngineStatics.h"
 #include "Core/InputHandler.h"
 
 #include <glm/gtc/matrix_transform.hpp>
