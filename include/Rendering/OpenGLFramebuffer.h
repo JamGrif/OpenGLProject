@@ -1,12 +1,13 @@
 #pragma once
 
-enum screenFilters
+enum class ScreenFilter
 {
-	screen_Default			= 1,
-	screen_Inverse			= 2,
-	screen_Greyscale		= 3,
-	screen_EdgeDetection	= 4,
-	screen_Drugs			= 5,
+	START_OF_FILTER_ENUM    = 0,
+	Default			= 1,
+	Inverse			= 2,
+	Greyscale		= 3,
+	EdgeDetection	= 4,
+	Weird			= 5,
 	END_OF_FILTER_ENUM
 };
 
@@ -27,7 +28,7 @@ public:
 
 	void			copyToFramebuffer();
 
-	void			setFrameFilter(int index);
+	void			setFrameFilter(ScreenFilter index);
 
 	unsigned int	getFBO() const;
 
@@ -50,7 +51,7 @@ private:
 	
 	unsigned int	m_quadVBO;
 
-	int				m_screenFilter;
+	ScreenFilter				m_screenFilter;
 
 	unsigned int	m_screenWidth, m_screenHeight;
 

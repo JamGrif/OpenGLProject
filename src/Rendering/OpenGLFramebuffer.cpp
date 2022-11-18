@@ -10,7 +10,7 @@
 
 OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 	:m_FBO(0), m_frameColourTexture(0), m_RBO(0),
-	m_quadVBO(0), m_screenFilter(1), m_screenWidth(TheOpenGLWindow::Instance()->getWindowWidth()),
+	m_quadVBO(0), m_screenFilter(ScreenFilter::Default), m_screenWidth(TheOpenGLWindow::Instance()->getWindowWidth()),
 	m_screenHeight(TheOpenGLWindow::Instance()->getWindowHeight())
 {
 	glCall(glGenFramebuffers(1, &m_FBO));
@@ -83,17 +83,13 @@ OpenGLFramebuffer::~OpenGLFramebuffer()
 /// </summary>
 void OpenGLFramebuffer::draw()
 {
-	//if (!m_screenShader) // No shader attached
-	//{
-	//	return;
-	//}
 
 	Shader* temp = TheShaderManager::Instance()->getShaderAtID(m_shaderID);
 	temp->bindShader();
 
 	// Sets shader values, texture and vertex attributes
 	temp->setUniform1i("screenTexture", 0);
-	temp->setUniform1i("screenFilter", m_screenFilter);
+	temp->setUniform1i("screenFilter", static_cast<int>(m_screenFilter));
 
 	glCall(glActiveTexture(GL_TEXTURE0));
 	glCall(glBindTexture(GL_TEXTURE_2D, m_frameColourTexture));
@@ -157,10 +153,11 @@ void OpenGLFramebuffer::copyToFramebuffer()
 /// Specifies which filter will be used when presenting buffer to the screen (see enum in OpenGLFramebuffer.h)
 /// </summary>
 /// <param name="index"></param>
-void OpenGLFramebuffer::setFrameFilter(int index)
+void OpenGLFramebuffer::setFrameFilter(ScreenFilter index)
 {
-	if (index >= END_OF_FILTER_ENUM || index <= 0)
+	if (index >= ScreenFilter::END_OF_FILTER_ENUM || index <= ScreenFilter::START_OF_FILTER_ENUM)
 	{
+		PRINT_TRACE("hi");
 		return;
 	}
 

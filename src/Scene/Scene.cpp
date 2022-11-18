@@ -10,9 +10,12 @@
 #include "Rendering/Model.h"
 #include "Scene/SceneSky.h"
 
+#include "Rendering/OpenGLRenderer.h"
+
 #include "Rendering/MaterialManager.h"
 #include "Rendering/MeshManager.h"
 #include "Rendering/TextureManager.h"
+#include "Rendering/ShaderManager.h"
 
 
 // Variables are used to move various lights in different scenes
@@ -126,6 +129,8 @@ bool Scene::loadScene()
 	{
 		m->setModelPointers(m_sceneCamera.get(), m_sceneLightManager.get());
 	}
+
+	TheMaterialManager::Instance()->setAllMaterialPointers(m_sceneLightManager.get(), m_sceneCamera.get(), TheOpenGLRenderer::Instance()->getProjectionMatrix());
 
 	m_sceneSky->setCameraPointer(m_sceneCamera.get());
 
@@ -298,9 +303,9 @@ void Scene::updateSceneLight()
 			
 		if (localThirdPointLight)
 		{
-			localThirdPointLight->m_Ambient = glm::vec3(m_lightR, m_lightG, m_lightB);
-			localThirdPointLight->m_Diffuse = glm::vec3(m_lightR, m_lightG, m_lightB);
-			localThirdPointLight->m_Specular = glm::vec3(m_lightR, m_lightG, m_lightB);
+			localThirdPointLight->m_ambient = glm::vec3(m_lightR, m_lightG, m_lightB);
+			localThirdPointLight->m_diffuse = glm::vec3(m_lightR, m_lightG, m_lightB);
+			localThirdPointLight->m_specular = glm::vec3(m_lightR, m_lightG, m_lightB);
 		}
 	}
 
@@ -330,9 +335,9 @@ void Scene::updateSceneLight()
 		
 		if (localPointLight)
 		{
-			localPointLight->m_Ambient = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
-			localPointLight->m_Diffuse = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
-			localPointLight->m_Specular = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+			localPointLight->m_ambient = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+			localPointLight->m_diffuse = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
+			localPointLight->m_specular = glm::vec3(m_materialtestlightR, m_materialtestlightG, m_materialtestlightB);
 		}
 	
 		if (m_materialtestLightIncZ)

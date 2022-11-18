@@ -21,8 +21,7 @@ public:
 	UI(bool uiVisible, std::shared_ptr<Scene> loadedScene);
 	~UI();
 
-	void	startOfFrame();
-	void	update();
+	void	renderUI();
 
 	void	toggleUI();
 

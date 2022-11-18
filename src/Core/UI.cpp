@@ -10,6 +10,7 @@
 #include "Scene/SceneLightManager.h"
 #include "Rendering/Model.h"
 #include "Core/InputHandler.h"
+#include "Rendering/OpenGLRenderer.h"
 
 // Flags for each ImGui window used
 static ImGuiWindowFlags commonResizeFlags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
@@ -157,34 +158,13 @@ UI::~UI()
 }
 
 /// <summary>
-/// Called at start of each frame, before UI drawInFrame()
-/// Gets ImGui ready for this frame
+/// Called every frame to draw the UI and adjust variables depending on user input on the ImGui buttons
 /// </summary>
-void UI::startOfFrame()
+void UI::renderUI()
 {
-	// Check if user wants to toggle UI visibility
-	if (InputHandler::Instance()->getKeyPressedOnce(Keyboard::Q))
-	{
-		toggleUI();
-	}
-
-	// If UI is not visible then return
-	if (!m_uiVisible)
-		return;
-
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-}
-
-/// <summary>
-/// Called every frame to draw the UI and adjust variables depending on user input on the ImGui buttons
-/// </summary>
-void UI::update()
-{
-	// UI is not visible so leave
-	if (!m_uiVisible)
-		return;
 
 	// Draw the various UI panels
 	sceneOptionsPanel();
@@ -249,7 +229,7 @@ void UI::sceneOptionsPanel()
 	// Reset variable
 	m_sceneNum = 0;
 
-	ImGui::Begin("Scene Options:", NULL, commonResizeFlags);
+	ImGui::Begin("Scene Options:", NULL, commonFlags);
 
 	ImGui::Text("Change Scene:");
 	if (ImGui::Button("FMPscene.txt"))
@@ -283,7 +263,7 @@ void UI::sceneOptionsPanel()
 		ImGui::Checkbox("DirectionalLight", &m_directionalLightActiveButton);
 
 		// Set the active state of the DirectionalLight depending on the check box status
-		sceneLM->getDirectionalLight(0).lock()->m_lightActive = m_directionalLightActiveButton ? true : false;
+		sceneLM->getDirectionalLight(0).lock()->m_bLightActive = m_directionalLightActiveButton ? true : false;
 
 	}
 
@@ -293,7 +273,7 @@ void UI::sceneOptionsPanel()
 		ImGui::Checkbox("SpotLight", &m_spotLightActiveButton);
 
 		// Set the active state of the SpotLight depending on the check box status
-		sceneLM->getSpotLight(0).lock()->m_lightActive = m_spotLightActiveButton ? true : false;
+		sceneLM->getSpotLight(0).lock()->m_bLightActive = m_spotLightActiveButton ? true : false;
 	}
 
 	for (int i = 0; i < m_totalPointLights; i++)
@@ -304,7 +284,7 @@ void UI::sceneOptionsPanel()
 			ImGui::Checkbox(nameTemp.c_str(), &m_pointLightActiveButton[i]);
 
 			// Set the active state of the pointLight depending on the check box status
-			sceneLM->getPointLight(i).lock()->m_lightActive = m_pointLightActiveButton[i] ? true : false;
+			sceneLM->getPointLight(i).lock()->m_bLightActive = m_pointLightActiveButton[i] ? true : false;
 		}
 	}
 
@@ -314,23 +294,23 @@ void UI::sceneOptionsPanel()
 	ImGui::Text("Change Post-Processing Filter:");
 	if (ImGui::Button("Normal"))
 	{
-		m_appPostProcess = 1;
+		TheOpenGLRenderer::Instance()->setScreenFilter(ScreenFilter::Default);
 	}
 	if (ImGui::Button("Inverse"))
 	{
-		m_appPostProcess = 2;
+		TheOpenGLRenderer::Instance()->setScreenFilter(ScreenFilter::Inverse);
 	}
 	if (ImGui::Button("Greyscale"))
 	{
-		m_appPostProcess = 3;
+		TheOpenGLRenderer::Instance()->setScreenFilter(ScreenFilter::Greyscale);
 	}
 	if (ImGui::Button("Edge Detection"))
 	{
-		m_appPostProcess = 4;
+		TheOpenGLRenderer::Instance()->setScreenFilter(ScreenFilter::EdgeDetection);
 	}
 	if (ImGui::Button("???"))
 	{
-		m_appPostProcess = 5;
+		TheOpenGLRenderer::Instance()->setScreenFilter(ScreenFilter::Weird);
 	}
 
 	ImGui::End();
