@@ -8,11 +8,14 @@ class MeshManager
 {
 public:
 
-	bool parseMesh(const std::string& meshID);
+	bool addMesh(const std::string& meshID);
 
 	void createAllMeshes();
 
-	Mesh* getMeshAtID(const std::string& meshID);
+	void bindMeshAtID(const std::string& meshID);
+	void unbindMeshAtID(const std::string& meshID);
+
+	size_t getIndicesCountAtID(const std::string meshID);
 
 	void clearAllMeshes();
 
@@ -23,10 +26,9 @@ public:
 	}
 private:
 
-	std::unordered_map<std::string, Mesh*> m_meshMap;
+	std::unordered_map<std::string, std::unique_ptr<Mesh>> m_meshMap;
 
 	MeshManager() {}
 	~MeshManager() {}
-
 };
 typedef MeshManager TheMeshManager;

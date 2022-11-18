@@ -30,7 +30,7 @@ private:
 	void							updateSceneLight();
 
 
-	const std::string&					m_sceneName;
+	std::string					m_sceneName;
 
 	std::shared_ptr<SceneCamera>		m_sceneCamera;
 	std::shared_ptr<SceneLightManager>	m_sceneLightManager; 

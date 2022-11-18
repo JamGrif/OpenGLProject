@@ -30,15 +30,15 @@ struct SpotLoaderParams
 struct BaseLight
 {
 	BaseLight(LightLoaderParams* pParams)
-		:m_Ambient(pParams->ambient), m_Diffuse(pParams->diffuse), m_Specular(pParams->specular), m_lightActive(true)
+		:m_ambient(pParams->ambient), m_diffuse(pParams->diffuse), m_specular(pParams->specular), m_bLightActive(true)
 	{
 	}
 
-	glm::vec3	m_Ambient;
-	glm::vec3	m_Diffuse;
-	glm::vec3	m_Specular;
+	glm::vec3	m_ambient;
+	glm::vec3	m_diffuse;
+	glm::vec3	m_specular;
 
-	bool		m_lightActive; // Toggles whether entities should take lighting information from this light or not
+	bool		m_bLightActive; // Toggles whether entities should take lighting information from this light or not
 
 protected:
 	BaseLight() {}

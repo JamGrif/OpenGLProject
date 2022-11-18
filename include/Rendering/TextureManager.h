@@ -8,12 +8,14 @@ class TextureManager
 {
 public:
 
-	bool parseTexture(const std::string& textureID, TextureType textureType);
-	bool createCubemap(const std::string& cubemapID);
+	bool addTexture(const std::string& textureID, TextureType textureType);
+	bool addCubemap(const std::string& cubemapID);
 
 	void createAllTextures();
 
-	Texture* getTextureAtID(const std::string textureID);
+	void	bindTextureAtID(const std::string& textureID);
+	void	unbindTextureAtID(const std::string& textureID);
+
 	Cubemap* getCubemapAtID(const std::string cubemapID);
 
 	void clearAllTextures();
@@ -26,7 +28,7 @@ public:
 	}
 private:
 
-	std::unordered_map<std::string, Texture*> m_textureMap;
+	std::unordered_map<std::string, std::unique_ptr<Texture>> m_textureMap;
 	std::unordered_map<std::string, Cubemap*> m_cubemapMap;
 
 	TextureManager() {}

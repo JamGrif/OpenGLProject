@@ -25,7 +25,7 @@ SceneSky::SceneSky(const std::string& cubemapID)
 	//std::cout << skyshader.get() << std::endl;
 
 	m_cubemapID = cubemapID;
-	TheTextureManager::Instance()->createCubemap(cubemapID);
+	TheTextureManager::Instance()->addCubemap(cubemapID);
 
 	// Skybox uses its own VBO and attribute system to allow the use of a custom cube
 	glGenBuffers(1, &m_skyboxVBO);

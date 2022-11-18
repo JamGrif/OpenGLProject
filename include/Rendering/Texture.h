@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// Tells a Texture object which slot in the shader to use
+/// </summary>
 enum class TextureType
 {
 	UNSET_TEXTURE		= -1,
@@ -10,31 +13,39 @@ enum class TextureType
 	HEIGHT_TEXTURE		= 4,
 };
 
-
+/// <summary>
+/// Encapsulates an OpenGL texture buffer
+/// </summary>
 class Texture
 {
 public:
 	Texture();
 	~Texture();
 
-	void parseTexture(const std::string& filepath, TextureType textureType);
-	void createTexture();
+private:
 
 	void bindTexture();
 	void unbindTexture();
 
+	bool parseTexture(const std::string& filepath, TextureType textureType);
+	void createTexture();
+
 private:
 
-	uint32_t					m_textureID;
+	// Identifies to OpenGL which texture object this is
+	uint32_t			m_textureOpenGLID;
 
-	int							m_textureSlot;
+	int					m_textureWidth, m_textureHeight, m_textureBPP;
 
-	int							m_width, m_height, m_BPP;
+	std::string			m_textureFilePath;
 
-	std::string					m_filePath;
+	// Used to decide what slot in shader to use
+	TextureType			m_textureType;
 
-	TextureType					m_textureType;
+	// Temp storage of texture during creation
+	unsigned char*		m_pLocalTempBuffer;
 
-	unsigned char* m_localbuffer;
+	// Ensures only the TextureManager can call functions of a texture object
+	friend class TextureManager;
 };
 

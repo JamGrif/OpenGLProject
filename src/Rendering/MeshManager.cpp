@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Rendering/MeshManager.h"
 
-bool MeshManager::parseMesh(const std::string& meshID)
+bool MeshManager::addMesh(const std::string& meshID)
 {
 	// Check if texture with ID already exists
 	if (m_meshMap.find(meshID) != m_meshMap.end())
@@ -9,10 +9,10 @@ bool MeshManager::parseMesh(const std::string& meshID)
 
 	std::string meshFilepath = "res/meshes/" + meshID + ".obj";
 
-	Mesh* pMesh = new Mesh;
+	std::unique_ptr<Mesh> pMesh = std::make_unique<Mesh>();
 	pMesh->parseMesh(meshFilepath);
 
-	m_meshMap.insert({ meshID, pMesh });
+	m_meshMap.insert({ meshID, std::move(pMesh) });
 
 	return true;
 }
@@ -21,21 +21,38 @@ void MeshManager::createAllMeshes()
 {
 	for (const auto& [key, value] : m_meshMap)
 	{
-		value->createMesh();
+		// If mesh isn't already created, create it
+		if (!value->getIsCreated())
+			value->createMesh();
 	}
 }
 
-Mesh* MeshManager::getMeshAtID(const std::string& meshID)
+void MeshManager::bindMeshAtID(const std::string& meshID)
 {
-	return m_meshMap.find(meshID) != m_meshMap.end() ? m_meshMap.at(meshID) : nullptr;
+	if (m_meshMap.count(meshID))
+	{
+		m_meshMap.at(meshID)->bindMesh();
+	}
+}
+
+void MeshManager::unbindMeshAtID(const std::string& meshID)
+{
+	if (m_meshMap.count(meshID))
+	{
+		m_meshMap.at(meshID)->unbindMesh();
+	}
+}
+
+size_t MeshManager::getIndicesCountAtID(const std::string meshID)
+{
+	if (m_meshMap.count(meshID))
+	{
+		return m_meshMap.at(meshID)->getIndicesCount();
+	}
+	return 0;
 }
 
 void MeshManager::clearAllMeshes()
 {
-	for (const auto& [key, value] : m_meshMap)
-	{
-		delete value;
-	}
 	m_meshMap.clear();
-
 }

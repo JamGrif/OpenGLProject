@@ -18,7 +18,7 @@ Model::Model(ModelLoaderParams pParams)
 	m_pSceneLightManager(nullptr), m_pSceneCamera(nullptr), m_programProjectionMatrix(TheOpenGLRenderer::Instance()->getProjectionMatrix())
 {
 	// Use the meshID to create initial mesh
-	MeshManager::Instance()->parseMesh(m_meshID);
+	MeshManager::Instance()->addMesh(m_meshID);
 }
 
 Model::~Model()
@@ -33,15 +33,15 @@ void Model::updateModel()
 void Model::drawModel()
 {
 	// Bind material and mesh
-	TheMaterialManager::Instance()->getMaterialAtID(m_materialID)->bindMaterial(m_mMat, m_vMat, m_pSceneLightManager, m_programProjectionMatrix, m_pSceneCamera);
-	TheMeshManager::Instance()->getMeshAtID(m_meshID)->bindMesh();
+	TheMaterialManager::Instance()->bindMaterialAtID(m_materialID, m_mMat);
+	TheMeshManager::Instance()->bindMeshAtID(m_meshID);
 	
 	// Draw
-	TheOpenGLRenderer::Instance()->draw(TheMeshManager::Instance()->getMeshAtID(m_meshID)->getIndices().size());
+	TheOpenGLRenderer::Instance()->draw(TheMeshManager::Instance()->getIndicesCountAtID(m_meshID));
 
 	// Unbind material and mesh
-	TheMeshManager::Instance()->getMeshAtID(m_meshID)->unbindMesh();
-	TheMaterialManager::Instance()->getMaterialAtID(m_materialID)->unbindMaterial();
+	TheMeshManager::Instance()->unbindMeshAtID(m_meshID);
+	TheMaterialManager::Instance()->unbindMaterialAtID(m_materialID);
 }
 
 

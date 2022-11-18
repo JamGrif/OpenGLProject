@@ -12,7 +12,7 @@ constexpr float Default_SPEED = 14.0f;
 constexpr float Default_SENSITIVTY = 0.25f;
 
 SceneCamera::SceneCamera(glm::vec3 position)
-    : m_position(position), m_front(glm::vec3(0.0f, 0.0f, -1.0f)), m_up(glm::vec3(0.0f,1.0f,0.0f)), m_right(glm::vec3(0.0f,0.0f,0.0f)), m_worldUp(m_up), m_lookAt(1.0f),
+    : m_position(position), m_front(0.0f, 0.0f, -1.0f), m_up(0.0f,1.0f,0.0f), m_right(0.0f,0.0f,0.0f), m_worldUp(m_up), m_lookAt(1.0f),
 	m_yaw(Default_YAW), m_pitch(Default_PITCH), m_movementSpeed(Default_SPEED), m_mouseSensitivity(Default_SENSITIVTY), m_cameraMoved(false)
 {
 	//PRINT_INFO("Scene Camera Initialized");
@@ -141,10 +141,10 @@ void SceneCamera::processMouse(float xOffset, float yOffset)
     m_pitch += yOffset;
     
 	// Constrain pitch from flipping the screen
-    if (m_pitch > 89.0f)
+	if (m_pitch > 89.0f)
 		m_pitch = 89.0;
-    
-    if (m_pitch < -89.0f)
+
+	if (m_pitch < -89.0f)
 		m_pitch = -89.0f;
     
     // Update Front, Right and Up vectors using the updated Eular angles

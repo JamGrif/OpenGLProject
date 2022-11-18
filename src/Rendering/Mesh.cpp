@@ -21,41 +21,39 @@ struct Vertex
 	glm::vec3 Bitangent;
 };
 
-enum vertexAttributes
-{
-	e_ShaderPos = 0,
-	e_ShaderNorm = 1,
-	e_ShaderTex = 2,
-	e_ShaderTanBi = 3
-};
 
 Mesh::Mesh()
+	:m_meshOpenGLVBO(-1), m_meshOpenGLEBO(-1), m_bIsCreated(false)
 {
-	//PRINT_TRACE("created mesh object");
 }
 
 Mesh::~Mesh()
 {
+	//PRINT_TRACE("deleting mesh object with filepath of {0}", m_meshFilePath);
+
+	// Unbind current VBO / EBO
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 
-	glCall(glDeleteBuffers(1, &m_meshVBO));
-	glCall(glDeleteBuffers(1, &m_meshEBO));
+	// Delete VBO / EBO
+	glCall(glDeleteBuffers(1, &m_meshOpenGLVBO));
+	glCall(glDeleteBuffers(1, &m_meshOpenGLEBO));
 }
 
 void Mesh::parseMesh(const std::string& filepath)
 {
-	m_filePath = filepath;
+	//PRINT_TRACE("parsing mesh object with filepath of {0}", filepath);
+
+	m_meshFilePath = filepath;
 
 	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(m_filePath, aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices);
+	const aiScene* scene = import.ReadFile(m_meshFilePath, aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		PRINT_WARN("MESH-> {0} failed to load, loading default mesh", m_filePath);
+		PRINT_WARN("MESH-> {0} failed to load", m_meshFilePath);
 		return;
 	}
-
 
 	aiMesh* mesh = scene->mMeshes[0];
 	m_meshVertices.reserve(mesh->mNumVertices); // Reserve enough space to hold all the vertices
@@ -110,57 +108,47 @@ void Mesh::parseMesh(const std::string& filepath)
 
 void Mesh::createMesh()
 {
-	glCall(glGenBuffers(1, &m_meshVBO));
-	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
+	// Create and setup the meshes VBO
+	glCall(glGenBuffers(1, &m_meshOpenGLVBO));
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshOpenGLVBO));
 	glCall(glBufferData(GL_ARRAY_BUFFER, m_meshVertices.size() * sizeof(Vertex), &m_meshVertices[0], GL_STATIC_DRAW));
 
-	glCall(glGenBuffers(1, &m_meshEBO));
-	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO));
+	// Create and setup the meshes EBO
+	glCall(glGenBuffers(1, &m_meshOpenGLEBO));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshOpenGLEBO));
 	glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_meshIndices.size() * sizeof(unsigned int), &m_meshIndices[0], GL_STATIC_DRAW));
 
-	//PRINT_TRACE("{0}", m_filePath);
+	m_bIsCreated = true;
 }
 
 void Mesh::bindMesh()
 {
-	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
-	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO));
+	// Bind the meshes VBO and EBO
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshOpenGLVBO));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshOpenGLEBO));
 
-	if (true) // Position
-	{
-		glCall(glEnableVertexAttribArray(0));
-		glCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0));
-	}
+	// Position
+	glCall(glEnableVertexAttribArray(0));
+	glCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0));
+	
+	 // Normal
+	glCall(glEnableVertexAttribArray(1));
+	glCall(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal)));
+	
+	// Texture Coordinates
+	glCall(glEnableVertexAttribArray(2));
+	glCall(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords)));
+	
+	 // Tangents & Bitangents
+	glCall(glEnableVertexAttribArray(3));
+	glCall(glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent)));
 
-	if (true) // Normal
-	{
-		glCall(glEnableVertexAttribArray(1));
-		glCall(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal)));
-	}
-
-	if (true) // Texture Coordinates
-	{
-		glCall(glEnableVertexAttribArray(2));
-		glCall(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords)));
-	}
-
-	if (true) // Tangents & Bitangents
-	{
-		glCall(glEnableVertexAttribArray(3));
-		glCall(glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent)));
-
-		glCall(glEnableVertexAttribArray(4));
-		glCall(glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent)));
-	}
+	glCall(glEnableVertexAttribArray(4));
+	glCall(glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent)));
 }
 
 void Mesh::unbindMesh()
 {
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-}
-
-const std::vector<unsigned int>& Mesh::getIndices() const
-{
-	return m_meshIndices;
 }

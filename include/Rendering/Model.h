@@ -5,8 +5,6 @@ class SceneLightManager;
 
 #include <glm\mat4x4.hpp>
 
-
-
 struct ModelLoaderParams
 {
 	float posX, posY, posZ;			// Starting position of model

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Scene/SceneLightManager.h"
-#include "Rendering/ShaderManager.h"
+#include "glm/mat4x4.hpp"
 
 class Shader;
 class SceneCamera;
@@ -33,12 +32,13 @@ class Material
 {
 public:
 	Material(const MaterialLoaderParams& pParams);
-	~Material() {};
-
-	void bindMaterial(const glm::mat4& modelMat, const glm::mat4& viewMat, SceneLightManager* localLightManager, const glm::mat4& projMat, SceneCamera* pSceneCamera);
-	void unbindMaterial();
+	~Material();
 
 private:
+	void bindMaterial(const glm::mat4& modelMat);
+	void unbindMaterial();
+
+	void setScenePointers(SceneLightManager* pSceneLightManager, SceneCamera* pSceneCamera, const glm::mat4& projMat);
 
 	// ID of shader the material will use
 	std::string m_shaderID;
@@ -51,4 +51,11 @@ private:
 
 	bool m_normalMapNormalize;
 	float m_heightMapHeight;
+
+	SceneLightManager* m_pSceneLightManager;
+	SceneCamera* m_pSceneCamera;
+	const glm::mat4* m_pAppProjectionMatrix;
+
+	// Ensures only the MaterialManager can call functions of a material object
+	friend class MaterialManager;
 };

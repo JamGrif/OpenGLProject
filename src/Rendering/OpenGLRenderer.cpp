@@ -65,6 +65,10 @@ bool OpenGLRenderer::init()
 	glCall(glGenVertexArrays(1, &m_appVAO));
 	glCall(glBindVertexArray(m_appVAO));
 
+	// Create the apps Frame buffers
+	m_sceneFilterFramebuffer = std::make_unique<OpenGLFramebuffer>(false);
+	m_sceneMSAAFrameBuffer = std::make_unique<OpenGLFramebuffer>(true);
+
 	return true;
 }
 
@@ -72,6 +76,7 @@ bool OpenGLRenderer::clean()
 {
 	if (m_appVAO)
 		glDeleteVertexArrays(1, &m_appVAO);
+
 
 	glCall(glfwTerminate());
 
@@ -82,10 +87,26 @@ void OpenGLRenderer::startOfFrame() const
 {
 	glCall(glClear(GL_DEPTH_BUFFER_BIT)); // Clear the screen buffers
 	glCall(glfwPollEvents());
+
+	// Bind MSAA for object drawing
+	if (m_sceneMSAAFrameBuffer)
+		m_sceneMSAAFrameBuffer->bindFramebuffer();
 }
 
-void OpenGLRenderer::swapBuffers() const
+void OpenGLRenderer::endOfFrame() const
 {
+	// Reads from the MSAA buffer and writes it to the Filter buffer
+	if (m_sceneMSAAFrameBuffer && m_sceneFilterFramebuffer)
+	{
+		m_sceneMSAAFrameBuffer->bindReadFramebuffer();
+		m_sceneFilterFramebuffer->bindWriteFramebuffer();
+		m_sceneMSAAFrameBuffer->copyToFramebuffer();
+		m_sceneMSAAFrameBuffer->unbindFramebuffer();
+
+		// Draw screen filter to buffer
+		m_sceneFilterFramebuffer->draw();
+	}
+
 	glCall(glfwSwapBuffers(TheOpenGLWindow::Instance()->getWindowPtr()));
 }
 
@@ -110,4 +131,28 @@ void OpenGLRenderer::drawTerrain(size_t vertexCount) const
 {
 	glCall(glPatchParameteri(GL_PATCH_VERTICES, static_cast<GLsizei>(vertexCount)));
 	glCall(glDrawArrays(GL_PATCHES, 0, static_cast<GLsizei>(vertexCount)));
+}
+
+void OpenGLRenderer::setScreenFilter(ScreenFilter newFilter)
+{
+	switch (newFilter)
+	{
+	case ScreenFilter::Default:
+		m_sceneFilterFramebuffer->setFrameFilter(ScreenFilter::Default);
+		break;
+	case ScreenFilter::Inverse:
+		m_sceneFilterFramebuffer->setFrameFilter(ScreenFilter::Inverse);
+		break;
+	case ScreenFilter::Greyscale:
+		m_sceneFilterFramebuffer->setFrameFilter(ScreenFilter::Greyscale);
+		break;
+	case ScreenFilter::EdgeDetection:
+		m_sceneFilterFramebuffer->setFrameFilter(ScreenFilter::EdgeDetection);
+		break;
+	case ScreenFilter::Weird:
+		m_sceneFilterFramebuffer->setFrameFilter(ScreenFilter::Weird);
+		break;
+	default:
+		PRINT_WARN("Specified filterNumber is out of range:{0}", static_cast<int>(newFilter));
+	};
 }

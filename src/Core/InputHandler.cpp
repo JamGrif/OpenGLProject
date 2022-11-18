@@ -128,8 +128,6 @@ void InputHandler::enableMouse()
 	glfwSetCursorPos(TheOpenGLWindow::Instance()->getWindowPtr(), TheOpenGLWindow::Instance()->getWindowWidth() / 2, TheOpenGLWindow::Instance()->getWindowHeight() / 2);
 
 	// Reset any lingering mouse movement
-	m_lastX = 0;
-	m_lastY = 0;
 	m_xOffset = 0;
 	m_yOffset = 0;
 }
@@ -144,11 +142,16 @@ void InputHandler::disableMouse()
 
     m_mouseEnabled = false;
 
+	PRINT_TRACE("hi");
+
+	PRINT_TRACE("{0}", m_lastX);
+	PRINT_TRACE("{0}", m_lastY);
+	PRINT_TRACE("{0}", m_xOffset);
+	PRINT_TRACE("{0}", m_xOffset);
+
 	// Reset any lingering mouse movement
-	//m_lastX = 0;
-	//m_lastY = 0;
-	//m_xOffset = 0;
-	//m_yOffset = 0;
+	m_xOffset = 0;
+	m_yOffset = 0;
 
     glfwSetInputMode(TheOpenGLWindow::Instance()->getWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }

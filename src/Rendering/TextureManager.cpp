@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Rendering/TextureManager.h"
 
-bool TextureManager::parseTexture(const std::string& textureID, TextureType textureType)
+bool TextureManager::addTexture(const std::string& textureID, TextureType textureType)
 {
 	// Check if texture with ID already exists
 	if (m_textureMap.find(textureID) != m_textureMap.end())
@@ -10,15 +10,20 @@ bool TextureManager::parseTexture(const std::string& textureID, TextureType text
 	// Set texture filepath using textureID
 	std::string textureFilepath = "res/textures/" + textureID + ".png";
 
-	Texture* pTexture = new Texture;
-	pTexture->parseTexture(textureFilepath, textureType);
+	std::unique_ptr<Texture> pTexture = std::make_unique<Texture>();
 
-	m_textureMap.insert({ textureID, pTexture });
-
-	return true;
+	if (pTexture->parseTexture(textureFilepath, textureType))
+	{
+		m_textureMap.insert({ textureID, std::move(pTexture) });
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
-bool TextureManager::createCubemap(const std::string& cubemapID)
+bool TextureManager::addCubemap(const std::string& cubemapID)
 {
 	// Check if texture with ID already exists
 	if (m_cubemapMap.find(cubemapID) != m_cubemapMap.end())
@@ -48,9 +53,20 @@ void TextureManager::createAllTextures()
 	}
 }
 
-Texture* TextureManager::getTextureAtID(const std::string textureID)
+void TextureManager::bindTextureAtID(const std::string& textureID)
 {
-	return m_textureMap.find(textureID) != m_textureMap.end() ? m_textureMap.at(textureID) : nullptr;
+	if (m_textureMap.count(textureID))
+	{
+		m_textureMap.at(textureID)->bindTexture();
+	}
+}
+
+void TextureManager::unbindTextureAtID(const std::string& textureID)
+{
+	if (m_textureMap.count(textureID))
+	{
+		m_textureMap.at(textureID)->unbindTexture();
+	}
 }
 
 Cubemap* TextureManager::getCubemapAtID(const std::string cubemapID)
@@ -60,10 +76,6 @@ Cubemap* TextureManager::getCubemapAtID(const std::string cubemapID)
 
 void TextureManager::clearAllTextures()
 {
-	for (const auto& [key, value] : m_textureMap)
-	{
-		delete value;
-	}
 	m_textureMap.clear();
 }
 
