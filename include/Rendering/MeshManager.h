@@ -3,7 +3,6 @@
 // Everything that uses MeshManager will use Mesh
 #include "Rendering/Mesh.h"
 
-
 class MeshManager
 {
 public:

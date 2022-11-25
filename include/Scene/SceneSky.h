@@ -11,23 +11,17 @@ public:
 	SceneSky(const std::string& cubemapID);
     ~SceneSky();
 
-	void	initEntity();
-	void	updateEntity();
-	void	drawPassOne();
-	void	drawPassTwo();
+	void drawSky();
 
-    //void setSkyboxTexture(const std::string& texturePath);
-	void setCubemapID(const std::string& cubemapID) { m_cubemapID = cubemapID; }
+	//void setCubemapID(const std::string& cubemapID) { m_cubemapID = cubemapID; }
 	void setCameraPointer(SceneCamera* pSceneCamera) { m_pSceneCamera = pSceneCamera; }
 
 private:
 
-	//std::shared_ptr<OpenGLCubemap> m_skyTexture;
-	std::string		m_cubemapID;
-	//std::shared_ptr<OpenGLShader>		skyshader;
-	std::string m_shaderID;
+	const std::string m_cubemapID;
+	const std::string m_shaderID;
 
-	SceneCamera* m_pSceneCamera;
+	const SceneCamera* m_pSceneCamera;
 
 	const glm::mat4& m_projectionMatrix;
 

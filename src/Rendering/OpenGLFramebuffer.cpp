@@ -6,7 +6,6 @@
 #include "Rendering/ShaderManager.h"
 
 #include <GL/glew.h>
-//#include <GLFW/glfw3.h>
 
 OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 	:m_FBO(0), m_frameColourTexture(0), m_RBO(0),

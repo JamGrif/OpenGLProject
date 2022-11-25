@@ -1,12 +1,11 @@
 #include "pch.h"
 #include "Core/Application.h"
 
+#include "Core/InputHandler.h"
 #include "Core/UI.h"
 #include "Scene/Scene.h"
 #include "Rendering/OpenGLWindow.h"
-
 #include "Rendering/OpenGLRenderer.h"
-#include "Core/InputHandler.h"
 
 Application::Application()
 	:m_UI(nullptr), m_loadedScene(nullptr)
@@ -43,8 +42,6 @@ bool Application::appInit()
 
 	// Initialize the UI
 	m_UI = std::make_unique<UI>(false, m_loadedScene);
-
-	
 
 	// Create Scene object and set initial scene
 	if (!setScene(e_shadowTest)) 

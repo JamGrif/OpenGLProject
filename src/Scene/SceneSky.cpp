@@ -4,27 +4,14 @@
 #include <GL/glew.h>
 
 #include "Rendering/TextureManager.h"
-#include "Scene/SceneCamera.h"
 #include "Rendering/OpenGLRenderer.h"
 #include "Rendering/ShaderManager.h"
-
+#include "Scene/SceneCamera.h"
 
 SceneSky::SceneSky(const std::string& cubemapID)
-	:m_projectionMatrix(TheOpenGLRenderer::Instance()->getProjectionMatrix())
+	:m_cubemapID(cubemapID), m_shaderID("skyShader"), m_projectionMatrix(TheOpenGLRenderer::Instance()->getProjectionMatrix())
 {
-	//std::cout << "scenesky created" << std::endl;
-	//setSkyboxTexture(object.skyboxTexture);
-
-	//setShaderOne--------
-	//setShaderTwo("res/shaders/sky-vertex.glsl", "res/shaders/sky-fragment.glsl");
-
-	//std::cout << skyshader.get() << std::endl;
-	//skyshader = OpenGLShaderManager::retrieveShader("res/shaders/sky-vertex.glsl", "res/shaders/sky-fragment.glsl");
-	m_shaderID = "skyShader";
 	TheShaderManager::Instance()->parseShader(m_shaderID, "res/shaders/sky-vertex.glsl", "res/shaders/sky-fragment.glsl");
-	//std::cout << skyshader.get() << std::endl;
-
-	m_cubemapID = cubemapID;
 	TheTextureManager::Instance()->addCubemap(cubemapID);
 
 	// Skybox uses its own VBO and attribute system to allow the use of a custom cube
@@ -36,35 +23,10 @@ SceneSky::SceneSky(const std::string& cubemapID)
 
 SceneSky::~SceneSky()
 {
-	//m_skyTexture = nullptr;
 	glDeleteBuffers(1, &m_skyboxVBO);
 }
 
-void SceneSky::initEntity()
-{
-	//m_skyTexture->setTextureSlot(0);
-}
-
-void SceneSky::updateEntity()
-{
-}
-
-/// <summary>
-/// Overridden method from BaseEntity class - Unused in this class
-/// </summary>
-void SceneSky::drawPassOne()
-{
-	////If no valid model or shader attached
-	//if (m_modelMesh == nullptr || m_modelShaderPassOne == nullptr)
-	//{
-	//	return;
-	//}
-}
-
-/// <summary>
-/// Overridden method from BaseEntity class - Used to draw the Skybox
-/// </summary>
-void SceneSky::drawPassTwo()
+void SceneSky::drawSky()
 {	
 	// Bind shader
 	Shader* temp = TheShaderManager::Instance()->getShaderAtID(m_shaderID);
@@ -78,7 +40,6 @@ void SceneSky::drawPassTwo()
 	temp->setUniformMatrix4fv("proj_matrix", m_projectionMatrix);
 	temp->setUniform1i("sky", 0);
 
-	//m_skyTexture->Bind();
 	TheTextureManager::Instance()->getCubemapAtID(m_cubemapID)->bindCubemap();
 
 	/*
@@ -95,15 +56,12 @@ void SceneSky::drawPassTwo()
 		Draw
 	*/
 
-	//m_localRenderer->drawCubemap(36);
 	TheOpenGLRenderer::Instance()->drawCubemap(36);
 
 	/*
 		Post-draw cleanup
 	*/
 
-	//m_modelMesh->Unbind();
 	temp->unbindShader();
-	//m_skyTexture->Unbind();
 	TheTextureManager::Instance()->getCubemapAtID(m_cubemapID)->unbindCubemap();
 }

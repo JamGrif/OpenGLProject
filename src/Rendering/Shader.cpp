@@ -83,20 +83,12 @@ static const GLuint linkShaders(GLuint shader1 = 0, GLuint shader2 = 0, GLuint s
 
 Shader::Shader()
 {
-	//shaderVertexPath = vertexPath;
-
-	//parseShader(vertexPath, fragmentPath);
-	//createShader();
-
-	
-	
-
 }
 
 Shader::~Shader()
 {
-	glCall(glDeleteProgram(m_shaderProgram));
 	//PRINT_ERROR("shader deleted with vertex path {0}", shaderVertexPath);
+	glCall(glDeleteProgram(m_shaderProgram));
 }
 
 void Shader::parseShader(const std::string& vertexPath, const std::string& fragmentPath)

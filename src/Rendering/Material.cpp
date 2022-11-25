@@ -2,9 +2,9 @@
 #include "Rendering/Material.h"
 
 #include "Rendering/TextureManager.h"
+#include "Rendering/ShaderManager.h"
 #include "Scene/SceneCamera.h"
 #include "Scene/SceneLightManager.h"
-#include "Rendering/ShaderManager.h"
 
 #include <glm\gtc\matrix_transform.hpp>
 

@@ -178,7 +178,7 @@ void Scene::drawScene()
 
 	if (m_sceneSky)
 	{
-		m_sceneSky->drawPassTwo();
+		m_sceneSky->drawSky();
 	}
 		
 

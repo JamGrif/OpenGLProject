@@ -1,20 +1,18 @@
 #include "pch.h"
 #include "Scene/SceneParser.h"
 
+#include <thread>
+
 #include "tinyXML/tinyxml.h"	// Read the level data
 
-#include "Rendering/Model.h"
 #include "Scene/SceneSky.h"
-
 #include "Scene/SceneLightManager.h"
-
+#include "Rendering/ShaderManager.h"
 #include "Rendering/MaterialManager.h"
 #include "Rendering/TextureManager.h"
-#include "Rendering/ShaderManager.h"
 #include "Rendering/MeshManager.h"
+#include "Rendering/Model.h"
 
-#include <thread>
-//#include <algorithm>
 
 static constexpr uint8_t STRCMP_SUCCESS = 0;
 
