@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Rendering/MeshManager.h"
 
-static const std::string FILEPATH_PREFIX = "res/meshes/";
-static const std::string FILEPATH_SUFFIX = ".obj";
+static const std::string MESH_FILEPATH_PREFIX = "res/meshes/";
+static const std::string MESH_FILEPATH_SUFFIX = ".obj";
 
 /// <summary>
 /// Parse the specified mesh and add it to the meshMap
@@ -16,7 +16,7 @@ bool MeshManager::addMesh(const std::string& meshID)
 		return false;
 
 	// Automatically set the filepath of mesh
-	std::string meshFilepath = FILEPATH_PREFIX + meshID + FILEPATH_SUFFIX;
+	std::string meshFilepath = MESH_FILEPATH_PREFIX + meshID + MESH_FILEPATH_SUFFIX;
 
 	// Create and parse the mesh file
 	std::unique_ptr<Mesh> pMesh = std::make_unique<Mesh>();

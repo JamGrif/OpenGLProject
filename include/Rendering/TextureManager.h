@@ -4,24 +4,28 @@
 #include "Rendering/Texture.h"
 #include "Rendering/Cubemap.h"
 
+/// <summary>
+/// Abstracts and handles the creation, deletion and usage of Texture and Cubemap objects
+/// Textures and Cubemaps can only be used through this class
+/// </summary>
 class TextureManager
 {
 public:
 
-	bool addTexture(const std::string& textureID, TextureType textureType);
-	bool addCubemap(const std::string& cubemapID);
+	bool	addTexture(const std::string& textureID, TextureType textureType);
+	bool	addCubemap(const std::string& cubemapID);
 
-	void createAllTextures();
+	void	createAllTextures();
 
 	void	bindTextureAtID(const std::string& textureID);
 	void	unbindTextureAtID(const std::string& textureID);
 
 	Cubemap* getCubemapAtID(const std::string cubemapID);
 
-	void clearAllTextures();
-	void clearAllCubemaps();
+	void	clearAllTextures();
+	void	clearAllCubemaps();
 
-	static TextureManager* Instance()
+	static TextureManager* Instance() // Get instance
 	{
 		static TextureManager* s_pInstance = new TextureManager;
 		return s_pInstance;
@@ -33,6 +37,6 @@ private:
 
 	TextureManager() {}
 	~TextureManager() {}
-
+	TextureManager(const TextureManager&) = delete;
 };
 typedef TextureManager TheTextureManager;

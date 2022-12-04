@@ -2,6 +2,7 @@
 
 /// <summary>
 /// Tells a Texture object which slot in the shader to use
+/// Numbers correspond to numbers in the shader file
 /// </summary>
 enum class TextureType
 {
@@ -14,7 +15,7 @@ enum class TextureType
 };
 
 /// <summary>
-/// Encapsulates an OpenGL texture buffer
+/// Encapsulates an OpenGL texture buffer to act as a Texture
 /// </summary>
 class Texture
 {

@@ -29,39 +29,27 @@ SceneSky::~SceneSky()
 void SceneSky::drawSky()
 {	
 	// Bind shader
-	Shader* temp = TheShaderManager::Instance()->getShaderAtID(m_shaderID);
-	temp->bindShader();
+	Shader* tempShader = TheShaderManager::Instance()->getShaderAtID(m_shaderID);
+	tempShader->bindShader();
 
-	/*
-		Bind Vertex values
-	*/
-
-	temp->setUniformMatrix4fv("v_matrix", glm::mat4(glm::mat3(m_pSceneCamera->getViewMatrix())));
-	temp->setUniformMatrix4fv("proj_matrix", m_projectionMatrix);
-	temp->setUniform1i("sky", 0);
+	// Bind Vertex values
+	tempShader->setUniformMatrix4fv("v_matrix", glm::mat4(glm::mat3(m_pSceneCamera->getViewMatrix())));
+	tempShader->setUniformMatrix4fv("proj_matrix", m_projectionMatrix);
+	tempShader->setUniform1i("sky", 0);
 
 	TheTextureManager::Instance()->getCubemapAtID(m_cubemapID)->bindCubemap();
 
-	/*
-		Bind VBOs and vertex attributes	
-	*/
-
+	// Bind VBOs and vertex attributes	
 	glBindBuffer(GL_ARRAY_BUFFER, m_skyboxVBO);
 
 	// Position
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-	/*
-		Draw
-	*/
-
+	
+	// Draw
 	TheOpenGLRenderer::Instance()->drawCubemap(36);
 
-	/*
-		Post-draw cleanup
-	*/
-
-	temp->unbindShader();
+	// Post-draw cleanup
+	tempShader->unbindShader();
 	TheTextureManager::Instance()->getCubemapAtID(m_cubemapID)->unbindCubemap();
 }
