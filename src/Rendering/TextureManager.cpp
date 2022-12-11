@@ -12,6 +12,11 @@ static const std::string CUBEMAP_FILEPATH_SUFFIX_BOTTOM = "_bottom.png";
 static const std::string CUBEMAP_FILEPATH_SUFFIX_FRONT = "_front.png";
 static const std::string CUBEMAP_FILEPATH_SUFFIX_BACK = "_back.png";
 
+/// <summary>
+/// Parse the specified texture and add it to the textureMap
+/// IMPORTANT: Name of texture file must be the same as its textureID
+/// IMPORTANT: When all textures have been parsed, CreateAllTextures() must be called before textures can be used
+/// </summary>
 bool TextureManager::addTexture(const std::string& textureID, TextureType textureType)
 {
 	// Check if texture with ID already exists
@@ -35,6 +40,10 @@ bool TextureManager::addTexture(const std::string& textureID, TextureType textur
 	}
 }
 
+/// <summary>
+/// Parse the specified cubemap and add it to the cubemapMap
+/// IMPORTANT: Name of cubemap texture file must be the same as its cubemapID
+/// </summary>
 bool TextureManager::addCubemap(const std::string& cubemapID)
 {
 	// Check if texture with ID already exists

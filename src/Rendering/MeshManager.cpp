@@ -7,7 +7,7 @@ static const std::string MESH_FILEPATH_SUFFIX = ".obj";
 /// <summary>
 /// Parse the specified mesh and add it to the meshMap
 /// IMPORTANT: Name of mesh file must be the same as its meshID
-/// IMPORTANT: When all meshes have been parsed, CreateAllMeshes() must be called before meshes can be used
+/// IMPORTANT: When all meshes have been parsed, createAllMeshes() must be called before meshes can be used
 /// </summary>
 bool MeshManager::addMesh(const std::string& meshID)
 {

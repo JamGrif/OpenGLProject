@@ -113,7 +113,7 @@ void SceneParser::parseMaterials(TiXmlElement* pMaterialsRoot)
 		e->QueryFloatAttribute("heightmapHeight", &tempLoaderParams.heightMapHeight);
 
 		// Create material using filled out loading parameters and assign the id to it
-		TheMaterialManager::Instance()->addMaterial(e->Attribute("id"), tempLoaderParams);
+		TheMaterialManager::Instance()->createMaterial(e->Attribute("id"), tempLoaderParams);
 	}
 }
 

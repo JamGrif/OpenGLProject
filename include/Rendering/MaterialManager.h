@@ -3,11 +3,15 @@
 // Everything that uses MaterialManager will use Material
 #include "Rendering/Material.h"
 
+/// <summary>
+/// Abstracts and handles the creation, deletion and usage of material objects
+/// Materials can only be used through this class
+/// </summary>
 class MaterialManager
 {
 public:
 
-	bool addMaterial(const std::string& materialID, const MaterialLoaderParams& pParams);
+	bool createMaterial(const std::string& materialID, const MaterialLoaderParams& pParams);
 
 	void setAllMaterialPointers(SceneLightManager* pSceneLightManager, SceneCamera* pSceneCamera, const glm::mat4& projMat);
 
@@ -27,6 +31,6 @@ private:
 
 	MaterialManager() {}
 	~MaterialManager() {}
-
+	MaterialManager(const MaterialManager&) = delete;
 };
 typedef MaterialManager TheMaterialManager;

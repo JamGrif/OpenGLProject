@@ -1,12 +1,14 @@
 #include "pch.h"
 #include "Rendering/MaterialManager.h"
 
-bool MaterialManager::addMaterial(const std::string& materialID, const MaterialLoaderParams& pParams)
+
+bool MaterialManager::createMaterial(const std::string& materialID, const MaterialLoaderParams& pParams)
 {
 	// Check if material with ID already exists
 	if (m_materialMap.find(materialID) != m_materialMap.end())
 		return false;
 
+	// Create material and insert into materialMap
 	m_materialMap.insert({ materialID, std::make_unique<Material>(pParams) });
 
 	return true;
