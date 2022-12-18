@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "Rendering/MaterialManager.h"
 
-
+/// <summary>
+/// Create a new material using the values in the MaterialLoaderParams and add it to the materialMap at ID
+/// </summary>
 bool MaterialManager::createMaterial(const std::string& materialID, const MaterialLoaderParams& pParams)
 {
 	// Check if material with ID already exists
@@ -14,6 +16,9 @@ bool MaterialManager::createMaterial(const std::string& materialID, const Materi
 	return true;
 }
 
+/// <summary>
+/// Sets the pointers of the scene lightmanager, scene camera and renderers projection matrix for all materials in materialMap
+/// </summary>
 void MaterialManager::setAllMaterialPointers(SceneLightManager* pSceneLightManager, SceneCamera* pSceneCamera, const glm::mat4& projMat)
 {
 	for (const auto& [key, value] : m_materialMap)
@@ -22,6 +27,9 @@ void MaterialManager::setAllMaterialPointers(SceneLightManager* pSceneLightManag
 	}
 }
 
+/// <summary>
+/// Binds the textures and shaders used by the specified material to the OpenGL context
+/// </summary>
 void MaterialManager::bindMaterialAtID(const std::string& materialID, const glm::mat4& modelMat)
 {
 	if (m_materialMap.count(materialID))
@@ -30,6 +38,9 @@ void MaterialManager::bindMaterialAtID(const std::string& materialID, const glm:
 	}
 }
 
+/// <summary>
+/// Unbinds the textures and shaders used by the specified material to the OpenGL context
+/// </summary>
 void MaterialManager::unbindMaterialAtID(const std::string& materialID)
 {
 	if (m_materialMap.count(materialID))
