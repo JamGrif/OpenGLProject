@@ -49,6 +49,9 @@ void MaterialManager::unbindMaterialAtID(const std::string& materialID)
 	}
 }
 
+/// <summary>
+/// Deletes all created materials
+/// </summary>
 void MaterialManager::clearAllMaterials()
 {
 	m_materialMap.clear();
