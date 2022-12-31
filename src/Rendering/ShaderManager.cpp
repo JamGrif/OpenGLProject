@@ -40,14 +40,6 @@ Shader* ShaderManager::getShaderAtID(const std::string& shaderID)
 /// </summary>
 void ShaderManager::clearAllShaders()
 {
-	//for (const auto& [key, value] : m_shaderMap)
-	//{
-	//	if (key != "screenbufferShader")
-	//	{
-	//		delete value;
-	//	}
-	//}
-
 	// Make sure to not delete screenbuffer shader
 	auto it = m_shaderMap.begin();
 	while (it != m_shaderMap.end())

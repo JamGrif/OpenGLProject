@@ -1,16 +1,16 @@
 #include "pch.h"
 #include "Rendering/TextureManager.h"
 
-static const std::string TEXTURE_FILEPATH_PREFIX = "res/textures/";
-static const std::string TEXTURE_FILEPATH_SUFFIX = ".png";
+static const std::string TEXTURE_FILEPATH_PREFIX		= "res/textures/";
+static const std::string TEXTURE_FILEPATH_SUFFIX		= ".png";
 
-static const std::string CUBEMAP_FILEPATH_PREFIX = "res/textures/sky/";
-static const std::string CUBEMAP_FILEPATH_SUFFIX_RIGHT = "_right.png";
-static const std::string CUBEMAP_FILEPATH_SUFFIX_LEFT = "_left.png";
-static const std::string CUBEMAP_FILEPATH_SUFFIX_TOP = "_top.png";
+static const std::string CUBEMAP_FILEPATH_PREFIX		= "res/textures/sky/";
+static const std::string CUBEMAP_FILEPATH_SUFFIX_RIGHT	= "_right.png";
+static const std::string CUBEMAP_FILEPATH_SUFFIX_LEFT	= "_left.png";
+static const std::string CUBEMAP_FILEPATH_SUFFIX_TOP	= "_top.png";
 static const std::string CUBEMAP_FILEPATH_SUFFIX_BOTTOM = "_bottom.png";
-static const std::string CUBEMAP_FILEPATH_SUFFIX_FRONT = "_front.png";
-static const std::string CUBEMAP_FILEPATH_SUFFIX_BACK = "_back.png";
+static const std::string CUBEMAP_FILEPATH_SUFFIX_FRONT	= "_front.png";
+static const std::string CUBEMAP_FILEPATH_SUFFIX_BACK	= "_back.png";
 
 /// <summary>
 /// Parse the specified texture and add it to the textureMap
