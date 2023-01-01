@@ -56,12 +56,18 @@ Cubemap::~Cubemap()
 	glCall(glDeleteTextures(1, &m_texture));
 }
 
+/// <summary>
+/// Binds the cubemap texture to the OpenGL context
+/// </summary>
 void Cubemap::bindCubemap()
 {
 	glCall(glActiveTexture(GL_TEXTURE0 + m_textureSlot));
 	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture));
 }
 
+/// <summary>
+/// Unbinds the cubemap texture from the OpenGL context
+/// </summary>
 void Cubemap::unbindCubemap()
 {
 	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
