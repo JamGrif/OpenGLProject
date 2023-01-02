@@ -32,8 +32,6 @@ void InputHandler::init()
 /// <summary>
 /// Function is called every time application detects keyboard input
 /// </summary>
-/// <param name="window">The window that has input</param>
-/// <param name="key">Key pressed</param>
 void InputHandler::keyCALLBACK(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -59,8 +57,6 @@ void InputHandler::keyCALLBACK(GLFWwindow* window, int key, int scancode, int ac
 /// <summary>
 /// Returns whether the specified key is pressed or not
 /// </summary>
-/// <param name="key">Specified key to query</param>
-/// <returns>If the key is pressed or not</returns>
 bool InputHandler::getKeyPressed(int key)
 {
 	return m_keys[key];
@@ -68,8 +64,8 @@ bool InputHandler::getKeyPressed(int key)
 
 /// <summary>
 /// Returns whether the specified key is pressed or not, but only once until the key is released
+/// Use macro in Input.h
 /// </summary>
-/// <param name="key">Specified key to query (use enum in Input.h macro)</param>
 bool InputHandler::getKeyPressedOnce(int key)
 {
 	if (key != m_lastKey && m_keys[key]) // Key is not same as last key and key was pressed
@@ -81,11 +77,8 @@ bool InputHandler::getKeyPressedOnce(int key)
 }
 
 /// <summary>
-/// Function is called every time application detects mouse input
+/// Function is called every time application detects mouse input on specified window
 /// </summary>
-/// <param name="window">The window that has input</param>
-/// <param name="xPos">New mouse X position</param>
-/// <param name="yPos">New mouse Y position</param>
 void InputHandler::mouseCALLBACK(GLFWwindow* window, double xPos, double yPos)
 {
 	if (m_firstMouse)
