@@ -12,7 +12,6 @@ enum sceneNames
 // Forward Declarations
 class Scene;
 class Model;
-//struct selectedEntityCache;
 
 // A wrapper around imGui to display UI elements to the window
 class UI

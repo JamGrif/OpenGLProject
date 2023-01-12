@@ -66,7 +66,7 @@ void MeshManager::unbindMeshAtID(const std::string& meshID)
 /// Returns the number of indices that the specified mesh has
 /// Used for the draw call to OpenGL
 /// </summary>
-size_t MeshManager::getIndicesCountAtID(const std::string meshID)
+size_t MeshManager::getIndicesCountAtID(const std::string& meshID)
 {
 	if (m_meshMap.count(meshID))
 	{

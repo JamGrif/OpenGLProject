@@ -18,7 +18,7 @@ public:
 	void	bindMeshAtID(const std::string& meshID);
 	void	unbindMeshAtID(const std::string& meshID);
 
-	size_t	getIndicesCountAtID(const std::string meshID);
+	size_t	getIndicesCountAtID(const std::string& meshID);
 
 	void	clearAllMeshes();
 
