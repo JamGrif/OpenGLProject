@@ -8,13 +8,14 @@
 #include <GL/glew.h>
 
 OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
-	:m_FBO(0), m_frameColourTexture(0), m_RBO(0),
-	m_quadVBO(0), m_screenFilter(ScreenFilter::Default), m_screenWidth(TheOpenGLWindow::Instance()->getWindowWidth()),
-	m_screenHeight(TheOpenGLWindow::Instance()->getWindowHeight())
+	:m_FBO(0), m_frameColourTexture(0), m_RBO(0), m_quadVBO(0), m_screenFilter(ScreenFilter::Default),
+	m_screenWidth(TheOpenGLWindow::Instance()->getWindowWidth()), m_screenHeight(TheOpenGLWindow::Instance()->getWindowHeight())
 {
 	glCall(glGenFramebuffers(1, &m_FBO));
 	glCall(glGenRenderbuffers(1, &m_RBO));
-	glCall(glBindFramebuffer(GL_FRAMEBUFFER, m_FBO)); // By binding to a GL_FRAMEBUFFER, all read and write framebuffer operations will be on newly bounded framebuffer
+
+	// By binding to a GL_FRAMEBUFFER, all read and write framebuffer operations will be on newly bounded framebuffer
+	glCall(glBindFramebuffer(GL_FRAMEBUFFER, m_FBO));
 	glCall(glBindRenderbuffer(GL_RENDERBUFFER, m_RBO));
 
 	glCall(glGenTextures(1, &m_frameColourTexture));
@@ -61,7 +62,6 @@ OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 	glCall(glBindRenderbuffer(GL_RENDERBUFFER, 0));
 
 	// Set framebuffer shader
-	//m_screenShader = OpenGLShaderManager::retrieveShader("res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
 	m_shaderID = "screenbufferShader";
 	TheShaderManager::Instance()->parseShader(m_shaderID, "res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
 
@@ -82,7 +82,6 @@ OpenGLFramebuffer::~OpenGLFramebuffer()
 /// </summary>
 void OpenGLFramebuffer::draw()
 {
-
 	Shader* temp = TheShaderManager::Instance()->getShaderAtID(m_shaderID);
 	temp->bindShader();
 
@@ -141,32 +140,28 @@ void OpenGLFramebuffer::bindWriteFramebuffer()
 	glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_FBO));
 }
 
-
+/// <summary>
+/// Copy the contents of currently bound framebuffer to this framebuffer
+/// </summary>
 void OpenGLFramebuffer::copyToFramebuffer()
 {
-	// Copies the contents of one framebuffer to another framebuffer
 	glCall(glBlitFramebuffer(0, 0, m_screenWidth, m_screenHeight, 0, 0, m_screenWidth, m_screenHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST));
 }
 
 /// <summary>
 /// Specifies which filter will be used when presenting buffer to the screen (see enum in OpenGLFramebuffer.h)
 /// </summary>
-/// <param name="index"></param>
 void OpenGLFramebuffer::setFrameFilter(ScreenFilter index)
 {
 	if (index >= ScreenFilter::END_OF_FILTER_ENUM || index <= ScreenFilter::START_OF_FILTER_ENUM)
-	{
-		PRINT_TRACE("hi");
 		return;
-	}
-
+	
 	m_screenFilter = index;
 }
 
 /// <summary>
 /// Returns the Framebuffer Object (FBO)
 /// </summary>
-/// <returns></returns>
 unsigned int OpenGLFramebuffer::getFBO() const
 {
 	return m_FBO;
