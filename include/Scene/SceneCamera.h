@@ -5,34 +5,34 @@
 
 enum class Camera_Movement
 {
-	e_FORWARD	= 0,
-	e_BACKWARD	= 1,
-	e_LEFT		= 2,
-	e_RIGHT		= 3
+	FORWARD		= 0,
+	BACKWARD	= 1,
+	LEFT		= 2,
+	RIGHT		= 3
 };
 
 // Camera class used to provide view matrix and allows input to alter position
 class SceneCamera
 {
 public:
-	SceneCamera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f));
+	SceneCamera(glm::vec3 position = glm::vec3(0.0f, 2.0f, 0.0f));
     ~SceneCamera();
 
     void				Update();
 
-	const glm::mat4&	getViewMatrix() const;
-	const glm::vec3&	getPosition() const;
-	const glm::vec3&	getFront() const;
+	const glm::mat4&	GetViewMatrix() const { return m_lookAt; }
+	const glm::vec3&	GetPosition() const { return m_position; }
+	const glm::vec3&	GetFront() const { return m_front; }
 
-	void				setPosition(const glm::vec3& newPos);
+	void				SetPosition(const glm::vec3& newPos);
     
 private:
 
-	inline void			processKeyboard(Camera_Movement direction);
-	inline void			processMouse(float xOffset, float yOffset);
+	inline void			ProcessKeyboard(Camera_Movement direction);
+	inline void			ProcessMouse(float xOffset, float yOffset);
 
-    inline void			updateCameraVectors();
-	inline void			updateLookatMatrix();
+	inline void			UpdateCameraVectors();
+	inline void			UpdateLookatMatrix();
 
     // Camera Attributes
     glm::vec3			m_position;

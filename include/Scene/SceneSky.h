@@ -11,17 +11,16 @@ public:
 	SceneSky(const std::string& cubemapID);
     ~SceneSky();
 
-	void drawSky();
+	void DrawSky();
 
-	//void setCubemapID(const std::string& cubemapID) { m_cubemapID = cubemapID; }
-	void setCameraPointer(SceneCamera* pSceneCamera) { m_pSceneCamera = pSceneCamera; }
+	void SetCameraPointer(std::weak_ptr<SceneCamera> pSceneCamera) { m_pSceneCamera = pSceneCamera; }
 
 private:
 
 	const std::string m_cubemapID;
 	const std::string m_shaderID;
 
-	const SceneCamera* m_pSceneCamera;
+	std::weak_ptr<SceneCamera> m_pSceneCamera;
 
 	const glm::mat4& m_projectionMatrix;
 

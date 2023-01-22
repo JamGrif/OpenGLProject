@@ -16,6 +16,7 @@
 #include "Rendering/MeshManager.h"
 #include "Rendering/TextureManager.h"
 #include "Rendering/ShaderManager.h"
+#include "Rendering/CubemapManager.h"
 
 
 // Variables are used to move various lights in different scenes
@@ -45,7 +46,7 @@ static float	m_lightR;
 static float	m_lightG;
 static float	m_lightB;
 
-// Resets the static variables above
+// Resets the static variables in Scene.cpp
 void resetSceneValues()
 {	
 	// FMPscene.txt exclusive variables
@@ -86,79 +87,57 @@ Scene::~Scene()
 {
 	m_sceneModels.clear();
 
-	m_sceneCamera = nullptr;
-
-	m_sceneLightManager = nullptr;
-
-	delete m_sceneSky;
-
-
-	TheMeshManager::Instance()->clearAllMeshes();
-	TheMaterialManager::Instance()->clearAllMaterials();
-	TheTextureManager::Instance()->clearAllTextures();
-	TheTextureManager::Instance()->clearAllCubemaps();
-	TheShaderManager::Instance()->clearAllShaders();
+	TheMeshManager::Instance()->ClearAllMeshes();
+	TheMaterialManager::Instance()->ClearAllMaterials();
+	TheTextureManager::Instance()->ClearAllTextures();
+	TheShaderManager::Instance()->ClearAllShaders();
+	TheCubemapManager::Instance()->ClearAllCubemaps();
 
 	PRINT_INFO("SCENE->{0} has unloaded sucessfully", m_sceneName);
 }
 
 /// <summary>
-/// Initializes the scene objects and creates the scenes models
+/// Parses the scene file, creating all models and assets
 /// </summary>
-bool Scene::loadScene()
+bool Scene::LoadScene()
 {
-	// Scene essentials - all scenes must contain these objects
-	addSceneCamera(Vector3D(0.0f, 2.0f, 0.0));
-	addSceneLightManager();
-
 	PRINT_INFO("SCENE->Attempting to load scene {0}", m_sceneName);
-	//PerformanceTimer t("Scene loading");
 
-	// Run scene reader, giving it the scene objects vector and light manager to fill out
-	SceneParser txtReader(m_sceneName, m_sceneModels, m_sceneLightManager, &m_sceneSky);
+	// Create scene essentials
+	m_sceneCamera = std::make_shared<SceneCamera>();
+	m_sceneLightManager = std::make_shared<SceneLightManager>();
 
-
-	if (!txtReader.getStatus()) // Ensure textfile was read correctly
-	{
-		// Scene failed to load
+	// Parse the XML scene file to create scene models and resources
+	SceneParser sceneParser;
+	if (!sceneParser.ParseSceneFile(m_sceneName, m_sceneModels, m_sceneLightManager, &m_sceneSky))
 		return false;
-	}
 
+	// Set essential pointers
+	m_sceneSky->SetCameraPointer(m_sceneCamera);
 
-	for (const auto& m : m_sceneModels)
+	TheMaterialManager::Instance()->SetAllMaterialScenePointers(m_sceneLightManager, m_sceneCamera);
+	for (const auto& model : m_sceneModels)
 	{
-		m->setModelPointers(m_sceneCamera.get(), m_sceneLightManager.get());
+		model->SetModelPointers(m_sceneCamera.get());
 	}
 
-	TheMaterialManager::Instance()->setAllMaterialPointers(m_sceneLightManager.get(), m_sceneCamera.get(), TheOpenGLRenderer::Instance()->getProjectionMatrix());
 
-	m_sceneSky->setCameraPointer(m_sceneCamera.get());
-
-	//m_sceneSky->initEntity();
-
-	//TheMaterialManager::Instance()->setAllMaterialPointers(m_sceneCamera.get());
-
-	//t.stop();
 	PRINT_INFO("SCENE->{0} has loaded sucessfully", m_sceneName);
-
 	return true;
 }
 
 /// <summary>
 /// Updates scene models, scene lights and the camera
 /// </summary>
-void Scene::updateScene()
+void Scene::UpdateScene()
 {
-	// Update functions
-	updateSceneLight();
-
+	UpdateSceneLight();
 
 	m_sceneCamera->Update();
 
 	for (const auto& m : m_sceneModels)
 	{
-		m->setMatrixValues();
-		m->updateModel();
+		m->UpdateModel();
 	}
 }
 
@@ -166,19 +145,19 @@ void Scene::updateScene()
 /// <summary>
 /// Draws the sceneModels by calling its first and second draw pass function
 /// </summary>
-void Scene::drawScene()
+void Scene::DrawScene()
 {
 	// Draw second pass of all models
 
 	for (const auto& m : m_sceneModels)
 	{
-		m->drawModel();
+		m->DrawModel();
 	}
 
 
 	if (m_sceneSky)
 	{
-		m_sceneSky->drawSky();
+		m_sceneSky->DrawSky();
 	}
 		
 
@@ -189,7 +168,7 @@ void Scene::drawScene()
 /// <summary>
 /// Alters the lights position or colour every frame 
 /// </summary>
-void Scene::updateSceneLight()
+void Scene::UpdateSceneLight()
 {
 	// Function needs to be rewritten at some point as its current implementation isn't the best
 
@@ -199,18 +178,18 @@ void Scene::updateSceneLight()
 
 	if (m_sceneName == "res/scenes/FMPscene.xml")
 	{
-		std::shared_ptr<PointLight> localFirstPointLight = m_sceneLightManager->getPointLight(1).lock();
-		std::shared_ptr<PointLight> localSecondPointLight = m_sceneLightManager->getPointLight(2).lock();
-		std::shared_ptr<PointLight> localThirdPointLight = m_sceneLightManager->getPointLight(3).lock();
+		std::shared_ptr<PointLight> localFirstPointLight = m_sceneLightManager->GetPointLight(1).lock();
+		std::shared_ptr<PointLight> localSecondPointLight = m_sceneLightManager->GetPointLight(2).lock();
+		std::shared_ptr<PointLight> localThirdPointLight = m_sceneLightManager->GetPointLight(3).lock();
 
 		if (m_materialLightIncZ)
 		{
 			if (localFirstPointLight)
 			{
-				localFirstPointLight->m_Position.z += 0.075f;
-				if (localFirstPointLight->m_Position.z >= m_materialLightMaxZ)
+				localFirstPointLight->m_position.z += 0.075f;
+				if (localFirstPointLight->m_position.z >= m_materialLightMaxZ)
 				{
-					localFirstPointLight->m_Position.z = m_materialLightMaxZ;
+					localFirstPointLight->m_position.z = m_materialLightMaxZ;
 					m_materialLightIncZ = false;
 				}
 			}
@@ -219,10 +198,10 @@ void Scene::updateSceneLight()
 		{
 			if (localFirstPointLight)
 			{
-				localFirstPointLight->m_Position.z -= 0.075f;
-				if (localFirstPointLight->m_Position.z <= m_materialLightMinZ)
+				localFirstPointLight->m_position.z -= 0.075f;
+				if (localFirstPointLight->m_position.z <= m_materialLightMinZ)
 				{
-					localFirstPointLight->m_Position.z = m_materialLightMinZ;
+					localFirstPointLight->m_position.z = m_materialLightMinZ;
 					m_materialLightIncZ = true;
 				}
 			}
@@ -232,10 +211,10 @@ void Scene::updateSceneLight()
 		{
 			if (localFirstPointLight)
 			{
-				localFirstPointLight->m_Position.x += 0.1f;
-				if (localFirstPointLight->m_Position.x >= m_materialLightMaxX)
+				localFirstPointLight->m_position.x += 0.1f;
+				if (localFirstPointLight->m_position.x >= m_materialLightMaxX)
 				{
-					localFirstPointLight->m_Position.x = m_materialLightMaxX;
+					localFirstPointLight->m_position.x = m_materialLightMaxX;
 					m_materialLightIncX = false;
 				}
 			}
@@ -244,10 +223,10 @@ void Scene::updateSceneLight()
 		{
 			if (localFirstPointLight)
 			{
-				localFirstPointLight->m_Position.x -= 0.1f;
-				if (localFirstPointLight->m_Position.x <= m_materialLightMinX)
+				localFirstPointLight->m_position.x -= 0.1f;
+				if (localFirstPointLight->m_position.x <= m_materialLightMinX)
 				{
-					localFirstPointLight->m_Position.x = m_materialLightMinX;
+					localFirstPointLight->m_position.x = m_materialLightMinX;
 					m_materialLightIncX = true;
 				}
 			}
@@ -258,10 +237,10 @@ void Scene::updateSceneLight()
 		{
 			if (localSecondPointLight)
 			{
-				localSecondPointLight->m_Position.z += 0.05f;
-				if (localSecondPointLight->m_Position.z >= m_normalLightMaxZ)
+				localSecondPointLight->m_position.z += 0.05f;
+				if (localSecondPointLight->m_position.z >= m_normalLightMaxZ)
 				{
-					localSecondPointLight->m_Position.z = m_normalLightMaxZ;
+					localSecondPointLight->m_position.z = m_normalLightMaxZ;
 					m_normalLightIncZ = false;
 				}
 			}
@@ -270,10 +249,10 @@ void Scene::updateSceneLight()
 		{
 			if (localSecondPointLight)
 			{
-				localSecondPointLight->m_Position.z += 0.05f;
-				if (localSecondPointLight->m_Position.z >= m_normalLightMinZ)
+				localSecondPointLight->m_position.z += 0.05f;
+				if (localSecondPointLight->m_position.z >= m_normalLightMinZ)
 				{
-					localSecondPointLight->m_Position.z = m_normalLightMinZ;
+					localSecondPointLight->m_position.z = m_normalLightMinZ;
 					m_normalLightIncZ = true;
 				}
 			}
@@ -316,9 +295,9 @@ void Scene::updateSceneLight()
 			Coloured Lighting
 		*/
 
-		std::shared_ptr<PointLight> localPointLight = m_sceneLightManager->getPointLight(0).lock();
+		std::shared_ptr<PointLight> localPointLight = m_sceneLightManager->GetPointLight(0).lock();
 
-		float dt = static_cast<float>(ApplicationClock::getDeltaTime());
+		float dt = static_cast<float>(ApplicationClock::GetDeltaTime());
 	
 		m_materialtestlightR -= 0.1f * dt;
 		if (m_materialtestlightR <= 0.0f)
@@ -344,10 +323,10 @@ void Scene::updateSceneLight()
 		{
 			if (localPointLight)
 			{
-				localPointLight->m_Position.z += 4.25f * dt;
-				if (localPointLight->m_Position.z >= m_materialtestLightMaxZ)
+				localPointLight->m_position.z += 4.25f * dt;
+				if (localPointLight->m_position.z >= m_materialtestLightMaxZ)
 				{
-					localPointLight->m_Position.z = m_materialtestLightMaxZ;
+					localPointLight->m_position.z = m_materialtestLightMaxZ;
 					m_materialtestLightIncZ = false;
 				}
 			}
@@ -357,10 +336,10 @@ void Scene::updateSceneLight()
 		{
 			if (localPointLight)
 			{
-				localPointLight->m_Position.z -= 4.25f * dt;
-				if (localPointLight->m_Position.z <= m_materialtestLightMinZ)
+				localPointLight->m_position.z -= 4.25f * dt;
+				if (localPointLight->m_position.z <= m_materialtestLightMinZ)
 				{
-					localPointLight->m_Position.z = m_materialtestLightMinZ;
+					localPointLight->m_position.z = m_materialtestLightMinZ;
 					m_materialtestLightIncZ = true;
 				}
 			}
@@ -371,10 +350,10 @@ void Scene::updateSceneLight()
 		{
 			if (localPointLight)
 			{
-				localPointLight->m_Position.x += 3.75f * dt;
-				if (localPointLight->m_Position.x >= m_materialtestLightMaxX)
+				localPointLight->m_position.x += 3.75f * dt;
+				if (localPointLight->m_position.x >= m_materialtestLightMaxX)
 				{
-					localPointLight->m_Position.x = m_materialtestLightMaxX;
+					localPointLight->m_position.x = m_materialtestLightMaxX;
 					m_materialtestLightIncX = false;
 				}
 			}
@@ -383,32 +362,13 @@ void Scene::updateSceneLight()
 		{
 			if (localPointLight)
 			{
-				localPointLight->m_Position.x -= 3.75f * dt;
-				if (localPointLight->m_Position.x <= m_materialtestLightMinX)
+				localPointLight->m_position.x -= 3.75f * dt;
+				if (localPointLight->m_position.x <= m_materialtestLightMinX)
 				{
-					localPointLight->m_Position.x = m_materialtestLightMinX;
+					localPointLight->m_position.x = m_materialtestLightMinX;
 					m_materialtestLightIncX = true;
 				}
 			}
 		}
 	}
-}
-
-/// <summary>
-/// Creates the scene camera
-/// </summary>
-/// <param name="x">Starting X position of camera</param>
-/// <param name="y">Starting Y position of camera</param>
-/// <param name="z">Starting Z position of camera</param>
-void Scene::addSceneCamera(Vector3D position)
-{
-	m_sceneCamera = std::make_shared<SceneCamera>(glm::vec3{ position.getX(), position.getY(), position.getZ() });
-}
-
-/// <summary>
-/// Creates the scene light manager
-/// </summary>
-void Scene::addSceneLightManager()
-{
-	m_sceneLightManager = std::make_shared<SceneLightManager>();
 }

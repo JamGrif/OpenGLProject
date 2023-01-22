@@ -11,30 +11,32 @@
 #include "Rendering/MaterialManager.h"
 #include "Rendering/TextureManager.h"
 #include "Rendering/MeshManager.h"
+#include "Rendering/CubemapManager.h"
 #include "Rendering/Model.h"
-
 
 static constexpr uint8_t STRCMP_SUCCESS = 0;
 
-SceneParser::SceneParser(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneLightingEntities, std::shared_ptr<SceneLightManager>& sceneLightManager, SceneSky** sceneSky)
-	:m_status(false)
+SceneParser::SceneParser()
 {
-	// Create the TinyXML document and load the map XML
+}
+
+bool SceneParser::ParseSceneFile(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneLightingEntities, std::shared_ptr<SceneLightManager>& sceneLightManager, std::shared_ptr<SceneSky>* sceneSky)
+{
 	TiXmlDocument levelDocument;
 
-	// Load scene file and check status
+	// Load scene XML file and check status
 	if (!levelDocument.LoadFile(filename, TIXML_ENCODING_UTF8))
 	{
 		PRINT_TRACE("{0}", levelDocument.ErrorDesc());
-		m_status = false;
-		return;
+		return false;
 	}
 
 	// Store <scene> node
 	TiXmlElement* pRoot = levelDocument.RootElement();
 
-	// Create sky using skyid 
-	*sceneSky = new SceneSky(pRoot->Attribute("skyid"));
+	// Create sky using skyid as the cubemap filename
+	*sceneSky = std::make_shared<SceneSky>(pRoot->Attribute("skyid"));
+	m_tempSkyCubemapID = pRoot->Attribute("skyid");
 
 	TiXmlElement* materialRoot = nullptr;
 	TiXmlElement* lightRoot = nullptr;
@@ -47,16 +49,16 @@ SceneParser::SceneParser(const std::string& filename, std::vector<std::shared_pt
 		if (strcmp(e->Value(), "materials") == STRCMP_SUCCESS)
 		{
 			materialRoot = e;
-			continue;;
+			continue;
 		}
-		
+
 		// <lights> node
 		if (strcmp(e->Value(), "lights") == STRCMP_SUCCESS)
 		{
 			lightRoot = e;
 			continue;
 		}
-		
+
 		// <models> node
 		if (strcmp(e->Value(), "models") == STRCMP_SUCCESS)
 		{
@@ -67,109 +69,156 @@ SceneParser::SceneParser(const std::string& filename, std::vector<std::shared_pt
 
 	// Parse all the assets used in scene
 	PerformanceTimer parseTimer("Asset Parsing");
-	std::thread materialThread(&SceneParser::parseMaterials, this, materialRoot);
-	std::thread modelThread(&SceneParser::parseModels, this, std::ref(modelRoot), std::ref(sceneLightingEntities));
 
-	materialThread.join();
+	ParseMaterials(materialRoot);
+
+	// Load all textures and meshes concurrently
+	//std::thread materialThread(&SceneParser::ParseMaterials, this, materialRoot);
+
+	//std::thread	firstMaterialThread();
+	//std::thread secondMaterialThread();
+
+	std::thread modelThread(&SceneParser::ParseModels, this, std::ref(modelRoot), std::ref(sceneLightingEntities));
+
+	//materialThread.join();
+
+	//firstMaterialThread().join();
+	//secondMaterialThread().join();
 	modelThread.join();
 
-	parseLights(lightRoot, sceneLightManager);
+	ParseLights(lightRoot, sceneLightManager);
+	ParseFirstHalfMaterials();
+	ParseSecondHalfMaterials();
+
+	// Add the cubemap that the Skybox will use
+	TheCubemapManager::Instance()->AddCubemap(m_tempSkyCubemapID);
 
 	parseTimer.stop();
 
 	// Create all assets used in scene
 	PerformanceTimer creationTimer("Asset creating");
-	TheShaderManager::Instance()->createAllShaders();
-	TheTextureManager::Instance()->createAllTextures();
-	TheMeshManager::Instance()->createAllMeshes();
+	TheShaderManager::Instance()->CreateAllShaders();
+	TheTextureManager::Instance()->CreateAllTextures();
+	TheMeshManager::Instance()->CreateAllMeshes();
+	TheCubemapManager::Instance()->CreateAllCubemaps();
 
 	creationTimer.stop();
 
-	m_status = true;
+	return true;
 }
 
 /// <summary>
 /// Parse the <materials> node
 /// </summary>
-void SceneParser::parseMaterials(TiXmlElement* pMaterialsRoot)
+void SceneParser::ParseMaterials(TiXmlElement* pMaterialsRoot)
 {
 	// Loop through all elements of <materials> node
-	for (const TiXmlElement* e = pMaterialsRoot->FirstChildElement(); e != NULL; e = e->NextSiblingElement())
+	for (const TiXmlElement* materialNode = pMaterialsRoot->FirstChildElement(); materialNode != NULL; materialNode = materialNode->NextSiblingElement())
 	{
 		// Ensure element is a <material> element
-		if (strcmp(e->Value(), "material") != STRCMP_SUCCESS)
+		if (strcmp(materialNode->Value(), "material") != STRCMP_SUCCESS)
 			continue;
 
 		// Fill out materials loading parameters
 		MaterialLoaderParams tempLoaderParams;
 
-		e->QueryStringAttribute("diffuseid", &tempLoaderParams.diffuseMapID);
-		e->QueryStringAttribute("specularid", &tempLoaderParams.specularMapID);
-		e->QueryStringAttribute("normalid", &tempLoaderParams.normalMapID);
-		e->QueryStringAttribute("heightid", &tempLoaderParams.heightMapID);
-		e->QueryStringAttribute("emissionid", &tempLoaderParams.emissionMapID);
+		materialNode->QueryStringAttribute("diffuseid", &tempLoaderParams.diffuseMapID);
+		materialNode->QueryStringAttribute("specularid", &tempLoaderParams.specularMapID);
+		materialNode->QueryStringAttribute("normalid", &tempLoaderParams.normalMapID);
+		materialNode->QueryStringAttribute("heightid", &tempLoaderParams.heightMapID);
+		materialNode->QueryStringAttribute("emissionid", &tempLoaderParams.emissionMapID);
 
-		e->QueryBoolAttribute("normalmapNormalize", &tempLoaderParams.normalMapNormalize);
-		e->QueryFloatAttribute("heightmapHeight", &tempLoaderParams.heightMapHeight);
+		materialNode->QueryBoolAttribute("normalmapNormalize", &tempLoaderParams.normalMapNormalize);
+		materialNode->QueryFloatAttribute("heightmapHeight", &tempLoaderParams.heightMapHeight);
+
+		static bool putInFirst = true;
+		if (putInFirst)
+		{
+			putInFirst = !putInFirst;
+			firstMatMap.insert({ materialNode->Attribute("id"), tempLoaderParams });
+		}
+		else
+		{
+			putInFirst = !putInFirst;
+			secondMatMap.insert({ materialNode->Attribute("id"), tempLoaderParams });
+		}
 
 		// Create material using filled out loading parameters and assign the id to it
-		TheMaterialManager::Instance()->createMaterial(e->Attribute("id"), tempLoaderParams);
+		//TheMaterialManager::Instance()->CreateMaterial(materialNode->Attribute("id"), tempLoaderParams);
+	}
+}
+
+
+void SceneParser::ParseFirstHalfMaterials()
+{
+	for (const auto& [key, value] : firstMatMap)
+	{
+		TheMaterialManager::Instance()->CreateMaterial(key, value);
+	}
+}
+
+
+void SceneParser::ParseSecondHalfMaterials()
+{
+	for (const auto& [key, value] : secondMatMap)
+	{
+		TheMaterialManager::Instance()->CreateMaterial(key, value);
 	}
 }
 
 /// <summary>
 /// Parse the <lights> node
 /// </summary>
-void SceneParser::parseLights(TiXmlElement* pLightsRoot, std::shared_ptr<SceneLightManager>& sceneLightManager)
+void SceneParser::ParseLights(TiXmlElement* pLightsRoot, std::shared_ptr<SceneLightManager>& sceneLightManager)
 {
 	// Loop through all elements of <lights> node
-	for (TiXmlElement* e = pLightsRoot->FirstChildElement(); e != NULL; e = e->NextSiblingElement())
+	for (TiXmlElement* lightNode = pLightsRoot->FirstChildElement(); lightNode != NULL; lightNode = lightNode->NextSiblingElement())
 	{
 		// Ensure element is a <light>
-		if (strcmp(e->Value(), "light") != STRCMP_SUCCESS)
+		if (strcmp(lightNode->Value(), "light") != STRCMP_SUCCESS)
 			continue;
 		
 		// Create light depending on what type it is
-		std::string_view type = e->Attribute("type");
+		std::string_view type = lightNode->Attribute("type");
 		if (type == "direction")
 		{
 			DirectionalLoaderParams* tempParams = new DirectionalLoaderParams;
 
-			parseBaseLight(e, tempParams);
+			ParseBaseLight(lightNode, tempParams);
 			
-			e->QueryFloatAttribute("dirX", &tempParams->direction.x);
-			e->QueryFloatAttribute("dirY", &tempParams->direction.y);
-			e->QueryFloatAttribute("dirZ", &tempParams->direction.z);
+			lightNode->QueryFloatAttribute("dirX", &tempParams->direction.x);
+			lightNode->QueryFloatAttribute("dirY", &tempParams->direction.y);
+			lightNode->QueryFloatAttribute("dirZ", &tempParams->direction.z);
 
-			sceneLightManager->addDirectionalLight(tempParams);
+			sceneLightManager->AddDirectionalLight(tempParams);
 		}
 		else if (type == "point")
 		{
 			PointLoaderParams* tempParams = new PointLoaderParams;
 
-			parseBaseLight(e, tempParams);
+			ParseBaseLight(lightNode, tempParams);
 
-			e->QueryFloatAttribute("posX", &tempParams->position.x);
-			e->QueryFloatAttribute("posY", &tempParams->position.y);
-			e->QueryFloatAttribute("posZ", &tempParams->position.z);
+			lightNode->QueryFloatAttribute("posX", &tempParams->position.x);
+			lightNode->QueryFloatAttribute("posY", &tempParams->position.y);
+			lightNode->QueryFloatAttribute("posZ", &tempParams->position.z);
 			
-			sceneLightManager->addPointLight(tempParams);
+			sceneLightManager->AddPointLight(tempParams);
 		}
 		else if (type == "spot")
 		{
 			SpotLoaderParams* tempParams = new SpotLoaderParams;
 
-			parseBaseLight(e, tempParams);
+			ParseBaseLight(lightNode, tempParams);
 
-			e->QueryFloatAttribute("posX", &tempParams->position.x);
-			e->QueryFloatAttribute("posY", &tempParams->position.y);
-			e->QueryFloatAttribute("posZ", &tempParams->position.z);
+			lightNode->QueryFloatAttribute("posX", &tempParams->position.x);
+			lightNode->QueryFloatAttribute("posY", &tempParams->position.y);
+			lightNode->QueryFloatAttribute("posZ", &tempParams->position.z);
 
-			e->QueryFloatAttribute("dirX", &tempParams->direction.x);
-			e->QueryFloatAttribute("dirY", &tempParams->direction.y);
-			e->QueryFloatAttribute("dirZ", &tempParams->direction.z);
+			lightNode->QueryFloatAttribute("dirX", &tempParams->direction.x);
+			lightNode->QueryFloatAttribute("dirY", &tempParams->direction.y);
+			lightNode->QueryFloatAttribute("dirZ", &tempParams->direction.z);
 
-			sceneLightManager->addSpotLight(tempParams);
+			sceneLightManager->AddSpotLight(tempParams);
 		}
 	}
 }
@@ -177,31 +226,31 @@ void SceneParser::parseLights(TiXmlElement* pLightsRoot, std::shared_ptr<SceneLi
 /// <summary>
 /// Parse the <models> node
 /// </summary>
-void SceneParser::parseModels(TiXmlElement* pModelRoot, std::vector<std::shared_ptr<Model>>& sceneLightingEntities)
+void SceneParser::ParseModels(TiXmlElement* pModelRoot, std::vector<std::shared_ptr<Model>>& sceneLightingEntities)
 {
 	// Loop through all the elements of <models> node
-	for (const TiXmlElement* e = pModelRoot->FirstChildElement(); e != NULL; e = e->NextSiblingElement())
+	for (const TiXmlElement* modelNode = pModelRoot->FirstChildElement(); modelNode != NULL; modelNode = modelNode->NextSiblingElement())
 	{
 		// Ensure element is a <model>
-		if (strcmp(e->Value(), "model") != STRCMP_SUCCESS)
+		if (strcmp(modelNode->Value(), "model") != STRCMP_SUCCESS)
 			continue;
 
 		ModelLoaderParams tempLoaderParams;
 
-		e->QueryStringAttribute("material", &tempLoaderParams.materialID);
-		e->QueryStringAttribute("mesh", &tempLoaderParams.meshID);
+		modelNode->QueryStringAttribute("material", &tempLoaderParams.materialID);
+		modelNode->QueryStringAttribute("mesh", &tempLoaderParams.meshID);
 
-		e->QueryFloatAttribute("posX", &tempLoaderParams.posX);
-		e->QueryFloatAttribute("posY", &tempLoaderParams.posY);
-		e->QueryFloatAttribute("posZ", &tempLoaderParams.posZ);
+		modelNode->QueryFloatAttribute("posX", &tempLoaderParams.posX);
+		modelNode->QueryFloatAttribute("posY", &tempLoaderParams.posY);
+		modelNode->QueryFloatAttribute("posZ", &tempLoaderParams.posZ);
 		
-		e->QueryFloatAttribute("rotX", &tempLoaderParams.rotX);
-		e->QueryFloatAttribute("rotY", &tempLoaderParams.rotY);
-		e->QueryFloatAttribute("rotZ", &tempLoaderParams.rotZ);
+		modelNode->QueryFloatAttribute("rotX", &tempLoaderParams.rotX);
+		modelNode->QueryFloatAttribute("rotY", &tempLoaderParams.rotY);
+		modelNode->QueryFloatAttribute("rotZ", &tempLoaderParams.rotZ);
 
-		e->QueryFloatAttribute("scaleX", &tempLoaderParams.scaleX);
-		e->QueryFloatAttribute("scaleY", &tempLoaderParams.scaleY);
-		e->QueryFloatAttribute("scaleZ", &tempLoaderParams.scaleZ);
+		modelNode->QueryFloatAttribute("scaleX", &tempLoaderParams.scaleX);
+		modelNode->QueryFloatAttribute("scaleY", &tempLoaderParams.scaleY);
+		modelNode->QueryFloatAttribute("scaleZ", &tempLoaderParams.scaleZ);
 		
 		sceneLightingEntities.emplace_back(std::make_shared<Model>(tempLoaderParams));
 	}
@@ -210,17 +259,17 @@ void SceneParser::parseModels(TiXmlElement* pModelRoot, std::vector<std::shared_
 /// <summary>
 /// Fill out the base light loading parameters - all lights share these common values
 /// </summary>
-void SceneParser::parseBaseLight(TiXmlElement* e, LightLoaderParams* pParams)
+void SceneParser::ParseBaseLight(TiXmlElement* lightNode, LightLoaderParams* pParams)
 {
-	e->QueryFloatAttribute("ambR", &pParams->ambient.r);
-	e->QueryFloatAttribute("ambG", &pParams->ambient.g);
-	e->QueryFloatAttribute("ambB", &pParams->ambient.b);
+	lightNode->QueryFloatAttribute("ambR", &pParams->ambient.r);
+	lightNode->QueryFloatAttribute("ambG", &pParams->ambient.g);
+	lightNode->QueryFloatAttribute("ambB", &pParams->ambient.b);
 
-	e->QueryFloatAttribute("difR", &pParams->diffuse.r);
-	e->QueryFloatAttribute("difG", &pParams->diffuse.g);
-	e->QueryFloatAttribute("difB", &pParams->diffuse.b);
+	lightNode->QueryFloatAttribute("difR", &pParams->diffuse.r);
+	lightNode->QueryFloatAttribute("difG", &pParams->diffuse.g);
+	lightNode->QueryFloatAttribute("difB", &pParams->diffuse.b);
 
-	e->QueryFloatAttribute("speR", &pParams->specular.r);
-	e->QueryFloatAttribute("speG", &pParams->specular.g);
-	e->QueryFloatAttribute("speB", &pParams->specular.b);
+	lightNode->QueryFloatAttribute("speR", &pParams->specular.r);
+	lightNode->QueryFloatAttribute("speG", &pParams->specular.g);
+	lightNode->QueryFloatAttribute("speB", &pParams->specular.b);
 }

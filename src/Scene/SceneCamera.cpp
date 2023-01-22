@@ -15,17 +15,13 @@ SceneCamera::SceneCamera(glm::vec3 position)
     : m_position(position), m_front(0.0f, 0.0f, -1.0f), m_up(0.0f,1.0f,0.0f), m_right(0.0f,0.0f,0.0f), m_worldUp(m_up), m_lookAt(1.0f),
 	m_yaw(Default_YAW), m_pitch(Default_PITCH), m_movementSpeed(Default_SPEED), m_mouseSensitivity(Default_SENSITIVTY), m_cameraMoved(false)
 {
-	//PRINT_INFO("Scene Camera Initialized");
-
 	// Initialize default values
-    updateCameraVectors();
-	updateLookatMatrix();
-	//m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up); 
+	UpdateCameraVectors();
+	UpdateLookatMatrix();
 }
 
 SceneCamera::~SceneCamera()
 {
-	//PRINT_INFO("Scene Camera Destroyed");
 }
 
 /// <summary>
@@ -35,101 +31,82 @@ void SceneCamera::Update()
 {
 	m_cameraMoved = false;
 
-	if (InputHandler::Instance()->getKeyPressed(Keyboard::W)) { processKeyboard(Camera_Movement::e_FORWARD); }
-	if (InputHandler::Instance()->getKeyPressed(Keyboard::S)) { processKeyboard(Camera_Movement::e_BACKWARD); }
-	if (InputHandler::Instance()->getKeyPressed(Keyboard::A)) { processKeyboard(Camera_Movement::e_LEFT); }
-	if (InputHandler::Instance()->getKeyPressed(Keyboard::D)) { processKeyboard(Camera_Movement::e_RIGHT); }
+	if (InputHandler::Instance()->GetKeyPressed(Keyboard::W))
+		ProcessKeyboard(Camera_Movement::FORWARD);
+	if (InputHandler::Instance()->GetKeyPressed(Keyboard::S))
+		ProcessKeyboard(Camera_Movement::BACKWARD);
+	if (InputHandler::Instance()->GetKeyPressed(Keyboard::A))
+		ProcessKeyboard(Camera_Movement::LEFT);
+	if (InputHandler::Instance()->GetKeyPressed(Keyboard::D))
+		ProcessKeyboard(Camera_Movement::RIGHT);
 
-    if (InputHandler::Instance()->getKeyPressed(Keyboard::R))
+    if (InputHandler::Instance()->GetKeyPressed(Keyboard::R))
 		PRINT_TRACE("Position x - {0}, Position y - {1}, Position z - {2}", m_position.x, m_position.y, m_position.z);
     
-
 	// Only check for mouse movement if cursor is disabled
-	if (!InputHandler::Instance()->getMouseEnabled())
+	if (!InputHandler::Instance()->GetMouseEnabled())
 	{
 		// Get mouse movement
 		double x, y;
-		InputHandler::Instance()->getMouseMoved(x, y);
+		InputHandler::Instance()->GetMouseMoved(x, y);
 
 		// Only process mouse movement if mouse has been moved
 		if (x != 0 || y != 0)
-			processMouse(static_cast<float>(x), static_cast<float>(y));
+			ProcessMouse(static_cast<float>(x), static_cast<float>(y));
 	}
     
 	// Calculate lookAt matrix
 	if (m_cameraMoved)
-		updateLookatMatrix();
-		//m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up);
-}
-
-const glm::mat4& SceneCamera::getViewMatrix() const
-{
-	return m_lookAt;
-}
-
-const glm::vec3& SceneCamera::getPosition() const
-{
-    return m_position;
-}
-
-const glm::vec3& SceneCamera::getFront() const
-{
-    return m_front;
+		UpdateLookatMatrix();
 }
 
 /// <summary>
-/// Updates the cameras positions and refreshes the cameras vectors as well
+/// Updates the cameras positions
 /// </summary>
-void SceneCamera::setPosition(const glm::vec3& newPos)
+void SceneCamera::SetPosition(const glm::vec3& newPos)
 {
 	m_position = newPos;
 
-	updateCameraVectors();
-	updateLookatMatrix();
+	UpdateCameraVectors();
+	UpdateLookatMatrix();
 }
 
 /// <summary>
 /// Moves the camera depending on user keyboard input
 /// </summary>
-/// <param name="direction">Direction the camera is moving</param>
-void SceneCamera::processKeyboard(Camera_Movement direction)
+void SceneCamera::ProcessKeyboard(Camera_Movement direction)
 {
 	m_cameraMoved = true;
-	float velocity = m_movementSpeed * static_cast<float>(ApplicationClock::getDeltaTime());
+	float velocity = m_movementSpeed * static_cast<float>(ApplicationClock::GetDeltaTime());
 
     // Multiple if statements to allow multiple keys pressed down
-    if (direction == Camera_Movement::e_FORWARD)
+    if (direction == Camera_Movement::FORWARD)
 		m_position += m_front * velocity;
     
-    if (direction == Camera_Movement::e_BACKWARD)
+    if (direction == Camera_Movement::BACKWARD)
 		m_position -= m_front * velocity;
     
-    if (direction == Camera_Movement::e_LEFT)
+    if (direction == Camera_Movement::LEFT)
 		m_position -= m_right * velocity;
     
-    if (direction == Camera_Movement::e_RIGHT)
+    if (direction == Camera_Movement::RIGHT)
 		m_position += m_right * velocity;
 }
 
 /// <summary>
 /// Moves the camera depending on user mouse input
 /// </summary>
-/// <param name="xOffset">X mouse movement</param>
-/// <param name="yOffset">Y mouse movement</param>
-void SceneCamera::processMouse(float xOffset, float yOffset)
+void SceneCamera::ProcessMouse(float xOffset, float yOffset)
 {
 	m_cameraMoved = true;
 
-	// Stop mouse from moving too fast
+	// Clamp speed
 	if (xOffset > 100)
 		xOffset = 100;
-	
 	if (yOffset > 100)
 		yOffset = 100;
-	
 	if (xOffset < -100)
 		xOffset = -100;
-
 	if (yOffset < -100)
 		yOffset = -100;
 	
@@ -148,13 +125,13 @@ void SceneCamera::processMouse(float xOffset, float yOffset)
 		m_pitch = -89.0f;
     
     // Update Front, Right and Up vectors using the updated Eular angles
-    updateCameraVectors();
+    UpdateCameraVectors();
 }
 
 /// <summary>
 /// Updates the vectors of the camera after camera moves from input
 /// </summary>
-void SceneCamera::updateCameraVectors()
+void SceneCamera::UpdateCameraVectors()
 {
     // Calculate the new Front vector
     m_front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
@@ -163,11 +140,12 @@ void SceneCamera::updateCameraVectors()
     m_front = glm::normalize(m_front);
     
     // Also re-calculate the Right and Up vector
-    m_right = glm::normalize(glm::cross(m_front, m_worldUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+	// Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+    m_right = glm::normalize(glm::cross(m_front, m_worldUp));  
     m_up = glm::normalize(glm::cross(m_right, m_front));
 }
 
-void SceneCamera::updateLookatMatrix()
+void SceneCamera::UpdateLookatMatrix()
 {
 	m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up);
 }

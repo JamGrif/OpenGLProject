@@ -13,30 +13,25 @@ public:
 	Scene(const std::string& sceneName);
 	~Scene();
 
-	bool							loadScene();
+	bool								LoadScene();
 
-	void							updateScene();
-	void							drawScene();
+	void								UpdateScene();
+	void								DrawScene();
 
-	const std::string& getSceneName() { return m_sceneName; }
-
-	const std::shared_ptr<SceneLightManager>& getSceneLightManager() { return m_sceneLightManager; }
+	const std::string&					GetSceneName() { return m_sceneName; }
+	const std::shared_ptr<SceneLightManager>& GetSceneLightManager() { return m_sceneLightManager; }
 
 private:
 
-	void							addSceneCamera(Vector3D position);
-	void							addSceneLightManager();
+	void								UpdateSceneLight();
 
-	void							updateSceneLight();
-
-
-	std::string					m_sceneName;
+	std::string							m_sceneName;
 
 	std::shared_ptr<SceneCamera>		m_sceneCamera;
 	std::shared_ptr<SceneLightManager>	m_sceneLightManager; 
 
-	SceneSky*							m_sceneSky;
+	std::shared_ptr<SceneSky>			m_sceneSky;
 
-	// A separate vector to store just the LightingEntity objects as it makes it easier for the UI (will change to a better system eventually)
+	// All models used in scene
 	std::vector<std::shared_ptr<Model>>	m_sceneModels;
 };

@@ -48,17 +48,17 @@ struct PointLight :
 	public virtual BaseLight
 {
 	PointLight(PointLoaderParams* pParams)
-		:BaseLight(pParams), m_Position(pParams->position), m_Constant(1.0f), m_Linear(0.07f), m_Quadratic(0.017f)
+		:BaseLight(pParams), m_position(pParams->position), m_constant(1.0f), m_linear(0.07f), m_quadratic(0.017f)
 	{
 		delete pParams;
 	}
 
-	glm::vec3	m_Position;
+	glm::vec3	m_position;
 
 	// Point light attenuation
-	float		m_Constant;
-	float		m_Linear;
-	float		m_Quadratic;
+	float		m_constant;
+	float		m_linear;
+	float		m_quadratic;
 
 protected:
 	PointLight() {}
@@ -68,12 +68,12 @@ struct DirectionalLight :
 	public virtual BaseLight
 {
 	DirectionalLight(DirectionalLoaderParams* pParams)
-		:BaseLight(pParams), m_Direction(pParams->direction)
+		:BaseLight(pParams), m_direction(pParams->direction)
 	{
 		delete pParams;
 	}
 
-	glm::vec3	m_Direction;
+	glm::vec3	m_direction;
 
 protected:
 	DirectionalLight() {}
@@ -85,13 +85,13 @@ struct SpotLight :
 	SpotLight(SpotLoaderParams* pParams)
 		:BaseLight(pParams), m_cutOff(4.5f), m_outerCutOff(25.5f)
 	{
-		m_Position = pParams->position;
-		m_Direction = pParams->direction;
+		m_position = pParams->position;
+		m_direction = pParams->direction;
 
 		// Default spotlight attenuation
-		m_Constant = 1.0f;
-		m_Linear = 0.09f;
-		m_Quadratic = 0.032f;
+		m_constant = 1.0f;
+		m_linear = 0.09f;
+		m_quadratic = 0.032f;
 
 		delete pParams;
 	}
@@ -109,38 +109,38 @@ public:
 	~SceneLightManager();
 
 	// Directional Lights
-	void							setDirectionalLight(float x, float y, float z, int index = 0);
-	void							addDirectionalLight(DirectionalLoaderParams* pParams);
-	std::weak_ptr<DirectionalLight>	getDirectionalLight(int index = 0) const;
+	void							SetDirectionalLight(float x, float y, float z, int index = 0);
+	void							AddDirectionalLight(DirectionalLoaderParams* pParams);
+	std::weak_ptr<DirectionalLight>	GetDirectionalLight(int index = 0) const;
 
-	unsigned int getCurrentDirectionalLights() const { return static_cast<unsigned int>(m_sceneDirectionalLights.size()); }
+	inline unsigned int				GetCurrentDirectionalLights() const { return static_cast<unsigned int>(m_sceneDirectionalLights.size()); }
 
 	// Point Lights
-	void							setPointLight(float x, float y, float z, int index = 0);
-	void							addPointLight(PointLoaderParams* pParams);
-	std::weak_ptr<PointLight>		getPointLight(int index = 0) const;
+	void							SetPointLight(float x, float y, float z, int index = 0);
+	void							AddPointLight(PointLoaderParams* pParams);
+	std::weak_ptr<PointLight>		GetPointLight(int index = 0) const;
 
-	unsigned int getCurrentPointLights() const { return static_cast<unsigned int>(m_scenePointLights.size()); }
+	inline unsigned int				GetCurrentPointLights() const { return static_cast<unsigned int>(m_scenePointLights.size()); }
 
 	// Spot Lights
-	void							setSpotLight(float x, float y, float z, int index = 0);
-	void							addSpotLight(SpotLoaderParams* pParams);
-	std::weak_ptr<SpotLight>		getSpotLight(int index = 0) const;
+	void							SetSpotLight(float x, float y, float z, int index = 0);
+	void							AddSpotLight(SpotLoaderParams* pParams);
+	std::weak_ptr<SpotLight>		GetSpotLight(int index = 0) const;
 
-	unsigned int getCurrentSpotLights() const{ return static_cast<unsigned int>(m_sceneSpotLights.size()); }
+	inline unsigned int				GetCurrentSpotLights() const{ return static_cast<unsigned int>(m_sceneSpotLights.size()); }
 
 private:
 
 	// Directional Lights
-	std::vector<std::shared_ptr<DirectionalLight>>	m_sceneDirectionalLights;
+	std::vector<std::shared_ptr<DirectionalLight>> m_sceneDirectionalLights;
 	const unsigned int				m_maxDirectionalLights;
 
 	// Point Lights
-	std::vector<std::shared_ptr<PointLight>>		m_scenePointLights;
+	std::vector<std::shared_ptr<PointLight>> m_scenePointLights;
 	const unsigned int				m_maxPointLights;
 
 	// Spot Lights
-	std::vector<std::shared_ptr<SpotLight>>			m_sceneSpotLights;
+	std::vector<std::shared_ptr<SpotLight>> m_sceneSpotLights;
 	const unsigned int				m_maxSpotLights;
 };
 
