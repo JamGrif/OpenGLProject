@@ -7,7 +7,7 @@
 
 #include <GLFW/glfw3.h>
 
-bool OpenGLWindow::init(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen)
+bool OpenGLWindow::Init(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen)
 {
 	m_currentWindowWidth = windowWidth;
 	m_currentWindowHeight = windowHeight;
@@ -35,7 +35,7 @@ bool OpenGLWindow::init(int windowWidth, int windowHeight, const std::string& wi
 	}
 
 	// Set Icon
-	setWindowIcon("res/icon/Icon.jpg");
+	SetWindowIcon("res/icon/Icon.jpg");
 
 	glfwMakeContextCurrent(m_window);
 
@@ -48,7 +48,7 @@ bool OpenGLWindow::init(int windowWidth, int windowHeight, const std::string& wi
 	return true;
 }
 
-bool OpenGLWindow::clean()
+bool OpenGLWindow::Clean()
 {
 	glfwDestroyWindow(m_window);
 
@@ -58,12 +58,12 @@ bool OpenGLWindow::clean()
 /// <summary>
 /// Returns the pointer to the actual GLFWwindow variable itself
 /// </summary>
-GLFWwindow* OpenGLWindow::getWindowPtr() const
+GLFWwindow* OpenGLWindow::GetWindowPtr() const
 {
 	return m_window;
 }
 
-bool OpenGLWindow::shouldClose() const
+bool OpenGLWindow::ShouldClose() const
 {
 	return glfwWindowShouldClose(m_window);
 }
@@ -71,7 +71,7 @@ bool OpenGLWindow::shouldClose() const
 /// <summary>
 /// Sets this window to the specified picture at iconPath
 /// </summary>
-void OpenGLWindow::setWindowIcon(const std::string& iconPath) const
+void OpenGLWindow::SetWindowIcon(const std::string& iconPath) const
 {
 	GLFWimage image;
 	image.pixels = stbi_load(iconPath.c_str(), &image.width, &image.height, 0, 4); // RGBA channels 
@@ -82,7 +82,7 @@ void OpenGLWindow::setWindowIcon(const std::string& iconPath) const
 /// <summary>
 /// Sets the window title to the specified string text
 /// </summary>
-void OpenGLWindow::setWindowTitle(const std::string& newTitle) const
+void OpenGLWindow::SetWindowTitle(const std::string& newTitle) const
 {
 	glfwSetWindowTitle(m_window, newTitle.c_str());
 }
@@ -90,7 +90,7 @@ void OpenGLWindow::setWindowTitle(const std::string& newTitle) const
 /// <summary>
 /// Returns the windows width
 /// </summary>
-int OpenGLWindow::getWindowWidth() const
+int OpenGLWindow::GetWindowWidth() const
 {
 	return m_currentWindowWidth;
 }
@@ -98,7 +98,7 @@ int OpenGLWindow::getWindowWidth() const
 /// <summary>
 /// Returns the windows height
 /// </summary>
-int OpenGLWindow::getWindowHeight() const
+int OpenGLWindow::GetWindowHeight() const
 {
 	return m_currentWindowHeight;
 }
@@ -106,7 +106,7 @@ int OpenGLWindow::getWindowHeight() const
 /// <summary>
 /// Returns the aspect ratio of the window
 /// </summary>
-float OpenGLWindow::getAspectRatio() const
+float OpenGLWindow::GetAspectRatio() const
 {
 	return m_aspectRatio;
 }

@@ -20,34 +20,26 @@ public:
 	UI(bool uiVisible, std::shared_ptr<Scene> loadedScene);
 	~UI();
 
-	void	renderUI();
+	void	RenderUI();
 
-	void	toggleUI();
+	void	ToggleUI();
 
-	bool	getUiVisible() const;
-	int		getSceneNum() const;
-	int		getFilterNum() const;
+	bool	GetUiVisible() const { return m_uiVisible; }
+	int		GetSceneNum() const { return m_sceneNum; }
+	int		GetFilterNum() const { return m_appPostProcess; }
 
-	// Scene stuff
-	void	updateSceneHandle(std::shared_ptr<Scene> newLoadedScene);
+	void	UpdateSceneHandle(std::shared_ptr<Scene> newLoadedScene);
 
 private:
 
 	// Scene stuff
-	void	sceneOptionsPanel();
-	void	controlsPanel();
-	void	performanceMetricsPanel();
-	//void	sceneEntitiesPanel();
-	//void	entityPanel();
+	void	SceneOptionsPanel();
+	void	ControlsPanel();
+	void	PerformanceMetricsPanel();
 
-	void	updateSceneInformation();
+	void	UpdateSceneInformation();
 
-	//void	clearSelectedEntity();
-
-	//bool	m_isEntitySelected;
-	//int		m_selectedEntityIndex;
-
-	bool	m_uiVisible; // Dictates whether the UI will be drawn or not
+	bool	m_uiVisible;
 
 	int		m_sceneNum; 
 
@@ -63,10 +55,7 @@ private:
 
 	int		m_appPostProcess;
 
-	// Cached other classes
+	// Cached scene handle
 	std::shared_ptr<Scene>					m_sceneHandle;
-
-	// Cached selected entity
-	//std::unique_ptr<selectedEntityCache>	m_selectedEntity;
 };
 

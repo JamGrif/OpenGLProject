@@ -3,21 +3,16 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
-std::shared_ptr<spdlog::logger> Log::s_CoreLogger;
+std::shared_ptr<spdlog::logger> Log::s_pLogger;
 
 /// <summary>
 /// Sets the text colour and timestamp, name and log message settings
 /// </summary>
-void Log::init()
+void Log::Init()
 {
 	//%^ colouring, [%T] timestamp, %n name of the logger, %v%$ actual log message
 	spdlog::set_pattern("%^[%T] %n: %v%$");
 
-	s_CoreLogger = spdlog::stdout_color_mt("OpenGL_Project");
-	s_CoreLogger->set_level(spdlog::level::trace);
-}
-
-std::shared_ptr<spdlog::logger>& Log::getCoreLogger()
-{
-	return s_CoreLogger;
+	s_pLogger = spdlog::stdout_color_mt("OpenGL_Project");
+	s_pLogger->set_level(spdlog::level::trace);
 }

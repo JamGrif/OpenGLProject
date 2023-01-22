@@ -9,19 +9,19 @@ class OpenGLRenderer
 {
 public:
 
-	bool				init();
-	bool				clean();
+	bool				Init();
+	bool				Clean();
 
-	const glm::mat4&	getProjectionMatrix() { return m_projMatrix; }
+	const glm::mat4&	GetProjectionMatrix() { return m_projMatrix; }
 
-	void				startOfFrame() const;
-	void				endOfFrame() const;
+	void				StartOfFrame() const;
+	void				EndOfFrame() const;
 
-	void				draw(size_t indicesCount) const;
-	void				drawCubemap(size_t vertexCount) const;
-	void				drawTerrain(size_t vertexCount) const;
+	void				Draw(size_t indicesCount) const;
+	void				DrawCubemap(size_t vertexCount) const;
+	void				DrawTerrain(size_t vertexCount) const;
 
-	void				setScreenFilter(ScreenFilter newFilter);
+	void				SetScreenFilter(ScreenFilter newFilter);
 
 	static OpenGLRenderer* Instance()
 	{

@@ -6,18 +6,19 @@ struct GLFWwindow;
 class InputHandler
 {
 public:
-	void		init();
-	static void	keyCALLBACK(GLFWwindow* window, int key, int scancode, int action, int mode);
+	void		Init();
+	static void	KEYCALLBACK(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-	bool		getKeyPressed(int key);
-	bool		getKeyPressedOnce(int key);
+	// Returns whether the specified key is pressed or not
+	bool		GetKeyPressed(int key) { return m_keys[key]; }
+	bool		GetKeyPressedOnce(int key);
 
-	static void	mouseCALLBACK(GLFWwindow* window, double xPos, double yPos);
-	void		getMouseMoved(double& xMouse, double& yMouse);
+	static void	MOUSECALLBACK(GLFWwindow* window, double xPos, double yPos);
+	void		GetMouseMoved(double& xMouse, double& yMouse);
 
-	void		enableMouse();
-	void		disableMouse();
-	bool		getMouseEnabled();
+	void		EnableMouse();
+	void		DisableMouse();
+	bool		GetMouseEnabled() { return m_mouseEnabled; }
 
 	static InputHandler* Instance()
 	{

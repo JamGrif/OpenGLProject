@@ -6,12 +6,11 @@ class ApplicationClock
 {
 public:
 
-	static void		init();
+	static void		Init();
+	static void		Tick();
 
-	static void		tick();
-
-	static double	getDeltaTime();
-	static int		getFrameCount();
+	static double	GetDeltaTime() { return m_deltaTime; }
+	static int		GetFrameCount() { return m_frameCountToDisplay; }
 
 private:
 

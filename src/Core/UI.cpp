@@ -17,103 +17,6 @@ static ImGuiWindowFlags commonResizeFlags = ImGuiWindowFlags_AlwaysAutoResize | 
 static ImGuiWindowFlags commonFlags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
 static ImGuiWindowFlags debugFlags = ImGuiWindowFlags_NoCollapse;
 
-/// <summary>
-/// This allows the properties of the selected entity to be found once and stored to allow faster retrieval of the selected entity information in the entity panel
-/// If a property of the entity gets updated through the editor, the stored entity values will get refreshed to reflect any changes
-/// </summary>
-//struct selectedEntityCache
-//{
-//	selectedEntityCache(std::shared_ptr<Model> entity)
-//		:entityPtr(entity)
-//	{
-//		//PRINT_TRACE("created cached data");
-//
-//		//entityType = entityPtr->getEntityType();
-//		//editorName = entityPtr->getEditorName();
-//
-//		refreshTransformCachedData();
-//		refreshMeshCachedData();
-//		refreshTextureCachedData();
-//	}
-//	~selectedEntityCache()
-//	{
-//		//PRINT_TRACE("deleted cached data");
-//	}
-//
-//	std::string entityType; // LightingEntity, BasicEntity, SkyEntity etc...
-//	std::string editorName;	// Name in the Scene Entities panel
-//
-//	// Transform data stored as strings to allow easy use with ImGui
-//	std::string posX;
-//	std::string posY;
-//	std::string posZ;
-//
-//	std::string rotX;
-//	std::string rotY;
-//	std::string rotZ;
-//
-//	std::string scaleX;
-//	std::string scaleY;
-//	std::string scaleZ;
-//
-//	std::string meshFilepath;
-//
-//	std::size_t totalTextures;
-//	std::string textureFilepath[5];
-//	uint32_t	textureOpenGLID[5];
-//
-//	inline void checkCachedDataForUpdate()
-//	{
-//		// If the transform part of the selected entity has been changed then refresh the entity transform values in the editor
-//		//if (entityPtr->getTransformUpdated())
-//		//{
-//		//	refreshTransformCachedData();
-//		//}
-//
-//		// check and refresh mesh data
-//
-//		// check and refresh texture data
-//
-//	}
-//
-//	// Only updates the selected objects transform data
-//	void refreshTransformCachedData()
-//	{
-//		posX = std::to_string(entityPtr->GetXPos());
-//		posY = std::to_string(entityPtr->GetYPos());
-//		posZ = std::to_string(entityPtr->GetZPos());
-//
-//		rotX = std::to_string(entityPtr->GetXRot());
-//		rotY = std::to_string(entityPtr->GetYRot());
-//		rotZ = std::to_string(entityPtr->GetZRot());
-//
-//		scaleX = std::to_string(entityPtr->GetXScale());
-//		scaleY = std::to_string(entityPtr->GetYScale());
-//		scaleZ = std::to_string(entityPtr->GetZScale());
-//	}
-//
-//	// Only updates the selected objects mesh data
-//	void refreshMeshCachedData()
-//	{
-//		//meshFilepath = entityPtr->getMesh()->getFilePath();
-//	}
-//
-//	// Only updates the selected objects texture data
-//	void refreshTextureCachedData()
-//	{
-//		//totalTextures = entityPtr->getTextureAmount();
-//
-//		for (int i = 0; i < totalTextures; i++)
-//		{
-//			//textureFilepath[i] = entityPtr->getTextureAtSlot(i)->getFilePath().c_str();
-//			//textureOpenGLID[i] = entityPtr->getTextureAtSlot(i)->getTextureID();
-//		}
-//	}
-//
-//private:
-//	std::shared_ptr<Model> entityPtr; // Pointer to the actual entity
-//};
-
 UI::UI(bool uiVisible, std::shared_ptr<Scene> loadedScene)
 	:m_uiVisible(uiVisible), m_sceneHandle(loadedScene), m_sceneNum(0),
 	m_directionalLightInScene(false), m_directionalLightActiveButton(true),
@@ -124,7 +27,7 @@ UI::UI(bool uiVisible, std::shared_ptr<Scene> loadedScene)
 	PRINT_TRACE("UI Initialized");
 
 	// Enable or Disable the mouse depending on UI visibility
-	m_uiVisible ? InputHandler::Instance()->enableMouse() : InputHandler::Instance()->disableMouse();
+	m_uiVisible ? InputHandler::Instance()->EnableMouse() : InputHandler::Instance()->DisableMouse();
 
 	// Check the version
 	IMGUI_CHECKVERSION();
@@ -141,7 +44,7 @@ UI::UI(bool uiVisible, std::shared_ptr<Scene> loadedScene)
 	style->ScrollbarRounding = 9.0f;
 
 	// Connect ImGui to GLFW window
-	ImGui_ImplGlfw_InitForOpenGL(TheOpenGLWindow::Instance()->getWindowPtr(), true);
+	ImGui_ImplGlfw_InitForOpenGL(TheOpenGLWindow::Instance()->GetWindowPtr(), true);
 	ImGui_ImplOpenGL3_Init("#version 460");
 
 	// Set ImGui colour style
@@ -160,16 +63,16 @@ UI::~UI()
 /// <summary>
 /// Called every frame to draw the UI and adjust variables depending on user input on the ImGui buttons
 /// </summary>
-void UI::renderUI()
+void UI::RenderUI()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
 	// Draw the various UI panels
-	sceneOptionsPanel();
-	controlsPanel();
-	performanceMetricsPanel();
+	SceneOptionsPanel();
+	ControlsPanel();
+	PerformanceMetricsPanel();
 	//sceneEntitiesPanel();
 
 	//if (m_isEntitySelected)
@@ -182,35 +85,20 @@ void UI::renderUI()
 /// <summary>
 /// Toggles whether if the UI is visible or not
 /// </summary>
-void UI::toggleUI()
+void UI::ToggleUI()
 {
 	// Flip variable state
 	m_uiVisible = !m_uiVisible;
 
 	// Toggle mouse depending on UI visibility
-	m_uiVisible ? InputHandler::Instance()->enableMouse() : InputHandler::Instance()->disableMouse();
-}
-
-bool UI::getUiVisible() const
-{
-	return m_uiVisible;
-}
-
-int UI::getSceneNum() const
-{
-	return m_sceneNum;
-}
-
-int UI::getFilterNum() const
-{
-	return m_appPostProcess;
+	m_uiVisible ? InputHandler::Instance()->EnableMouse() : InputHandler::Instance()->DisableMouse();
 }
 
 /// <summary>
 /// Updates the cached pointer to the currently loaded scene
 /// </summary>
 /// <param name="newLoadedScene">Pointer to the new scene</param>
-void UI::updateSceneHandle(std::shared_ptr<Scene> newLoadedScene)
+void UI::UpdateSceneHandle(std::shared_ptr<Scene> newLoadedScene)
 {
 	m_sceneHandle = newLoadedScene;
 
@@ -218,13 +106,13 @@ void UI::updateSceneHandle(std::shared_ptr<Scene> newLoadedScene)
 	if (!newLoadedScene)
 		return;
 
-	updateSceneInformation();
+	UpdateSceneInformation();
 }
 
 /// <summary>
 /// Renders the Scene Options ImGui window
 /// </summary>
-void UI::sceneOptionsPanel()
+void UI::SceneOptionsPanel()
 {
 	// Reset variable
 	m_sceneNum = 0;
@@ -255,7 +143,7 @@ void UI::sceneOptionsPanel()
 
 	ImGui::Text("Toggle Active Lights:");
 
-	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle->getSceneLightManager();
+	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle->GetSceneLightManager();
 
 	if (m_directionalLightInScene)
 	{
@@ -263,7 +151,7 @@ void UI::sceneOptionsPanel()
 		ImGui::Checkbox("DirectionalLight", &m_directionalLightActiveButton);
 
 		// Set the active state of the DirectionalLight depending on the check box status
-		sceneLM->getDirectionalLight(0).lock()->m_bLightActive = m_directionalLightActiveButton ? true : false;
+		sceneLM->GetDirectionalLight(0).lock()->m_bLightActive = m_directionalLightActiveButton ? true : false;
 
 	}
 
@@ -273,7 +161,7 @@ void UI::sceneOptionsPanel()
 		ImGui::Checkbox("SpotLight", &m_spotLightActiveButton);
 
 		// Set the active state of the SpotLight depending on the check box status
-		sceneLM->getSpotLight(0).lock()->m_bLightActive = m_spotLightActiveButton ? true : false;
+		sceneLM->GetSpotLight(0).lock()->m_bLightActive = m_spotLightActiveButton ? true : false;
 	}
 
 	for (int i = 0; i < m_totalPointLights; i++)
@@ -284,7 +172,7 @@ void UI::sceneOptionsPanel()
 			ImGui::Checkbox(nameTemp.c_str(), &m_pointLightActiveButton[i]);
 
 			// Set the active state of the pointLight depending on the check box status
-			sceneLM->getPointLight(i).lock()->m_bLightActive = m_pointLightActiveButton[i] ? true : false;
+			sceneLM->GetPointLight(i).lock()->m_bLightActive = m_pointLightActiveButton[i] ? true : false;
 		}
 	}
 
@@ -294,23 +182,23 @@ void UI::sceneOptionsPanel()
 	ImGui::Text("Change Post-Processing Filter:");
 	if (ImGui::Button("Normal"))
 	{
-		TheOpenGLRenderer::Instance()->setScreenFilter(ScreenFilter::Default);
+		TheOpenGLRenderer::Instance()->SetScreenFilter(ScreenFilter::Default);
 	}
 	if (ImGui::Button("Inverse"))
 	{
-		TheOpenGLRenderer::Instance()->setScreenFilter(ScreenFilter::Inverse);
+		TheOpenGLRenderer::Instance()->SetScreenFilter(ScreenFilter::Inverse);
 	}
 	if (ImGui::Button("Greyscale"))
 	{
-		TheOpenGLRenderer::Instance()->setScreenFilter(ScreenFilter::Greyscale);
+		TheOpenGLRenderer::Instance()->SetScreenFilter(ScreenFilter::Greyscale);
 	}
 	if (ImGui::Button("Edge Detection"))
 	{
-		TheOpenGLRenderer::Instance()->setScreenFilter(ScreenFilter::EdgeDetection);
+		TheOpenGLRenderer::Instance()->SetScreenFilter(ScreenFilter::EdgeDetection);
 	}
 	if (ImGui::Button("???"))
 	{
-		TheOpenGLRenderer::Instance()->setScreenFilter(ScreenFilter::Weird);
+		TheOpenGLRenderer::Instance()->SetScreenFilter(ScreenFilter::Weird);
 	}
 
 	ImGui::End();
@@ -319,7 +207,7 @@ void UI::sceneOptionsPanel()
 /// <summary>
 /// Renders the Controls ImGui window
 /// </summary>
-void UI::controlsPanel()
+void UI::ControlsPanel()
 {
 	ImGui::Begin("Controls:", NULL, commonResizeFlags);
 
@@ -333,10 +221,10 @@ void UI::controlsPanel()
 /// <summary>
 /// Renders the Performance Metrics ImGui window
 /// </summary>
-void UI::performanceMetricsPanel()
+void UI::PerformanceMetricsPanel()
 {
-	std::string fps = "FPS: " + std::to_string(ApplicationClock::getFrameCount());
-	std::string delta = "Delta Time: " + std::to_string(ApplicationClock::getDeltaTime());
+	std::string fps = "FPS: " + std::to_string(ApplicationClock::GetFrameCount());
+	std::string delta = "Delta Time: " + std::to_string(ApplicationClock::GetDeltaTime());
 
 	ImGui::Begin("Performance Metrics:", NULL, commonResizeFlags);
 
@@ -347,158 +235,18 @@ void UI::performanceMetricsPanel()
 }
 
 /// <summary>
-/// Renders the Scene Entities ImGui window
-/// </summary>
-//void UI::sceneEntitiesPanel()
-//{
-//	ImGui::Begin("Scene Entities:", NULL, commonFlags);
-//	for (int i = 0; i < m_sceneHandle->getEntityNum(); i++)
-//	{
-//		//std::string buttonName = m_sceneHandle->getEntityAtIndex(i)->getEntityType() + std::to_string(i);
-//		std::string buttonName = m_sceneHandle->getEntityAtIndex(i)->getEditorName();
-//		if (ImGui::Button(buttonName.c_str()))
-//		{
-//			if (i != m_selectedEntityIndex)
-//			{
-//				// First, clear any information on the currently selected entity
-//				clearSelectedEntity();
-//
-//				// Now cache the information on the selected entity
-//				m_selectedEntityIndex = i;
-//				m_isEntitySelected = true;
-//				m_selectedEntity = std::make_unique<selectedEntityCache>(m_sceneHandle->getEntityAtIndex(i));
-//			}
-//		}
-//	}
-//	
-//	ImGui::End();
-//}
-
-/// <summary>
-/// Renders the Entity ImGui window
-/// </summary>
-//void UI::entityPanel()
-//{
-//	// Checks each component of the selected entity to check if any of the cached data needs to be updated
-//	m_selectedEntity->checkCachedDataForUpdate();
-//
-//	ImGui::Begin("Entity:", NULL, commonFlags);
-//
-//	ImGui::Text("Entity Name:");
-//	ImGui::SameLine(95);
-//	ImGui::Text(m_selectedEntity->editorName.c_str());
-//
-//	ImGui::Text("Entity Type:");
-//	ImGui::SameLine(95);
-//	ImGui::Text(m_selectedEntity->entityType.c_str());
-//
-//	if (ImGui::Button("delete")) // Delete entity
-//	{
-//		m_sceneHandle->deleteLightingEntityFromVector(m_selectedEntityIndex);
-//		clearSelectedEntity();
-//		ImGui::End();
-//		return;
-//	}
-//
-//	ImGui::SameLine(65);
-//
-//	if (ImGui::Button("go to")) // Moves the camera to the entities position
-//	{
-//		std::shared_ptr<SceneCamera> camera = m_sceneHandle->getSceneCamera();
-//		camera->setPosition(glm::vec3(std::stoi(m_selectedEntity->posX), std::stoi(m_selectedEntity->posY)+1, std::stoi(m_selectedEntity->posZ)));
-//	}
-//
-//	ImGui::SameLine(114);
-//
-//	if (ImGui::Button("close")) // Closes the entity panel
-//	{
-//		clearSelectedEntity();
-//		ImGui::End();
-//		return;
-//	}
-//
-//	constexpr int sameLineSpacing = 70;
-//	static bool transformHeaderState = true;
-//	ImGui::SetNextTreeNodeOpen(transformHeaderState);
-//	if (transformHeaderState = ImGui::CollapsingHeader("Entity Transform"))
-//	{
-//		ImGui::Text("Pos X:");
-//		ImGui::SameLine(sameLineSpacing);
-//		ImGui::Text(m_selectedEntity->posX.c_str());
-//
-//		ImGui::Text("Pos Y:");
-//		ImGui::SameLine(sameLineSpacing);
-//		ImGui::Text(m_selectedEntity->posY.c_str());
-//
-//		ImGui::Text("Pos Z:");
-//		ImGui::SameLine(sameLineSpacing);
-//		ImGui::Text(m_selectedEntity->posZ.c_str());
-//
-//		ImGui::Separator();
-//
-//		ImGui::Text("Rot X:");
-//		ImGui::SameLine(sameLineSpacing);
-//		ImGui::Text(m_selectedEntity->rotX.c_str());
-//
-//		ImGui::Text("Rot Y:");
-//		ImGui::SameLine(sameLineSpacing);
-//		ImGui::Text(m_selectedEntity->rotY.c_str());
-//
-//		ImGui::Text("Pos Z:");
-//		ImGui::SameLine(sameLineSpacing);
-//		ImGui::Text(m_selectedEntity->rotZ.c_str());
-//
-//		ImGui::Separator();
-//
-//		ImGui::Text("Scale X:");
-//		ImGui::SameLine(sameLineSpacing);
-//		ImGui::Text(m_selectedEntity->scaleX.c_str());
-//
-//		ImGui::Text("Scale Y:");
-//		ImGui::SameLine(sameLineSpacing);
-//		ImGui::Text(m_selectedEntity->scaleY.c_str());
-//
-//		ImGui::Text("Scale Z:");
-//		ImGui::SameLine(sameLineSpacing);
-//		ImGui::Text(m_selectedEntity->posZ.c_str());
-//	}
-//
-//	static bool meshHeaderState = true;
-//	ImGui::SetNextTreeNodeOpen(meshHeaderState);
-//	if (meshHeaderState = ImGui::CollapsingHeader("Entity Mesh"))
-//	{
-//		ImGui::Text(m_selectedEntity->meshFilepath.c_str());
-//	}
-//
-//	static bool textureHeaderState = true;
-//	ImGui::SetNextTreeNodeOpen(textureHeaderState);
-//	if (textureHeaderState = ImGui::CollapsingHeader("Entity Texture"))
-//	{
-//		for (int i = 0; i < m_selectedEntity->totalTextures; i++)
-//		{
-//			ImGui::Text(m_selectedEntity->textureFilepath[i].c_str());
-//			ImGui::Image(reinterpret_cast<void*>(m_selectedEntity->textureOpenGLID[i]), ImVec2(128, 128));
-//			
-//			ImGui::Separator();
-//		}
-//	}
-//
-//	ImGui::End();
-//}
-
-/// <summary>
 /// Function is called every time the current scene changes. It updates the available buttons light buttons depending on what lights the scene has
 /// </summary>
-void UI::updateSceneInformation()
+void UI::UpdateSceneInformation()
 {
 	// Get the new scene light manager
-	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle->getSceneLightManager();
+	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle->GetSceneLightManager();
 
 	// Test whether there is a directionalLight in the scene
-	m_directionalLightInScene = sceneLM->getCurrentDirectionalLights() > 0 ? true : false;
+	m_directionalLightInScene = sceneLM->GetCurrentDirectionalLights() > 0 ? true : false;
 
 	// Test whether there is a spotLight in the scene
-	m_spotLightInScene = sceneLM->getCurrentSpotLights() > 0 ? true : false;
+	m_spotLightInScene = sceneLM->GetCurrentSpotLights() > 0 ? true : false;
 
 	enum
 	{
@@ -509,21 +257,9 @@ void UI::updateSceneInformation()
 	};
 
 	// Test how many point lights are in the scene
-	m_totalPointLights = sceneLM->getCurrentPointLights();
+	m_totalPointLights = sceneLM->GetCurrentPointLights();
 	m_pointLightInScene[e_FirstPointLight] = m_totalPointLights >= 1 ? true : false;
 	m_pointLightInScene[e_SecondPointLight] = m_totalPointLights >= 2 ? true : false;
 	m_pointLightInScene[e_ThirdPointLight] = m_totalPointLights >= 3 ? true : false;
 	m_pointLightInScene[e_FourthPointLight] = m_totalPointLights >= 4 ? true : false;
-
-	//clearSelectedEntity();
 }
-
-/// <summary>
-/// Clears the information for the entityPanel()
-/// </summary>
-//void UI::clearSelectedEntity()
-//{
-//	m_isEntitySelected = false;
-//	m_selectedEntityIndex = -1;
-//	m_selectedEntity = nullptr;
-//}

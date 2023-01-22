@@ -11,16 +11,16 @@ class Vector3D
 public:
 	Vector3D(float x, float y, float z);
 
-	float		getX() const { return m_x; }
-	float		getY() const { return m_y; }
-	float		getZ() const { return m_z; }
+	float		GetX() const { return m_x; }
+	float		GetY() const { return m_y; }
+	float		GetZ() const { return m_z; }
 
-	void		setX(float x) { m_x = x; }
-	void		setY(float y) { m_y = y; }
-	void		setZ(float z) { m_z = z; }
+	void		SetX(float x) { m_x = x; }
+	void		SetY(float y) { m_y = y; }
+	void		SetZ(float z) { m_z = z; }
 
 	// Pythagoras Theorem
-	float		length();
+	float		Length();
 
 	// Add together two vectors to return a new one
 	Vector3D	operator+ (const Vector3D& v2) const;
@@ -66,7 +66,7 @@ public:
 	Vector3D& operator /= (float scalar);
 
 	// Normalize a vector
-	void		normalize();
+	void		Normalize();
 
 private:
 	float m_x;

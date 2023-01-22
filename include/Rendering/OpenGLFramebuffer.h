@@ -18,19 +18,19 @@ public:
 	OpenGLFramebuffer(bool multisampled);
 	~OpenGLFramebuffer();
 
-	void			draw();
+	void			Draw();
 
-	void			bindFramebuffer();
-	void			unbindFramebuffer();
+	void			BindFramebuffer();
+	void			UnbindFramebuffer();
 
-	void			bindReadFramebuffer();
-	void			bindWriteFramebuffer();
+	void			BindReadFramebuffer();
+	void			BindWriteFramebuffer();
 
-	void			copyToFramebuffer();
+	void			CopyToFramebuffer();
 
-	void			setFrameFilter(ScreenFilter index);
+	void			SetFrameFilter(ScreenFilter index);
 
-	unsigned int	getFBO() const;
+	unsigned int	GetFBO() const;
 
 private:
 	float m_quadVertices[24] =

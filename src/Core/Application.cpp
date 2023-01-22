@@ -14,37 +14,37 @@ Application::Application()
 
 Application::~Application()
 {
-	TheOpenGLRenderer::Instance()->clean();
+	TheOpenGLRenderer::Instance()->Clean();
 
 	m_loadedScene = nullptr;
 
 	m_UI = nullptr;
 
-	TheOpenGLWindow::Instance()->clean();
+	TheOpenGLWindow::Instance()->Clean();
 }
 
 /// <summary>
 /// Initializes OpenGL libraries, creates the window, enables rendering options and creates class objects
 /// </summary>
-bool Application::appInit()
+bool Application::AppInit()
 {
 	// Initialize logger
-	Log::init();
+	Log::Init();
 
 	// Initialize OpenGL renderer
-	TheOpenGLRenderer::Instance()->init();
+	TheOpenGLRenderer::Instance()->Init();
 
 	// Initialize the applications clock
-	ApplicationClock::init();
+	ApplicationClock::Init();
 
 	// Initialize input
-	InputHandler::Instance()->init();
+	InputHandler::Instance()->Init();
 
 	// Initialize the UI
 	m_UI = std::make_unique<UI>(false, m_loadedScene);
 
 	// Create Scene object and set initial scene
-	if (!setScene(e_shadowTest)) 
+	if (!SetScene(e_shadowTest)) 
 	{
 		// Scene failed to load
 		return false;
@@ -57,59 +57,59 @@ bool Application::appInit()
 /// Entire loop of program
 /// Called every frame
 /// </summary>
-void Application::appLoop()
+void Application::AppLoop()
 {
-	while (!TheOpenGLWindow::Instance()->shouldClose())
+	while (!TheOpenGLWindow::Instance()->ShouldClose())
 	{
-		ApplicationClock::tick();
+		ApplicationClock::Tick();
 
-		handleInput();
-		updateApp();
-		renderApp();
+		HandleInput();
+		UpdateApp();
+		RenderApp();
 	}
 }
 
-void Application::handleInput()
+void Application::HandleInput()
 {
 	// Check if user wants to toggle UI visibility
-	if (InputHandler::Instance()->getKeyPressedOnce(Keyboard::Q))
+	if (InputHandler::Instance()->GetKeyPressedOnce(Keyboard::Q))
 	{
-		m_UI->toggleUI();
+		m_UI->ToggleUI();
 	}
 }
 
-void Application::updateApp()
+void Application::UpdateApp()
 {
-	m_loadedScene->updateScene();
+	m_loadedScene->UpdateScene();
 
-	if (m_UI->getUiVisible())
+	if (m_UI->GetUiVisible())
 	{
 		// Check if loaded scene needs to change
-		if (m_UI->getSceneNum() != 0)
-			setScene(m_UI->getSceneNum());
+		if (m_UI->GetSceneNum() != 0)
+			SetScene(m_UI->GetSceneNum());
 	}
 }
 
-void Application::renderApp()
+void Application::RenderApp()
 {
-	TheOpenGLRenderer::Instance()->startOfFrame();
+	TheOpenGLRenderer::Instance()->StartOfFrame();
 
 	if (m_loadedScene)
-		m_loadedScene->drawScene();
+		m_loadedScene->DrawScene();
 
-	if (m_UI->getUiVisible())
+	if (m_UI->GetUiVisible())
 	{
-		m_UI->renderUI();
+		m_UI->RenderUI();
 	}
 
-	TheOpenGLRenderer::Instance()->endOfFrame();
+	TheOpenGLRenderer::Instance()->EndOfFrame();
 }
 
 /// <summary>
 /// Function changes the scene to specified scene number, unloads the currently loaded scene and refreshes the UI light buttons
 /// </summary>
 /// <param name="newSceneNumber">Specified scene to change to (use sceneNames enum)</param>
-bool Application::setScene(int newSceneNumber)
+bool Application::SetScene(int newSceneNumber)
 {
 	std::string newSceneFilePath = "";
 	switch (newSceneNumber)
@@ -137,7 +137,7 @@ bool Application::setScene(int newSceneNumber)
 	
 	if (m_loadedScene)
 	{
-		if (newSceneFilePath == m_loadedScene->getSceneName())
+		if (newSceneFilePath == m_loadedScene->GetSceneName())
 		{
 			// Scene is already loaded
 			return false;
@@ -145,15 +145,15 @@ bool Application::setScene(int newSceneNumber)
 	}
 
 	m_loadedScene = nullptr;
-	m_UI->updateSceneHandle(nullptr);
+	m_UI->UpdateSceneHandle(nullptr);
 	m_loadedScene = std::make_shared<Scene>(newSceneFilePath);
 
-	if (m_loadedScene->loadScene())
+	if (m_loadedScene->LoadScene())
 	{
 		// Scene successfully loaded
 		if (m_UI)
 		{
-			m_UI->updateSceneHandle(m_loadedScene);
+			m_UI->UpdateSceneHandle(m_loadedScene);
 		}
 
 		return true;

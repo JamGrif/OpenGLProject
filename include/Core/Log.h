@@ -5,19 +5,19 @@
 class Log
 {
 public:
-	static void init();
+	static void Init();
 
-	static std::shared_ptr<spdlog::logger>& getCoreLogger();
+	static std::shared_ptr<spdlog::logger>& GetLogger() { return s_pLogger; }
 
 private:
 
-	static std::shared_ptr<spdlog::logger>	s_CoreLogger;
+	static std::shared_ptr<spdlog::logger>	s_pLogger;
 
 	Log();
 };
 
 // Logging Macros
-#define PRINT_TRACE(...) ::Log::getCoreLogger()->trace(__VA_ARGS__)	// White
-#define PRINT_INFO(...) ::Log::getCoreLogger()->info(__VA_ARGS__)	// Green
-#define PRINT_WARN(...) ::Log::getCoreLogger()->warn(__VA_ARGS__)	// Yellow
-#define PRINT_ERROR(...) ::Log::getCoreLogger()->error(__VA_ARGS__) // Red
+#define PRINT_TRACE(...) ::Log::GetLogger()->trace(__VA_ARGS__)	// White
+#define PRINT_INFO(...) ::Log::GetLogger()->info(__VA_ARGS__)	// Green
+#define PRINT_WARN(...) ::Log::GetLogger()->warn(__VA_ARGS__)	// Yellow
+#define PRINT_ERROR(...) ::Log::GetLogger()->error(__VA_ARGS__) // Red

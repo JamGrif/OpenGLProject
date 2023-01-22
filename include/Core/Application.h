@@ -10,16 +10,16 @@ public:
 	Application();
 	~Application();
 
-	bool	appInit();
-	void	appLoop();
+	bool	AppInit();
+	void	AppLoop();
 
-	void	handleInput();
-	void	updateApp();
-	void	renderApp();
+	void	HandleInput();
+	void	UpdateApp();
+	void	RenderApp();
 
 private:
 
-	bool	setScene(int newSceneNumber);
+	bool	SetScene(int newSceneNumber);
 
 	std::unique_ptr<UI>					m_UI;
 

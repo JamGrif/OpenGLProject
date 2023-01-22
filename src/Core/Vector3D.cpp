@@ -8,7 +8,7 @@ Vector3D::Vector3D(float x, float y, float z)
 {
 }
 
-float Vector3D::length()
+float Vector3D::Length()
 {
 	return static_cast<float>(sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z)));
 }
@@ -51,9 +51,9 @@ Vector3D Vector3D::operator/(float scalar)
 	return Vector3D(m_x / scalar, m_y / scalar, m_z / scalar);
 }
 
-void Vector3D::normalize()
+void Vector3D::Normalize()
 {
-	float L = length();
+	float L = Length();
 	if (L > 0) // Stops division by 0
 	{
 		(*this) *= 1 / L; // Normalizes this vector

@@ -13,7 +13,7 @@ double		ApplicationClock::m_currentFrame = 0;
 /// <summary>
 /// Done once on program start
 /// </summary>
-void ApplicationClock::init()
+void ApplicationClock::Init()
 {
 	m_previousTime = glfwGetTime();
 	m_frameCount = 0;
@@ -23,7 +23,7 @@ void ApplicationClock::init()
 /// <summary>
 /// Called every frame
 /// </summary>
-void ApplicationClock::tick()
+void ApplicationClock::Tick()
 {
 	// Delta time
 	m_currentFrame = glfwGetTime();
@@ -40,24 +40,6 @@ void ApplicationClock::tick()
 		m_frameCount = 0;
 		m_previousTime = m_currentFrame;
 	}
-}
-
-/// <summary>
-/// Updated every .tick()
-/// </summary>
-/// <returns></returns>
-double ApplicationClock::getDeltaTime()
-{
-	return m_deltaTime;
-}
-
-/// <summary>
-/// Current FPS
-/// Updated every .tick()
-/// </summary>
-int ApplicationClock::getFrameCount()
-{
-	return m_frameCountToDisplay;
 }
 
 // -
@@ -91,10 +73,10 @@ void PerformanceTimer::stop()
 	m_stopped = true;
 
 	auto endTimepoint = std::chrono::high_resolution_clock::now();
-
 	auto start = std::chrono::time_point_cast<std::chrono::microseconds>(m_startTimepoint).time_since_epoch().count();
 	auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
 
+	// Determine duration
 	auto duration = end - start;
 	double ms = duration * 0.001;
 

@@ -11,19 +11,19 @@ class OpenGLWindow
 {
 public:
 
-	bool		init(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen);
-	bool		clean();
+	bool		Init(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen);
+	bool		Clean();
 
-	GLFWwindow* getWindowPtr() const;
+	GLFWwindow* GetWindowPtr() const;
 
-	bool		shouldClose() const;
+	bool		ShouldClose() const;
 
-	void		setWindowIcon(const std::string& iconPath) const;
-	void		setWindowTitle(const std::string& newTitle) const;
+	void		SetWindowIcon(const std::string& iconPath) const;
+	void		SetWindowTitle(const std::string& newTitle) const;
 
-	int			getWindowWidth() const;
-	int			getWindowHeight() const;
-	float		getAspectRatio() const;
+	int			GetWindowWidth() const;
+	int			GetWindowHeight() const;
+	float		GetAspectRatio() const;
 
 	static OpenGLWindow* Instance()
 	{

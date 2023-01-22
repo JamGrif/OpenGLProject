@@ -9,7 +9,7 @@
 
 OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 	:m_FBO(0), m_frameColourTexture(0), m_RBO(0), m_quadVBO(0), m_screenFilter(ScreenFilter::Default),
-	m_screenWidth(TheOpenGLWindow::Instance()->getWindowWidth()), m_screenHeight(TheOpenGLWindow::Instance()->getWindowHeight())
+	m_screenWidth(TheOpenGLWindow::Instance()->GetWindowWidth()), m_screenHeight(TheOpenGLWindow::Instance()->GetWindowHeight())
 {
 	glCall(glGenFramebuffers(1, &m_FBO));
 	glCall(glGenRenderbuffers(1, &m_RBO));
@@ -63,7 +63,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 
 	// Set framebuffer shader
 	m_shaderID = "screenbufferShader";
-	TheShaderManager::Instance()->parseShader(m_shaderID, "res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
+	TheShaderManager::Instance()->AddShader(m_shaderID, "res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
 
 	// Create the VBO object the screen will be drawn to
 	glCall(glGenBuffers(1, &m_quadVBO));
@@ -80,14 +80,13 @@ OpenGLFramebuffer::~OpenGLFramebuffer()
 /// <summary>
 /// Draws the framebuffer content onto a quad which gets drawn on screen
 /// </summary>
-void OpenGLFramebuffer::draw()
+void OpenGLFramebuffer::Draw()
 {
-	Shader* temp = TheShaderManager::Instance()->getShaderAtID(m_shaderID);
-	temp->bindShader();
+	TheShaderManager::Instance()->BindShaderAtID(m_shaderID);
 
 	// Sets shader values, texture and vertex attributes
-	temp->setUniform1i("screenTexture", 0);
-	temp->setUniform1i("screenFilter", static_cast<int>(m_screenFilter));
+	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "screenTexture", 0);
+	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "screenFilter", static_cast<int>(m_screenFilter));
 
 	glCall(glActiveTexture(GL_TEXTURE0));
 	glCall(glBindTexture(GL_TEXTURE_2D, m_frameColourTexture));
@@ -101,13 +100,13 @@ void OpenGLFramebuffer::draw()
 
 	glCall(glDrawArrays(GL_TRIANGLES, 0, 6));
 
-	temp->unbindShader();
+	TheShaderManager::Instance()->UnbindShaderAtID(m_shaderID);
 }
 
 /// <summary>
 /// Binds framebuffer to pipeline, any draw calls will be applied to this buffer
 /// </summary>
-void OpenGLFramebuffer::bindFramebuffer()
+void OpenGLFramebuffer::BindFramebuffer()
 {
 	glCall(glBindFramebuffer(GL_FRAMEBUFFER, m_FBO));
 	glCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
@@ -117,7 +116,7 @@ void OpenGLFramebuffer::bindFramebuffer()
 /// <summary>
 /// Unbinds framebuffer and clears the colour buffer
 /// </summary>
-void OpenGLFramebuffer::unbindFramebuffer()
+void OpenGLFramebuffer::UnbindFramebuffer()
 {
 	glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	glCall(glClear(GL_COLOR_BUFFER_BIT));
@@ -127,7 +126,7 @@ void OpenGLFramebuffer::unbindFramebuffer()
 /// <summary>
 /// Binds the framebuffer to only read from draw calls
 /// </summary>
-void OpenGLFramebuffer::bindReadFramebuffer()
+void OpenGLFramebuffer::BindReadFramebuffer()
 {
 	glCall(glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FBO));
 }
@@ -135,7 +134,7 @@ void OpenGLFramebuffer::bindReadFramebuffer()
 /// <summary>
 /// Binds the framebuffer to only write to framebuffer to draw calls
 /// </summary>
-void OpenGLFramebuffer::bindWriteFramebuffer()
+void OpenGLFramebuffer::BindWriteFramebuffer()
 {
 	glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_FBO));
 }
@@ -143,7 +142,7 @@ void OpenGLFramebuffer::bindWriteFramebuffer()
 /// <summary>
 /// Copy the contents of currently bound framebuffer to this framebuffer
 /// </summary>
-void OpenGLFramebuffer::copyToFramebuffer()
+void OpenGLFramebuffer::CopyToFramebuffer()
 {
 	glCall(glBlitFramebuffer(0, 0, m_screenWidth, m_screenHeight, 0, 0, m_screenWidth, m_screenHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST));
 }
@@ -151,7 +150,7 @@ void OpenGLFramebuffer::copyToFramebuffer()
 /// <summary>
 /// Specifies which filter will be used when presenting buffer to the screen (see enum in OpenGLFramebuffer.h)
 /// </summary>
-void OpenGLFramebuffer::setFrameFilter(ScreenFilter index)
+void OpenGLFramebuffer::SetFrameFilter(ScreenFilter index)
 {
 	if (index >= ScreenFilter::END_OF_FILTER_ENUM || index <= ScreenFilter::START_OF_FILTER_ENUM)
 		return;
@@ -162,7 +161,7 @@ void OpenGLFramebuffer::setFrameFilter(ScreenFilter index)
 /// <summary>
 /// Returns the Framebuffer Object (FBO)
 /// </summary>
-unsigned int OpenGLFramebuffer::getFBO() const
+unsigned int OpenGLFramebuffer::GetFBO() const
 {
 	return m_FBO;
 }
