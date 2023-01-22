@@ -25,7 +25,7 @@ enum class SHADER_TYPE
 /// <param name="shaderType">Only: GL_VERTEX_SHADER / GL_FRAGMENT_SHADER / GL_GEOMETRY_SHADER / GL_TESS_CONTROL_SHADER / GL_TESS_EVALUATION_SHADER</param>
 /// <param name="source">Shader source code</param>
 /// <returns>OpenGL ID to shader</returns>
-static const GLuint compileShader(SHADER_TYPE ShaderType, const GLchar* source)
+static const GLuint CompileShader(SHADER_TYPE ShaderType, const GLchar* source)
 {
 	// Create OpenGL shader, give it the source code and compile it
 	GLuint tempID = glCreateShader(static_cast<int>(ShaderType));
@@ -54,7 +54,7 @@ static const GLuint compileShader(SHADER_TYPE ShaderType, const GLchar* source)
 /// Can receive a range of 1 - 4 shaders to combine into a program
 /// </summary>
 /// <returns>OpenGL ID to shader program</returns>
-static const GLuint linkShaders(GLuint firstShader = 0, GLuint secondShader = 0)
+static const GLuint LinkShaders(GLuint firstShader, GLuint secondShader)
 {
 	// Create OpenGL program and attach the shaders to the program (only attaches ones that are valid)
 	GLuint newShaderProgram;
@@ -89,16 +89,14 @@ static const GLuint linkShaders(GLuint firstShader = 0, GLuint secondShader = 0)
 Shader::Shader()
 	:m_shaderProgram(NO_PROGRAM), m_bCreated(false)
 {
-	PRINT_TRACE("shader created");
 }
 
 Shader::~Shader()
 {
-	PRINT_TRACE("shader destroyed");
 	glCall(glDeleteProgram(m_shaderProgram));
 }
 
-void Shader::parseShader(const std::string& vertexPath, const std::string& fragmentPath)
+void Shader::ParseShader(const std::string& vertexPath, const std::string& fragmentPath)
 {
 	try
 	{
@@ -129,14 +127,14 @@ void Shader::parseShader(const std::string& vertexPath, const std::string& fragm
 	}
 }
 
-void Shader::createShader()
+void Shader::CreateShader()
 {
 	// Compile the parsed shader file
-	GLuint vertex = compileShader(SHADER_TYPE::VertexShader, vertexShaderCode.c_str());
-	GLuint fragment = compileShader(SHADER_TYPE::FragmentShader, fragmentShaderCode.c_str());
+	GLuint vertex = CompileShader(SHADER_TYPE::VertexShader, vertexShaderCode.c_str());
+	GLuint fragment = CompileShader(SHADER_TYPE::FragmentShader, fragmentShaderCode.c_str());
 
 	// Attach the compiled shaders to the shader program
-	m_shaderProgram = linkShaders(vertex, fragment);
+	m_shaderProgram = LinkShaders(vertex, fragment);
 
 	vertexShaderCode.clear();
 	fragmentShaderCode.clear();
@@ -147,7 +145,7 @@ void Shader::createShader()
 /// <summary>
 /// Bind the shader program to the OpenGL context
 /// </summary>
-void Shader::bindShader()
+void Shader::BindShader()
 {
 	glCall(glUseProgram(m_shaderProgram));
 }
@@ -155,7 +153,7 @@ void Shader::bindShader()
 /// <summary>
 /// Unbind the shader program to the OpenGL context
 /// </summary>
-void Shader::unbindShader()
+void Shader::UnbindShader()
 {
 	glCall(glUseProgram(NO_PROGRAM));
 }
@@ -163,55 +161,55 @@ void Shader::unbindShader()
 /// <summary>
 /// Set a float uniform value at uniformName
 /// </summary>
-void Shader::setUniform(const std::string& uniformName, int value)
+void Shader::SetUniform(const std::string& uniformName, int value)
 {
-	glCall(glUniform1i(getUniformLocation(uniformName), value));
+	glCall(glUniform1i(GetUniformLocation(uniformName), value));
 }
 
 /// <summary>
 /// Set a float uniform value at uniformName
 /// </summary>
-void Shader::setUniform(const std::string& uniformName, float value)
+void Shader::SetUniform(const std::string& uniformName, float value)
 {
-	glCall(glUniform1f(getUniformLocation(uniformName), value));
+	glCall(glUniform1f(GetUniformLocation(uniformName), value));
 }
 
 /// <summary>
 /// Set a vector3 uniform value at uniformName
 /// </summary>
-void Shader::setUniform(const std::string& uniformName, const glm::vec3& value)
+void Shader::SetUniform(const std::string& uniformName, const glm::vec3& value)
 {
-	glCall(glUniform3f(getUniformLocation(uniformName), value.x, value.y, value.z));
+	glCall(glUniform3f(GetUniformLocation(uniformName), value.x, value.y, value.z));
 }
 
 /// <summary>
 /// Set a vector4 uniform value at uniformName
 /// </summary>
-void Shader::setUniform(const std::string& uniformName, const glm::vec4& value)
+void Shader::SetUniform(const std::string& uniformName, const glm::vec4& value)
 {
-	glCall(glUniform4f(getUniformLocation(uniformName), value.x, value.y, value.z, value.w));
+	glCall(glUniform4f(GetUniformLocation(uniformName), value.x, value.y, value.z, value.w));
 }
 
 /// <summary>
 /// Set 4x4 matrix uniform value at uniformName
 /// </summary>
-void Shader::setUniform(const std::string& uniformName, const glm::mat4& value)
+void Shader::SetUniform(const std::string& uniformName, const glm::mat4& value)
 {
-	glCall(glUniformMatrix4fv(getUniformLocation(uniformName), 1, GL_FALSE, glm::value_ptr(value)));
+	glCall(glUniformMatrix4fv(GetUniformLocation(uniformName), 1, GL_FALSE, glm::value_ptr(value)));
 }
 
 /// <summary>
 /// Set the 3x3 matrix uniform value at uniformName
 /// </summary>
-void Shader::setUniform(const std::string& uniformName, const glm::mat3& value)
+void Shader::SetUniform(const std::string& uniformName, const glm::mat3& value)
 {
-	glCall(glUniformMatrix3fv(getUniformLocation(uniformName), 1, GL_FALSE, glm::value_ptr(value)));
+	glCall(glUniformMatrix3fv(GetUniformLocation(uniformName), 1, GL_FALSE, glm::value_ptr(value)));
 }
 
 /// <summary>
 /// Find the location of uniformName in shader file, storing it if first time
 /// </summary>
-int Shader::getUniformLocation(const std::string& uniformName)
+int Shader::GetUniformLocation(const std::string& uniformName)
 {
 	// Get uniform location of uniformName
 	if (m_uniformLocationCache.find(uniformName) != m_uniformLocationCache.end())

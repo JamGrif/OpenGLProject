@@ -2,16 +2,16 @@
 
 /// <summary>
 /// Tells a Texture object which slot in the shader to use
-/// Numbers correspond to numbers in the shader file
+/// Numbers correspond to index in the shader file
 /// </summary>
 enum class TextureType
 {
-	UNSET_TEXTURE		= -1,
-	DIFFUSE_TEXTURE		= 0,
-	SPECULAR_TEXTURE	= 1,
-	EMISSION_TEXTURE	= 2,
-	NORMAL_TEXTURE		= 3,
-	HEIGHT_TEXTURE		= 4,
+	UNSET		= -1,
+	DIFFUSE		= 0,
+	SPECULAR	= 1,
+	EMISSION	= 2,
+	NORMAL		= 3,
+	HEIGHT		= 4,
 };
 
 /// <summary>
@@ -25,28 +25,33 @@ public:
 
 private:
 
-	void bindTexture();
-	void unbindTexture();
+	void			BindTexture();
+	void			UnbindTexture();
 
-	bool parseTexture(const std::string& filepath, TextureType textureType);
-	void createTexture();
+	bool			ParseTexture(const std::string& filepath, TextureType textureType);
+	void			CreateTexture();
+
+	bool			GetIsCreated() { return m_bIsCreated; }
 
 private:
 
-	// Identifies to OpenGL which texture object this is
-	uint32_t			m_textureOpenGLID;
+	// OpenGL texture index
+	uint32_t		m_textureOpenGLID;
 
-	int					m_textureWidth, m_textureHeight, m_textureBPP;
+	// Texture data
+	int				m_textureWidth, m_textureHeight, m_textureBPP;
 
-	std::string			m_textureFilePath;
+	std::string		m_textureFilePath;
 
-	// Used to decide what slot in shader to use
-	TextureType			m_textureType;
+	// Slot used in shader
+	TextureType		m_textureType;
 
-	// Temp storage of texture during creation
-	unsigned char*		m_pLocalTempBuffer;
+	// Temp storage during parsing and creation
+	unsigned char*	m_pTempBuffer;
+
+	bool			m_bIsCreated;
 
 	// Ensures only the TextureManager can call functions of a texture object
-	friend class TextureManager;
+	friend class	TextureManager;
 };
 

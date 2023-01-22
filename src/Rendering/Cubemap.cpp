@@ -7,7 +7,21 @@
 
 #include <GL/glew.h>
 
-Cubemap::Cubemap(const CubemapFaces& facesFilepath)
+Cubemap::Cubemap()
+{
+	
+
+	
+}
+
+Cubemap::~Cubemap()
+{
+	//PRINT_TRACE("deleted cubemap");
+	glCall(glBindTexture(GL_TEXTURE_2D, 0));
+	glCall(glDeleteTextures(1, &m_texture));
+}
+
+bool Cubemap::ParseCubemap(const CubemapFaces& facesFilepath)
 {
 	//PRINT_TRACE("created cubemap at filepath {0}", m_filePath);
 
@@ -21,9 +35,15 @@ Cubemap::Cubemap(const CubemapFaces& facesFilepath)
 		if (stbi_failure_reason() == "can't fopen")
 		{
 			PRINT_WARN("CUBEMAP-> {0} failed to load, loading default texture", facesFilepath[i]);
+			return false;
 		}
 	}
 
+	return true;
+}
+
+void Cubemap::CreateCubemap()
+{
 	// Generate texture buffer
 	glCall(glGenTextures(1, &m_texture));
 
@@ -49,17 +69,10 @@ Cubemap::Cubemap(const CubemapFaces& facesFilepath)
 	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
 }
 
-Cubemap::~Cubemap()
-{
-	//PRINT_TRACE("deleted cubemap");
-	glCall(glBindTexture(GL_TEXTURE_2D, 0));
-	glCall(glDeleteTextures(1, &m_texture));
-}
-
 /// <summary>
 /// Binds the cubemap texture to the OpenGL context
 /// </summary>
-void Cubemap::bindCubemap()
+void Cubemap::BindCubemap()
 {
 	glCall(glActiveTexture(GL_TEXTURE0 + m_textureSlot));
 	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture));
@@ -68,7 +81,7 @@ void Cubemap::bindCubemap()
 /// <summary>
 /// Unbinds the cubemap texture from the OpenGL context
 /// </summary>
-void Cubemap::unbindCubemap()
+void Cubemap::UnbindCubemap()
 {
 	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
 }

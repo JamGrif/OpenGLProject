@@ -15,27 +15,27 @@ struct ModelLoaderParams
 	std::string meshID;				// ID of mesh that the model will use
 };
 
-
 // Class that allows an object to be lit by all the scene lights and gives the option for multiple texture maps to be applied
 class Model
 {
 public:
-	Model(ModelLoaderParams pParams);
+	Model(const ModelLoaderParams& pParams);
     ~Model();
 
-	void			updateModel();
-	void			drawModel();
+	void			UpdateModel();
+	void			DrawModel();
 
-	void			setModelPointers(SceneCamera* pSceneCamera, SceneLightManager* pSceneLightManager);
+	void			SetModelPointers(SceneCamera* pSceneCamera);
 
-	const Vector3D& getPosition() const { return m_position; }
-
-	void			setMatrixValues();
+	inline void		SetMatrixValues();
 
 private:
 
-	std::string		m_materialID;
+	// For MeshManager - The mesh this model uses
 	std::string		m_meshID;
+
+	// For MaterialManager - The material this model uses
+	std::string		m_materialID;
 
 	// World Space
 	Vector3D		m_position;
@@ -48,7 +48,6 @@ private:
 	glm::mat4		m_rMat;		// Rotation
 	glm::mat4		m_sMat;		// Scale
 
-	SceneLightManager* m_pSceneLightManager;
 	SceneCamera* m_pSceneCamera;
 
 	const glm::mat4& m_programProjectionMatrix;

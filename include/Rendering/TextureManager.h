@@ -1,29 +1,24 @@
 #pragma once
 
-// Everything that uses TextureManager will use Texture and Cubemap
+// Everything that uses TextureManager will use Texture
 #include "Rendering/Texture.h"
-#include "Rendering/Cubemap.h"
+
+typedef std::unordered_map<std::string, std::unique_ptr<Texture>> TexturePool;
 
 /// <summary>
-/// Abstracts and handles the creation, deletion and usage of Texture and Cubemap objects
-/// Textures and Cubemaps can only be used through this class
+/// Encapsulates and abstracts the creation, deletion and usage of Texture objects
+/// Textures can only be used through this class
 /// </summary>
 class TextureManager
 {
 public:
+	bool		AddTexture(const std::string& textureID, TextureType textureType);
+	void		CreateAllTextures(); 
 
-	bool	addTexture(const std::string& textureID, TextureType textureType);
-	bool	addCubemap(const std::string& cubemapID);
+	void		BindTextureAtID(const std::string& textureID);
+	void		UnbindTextureAtID(const std::string& textureID);
 
-	void	createAllTextures();
-
-	void	bindTextureAtID(const std::string& textureID);
-	void	unbindTextureAtID(const std::string& textureID);
-
-	Cubemap* getCubemapAtID(const std::string cubemapID);
-
-	void	clearAllTextures();
-	void	clearAllCubemaps();
+	void		ClearAllTextures();
 
 	static TextureManager* Instance() // Get instance
 	{
@@ -32,8 +27,7 @@ public:
 	}
 private:
 
-	std::unordered_map<std::string, std::unique_ptr<Texture>> m_textureMap;
-	std::unordered_map<std::string, Cubemap*> m_cubemapMap;
+	TexturePool m_texturePool;
 
 	TextureManager() {}
 	~TextureManager() {}

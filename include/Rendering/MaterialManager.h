@@ -3,22 +3,23 @@
 // Everything that uses MaterialManager will use Material
 #include "Rendering/Material.h"
 
+typedef std::unordered_map<std::string, std::unique_ptr<Material>> MaterialPool;
+
 /// <summary>
-/// Abstracts and handles the creation, deletion and usage of material objects
+/// Encapsulates and abstracts the creation, deletion and usage of material objects
 /// Materials can only be used through this class
 /// </summary>
 class MaterialManager
 {
 public:
+	bool CreateMaterial(const std::string& materialID, const MaterialLoaderParams& pParams);
 
-	bool createMaterial(const std::string& materialID, const MaterialLoaderParams& pParams);
+	void BindMaterialAtID(const std::string& materialID, const glm::mat4& modelMat);
+	void UnbindMaterialAtID(const std::string& materialID);
 
-	void setAllMaterialPointers(SceneLightManager* pSceneLightManager, SceneCamera* pSceneCamera, const glm::mat4& projMat);
+	void ClearAllMaterials();
 
-	void bindMaterialAtID(const std::string& materialID, const glm::mat4& modelMat);
-	void unbindMaterialAtID(const std::string& materialID);
-
-	void clearAllMaterials();
+	void SetAllMaterialScenePointers(std::weak_ptr<SceneLightManager> pSceneLightManager, std::weak_ptr<SceneCamera> pSceneCamera);
 
 	static MaterialManager* Instance()
 	{
@@ -27,7 +28,7 @@ public:
 	}
 private:
 
-	std::unordered_map<std::string, std::unique_ptr<Material>> m_materialMap;
+	MaterialPool m_materialMap;
 
 	MaterialManager() {}
 	~MaterialManager() {}

@@ -6,16 +6,6 @@ class Shader;
 class SceneCamera;
 class SceneLightManager;
 
-// Numbers correspond to texture order in shader
-enum textureSlotNumber
-{
-	e_diffuseTextureSlot	= 0,
-	e_specularTextureSlot	= 1,
-	e_emissionTextureSlot	= 2,
-	e_normalTextureSlot		= 3,
-	e_heightTextureSlot		= 4
-};
-
 struct MaterialLoaderParams
 {
 	std::string diffuseMapID;		// ID for TextureManager for diffuse map
@@ -28,6 +18,10 @@ struct MaterialLoaderParams
 	float		heightMapHeight;	// Height to draw the height map within fragment shader
 };
 
+/// <summary>
+/// Encapsulates multiple Texture objects and a single Shader object
+/// Used in the Model class with a Mesh to render
+/// </summary>
 class Material
 {
 public:
@@ -35,26 +29,29 @@ public:
 	~Material();
 
 private:
-	void bindMaterial(const glm::mat4& modelMat);
-	void unbindMaterial();
 
-	void setScenePointers(SceneLightManager* pSceneLightManager, SceneCamera* pSceneCamera, const glm::mat4& projMat);
+	void		BindMaterial(const glm::mat4& modelMat);
+	void		UnbindMaterial();
 
-	// ID of shader the material will use
+	void		SetScenePointers(std::weak_ptr<SceneLightManager> pSceneLightManager, std::weak_ptr<SceneCamera> pSceneCamera);
+
+private:
+
+	// Shader the material uses
 	std::string m_shaderID;
 
-	// Shader object the material will use - set once at material creation
-	Shader* m_materialShader;
-
+	// Textures the material uses
 	std::string m_textureMapIDs[5];
 	bool		m_textureMapUsing[5] = { false,false,false,false,false };
 
-	bool m_normalMapNormalize;
-	float m_heightMapHeight;
+	// Rendering data
+	bool		m_bNormalMapNormalize;
+	float		m_heightMapHeight;
 
-	SceneLightManager* m_pSceneLightManager;
-	SceneCamera* m_pSceneCamera;
-	const glm::mat4* m_pAppProjectionMatrix;
+	// Cached scene objects
+	std::weak_ptr<SceneLightManager> m_pSceneLightManager;
+	std::weak_ptr<SceneCamera> m_pSceneCamera;
+	const glm::mat4& m_pAppProjectionMatrix;
 
 	// Ensures only the MaterialManager can call functions of a material object
 	friend class MaterialManager;

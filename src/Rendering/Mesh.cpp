@@ -23,7 +23,7 @@ struct Vertex
 
 
 Mesh::Mesh()
-	:m_meshOpenGLVBO(-1), m_meshOpenGLEBO(-1), m_bIsCreated(false)
+	:m_meshVBO(-1), m_meshEBO(-1), m_bIsCreated(false)
 {
 }
 
@@ -36,61 +36,52 @@ Mesh::~Mesh()
 	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 
 	// Delete VBO / EBO
-	glCall(glDeleteBuffers(1, &m_meshOpenGLVBO));
-	glCall(glDeleteBuffers(1, &m_meshOpenGLEBO));
+	glCall(glDeleteBuffers(1, &m_meshVBO));
+	glCall(glDeleteBuffers(1, &m_meshEBO));
 }
 
-void Mesh::parseMesh(const std::string& filepath)
+void Mesh::ParseMesh(const std::string& filepath)
 {
-	//PRINT_TRACE("parsing mesh object with filepath of {0}", filepath);
+	Assimp::Importer assimpImporter;
+	const aiScene* assimpScene = assimpImporter.ReadFile(filepath, aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices);
 
-	m_meshFilePath = filepath;
-
-	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(m_meshFilePath, aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices);
-
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	if (!assimpScene || assimpScene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !assimpScene->mRootNode)
 	{
-		PRINT_WARN("MESH-> {0} failed to load", m_meshFilePath);
+		PRINT_WARN("MESH-> {0} failed to load", filepath);
 		return;
 	}
 
-	aiMesh* mesh = scene->mMeshes[0];
+	const aiMesh* mesh = assimpScene->mMeshes[0];
 	m_meshVertices.reserve(mesh->mNumVertices); // Reserve enough space to hold all the vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex;
 
 		// Position
-		glm::vec3 vector;
-		vector.x = mesh->mVertices[i].x;
-		vector.y = mesh->mVertices[i].y;
-		vector.z = mesh->mVertices[i].z;
-		vertex.Position = vector;
+		//glm::vec3 vector;
+		vertex.Position.x = mesh->mVertices[i].x;
+		vertex.Position.y = mesh->mVertices[i].y;
+		vertex.Position.z = mesh->mVertices[i].z;
 
 		// Normals
-		vector.x = mesh->mNormals[i].x;
-		vector.y = mesh->mNormals[i].y;
-		vector.z = mesh->mNormals[i].z;
-		vertex.Normal = vector;
+		vertex.Normal.x = mesh->mNormals[i].x;
+		vertex.Normal.y = mesh->mNormals[i].y;
+		vertex.Normal.z = mesh->mNormals[i].z;
 
 		// Texcoords
-		glm::vec2 vec;
-		vec.x = mesh->mTextureCoords[0][i].x;
-		vec.y = mesh->mTextureCoords[0][i].y;
-		vertex.TexCoords = vec;
+		//glm::vec2 vec;
+		vertex.TexCoords.x = mesh->mTextureCoords[0][i].x;
+		vertex.TexCoords.y = mesh->mTextureCoords[0][i].y;
 
 		// Tangent
-		vector.x = mesh->mTangents[i].x;
-		vector.y = mesh->mTangents[i].y;
-		vector.z = mesh->mTangents[i].z;
-		vertex.Tangent = vector;
+		vertex.Tangent.x = mesh->mTangents[i].x;
+		vertex.Tangent.y = mesh->mTangents[i].y;
+		vertex.Tangent.z = mesh->mTangents[i].z;
 
 		// Bitangent
-		vector.x = mesh->mBitangents[i].x;
-		vector.y = mesh->mBitangents[i].y;
-		vector.z = mesh->mBitangents[i].z;
-		vertex.Bitangent = vector;
+		vertex.Bitangent.x = mesh->mBitangents[i].x;
+		vertex.Bitangent.y = mesh->mBitangents[i].y;
+		vertex.Bitangent.z = mesh->mBitangents[i].z;
 
 		m_meshVertices.push_back(vertex);
 	}
@@ -104,28 +95,31 @@ void Mesh::parseMesh(const std::string& filepath)
 			m_meshIndices.push_back(face.mIndices[j]);
 		}
 	}
+
+	m_meshFilePath = filepath;
+
 }
 
-void Mesh::createMesh()
+void Mesh::CreateMesh()
 {
 	// Create and setup the meshes VBO
-	glCall(glGenBuffers(1, &m_meshOpenGLVBO));
-	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshOpenGLVBO));
+	glCall(glGenBuffers(1, &m_meshVBO));
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
 	glCall(glBufferData(GL_ARRAY_BUFFER, m_meshVertices.size() * sizeof(Vertex), &m_meshVertices[0], GL_STATIC_DRAW));
 
 	// Create and setup the meshes EBO
-	glCall(glGenBuffers(1, &m_meshOpenGLEBO));
-	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshOpenGLEBO));
+	glCall(glGenBuffers(1, &m_meshEBO));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO));
 	glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_meshIndices.size() * sizeof(unsigned int), &m_meshIndices[0], GL_STATIC_DRAW));
 
 	m_bIsCreated = true;
 }
 
-void Mesh::bindMesh()
+void Mesh::BindMesh()
 {
 	// Bind the meshes VBO and EBO
-	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshOpenGLVBO));
-	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshOpenGLEBO));
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO));
 
 	// Position
 	glCall(glEnableVertexAttribArray(0));
@@ -147,7 +141,7 @@ void Mesh::bindMesh()
 	glCall(glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent)));
 }
 
-void Mesh::unbindMesh()
+void Mesh::UnbindMesh()
 {
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));

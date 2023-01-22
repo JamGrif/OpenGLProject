@@ -8,41 +8,36 @@ public:
 	Shader();
 	~Shader();
 
-	void parseShader(const std::string& vertexPath, const std::string& fragmentPath);
-	void createShader();
+private:
 
-	void bindShader();
-	void unbindShader();
+	void ParseShader(const std::string& vertexPath, const std::string& fragmentPath);
+	void CreateShader();
 
-	void							setUniform1i(const std::string& name, int v0);
-	void							setUniform1f(const std::string& name, float v0);
-	void							setUniform3f(const std::string& name, const glm::vec3& v0);
-	void							setUniform4f(const std::string& name, const glm::vec4& v0);
-	void							setUniformMatrix4fv(const std::string& name, const glm::mat4& v0);
-	void							setUniformMatrix3fv(const std::string& name, const glm::mat3& v0);
+	void BindShader();
+	void UnbindShader();
+
+	void			SetUniform(const std::string& uniformName, int value);
+	void			SetUniform(const std::string& uniformName, float value);
+	void			SetUniform(const std::string& uniformName, const glm::vec3& value);
+	void			SetUniform(const std::string& uniformName, const glm::vec4& value);
+	void			SetUniform(const std::string& uniformName, const glm::mat3& value);
+	void			SetUniform(const std::string& uniformName, const glm::mat4& value);
+
+	inline int		GetUniformLocation(const std::string& uniformName);
+
+	bool			GetCreated() { return m_bCreated; }
 
 private:
-	// Drawing functions
-	inline const int				getUniformLocation(const std::string& name);
 
-	// Shader loading functions
+	uint32_t						m_shaderProgram;
 
-	//std::string shaderVertexPath;
-
-	uint32_t						m_shaderProgram = 0;
-
-	//shaderProgramType				m_shaderType;
-
-	std::string						m_shaderFilePaths[5];
-
-	std::string						m_shaderCode[5];
+	bool							m_bCreated;
 
 	// Cache for uniform locations
-	std::unordered_map<std::string, int> m_locationCache;
+	std::unordered_map<std::string, int> m_uniformLocationCache;
 
 	std::string vertexShaderCode;
 	std::string fragmentShaderCode;
 
-
+	friend class ShaderManager;
 };
-

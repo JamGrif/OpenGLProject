@@ -4,7 +4,7 @@
 /// <summary>
 /// Create a new material using the values in the MaterialLoaderParams and add it to the materialMap at ID
 /// </summary>
-bool MaterialManager::createMaterial(const std::string& materialID, const MaterialLoaderParams& pParams)
+bool MaterialManager::CreateMaterial(const std::string& materialID, const MaterialLoaderParams& pParams)
 {
 	// Check if material with ID already exists
 	if (m_materialMap.find(materialID) != m_materialMap.end())
@@ -17,42 +17,42 @@ bool MaterialManager::createMaterial(const std::string& materialID, const Materi
 }
 
 /// <summary>
-/// Sets the pointers of the scene lightmanager, scene camera and renderers projection matrix for all materials in materialMap
-/// </summary>
-void MaterialManager::setAllMaterialPointers(SceneLightManager* pSceneLightManager, SceneCamera* pSceneCamera, const glm::mat4& projMat)
-{
-	for (const auto& [key, value] : m_materialMap)
-	{
-		value->setScenePointers(pSceneLightManager, pSceneCamera, projMat);
-	}
-}
-
-/// <summary>
 /// Binds the textures and shaders used by the specified material to the OpenGL context
 /// </summary>
-void MaterialManager::bindMaterialAtID(const std::string& materialID, const glm::mat4& modelMat)
+void MaterialManager::BindMaterialAtID(const std::string& materialID, const glm::mat4& modelMat)
 {
 	if (m_materialMap.count(materialID))
 	{
-		m_materialMap.at(materialID)->bindMaterial(modelMat);
+		m_materialMap.at(materialID)->BindMaterial(modelMat);
 	}
 }
 
 /// <summary>
 /// Unbinds the textures and shaders used by the specified material to the OpenGL context
 /// </summary>
-void MaterialManager::unbindMaterialAtID(const std::string& materialID)
+void MaterialManager::UnbindMaterialAtID(const std::string& materialID)
 {
 	if (m_materialMap.count(materialID))
 	{
-		m_materialMap.at(materialID)->unbindMaterial();
+		m_materialMap.at(materialID)->UnbindMaterial();
 	}
 }
 
 /// <summary>
-/// Deletes all created materials
+/// Deletes all materials
 /// </summary>
-void MaterialManager::clearAllMaterials()
+void MaterialManager::ClearAllMaterials()
 {
 	m_materialMap.clear();
+}
+
+/// <summary>
+/// Sets the scene pointers for all materials
+/// </summary>
+void MaterialManager::SetAllMaterialScenePointers(std::weak_ptr<SceneLightManager> pSceneLightManager, std::weak_ptr<SceneCamera> pSceneCamera)
+{
+	for (const auto& [materialID, material] : m_materialMap)
+	{
+		material->SetScenePointers(pSceneLightManager, pSceneCamera);
+	}
 }

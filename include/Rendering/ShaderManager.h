@@ -4,20 +4,28 @@
 #include "Rendering/Shader.h"
 
 /// <summary>
-/// Abstracts and handles the creation, deletion and usage of shader objects
+/// Encapsulates and abstracts the creation, deletion and usage of shader objects
 /// Shaders can only be used through this class
 /// </summary>
 class ShaderManager
 {
 public:
 
-	bool parseShader(const std::string& shaderID, const std::string& vertexPath, const std::string& fragmentPath);
+	bool AddShader(const std::string& shaderID, const std::string& vertexPath, const std::string& fragmentPath);
 
-	void createAllShaders();
+	void CreateAllShaders();
 
-	Shader* getShaderAtID(const std::string& shaderID);
+	void BindShaderAtID(const std::string& shaderID);
+	void UnbindShaderAtID(const std::string& shaderID);
 
-	void clearAllShaders();
+	void SetUniformAtID(const std::string& shaderID, const std::string& uniformName, int value);
+	void SetUniformAtID(const std::string& shaderID, const std::string& uniformName, float value);
+	void SetUniformAtID(const std::string& shaderID, const std::string& uniformName, const glm::vec3& value);
+	void SetUniformAtID(const std::string& shaderID, const std::string& uniformName, const glm::vec4& value);
+	void SetUniformAtID(const std::string& shaderID, const std::string& uniformName, const glm::mat3& value);
+	void SetUniformAtID(const std::string& shaderID, const std::string& uniformName, const glm::mat4& value);
+
+	void ClearAllShaders();
 
 	static ShaderManager* Instance() // Get instance
 	{
@@ -26,7 +34,7 @@ public:
 	}
 private:
 
-	std::unordered_map<std::string, Shader*> m_shaderMap;
+	std::unordered_map<std::string, std::unique_ptr<Shader>> m_shaderMap;
 
 	ShaderManager() {}
 	~ShaderManager() {}

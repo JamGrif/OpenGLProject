@@ -4,23 +4,22 @@
 #include "Rendering/Mesh.h"
 
 /// <summary>
-/// Abstracts and handles the creation, deletion and usage of Mesh objects
+/// Encapsulates and abstracts the creation, deletion and usage of Mesh objects
 /// Meshes can only be used through this class
 /// </summary>
 class MeshManager
 {
 public:
 
-	bool	addMesh(const std::string& meshID);
+	bool	AddMesh(const std::string& meshID);
+	void	CreateAllMeshes();
 
-	void	createAllMeshes();
+	void	BindMeshAtID(const std::string& meshID);
+	void	UnbindMeshAtID(const std::string& meshID);
 
-	void	bindMeshAtID(const std::string& meshID);
-	void	unbindMeshAtID(const std::string& meshID);
+	size_t	GetIndicesCountAtID(const std::string& meshID);
 
-	size_t	getIndicesCountAtID(const std::string& meshID);
-
-	void	clearAllMeshes();
+	void	ClearAllMeshes();
 
 	static MeshManager* Instance() // Get instance
 	{

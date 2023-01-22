@@ -13,19 +13,19 @@ public:
 
 private:
 
-	void bindMesh();
-	void unbindMesh();
+	void BindMesh();
+	void UnbindMesh();
 
-	void parseMesh(const std::string& filepath);
-	void createMesh();
+	void ParseMesh(const std::string& filepath);
+	void CreateMesh();
 
-	size_t getIndicesCount() const { return m_meshIndices.size(); }
-	bool	getIsCreated() { return m_bIsCreated; }
+	size_t	GetIndicesCount() const { return m_meshIndices.size(); }
+	bool	GetIsCreated() { return m_bIsCreated; }
 
 private:
 
-	uint32_t							m_meshOpenGLVBO;
-	uint32_t							m_meshOpenGLEBO;
+	uint32_t							m_meshVBO;
+	uint32_t							m_meshEBO;
 
 	// All the vertices that make up the mesh
 	std::vector<Vertex>					m_meshVertices;

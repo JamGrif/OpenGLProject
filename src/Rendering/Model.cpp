@@ -10,67 +10,73 @@
 #include "Rendering/OpenGLRenderer.h"
 #include "Scene/SceneCamera.h"
 
-Model::Model(ModelLoaderParams pParams)
+Model::Model(const ModelLoaderParams& pParams)
 	:m_materialID(pParams.materialID), m_meshID(pParams.meshID),
-	m_position(pParams.posX, pParams.posY, pParams.posZ), m_rotation(pParams.rotX, pParams.rotY, pParams.rotZ),
+	m_position(pParams.posX, pParams.posY, pParams.posZ),
+	m_rotation(pParams.rotX, pParams.rotY, pParams.rotZ),
 	m_scale(pParams.scaleX, pParams.scaleY, pParams.scaleZ),
 	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f },
-	m_pSceneLightManager(nullptr), m_pSceneCamera(nullptr), m_programProjectionMatrix(TheOpenGLRenderer::Instance()->getProjectionMatrix())
+	m_pSceneCamera(nullptr), m_programProjectionMatrix(TheOpenGLRenderer::Instance()->GetProjectionMatrix())
 {
 	// Use the meshID to create initial mesh
-	MeshManager::Instance()->addMesh(m_meshID);
+	MeshManager::Instance()->AddMesh(m_meshID);
 }
 
 Model::~Model()
 {
 }
 
-void Model::updateModel()
+/// <summary>
+/// Perform update operations for model
+/// </summary>
+void Model::UpdateModel()
 {
-	setMatrixValues();
+	SetMatrixValues();
 }
 
-void Model::drawModel()
+/// <summary>
+/// Perform drawing operations for model
+/// </summary>
+void Model::DrawModel()
 {
 	// Bind material and mesh
-	TheMaterialManager::Instance()->bindMaterialAtID(m_materialID, m_mMat);
-	TheMeshManager::Instance()->bindMeshAtID(m_meshID);
+	TheMaterialManager::Instance()->BindMaterialAtID(m_materialID, m_mMat);
+	TheMeshManager::Instance()->BindMeshAtID(m_meshID);
 	
 	// Draw
-	TheOpenGLRenderer::Instance()->draw(TheMeshManager::Instance()->getIndicesCountAtID(m_meshID));
+	TheOpenGLRenderer::Instance()->Draw(TheMeshManager::Instance()->GetIndicesCountAtID(m_meshID));
 
 	// Unbind material and mesh
-	TheMeshManager::Instance()->unbindMeshAtID(m_meshID);
-	TheMaterialManager::Instance()->unbindMaterialAtID(m_materialID);
+	TheMeshManager::Instance()->UnbindMeshAtID(m_meshID);
+	TheMaterialManager::Instance()->UnbindMaterialAtID(m_materialID);
 }
 
-
-void Model::setModelPointers(SceneCamera* pSceneCamera, SceneLightManager* pSceneLightManager)
+/// <summary>
+/// Set the pointers the model uses from the scene
+/// </summary>
+void Model::SetModelPointers(SceneCamera* pSceneCamera)
 {
 	m_pSceneCamera = pSceneCamera;
-	m_pSceneLightManager = pSceneLightManager;
 }
 
 /// <summary>
 /// Resets and sets the matrix values of the model
 /// </summary>
-void Model::setMatrixValues()
+void Model::SetMatrixValues()
 {
-	// Reset matrix values
-	m_mMat = glm::mat4(1.0f);
-	m_tMat = glm::mat4(1.0f);
+	// Reset rotation matrix
 	m_rMat = glm::mat4(1.0f);
-	m_sMat = glm::mat4(1.0f);
 
-	// Set meshes matrices
-	m_tMat = glm::translate(m_tMat, glm::vec3(m_position.getX(), m_position.getY(), m_position.getZ()));
-	m_rMat = glm::rotate(m_rMat, glm::radians(m_rotation.getX()), glm::vec3(1.0, 0.0f, 0.0f));
-	m_rMat = glm::rotate(m_rMat, glm::radians(m_rotation.getY()), glm::vec3(0.0f, 1.0, 0.0f));
-	m_rMat = glm::rotate(m_rMat, glm::radians(m_rotation.getZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-	m_sMat = glm::scale(m_sMat, glm::vec3(m_scale.getX(), m_scale.getY(), m_scale.getZ()));
+	// Set transform matrices
+	m_tMat = glm::translate(glm::mat4(1.0f), glm::vec3(m_position.GetX(), m_position.GetY(), m_position.GetZ()));
+	m_rMat = glm::rotate(m_rMat, glm::radians(m_rotation.GetX()), glm::vec3(1.0, 0.0f, 0.0f));
+	m_rMat = glm::rotate(m_rMat, glm::radians(m_rotation.GetY()), glm::vec3(0.0f, 1.0, 0.0f));
+	m_rMat = glm::rotate(m_rMat, glm::radians(m_rotation.GetZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+	m_sMat = glm::scale(glm::mat4(1.0f), glm::vec3(m_scale.GetX(), m_scale.GetY(), m_scale.GetZ()));
 
 	m_mMat = m_tMat * m_rMat * m_sMat;
 
-	m_vMat = m_pSceneCamera->getViewMatrix();
+	// Set new view matrix
+	m_vMat = m_pSceneCamera->GetViewMatrix();
 }
 
