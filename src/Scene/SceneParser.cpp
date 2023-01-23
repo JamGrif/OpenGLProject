@@ -7,11 +7,11 @@
 
 #include "Scene/SceneSky.h"
 #include "Scene/SceneLightManager.h"
-#include "Rendering/ShaderManager.h"
-#include "Rendering/MaterialManager.h"
-#include "Rendering/TextureManager.h"
-#include "Rendering/MeshManager.h"
-#include "Rendering/CubemapManager.h"
+#include "Rendering/Resource/Manager/ShaderManager.h"
+#include "Rendering/Resource/Manager/MaterialManager.h"
+#include "Rendering/Resource/Manager/TextureManager.h"
+#include "Rendering/Resource/Manager/MeshManager.h"
+#include "Rendering/Resource/Manager/CubemapManager.h"
 #include "Rendering/Model.h"
 
 static constexpr uint8_t STRCMP_SUCCESS = 0;
@@ -67,28 +67,25 @@ bool SceneParser::ParseSceneFile(const std::string& filename, std::vector<std::s
 		}
 	}
 
+	const auto processor_count = std::thread::hardware_concurrency();
+	PRINT_TRACE("number of threads {0}", processor_count);
+
 	// Parse all the assets used in scene
 	PerformanceTimer parseTimer("Asset Parsing");
 
-	ParseMaterials(materialRoot);
+	ParseMaterialsNode(materialRoot);
 
 	// Load all textures and meshes concurrently
-	//std::thread materialThread(&SceneParser::ParseMaterials, this, materialRoot);
+	std::thread	firstMaterialThread(&SceneParser::ParseFirstHalfMaterials, this);
+	std::thread secondMaterialThread(&SceneParser::ParseSecondHalfMaterials, this);
+	std::thread modelThread(&SceneParser::ParseModelsNode, this, std::ref(modelRoot), std::ref(sceneLightingEntities));
 
-	//std::thread	firstMaterialThread();
-	//std::thread secondMaterialThread();
-
-	std::thread modelThread(&SceneParser::ParseModels, this, std::ref(modelRoot), std::ref(sceneLightingEntities));
-
-	//materialThread.join();
-
-	//firstMaterialThread().join();
-	//secondMaterialThread().join();
+	firstMaterialThread.join();
+	secondMaterialThread.join();
 	modelThread.join();
 
-	ParseLights(lightRoot, sceneLightManager);
-	ParseFirstHalfMaterials();
-	ParseSecondHalfMaterials();
+	// Add scene lights to the light manager
+	ParseLightsNode(lightRoot, sceneLightManager);
 
 	// Add the cubemap that the Skybox will use
 	TheCubemapManager::Instance()->AddCubemap(m_tempSkyCubemapID);
@@ -96,7 +93,7 @@ bool SceneParser::ParseSceneFile(const std::string& filename, std::vector<std::s
 	parseTimer.stop();
 
 	// Create all assets used in scene
-	PerformanceTimer creationTimer("Asset creating");
+	PerformanceTimer creationTimer("Asset Creation");
 	TheShaderManager::Instance()->CreateAllShaders();
 	TheTextureManager::Instance()->CreateAllTextures();
 	TheMeshManager::Instance()->CreateAllMeshes();
@@ -110,8 +107,10 @@ bool SceneParser::ParseSceneFile(const std::string& filename, std::vector<std::s
 /// <summary>
 /// Parse the <materials> node
 /// </summary>
-void SceneParser::ParseMaterials(TiXmlElement* pMaterialsRoot)
+void SceneParser::ParseMaterialsNode(TiXmlElement* pMaterialsRoot)
 {
+	bool bInsertInFirst = true;
+
 	// Loop through all elements of <materials> node
 	for (const TiXmlElement* materialNode = pMaterialsRoot->FirstChildElement(); materialNode != NULL; materialNode = materialNode->NextSiblingElement())
 	{
@@ -120,7 +119,7 @@ void SceneParser::ParseMaterials(TiXmlElement* pMaterialsRoot)
 			continue;
 
 		// Fill out materials loading parameters
-		MaterialLoaderParams tempLoaderParams;
+		MaterialLoaderParams tempLoaderParams;	
 
 		materialNode->QueryStringAttribute("diffuseid", &tempLoaderParams.diffuseMapID);
 		materialNode->QueryStringAttribute("specularid", &tempLoaderParams.specularMapID);
@@ -131,45 +130,48 @@ void SceneParser::ParseMaterials(TiXmlElement* pMaterialsRoot)
 		materialNode->QueryBoolAttribute("normalmapNormalize", &tempLoaderParams.normalMapNormalize);
 		materialNode->QueryFloatAttribute("heightmapHeight", &tempLoaderParams.heightMapHeight);
 
-		static bool putInFirst = true;
-		if (putInFirst)
+		// Materials are split into separate containers to allow faster parsing through multi threading
+		if (bInsertInFirst)
 		{
-			putInFirst = !putInFirst;
-			firstMatMap.insert({ materialNode->Attribute("id"), tempLoaderParams });
+			bInsertInFirst = !bInsertInFirst;
+			m_firstMatMap.insert({ materialNode->Attribute("id"), tempLoaderParams });
 		}
 		else
 		{
-			putInFirst = !putInFirst;
-			secondMatMap.insert({ materialNode->Attribute("id"), tempLoaderParams });
+			bInsertInFirst = !bInsertInFirst;
+			m_secondMatMap.insert({ materialNode->Attribute("id"), tempLoaderParams });
 		}
-
-		// Create material using filled out loading parameters and assign the id to it
-		//TheMaterialManager::Instance()->CreateMaterial(materialNode->Attribute("id"), tempLoaderParams);
 	}
 }
 
-
+/// <summary>
+/// Parse one half of the materials used in the scene
+/// </summary>
 void SceneParser::ParseFirstHalfMaterials()
 {
-	for (const auto& [key, value] : firstMatMap)
+	// Create material using filled out loading parameters and assign the id to it
+	for (const auto& [materialID, materialLoaderParams] : m_firstMatMap)
 	{
-		TheMaterialManager::Instance()->CreateMaterial(key, value);
+		TheMaterialManager::Instance()->CreateMaterial(materialID, materialLoaderParams);
 	}
 }
 
-
+/// <summary>
+/// Parse the other half of the materials used in the scene
+/// </summary>
 void SceneParser::ParseSecondHalfMaterials()
 {
-	for (const auto& [key, value] : secondMatMap)
+	// Create material using filled out loading parameters and assign the id to it
+	for (const auto& [materialID, materialLoaderParams] : m_secondMatMap)
 	{
-		TheMaterialManager::Instance()->CreateMaterial(key, value);
+		TheMaterialManager::Instance()->CreateMaterial(materialID, materialLoaderParams);
 	}
 }
 
 /// <summary>
 /// Parse the <lights> node
 /// </summary>
-void SceneParser::ParseLights(TiXmlElement* pLightsRoot, std::shared_ptr<SceneLightManager>& sceneLightManager)
+void SceneParser::ParseLightsNode(TiXmlElement* pLightsRoot, std::shared_ptr<SceneLightManager>& sceneLightManager)
 {
 	// Loop through all elements of <lights> node
 	for (TiXmlElement* lightNode = pLightsRoot->FirstChildElement(); lightNode != NULL; lightNode = lightNode->NextSiblingElement())
@@ -226,7 +228,7 @@ void SceneParser::ParseLights(TiXmlElement* pLightsRoot, std::shared_ptr<SceneLi
 /// <summary>
 /// Parse the <models> node
 /// </summary>
-void SceneParser::ParseModels(TiXmlElement* pModelRoot, std::vector<std::shared_ptr<Model>>& sceneLightingEntities)
+void SceneParser::ParseModelsNode(TiXmlElement* pModelRoot, std::vector<std::shared_ptr<Model>>& sceneLightingEntities)
 {
 	// Loop through all the elements of <models> node
 	for (const TiXmlElement* modelNode = pModelRoot->FirstChildElement(); modelNode != NULL; modelNode = modelNode->NextSiblingElement())

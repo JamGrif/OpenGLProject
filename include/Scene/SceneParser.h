@@ -1,13 +1,16 @@
 #pragma once
 
-class Model;
+class TiXmlElement;
+
 class SceneLightManager;
 class SceneSky;
 
-class TiXmlElement;
-
+class Model;
 struct LightLoaderParams;
 struct MaterialLoaderParams;
+
+// Holds material data that is waiting to be parsed and created
+typedef std::unordered_map<std::string, MaterialLoaderParams> PendingMaterialPool;
 
 /// <summary>
 /// This class reads in a XML file containing all of the scene information from res/scenes/
@@ -22,18 +25,17 @@ public:
 	bool ParseSceneFile(const std::string& filename, std::vector<std::shared_ptr<Model>>& sceneLightingEntities, std::shared_ptr<SceneLightManager>& sceneLightManager, std::shared_ptr<SceneSky>* sceneSky);
 
 private:
-	void ParseMaterials(TiXmlElement* pMaterialsRoot);
+	void ParseMaterialsNode(TiXmlElement* pMaterialsRoot);
+	void ParseModelsNode(TiXmlElement* pModelRoot, std::vector<std::shared_ptr<Model>>& sceneLightingEntities);
+	void ParseLightsNode(TiXmlElement* pLightsRoot, std::shared_ptr<SceneLightManager>& sceneLightManager);
 
 	void ParseFirstHalfMaterials();
 	void ParseSecondHalfMaterials();
 
-	std::unordered_map<std::string, MaterialLoaderParams> firstMatMap;
-	std::unordered_map<std::string, MaterialLoaderParams> secondMatMap;
-
-	void ParseLights(TiXmlElement* pLightsRoot, std::shared_ptr<SceneLightManager>& sceneLightManager);
-	void ParseModels(TiXmlElement* pModelRoot, std::vector<std::shared_ptr<Model>>& sceneLightingEntities);
-
 	void ParseBaseLight(TiXmlElement* lightNode, LightLoaderParams* pParams);
+
+	PendingMaterialPool m_firstMatMap;
+	PendingMaterialPool m_secondMatMap;
 
 	std::string m_tempSkyCubemapID;
 };

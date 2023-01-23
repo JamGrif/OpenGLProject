@@ -3,10 +3,10 @@
 
 #include <GL/glew.h>
 
-#include "Rendering/TextureManager.h"
-#include "Rendering/CubemapManager.h"
+#include "Rendering/Resource/Manager/TextureManager.h"
+#include "Rendering/Resource/Manager/CubemapManager.h"
 #include "Rendering/OpenGLRenderer.h"
-#include "Rendering/ShaderManager.h"
+#include "Rendering/Resource/Manager/ShaderManager.h"
 #include "Scene/SceneCamera.h"
 
 SceneSky::SceneSky(const std::string& cubemapID)

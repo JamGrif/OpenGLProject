@@ -98,10 +98,8 @@ void Application::RenderApp()
 		m_loadedScene->DrawScene();
 
 	if (m_UI->GetUiVisible())
-	{
 		m_UI->RenderUI();
-	}
-
+	
 	TheOpenGLRenderer::Instance()->EndOfFrame();
 }
 
@@ -152,9 +150,7 @@ bool Application::SetScene(int newSceneNumber)
 	{
 		// Scene successfully loaded
 		if (m_UI)
-		{
 			m_UI->UpdateSceneHandle(m_loadedScene);
-		}
 
 		return true;
 	}

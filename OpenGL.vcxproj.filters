@@ -93,28 +93,28 @@
     <ClCompile Include="src\Rendering\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\MaterialManager.cpp">
+    <ClCompile Include="src\Rendering\Resource\Manager\MaterialManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\Texture.cpp">
+    <ClCompile Include="src\Rendering\Resource\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\TextureManager.cpp">
+    <ClCompile Include="src\Rendering\Resource\Manager\TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\Cubemap.cpp">
+    <ClCompile Include="src\Rendering\Resource\Cubemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\Mesh.cpp">
+    <ClCompile Include="src\Rendering\Resource\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\MeshManager.cpp">
+    <ClCompile Include="src\Rendering\Resource\Manager\MeshManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\Shader.cpp">
+    <ClCompile Include="src\Rendering\Resource\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\ShaderManager.cpp">
+    <ClCompile Include="src\Rendering\Resource\Manager\ShaderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dependencies\tinyXML\src\tinystr.cpp">
@@ -132,7 +132,7 @@
     <ClCompile Include="src\Core\Vector3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\CubemapManager.cpp">
+    <ClCompile Include="src\Rendering\Resource\Manager\CubemapManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -221,28 +221,28 @@
     <ClInclude Include="include\Rendering\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\MaterialManager.h">
+    <ClInclude Include="include\Rendering\Resource\Manager\MaterialManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\Texture.h">
+    <ClInclude Include="include\Rendering\Resource\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\TextureManager.h">
+    <ClInclude Include="include\Rendering\Resource\Manager\TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\Cubemap.h">
+    <ClInclude Include="include\Rendering\Resource\Cubemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\Mesh.h">
+    <ClInclude Include="include\Rendering\Resource\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\MeshManager.h">
+    <ClInclude Include="include\Rendering\Resource\Manager\MeshManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\Shader.h">
+    <ClInclude Include="include\Rendering\Resource\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\ShaderManager.h">
+    <ClInclude Include="include\Rendering\Resource\Manager\ShaderManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\tinyXML\include\tinyXML\tinystr.h">
@@ -254,7 +254,7 @@
     <ClInclude Include="include\Core\Vector3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\CubemapManager.h">
+    <ClInclude Include="include\Rendering\Resource\Manager\CubemapManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

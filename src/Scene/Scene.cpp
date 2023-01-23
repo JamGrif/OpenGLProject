@@ -12,11 +12,11 @@
 
 #include "Rendering/OpenGLRenderer.h"
 
-#include "Rendering/MaterialManager.h"
-#include "Rendering/MeshManager.h"
-#include "Rendering/TextureManager.h"
-#include "Rendering/ShaderManager.h"
-#include "Rendering/CubemapManager.h"
+#include "Rendering/Resource/Manager/MaterialManager.h"
+#include "Rendering/Resource/Manager/MeshManager.h"
+#include "Rendering/Resource/Manager/TextureManager.h"
+#include "Rendering/Resource/Manager/ShaderManager.h"
+#include "Rendering/Resource/Manager/CubemapManager.h"
 
 
 // Variables are used to move various lights in different scenes
