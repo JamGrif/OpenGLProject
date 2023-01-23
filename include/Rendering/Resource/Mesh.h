@@ -11,6 +11,8 @@ public:
 	Mesh();
 	~Mesh();
 
+	size_t	GetIndicesCount() const { return m_meshIndices.size(); }
+
 private:
 
 	void BindMesh();
@@ -19,8 +21,7 @@ private:
 	void ParseMesh(const std::string& filepath);
 	void CreateMesh();
 
-	size_t	GetIndicesCount() const { return m_meshIndices.size(); }
-	bool	GetIsCreated() { return m_bIsCreated; }
+	bool GetIsCreated() { return m_bIsCreated; }
 
 private:
 

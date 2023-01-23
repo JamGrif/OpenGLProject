@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Rendering/TextureManager.h"
+#include "Rendering/Resource/Manager/TextureManager.h"
 
 static const std::string TEXTURE_FILEPATH_PREFIX		= "res/textures/";
 static const std::string TEXTURE_FILEPATH_SUFFIX		= ".png";

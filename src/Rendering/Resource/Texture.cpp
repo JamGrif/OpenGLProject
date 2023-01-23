@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Rendering/Texture.h"
+#include "Rendering/Resource/Texture.h"
 
 #include "Rendering/OpenGLErrorCheck.h"
 
@@ -18,10 +18,15 @@ Texture::Texture()
 
 Texture::~Texture()
 {
+	// Unbind and delete buffers
 	glCall(glBindTexture(GL_TEXTURE_2D, NO_TEXTURE));
 	glCall(glDeleteTextures(1, &m_textureOpenGLID));
 }
 
+/// <summary>
+/// 1 / 2 of texture creation
+/// Parse the .png file at filepath
+/// </summary>
 bool Texture::ParseTexture(const std::string& filepath, TextureType textureType)
 {
 	// Flips texture on Y-Axis
@@ -44,6 +49,10 @@ bool Texture::ParseTexture(const std::string& filepath, TextureType textureType)
 	return true;
 }
 
+/// <summary>
+/// 2 / 2 of texture creation
+/// Use parsed texture data to create OpenGL texture buffers
+/// </summary>
 void Texture::CreateTexture()
 {
 	// Generate one texture buffer
@@ -86,12 +95,18 @@ void Texture::CreateTexture()
 	m_bIsCreated = true;
 }
 
+/// <summary>
+/// Bind the texture buffer to the OpenGL context
+/// </summary>
 void Texture::BindTexture()
 {
 	glCall(glActiveTexture(GL_TEXTURE0 + static_cast<int>(m_textureType)));
 	glCall(glBindTexture(GL_TEXTURE_2D, m_textureOpenGLID));
 }
 
+/// <summary>
+/// Unbind the texture buffer to the OpenGL context
+/// </summary>
 void Texture::UnbindTexture()
 {
 	glCall(glActiveTexture(GL_TEXTURE0 + static_cast<int>(m_textureType)));

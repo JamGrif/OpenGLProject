@@ -1,7 +1,7 @@
 #pragma once
 
 // Everything that uses MeshManager will use Mesh
-#include "Rendering/Mesh.h"
+#include "Rendering/Resource/Mesh.h"
 
 /// <summary>
 /// Encapsulates and abstracts the creation, deletion and usage of Mesh objects
@@ -17,6 +17,8 @@ public:
 	void	BindMeshAtID(const std::string& meshID);
 	void	UnbindMeshAtID(const std::string& meshID);
 
+	std::shared_ptr<Mesh> GetMeshAtID(const std::string& meshID);
+
 	size_t	GetIndicesCountAtID(const std::string& meshID);
 
 	void	ClearAllMeshes();
@@ -28,7 +30,7 @@ public:
 	}
 private:
 
-	std::unordered_map<std::string, std::unique_ptr<Mesh>> m_meshMap;
+	std::unordered_map<std::string, std::shared_ptr<Mesh>> m_meshMap;
 
 	MeshManager() {}
 	~MeshManager() {}

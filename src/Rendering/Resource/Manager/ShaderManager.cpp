@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Rendering/ShaderManager.h"
+#include "Rendering/Resource/Manager/ShaderManager.h"
 
 /// <summary>
 /// Parse the specified shader at vertex and fragment path and add it to the shaderMap

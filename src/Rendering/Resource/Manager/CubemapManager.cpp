@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Rendering/CubemapManager.h"
+#include "Rendering/Resource/Manager/CubemapManager.h"
 
 static const std::string CUBEMAP_FILEPATH_PREFIX		= "res/textures/sky/";
 static const std::string CUBEMAP_FILEPATH_SUFFIX_RIGHT	= "_right.png";

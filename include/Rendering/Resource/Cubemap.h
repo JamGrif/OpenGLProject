@@ -22,24 +22,25 @@ public:
 
 private:
 
-	bool ParseCubemap(const CubemapFaces& facesFilepath);
-	void CreateCubemap();
+	bool			ParseCubemap(const CubemapFaces& facesFilepath);
+	void			CreateCubemap();
 
-	void BindCubemap();
-	void UnbindCubemap();
+	void			BindCubemap();
+	void			UnbindCubemap();
 
 private:
 
-	uint32_t					m_texture = 0;
+	// OpenGL cubemap index
+	uint32_t		m_cubemapOpenGLID;
 
-	int							m_textureSlot = 0;
+	// Sampler2D slot in shader
+	int				m_textureSlot;
 
-	//std::string					m_filePath;
-	//std::string					m_facesFilePath[6];
+	// Cubemap face data
+	int				m_width[6], m_height[6], m_BPP[6];
 
-	int							m_width[6], m_height[6], m_BPP[6];
-
-	unsigned char* m_localbuffer[6];
+	// Temp storage during parsing and creation
+	unsigned char*	m_localbuffer[6];
 
 	friend class CubemapManager;
 };

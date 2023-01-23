@@ -1,7 +1,7 @@
 #pragma once
 
 // Everything that uses TextureManager will use Texture
-#include "Rendering/Texture.h"
+#include "Rendering/Resource/Texture.h"
 
 typedef std::unordered_map<std::string, std::unique_ptr<Texture>> TexturePool;
 

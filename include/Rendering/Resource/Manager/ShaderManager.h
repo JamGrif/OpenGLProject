@@ -1,7 +1,7 @@
 #pragma once
 
 // Everything that uses ShaderManager uses Shader
-#include "Rendering/Shader.h"
+#include "Rendering/Resource/Shader.h"
 
 /// <summary>
 /// Encapsulates and abstracts the creation, deletion and usage of shader objects

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Rendering/MaterialManager.h"
+#include "Rendering/Resource/Manager/MaterialManager.h"
 
 /// <summary>
 /// Create a new material using the values in the MaterialLoaderParams and add it to the materialMap at ID

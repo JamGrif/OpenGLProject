@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Rendering/Cubemap.h"
+#include "Rendering/Resource/Cubemap.h"
 
 #include "Rendering/OpenGLErrorCheck.h"
 
@@ -7,26 +7,31 @@
 
 #include <GL/glew.h>
 
-Cubemap::Cubemap()
-{
-	
+static constexpr int NO_CUBEMAP = 0;
 
-	
+Cubemap::Cubemap()
+	:m_cubemapOpenGLID(0), m_textureSlot(0),
+	m_width{ 0,0,0,0,0,0 }, m_height{ 0,0,0,0,0,0 }, m_BPP{ 0,0,0,0,0,0 },
+	m_localbuffer{ nullptr, nullptr, nullptr, nullptr, nullptr, nullptr }
+{
 }
 
 Cubemap::~Cubemap()
 {
-	//PRINT_TRACE("deleted cubemap");
-	glCall(glBindTexture(GL_TEXTURE_2D, 0));
-	glCall(glDeleteTextures(1, &m_texture));
+	// Unbind and delete buffers
+	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, NO_CUBEMAP));
+	glCall(glDeleteTextures(1, &m_cubemapOpenGLID));
 }
 
+/// <summary>
+/// 1 / 2 of cubemap creation
+/// Parse the .png file of each cubemap face at filepath
+/// </summary>
 bool Cubemap::ParseCubemap(const CubemapFaces& facesFilepath)
 {
-	//PRINT_TRACE("created cubemap at filepath {0}", m_filePath);
-
 	for (unsigned int i = e_START_OF_CUBEFACE_ENUM; i < e_END_OF_CUBEFACE_ENUM; i++)
 	{
+		// Flips texture on Y-Axis
 		stbi_set_flip_vertically_on_load_thread(0);
 
 		m_localbuffer[i] = stbi_load(facesFilepath[i].c_str(), &m_width[i], &m_height[i], &m_BPP[i], 0);
@@ -34,7 +39,13 @@ bool Cubemap::ParseCubemap(const CubemapFaces& facesFilepath)
 		// Check if file loaded successfully
 		if (stbi_failure_reason() == "can't fopen")
 		{
-			PRINT_WARN("CUBEMAP-> {0} failed to load, loading default texture", facesFilepath[i]);
+			// Free any successfully created faces
+			for (unsigned int j = e_START_OF_CUBEFACE_ENUM; j < e_END_OF_CUBEFACE_ENUM; j++)
+			{
+				stbi_image_free(m_localbuffer[i]);
+			}
+
+			PRINT_WARN("CUBEMAP-> {0} failed to parse cubemap face", facesFilepath[i]);
 			return false;
 		}
 	}
@@ -42,31 +53,34 @@ bool Cubemap::ParseCubemap(const CubemapFaces& facesFilepath)
 	return true;
 }
 
+/// <summary>
+/// 2 / 2 of cubemap creation
+/// Use parsed cubemap face data to create OpenGL cubemap buffer
+/// </summary>
 void Cubemap::CreateCubemap()
 {
 	// Generate texture buffer
-	glCall(glGenTextures(1, &m_texture));
+	glCall(glGenTextures(1, &m_cubemapOpenGLID));
+	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_cubemapOpenGLID));
 
-	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture));
-
+	// Parse each cubemap face
 	for (unsigned int i = e_START_OF_CUBEFACE_ENUM; i < e_END_OF_CUBEFACE_ENUM; i++)
 	{
 		glCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_width[i], m_height[i], 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localbuffer[i]));
 		stbi_image_free(m_localbuffer[i]);
 	}
 
-
-	// Specify what happens if texture is rendered on a different sized surface
+	// What happens if texture is rendered on a different sized surface
 	glCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 	glCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
-	// Specify what happens to texCoords outside 0-1 range
+	// What happens to texCoords outside 0-1 range
 	glCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	glCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 	glCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
 
 	// Unbind
-	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
+	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, NO_CUBEMAP));
 }
 
 /// <summary>
@@ -75,7 +89,7 @@ void Cubemap::CreateCubemap()
 void Cubemap::BindCubemap()
 {
 	glCall(glActiveTexture(GL_TEXTURE0 + m_textureSlot));
-	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture));
+	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_cubemapOpenGLID));
 }
 
 /// <summary>
@@ -83,5 +97,5 @@ void Cubemap::BindCubemap()
 /// </summary>
 void Cubemap::UnbindCubemap()
 {
-	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
+	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, NO_CUBEMAP));
 }

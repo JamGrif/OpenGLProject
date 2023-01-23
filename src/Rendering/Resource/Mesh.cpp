@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Rendering/Mesh.h"
+#include "Rendering/Resource/Mesh.h"
 
 #include "Rendering/OpenGLErrorCheck.h"
 
@@ -11,6 +11,18 @@
 #include <glm/vec3.hpp>
 
 #include <GL/glew.h>
+
+static constexpr int NO_BUFFER = 0;
+
+// Numbers correspond to vertex attribute positions in shader
+enum class VertexAttribute
+{
+	POSITION	= 0,
+	NORMAL		= 1,
+	TEXTURE		= 2,
+	TANGENT		= 3,
+	BITANGENT	= 4
+};
 
 struct Vertex
 {
@@ -25,21 +37,25 @@ struct Vertex
 Mesh::Mesh()
 	:m_meshVBO(-1), m_meshEBO(-1), m_bIsCreated(false)
 {
+	PRINT_INFO("mesh created");
 }
 
 Mesh::~Mesh()
 {
-	//PRINT_TRACE("deleting mesh object with filepath of {0}", m_meshFilePath);
+	// Unbind and delete buffers
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, NO_BUFFER));
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NO_BUFFER));
 
-	// Unbind current VBO / EBO
-	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
-	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-
-	// Delete VBO / EBO
 	glCall(glDeleteBuffers(1, &m_meshVBO));
 	glCall(glDeleteBuffers(1, &m_meshEBO));
+
+	PRINT_WARN("mesh deleted");
 }
 
+/// <summary>
+/// 1 / 2 of mesh creation
+/// Parse the .obj file at filepath
+/// </summary>
 void Mesh::ParseMesh(const std::string& filepath)
 {
 	Assimp::Importer assimpImporter;
@@ -52,33 +68,30 @@ void Mesh::ParseMesh(const std::string& filepath)
 	}
 
 	const aiMesh* mesh = assimpScene->mMeshes[0];
-	m_meshVertices.reserve(mesh->mNumVertices); // Reserve enough space to hold all the vertices
+
+	// Reserve enough space to hold all the vertices
+	m_meshVertices.reserve(mesh->mNumVertices);
+	
+	// Parse vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex;
 
-		// Position
-		//glm::vec3 vector;
 		vertex.Position.x = mesh->mVertices[i].x;
 		vertex.Position.y = mesh->mVertices[i].y;
 		vertex.Position.z = mesh->mVertices[i].z;
 
-		// Normals
 		vertex.Normal.x = mesh->mNormals[i].x;
 		vertex.Normal.y = mesh->mNormals[i].y;
 		vertex.Normal.z = mesh->mNormals[i].z;
 
-		// Texcoords
-		//glm::vec2 vec;
 		vertex.TexCoords.x = mesh->mTextureCoords[0][i].x;
 		vertex.TexCoords.y = mesh->mTextureCoords[0][i].y;
 
-		// Tangent
 		vertex.Tangent.x = mesh->mTangents[i].x;
 		vertex.Tangent.y = mesh->mTangents[i].y;
 		vertex.Tangent.z = mesh->mTangents[i].z;
 
-		// Bitangent
 		vertex.Bitangent.x = mesh->mBitangents[i].x;
 		vertex.Bitangent.y = mesh->mBitangents[i].y;
 		vertex.Bitangent.z = mesh->mBitangents[i].z;
@@ -86,7 +99,7 @@ void Mesh::ParseMesh(const std::string& filepath)
 		m_meshVertices.push_back(vertex);
 	}
 
-	// Indices
+	// Parse indices
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
@@ -97,50 +110,60 @@ void Mesh::ParseMesh(const std::string& filepath)
 	}
 
 	m_meshFilePath = filepath;
-
 }
 
+/// <summary>
+/// 2 / 2 of mesh creation
+/// Use parsed mesh data to create OpenGL VBO and EBO buffers
+/// </summary>
 void Mesh::CreateMesh()
 {
-	// Create and setup the meshes VBO
+	// Create VBO
 	glCall(glGenBuffers(1, &m_meshVBO));
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
 	glCall(glBufferData(GL_ARRAY_BUFFER, m_meshVertices.size() * sizeof(Vertex), &m_meshVertices[0], GL_STATIC_DRAW));
 
-	// Create and setup the meshes EBO
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, NO_BUFFER));
+
+	// Create EBO
 	glCall(glGenBuffers(1, &m_meshEBO));
 	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO));
 	glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_meshIndices.size() * sizeof(unsigned int), &m_meshIndices[0], GL_STATIC_DRAW));
+	
+	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NO_BUFFER));
 
 	m_bIsCreated = true;
 }
 
+/// <summary>
+/// Bind the VBO and EBO to the OpenGL context and the vertex attributes to the currently bound shader
+/// </summary>
 void Mesh::BindMesh()
 {
-	// Bind the meshes VBO and EBO
+	// Bind VBO and EBO
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
 	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO));
 
-	// Position
-	glCall(glEnableVertexAttribArray(0));
-	glCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0));
+	// Bind vertex attributes
+	glCall(glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::POSITION)));
+	glCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::POSITION), 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0));
 	
-	 // Normal
-	glCall(glEnableVertexAttribArray(1));
-	glCall(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal)));
+	glCall(glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::NORMAL)));
+	glCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::NORMAL), 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal)));
 	
-	// Texture Coordinates
-	glCall(glEnableVertexAttribArray(2));
-	glCall(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords)));
+	glCall(glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TEXTURE)));
+	glCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TEXTURE), 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords)));
 	
-	 // Tangents & Bitangents
-	glCall(glEnableVertexAttribArray(3));
-	glCall(glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent)));
+	glCall(glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TANGENT)));
+	glCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TANGENT), 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent)));
 
-	glCall(glEnableVertexAttribArray(4));
-	glCall(glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent)));
+	glCall(glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::BITANGENT)));
+	glCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::BITANGENT), 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent)));
 }
 
+/// <summary>
+/// Unbind the VBO and EBO from the OpenGL context
+/// </summary>
 void Mesh::UnbindMesh()
 {
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));

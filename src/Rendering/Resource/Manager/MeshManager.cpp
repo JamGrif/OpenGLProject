@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Rendering/MeshManager.h"
+#include "Rendering/Resource/Manager/MeshManager.h"
 
 static const std::string MESH_FILEPATH_PREFIX = "res/meshes/";
 static const std::string MESH_FILEPATH_SUFFIX = ".obj";
@@ -19,10 +19,10 @@ bool MeshManager::AddMesh(const std::string& meshID)
 	std::string meshFilepath = MESH_FILEPATH_PREFIX + meshID + MESH_FILEPATH_SUFFIX;
 
 	// Create and parse the mesh file
-	std::unique_ptr<Mesh> pMesh = std::make_unique<Mesh>();
+	std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>();
 	pMesh->ParseMesh(meshFilepath);
 
-	m_meshMap.insert({ meshID, std::move(pMesh) });
+	m_meshMap.insert({ meshID, pMesh });
 
 	return true;
 }
@@ -60,6 +60,15 @@ void MeshManager::UnbindMeshAtID(const std::string& meshID)
 	{
 		m_meshMap.at(meshID)->UnbindMesh();
 	}
+}
+
+std::shared_ptr<Mesh> MeshManager::GetMeshAtID(const std::string& meshID)
+{
+	if (m_meshMap.count(meshID))
+	{
+		return m_meshMap.at(meshID);
+	}
+	return {};
 }
 
 /// <summary>

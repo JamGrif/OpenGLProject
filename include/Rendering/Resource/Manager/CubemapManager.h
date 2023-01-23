@@ -1,7 +1,7 @@
 #pragma once
 
 // Everything that uses CubemapManager will use Cubemap
-#include "Rendering/Cubemap.h"
+#include "Rendering/Resource/Cubemap.h"
 
 /// <summary>
 /// Encapsulates and abstracts the creation, deletion and usage of Cubemap objects

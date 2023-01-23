@@ -1,14 +1,15 @@
 #include "pch.h"
 #include "Rendering/Material.h"
 
-#include "Rendering/TextureManager.h"
-#include "Rendering/ShaderManager.h"
+#include "Rendering/Resource/Manager/TextureManager.h"
+#include "Rendering/Resource/Manager/ShaderManager.h"
 #include "Scene/SceneCamera.h"
 #include "Scene/SceneLightManager.h"
 #include "Rendering/OpenGLRenderer.h"
 
 #include <glm\gtc\matrix_transform.hpp>
 
+static const char* NULL_TEXTURE = "null";
 
 Material::Material(const MaterialLoaderParams& pParams)
 	:m_shaderID("lightingShader"),
@@ -16,7 +17,7 @@ Material::Material(const MaterialLoaderParams& pParams)
 	m_pAppProjectionMatrix(OpenGLRenderer::Instance()->GetProjectionMatrix())
 {
 	// Go through MaterialLoaderParams and set texture values
-	if (pParams.diffuseMapID != "null")
+	if (pParams.diffuseMapID != NULL_TEXTURE)
 	{
 		m_textureMapIDs[static_cast<int>(TextureType::DIFFUSE)] = pParams.diffuseMapID;
 		m_textureMapUsing[static_cast<int>(TextureType::DIFFUSE)] = true;
@@ -24,7 +25,7 @@ Material::Material(const MaterialLoaderParams& pParams)
 		TheTextureManager::Instance()->AddTexture(pParams.diffuseMapID, TextureType::DIFFUSE);
 	}
 
-	if (pParams.specularMapID != "null")
+	if (pParams.specularMapID != NULL_TEXTURE)
 	{
 		m_textureMapIDs[static_cast<int>(TextureType::SPECULAR)] = pParams.specularMapID;
 		m_textureMapUsing[static_cast<int>(TextureType::SPECULAR)] = true;
@@ -32,7 +33,7 @@ Material::Material(const MaterialLoaderParams& pParams)
 		TheTextureManager::Instance()->AddTexture(pParams.specularMapID, TextureType::SPECULAR);
 	}
 
-	if (pParams.normalMapID != "null")
+	if (pParams.normalMapID != NULL_TEXTURE)
 	{
 		m_textureMapIDs[static_cast<int>(TextureType::NORMAL)] = pParams.normalMapID;
 		m_textureMapUsing[static_cast<int>(TextureType::NORMAL)] = true;
@@ -40,7 +41,7 @@ Material::Material(const MaterialLoaderParams& pParams)
 		TheTextureManager::Instance()->AddTexture(pParams.normalMapID, TextureType::NORMAL);
 	}
 
-	if (pParams.heightMapID != "null")
+	if (pParams.heightMapID != NULL_TEXTURE)
 	{
 		m_textureMapIDs[static_cast<int>(TextureType::HEIGHT)] = pParams.heightMapID;
 		m_textureMapUsing[static_cast<int>(TextureType::HEIGHT)] = true;
@@ -48,7 +49,7 @@ Material::Material(const MaterialLoaderParams& pParams)
 		TheTextureManager::Instance()->AddTexture(pParams.heightMapID, TextureType::HEIGHT);
 	}
 
-	if (pParams.emissionMapID != "null")
+	if (pParams.emissionMapID != NULL_TEXTURE)
 	{
 		m_textureMapIDs[static_cast<int>(TextureType::EMISSION)] = pParams.emissionMapID;
 		m_textureMapUsing[static_cast<int>(TextureType::EMISSION)] = true;
@@ -73,27 +74,21 @@ Material::~Material()
 /// </summary>
 void Material::BindMaterial(const glm::mat4& modelMat)
 {
-	// Go through each texture in material and bind them if they are used in material
+	// Bind each available texture
 	if (m_textureMapUsing[static_cast<int>(TextureType::DIFFUSE)])
-	{
 		TheTextureManager::Instance()->BindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::DIFFUSE)]);
-	}
+	
 	if (m_textureMapUsing[static_cast<int>(TextureType::SPECULAR)])
-	{
 		TheTextureManager::Instance()->BindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::SPECULAR)]);
-	}
+	
 	if (m_textureMapUsing[static_cast<int>(TextureType::NORMAL)])
-	{
 		TheTextureManager::Instance()->BindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::NORMAL)]);
-	}
+	
 	if (m_textureMapUsing[static_cast<int>(TextureType::HEIGHT)])
-	{
 		TheTextureManager::Instance()->BindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::HEIGHT)]);
-	}
+	
 	if (m_textureMapUsing[static_cast<int>(TextureType::EMISSION)])
-	{
 		TheTextureManager::Instance()->BindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::EMISSION)]);
-	}
 
 	// Bind the materials shader
 	TheShaderManager::Instance()->BindShaderAtID(m_shaderID);
@@ -185,7 +180,7 @@ void Material::BindMaterial(const glm::mat4& modelMat)
 /// </summary>
 void Material::UnbindMaterial()
 {
-	// Go through each texture in material and unbind them
+	// Bind each available texture
 	if (m_textureMapUsing[static_cast<int>(TextureType::DIFFUSE)])
 		TheTextureManager::Instance()->UnbindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::DIFFUSE)]);
 

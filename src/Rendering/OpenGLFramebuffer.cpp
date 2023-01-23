@@ -3,7 +3,7 @@
 
 #include "Rendering/OpenGLWindow.h"
 #include "Rendering/OpenGLErrorCheck.h"
-#include "Rendering/ShaderManager.h"
+#include "Rendering/Resource/Manager/ShaderManager.h"
 
 #include <GL/glew.h>
 

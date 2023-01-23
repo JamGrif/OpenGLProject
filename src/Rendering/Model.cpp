@@ -5,8 +5,8 @@
 
 #include <glm\gtc\matrix_transform.hpp>
 
-#include "Rendering/MaterialManager.h"
-#include "Rendering/MeshManager.h"
+#include "Rendering/Resource/Manager/MaterialManager.h"
+#include "Rendering/Resource/Manager/MeshManager.h"
 #include "Rendering/OpenGLRenderer.h"
 #include "Scene/SceneCamera.h"
 
@@ -43,8 +43,8 @@ void Model::DrawModel()
 	TheMaterialManager::Instance()->BindMaterialAtID(m_materialID, m_mMat);
 	TheMeshManager::Instance()->BindMeshAtID(m_meshID);
 	
-	// Draw
-	TheOpenGLRenderer::Instance()->Draw(TheMeshManager::Instance()->GetIndicesCountAtID(m_meshID));
+	// Draw ----
+	TheOpenGLRenderer::Instance()->Draw(TheMeshManager::Instance()->GetMeshAtID(m_meshID)->GetIndicesCount());
 
 	// Unbind material and mesh
 	TheMeshManager::Instance()->UnbindMeshAtID(m_meshID);
