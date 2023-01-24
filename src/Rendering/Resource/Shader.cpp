@@ -91,7 +91,7 @@ static GLuint LinkShaders(GLuint firstShader, GLuint secondShader)
 }
 
 Shader::Shader()
-	:m_shaderProgram(NO_PROGRAM), m_bCreated(false)
+	:IResource()
 {
 }
 
@@ -99,14 +99,14 @@ Shader::~Shader()
 {
 	// Unbind and delete the shader program
 	glCall(glUseProgram(NO_PROGRAM));
-	glCall(glDeleteProgram(m_shaderProgram));
+	glCall(glDeleteProgram(m_OpenGLResourceID));
 }
 
 /// <summary>
 /// 1 / 2 of shader creation
 /// Parse the .glsl shader file at vertexPath and fragmentPath
 /// </summary>
-void Shader::ParseShader(const std::string& vertexPath, const std::string& fragmentPath)
+void Shader::Parse(const std::string& vertexPath, const std::string& fragmentPath)
 {
 	try
 	{
@@ -141,35 +141,47 @@ void Shader::ParseShader(const std::string& vertexPath, const std::string& fragm
 /// 2 / 2 of shader creation
 /// Use parsed shader data to create shader programs
 /// </summary>
-void Shader::CreateShader()
+void Shader::Create()
 {
 	// Compile the parsed shader file
 	GLuint vertex = CompileShader(SHADER_TYPE::VertexShader, vertexShaderCode.c_str());
 	GLuint fragment = CompileShader(SHADER_TYPE::FragmentShader, fragmentShaderCode.c_str());
 
 	// Attach the compiled shaders to the shader program
-	m_shaderProgram = LinkShaders(vertex, fragment);
+	m_OpenGLResourceID = LinkShaders(vertex, fragment);
 
-	vertexShaderCode.clear();
-	fragmentShaderCode.clear();
-
-	m_bCreated = true;
+	m_bIsCreated = true;
 }
 
 /// <summary>
 /// Bind the shader program to the OpenGL context
 /// </summary>
-void Shader::BindShader()
+void Shader::Bind()
 {
-	glCall(glUseProgram(m_shaderProgram));
+	glCall(glUseProgram(m_OpenGLResourceID));
 }
 
 /// <summary>
 /// Unbind the shader program to the OpenGL context
 /// </summary>
-void Shader::UnbindShader()
+void Shader::Unbind()
 {
 	glCall(glUseProgram(NO_PROGRAM));
+}
+
+/// <summary>
+/// Reset the OpenGL stuff for the shader - avoids having to re-parse the same file
+/// </summary>
+void Shader::Reset()
+{
+	//delete program
+	glCall(glDeleteProgram(m_OpenGLResourceID));
+
+	// Create a new program with parsed shader source code
+	Create();
+
+	// clear uniform location cache
+	m_uniformLocationCache.clear();
 }
 
 /// <summary>
@@ -230,7 +242,7 @@ int Shader::GetUniformLocation(const std::string& uniformName)
 		return m_uniformLocationCache[uniformName];
 	
 	// If uniformName doesn't currently exist, find and store its location
-	int uniformLocation = glGetUniformLocation(m_shaderProgram, uniformName.c_str());
+	int uniformLocation = glGetUniformLocation(m_OpenGLResourceID, uniformName.c_str());
 
 	if (uniformLocation == FAILED_TO_FIND)
 		PRINT_WARN("SHADER-> Uniform location {0} does not exist", uniformName);

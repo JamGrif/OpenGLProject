@@ -7,11 +7,8 @@
 
 #include "Scene/SceneSky.h"
 #include "Scene/SceneLightManager.h"
-#include "Rendering/Resource/Manager/ShaderManager.h"
 #include "Rendering/Resource/Manager/MaterialManager.h"
-#include "Rendering/Resource/Manager/TextureManager.h"
-#include "Rendering/Resource/Manager/MeshManager.h"
-#include "Rendering/Resource/Manager/CubemapManager.h"
+#include "Rendering/Resource/Manager/ResourceManager.h"
 #include "Rendering/Model.h"
 
 static constexpr uint8_t STRCMP_SUCCESS = 0;
@@ -88,16 +85,16 @@ bool SceneParser::ParseSceneFile(const std::string& filename, std::vector<std::s
 	ParseLightsNode(lightRoot, sceneLightManager);
 
 	// Add the cubemap that the Skybox will use
-	TheCubemapManager::Instance()->AddCubemap(m_tempSkyCubemapID);
+	CubemapManager::Get()->AddResource(m_tempSkyCubemapID);
 
 	parseTimer.stop();
 
 	// Create all assets used in scene
 	PerformanceTimer creationTimer("Asset Creation");
-	TheShaderManager::Instance()->CreateAllShaders();
-	TheTextureManager::Instance()->CreateAllTextures();
-	TheMeshManager::Instance()->CreateAllMeshes();
-	TheCubemapManager::Instance()->CreateAllCubemaps();
+	ShaderManager::Get()->CreateAllResources();
+	TextureManager::Get()->CreateAllResources();
+	MeshManager::Get()->CreateAllResources();
+	CubemapManager::Get()->CreateAllResources();
 
 	creationTimer.stop();
 
@@ -119,13 +116,13 @@ void SceneParser::ParseMaterialsNode(TiXmlElement* pMaterialsRoot)
 			continue;
 
 		// Fill out materials loading parameters
-		MaterialLoaderParams tempLoaderParams;	
+		MaterialLoaderParams tempLoaderParams;
 
-		materialNode->QueryStringAttribute("diffuseid", &tempLoaderParams.diffuseMapID);
-		materialNode->QueryStringAttribute("specularid", &tempLoaderParams.specularMapID);
-		materialNode->QueryStringAttribute("normalid", &tempLoaderParams.normalMapID);
-		materialNode->QueryStringAttribute("heightid", &tempLoaderParams.heightMapID);
-		materialNode->QueryStringAttribute("emissionid", &tempLoaderParams.emissionMapID);
+		materialNode->QueryStringAttribute("diffuseid", &tempLoaderParams.textureMapIDs[static_cast<int>(TextureType::DIFFUSE)]);
+		materialNode->QueryStringAttribute("specularid", &tempLoaderParams.textureMapIDs[static_cast<int>(TextureType::SPECULAR)]);
+		materialNode->QueryStringAttribute("normalid", &tempLoaderParams.textureMapIDs[static_cast<int>(TextureType::NORMAL)]);
+		materialNode->QueryStringAttribute("heightid", &tempLoaderParams.textureMapIDs[static_cast<int>(TextureType::HEIGHT)]);
+		materialNode->QueryStringAttribute("emissionid", &tempLoaderParams.textureMapIDs[static_cast<int>(TextureType::EMISSION)]);
 
 		materialNode->QueryBoolAttribute("normalmapNormalize", &tempLoaderParams.normalMapNormalize);
 		materialNode->QueryFloatAttribute("heightmapHeight", &tempLoaderParams.heightMapHeight);

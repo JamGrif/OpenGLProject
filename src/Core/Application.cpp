@@ -44,7 +44,7 @@ bool Application::AppInit()
 	m_UI = std::make_unique<UI>(false, m_loadedScene);
 
 	// Create Scene object and set initial scene
-	if (!SetScene(e_shadowTest)) 
+	if (!SetScene(e_jamieTest)) 
 	{
 		// Scene failed to load
 		return false;

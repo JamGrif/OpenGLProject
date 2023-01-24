@@ -8,11 +8,7 @@ class SceneLightManager;
 
 struct MaterialLoaderParams
 {
-	std::string diffuseMapID;		// ID for TextureManager for diffuse map
-	std::string specularMapID;		// ID for TextureManager for specular map
-	std::string normalMapID;		// ID for TextureManager for normal map
-	std::string heightMapID;		// ID for TextureManager for height map
-	std::string emissionMapID;		// ID for TextureManager for emission map
+	std::string textureMapIDs[5];
 
 	bool		normalMapNormalize;	// Should the normal map be normalized in the fragment shader?
 	float		heightMapHeight;	// Height to draw the height map within fragment shader

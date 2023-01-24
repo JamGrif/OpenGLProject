@@ -6,7 +6,7 @@
 #include <glm\gtc\matrix_transform.hpp>
 
 #include "Rendering/Resource/Manager/MaterialManager.h"
-#include "Rendering/Resource/Manager/MeshManager.h"
+#include "Rendering/Resource/Manager/ResourceManager.h"
 #include "Rendering/OpenGLRenderer.h"
 #include "Scene/SceneCamera.h"
 
@@ -19,7 +19,7 @@ Model::Model(const ModelLoaderParams& pParams)
 	m_pSceneCamera(nullptr), m_programProjectionMatrix(TheOpenGLRenderer::Instance()->GetProjectionMatrix())
 {
 	// Use the meshID to create initial mesh
-	MeshManager::Instance()->AddMesh(m_meshID);
+	MeshManager::Get()->AddResource(m_meshID);
 }
 
 Model::~Model()
@@ -41,13 +41,13 @@ void Model::DrawModel()
 {
 	// Bind material and mesh
 	TheMaterialManager::Instance()->BindMaterialAtID(m_materialID, m_mMat);
-	TheMeshManager::Instance()->BindMeshAtID(m_meshID);
+	MeshManager::Get()->BindResourceAtID(m_meshID);
 	
 	// Draw ----
-	TheOpenGLRenderer::Instance()->Draw(TheMeshManager::Instance()->GetMeshAtID(m_meshID)->GetIndicesCount());
+	TheOpenGLRenderer::Instance()->Draw(MeshManager::Get()->GetResourceAtID(m_meshID)->GetIndicesCount());
 
 	// Unbind material and mesh
-	TheMeshManager::Instance()->UnbindMeshAtID(m_meshID);
+	MeshManager::Get()->UnbindResourceAtID(m_meshID);
 	TheMaterialManager::Instance()->UnbindMaterialAtID(m_materialID);
 }
 

@@ -9,10 +9,12 @@
 static constexpr int DESIRED_TEXTURE_CHANNELS = 4;
 static constexpr int NO_TEXTURE = 0;
 
+static const std::string TEXTURE_FILEPATH_PREFIX = "res/textures/";
+static const std::string TEXTURE_FILEPATH_SUFFIX = ".png";
+
 Texture::Texture()
-	:m_textureOpenGLID(-1), m_textureWidth(0),
-	m_textureHeight(0), m_textureBPP(0),
-	m_textureType(TextureType::UNSET), m_pTempBuffer(nullptr), m_bIsCreated(false)
+	:IResource(), m_textureWidth(0), m_textureHeight(0), m_textureBPP(0),
+	m_textureType(TextureType::UNSET), m_pTempBuffer(nullptr)
 {
 }
 
@@ -20,44 +22,47 @@ Texture::~Texture()
 {
 	// Unbind and delete buffers
 	glCall(glBindTexture(GL_TEXTURE_2D, NO_TEXTURE));
-	glCall(glDeleteTextures(1, &m_textureOpenGLID));
+	glCall(glDeleteTextures(1, &m_OpenGLResourceID));
 }
 
 /// <summary>
 /// 1 / 2 of texture creation
 /// Parse the .png file at filepath
 /// </summary>
-bool Texture::ParseTexture(const std::string& filepath, TextureType textureType)
+void Texture::Parse(const std::string& filepath)
 {
 	// Flips texture on Y-Axis
 	stbi_set_flip_vertically_on_load_thread(true);
 
-	m_pTempBuffer = stbi_load(filepath.c_str(), &m_textureWidth, &m_textureHeight, &m_textureBPP, DESIRED_TEXTURE_CHANNELS);
+	// Automatically set the filepath of texture
+	std::string textureFilepath = TEXTURE_FILEPATH_PREFIX + filepath + TEXTURE_FILEPATH_SUFFIX;
+
+	m_pTempBuffer = stbi_load(textureFilepath.c_str(), &m_textureWidth, &m_textureHeight, &m_textureBPP, DESIRED_TEXTURE_CHANNELS);
 
 	// Check result
 	if (stbi_failure_reason() == "can't fopen")
 	{
-		PRINT_WARN("TEXTURE-> {0} failed to parse texture", m_textureFilePath);
+		PRINT_WARN("TEXTURE-> {0} failed to parse texture", m_resourceFilePath);
 		stbi_image_free(m_pTempBuffer);
 
-		return false;
+		return;
 	}
 
-	m_textureFilePath = filepath;
-	m_textureType = textureType;
+	m_resourceFilePath = textureFilepath;
+	//m_textureType = textureType;
 
-	return true;
+	//return true;
 }
 
 /// <summary>
 /// 2 / 2 of texture creation
 /// Use parsed texture data to create OpenGL texture buffers
 /// </summary>
-void Texture::CreateTexture()
+void Texture::Create()
 {
 	// Generate one texture buffer
-	glCall(glGenTextures(1, &m_textureOpenGLID));
-	glCall(glBindTexture(GL_TEXTURE_2D, m_textureOpenGLID));
+	glCall(glGenTextures(1, &m_OpenGLResourceID));
+	glCall(glBindTexture(GL_TEXTURE_2D, m_OpenGLResourceID));
 
 	// What happens if texture is rendered on a different sized surface
 	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
@@ -80,7 +85,7 @@ void Texture::CreateTexture()
 	}
 
 	// Define the texture
-	glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_textureWidth, m_textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_pTempBuffer));
+	glCall(glTexImage2D(GL_TEXTURE_2D, NULL, GL_RGBA, m_textureWidth, m_textureHeight, NULL, GL_RGBA, GL_UNSIGNED_BYTE, m_pTempBuffer));
 	glCall(glGenerateMipmap(GL_TEXTURE_2D));
 
 	// Unbind
@@ -95,19 +100,24 @@ void Texture::CreateTexture()
 	m_bIsCreated = true;
 }
 
+void Texture::Reset()
+{
+
+}
+
 /// <summary>
 /// Bind the texture buffer to the OpenGL context
 /// </summary>
-void Texture::BindTexture()
+void Texture::Bind()
 {
 	glCall(glActiveTexture(GL_TEXTURE0 + static_cast<int>(m_textureType)));
-	glCall(glBindTexture(GL_TEXTURE_2D, m_textureOpenGLID));
+	glCall(glBindTexture(GL_TEXTURE_2D, m_OpenGLResourceID));
 }
 
 /// <summary>
 /// Unbind the texture buffer to the OpenGL context
 /// </summary>
-void Texture::UnbindTexture()
+void Texture::Unbind()
 {
 	glCall(glActiveTexture(GL_TEXTURE0 + static_cast<int>(m_textureType)));
 	glCall(glBindTexture(GL_TEXTURE_2D, NO_TEXTURE));

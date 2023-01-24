@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene skyid="basic">
   <materials>
-    <material id="knife" diffuseid="knife_diff" specularid="knife_spec" normalid="knife_norm" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="knife" diffuseid="concreteBrick_diff" specularid="concreteBrick_spec" normalid="concreteBrick_norm" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
   </materials>
   <lights>
     <light type="direction" ambR="0.2" ambG="0.2" ambB="0.2" difR="0.4" difG="0.4" difB="0.4" speR="0.3" speG="0.3" speB="0.3" dirX="-2.0" dirY="-3.0" dirZ="-1.0"/>

@@ -13,10 +13,7 @@
 #include "Rendering/OpenGLRenderer.h"
 
 #include "Rendering/Resource/Manager/MaterialManager.h"
-#include "Rendering/Resource/Manager/MeshManager.h"
-#include "Rendering/Resource/Manager/TextureManager.h"
-#include "Rendering/Resource/Manager/ShaderManager.h"
-#include "Rendering/Resource/Manager/CubemapManager.h"
+#include "Rendering/Resource/Manager/ResourceManager.h"
 
 
 // Variables are used to move various lights in different scenes
@@ -87,11 +84,11 @@ Scene::~Scene()
 {
 	m_sceneModels.clear();
 
-	TheMeshManager::Instance()->ClearAllMeshes();
+	MeshManager::Get()->ClearAllResources();
+	TextureManager::Get()->ClearAllResources();
+	ShaderManager::Get()->ResetAllResources();
+	CubemapManager::Get()->ClearAllResources();
 	TheMaterialManager::Instance()->ClearAllMaterials();
-	TheTextureManager::Instance()->ClearAllTextures();
-	TheShaderManager::Instance()->ClearAllShaders();
-	TheCubemapManager::Instance()->ClearAllCubemaps();
 
 	PRINT_INFO("SCENE->{0} has unloaded sucessfully", m_sceneName);
 }

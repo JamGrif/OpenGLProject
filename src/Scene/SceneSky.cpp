@@ -3,16 +3,14 @@
 
 #include <GL/glew.h>
 
-#include "Rendering/Resource/Manager/TextureManager.h"
-#include "Rendering/Resource/Manager/CubemapManager.h"
+#include "Rendering/Resource/Manager/ResourceManager.h"
 #include "Rendering/OpenGLRenderer.h"
-#include "Rendering/Resource/Manager/ShaderManager.h"
 #include "Scene/SceneCamera.h"
 
 SceneSky::SceneSky(const std::string& cubemapID)
 	:m_cubemapID(cubemapID), m_shaderID("skyShader"), m_projectionMatrix(TheOpenGLRenderer::Instance()->GetProjectionMatrix())
 {
-	TheShaderManager::Instance()->AddShader(m_shaderID, "res/shaders/sky-vertex.glsl", "res/shaders/sky-fragment.glsl");
+	ShaderManager::Get()->AddResource(m_shaderID, "res/shaders/sky-vertex.glsl", "res/shaders/sky-fragment.glsl");
 	//TheCubemapManager::Instance()->addCubemap(cubemapID);
 
 	// Skybox uses its own VBO and attribute system to allow the use of a custom cube
@@ -29,14 +27,14 @@ SceneSky::~SceneSky()
 void SceneSky::DrawSky()
 {	
 	// Bind shader
-	TheShaderManager::Instance()->BindShaderAtID(m_shaderID);
+	ShaderManager::Get()->BindResourceAtID(m_shaderID);
 
 	// Bind Vertex values
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "v_matrix", glm::mat4(glm::mat3(m_pSceneCamera.lock()->GetViewMatrix())));
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "proj_matrix", m_projectionMatrix);
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sky", 0);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("v_matrix", glm::mat4(glm::mat3(m_pSceneCamera.lock()->GetViewMatrix())));
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("proj_matrix", m_projectionMatrix);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sky", 0);
 
-	TheCubemapManager::Instance()->BindCubemapAtID(m_cubemapID);
+	CubemapManager::Get()->BindResourceAtID(m_cubemapID);
 
 	// Bind VBOs and vertex attributes	
 	glBindBuffer(GL_ARRAY_BUFFER, m_skyboxVBO);
@@ -49,6 +47,6 @@ void SceneSky::DrawSky()
 	TheOpenGLRenderer::Instance()->DrawCubemap(36);
 
 	// Post-draw cleanup
-	TheShaderManager::Instance()->UnbindShaderAtID(m_shaderID);
-	TheCubemapManager::Instance()->UnbindCubemapAtID(m_cubemapID);
+	ShaderManager::Get()->UnbindResourceAtID(m_shaderID);
+	CubemapManager::Get()->UnbindResourceAtID(m_cubemapID);
 }

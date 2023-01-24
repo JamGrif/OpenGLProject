@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Rendering/Resource/Mesh.h"
 
-#include "Rendering/OpenGLErrorCheck.h"
-
 #include <assimp/Importer.hpp>		// Importer interface
 #include <assimp/scene.h>			// Output data structure
 #include <assimp/postprocess.h>		// Post-processing flags
@@ -13,6 +11,9 @@
 #include <GL/glew.h>
 
 static constexpr int NO_BUFFER = 0;
+
+static const std::string MESH_FILEPATH_PREFIX = "res/meshes/";
+static const std::string MESH_FILEPATH_SUFFIX = ".obj";
 
 // Numbers correspond to vertex attribute positions in shader
 enum class VertexAttribute
@@ -35,7 +36,7 @@ struct Vertex
 
 
 Mesh::Mesh()
-	:m_meshVBO(-1), m_meshEBO(-1), m_bIsCreated(false)
+	:IResource(), m_meshEBO(-1)
 {
 	PRINT_INFO("mesh created");
 }
@@ -46,7 +47,7 @@ Mesh::~Mesh()
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, NO_BUFFER));
 	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NO_BUFFER));
 
-	glCall(glDeleteBuffers(1, &m_meshVBO));
+	glCall(glDeleteBuffers(1, &m_OpenGLResourceID));
 	glCall(glDeleteBuffers(1, &m_meshEBO));
 
 	PRINT_WARN("mesh deleted");
@@ -56,14 +57,17 @@ Mesh::~Mesh()
 /// 1 / 2 of mesh creation
 /// Parse the .obj file at filepath
 /// </summary>
-void Mesh::ParseMesh(const std::string& filepath)
+void Mesh::Parse(const std::string& filepath)
 {
+
+	std::string meshFilepath = MESH_FILEPATH_PREFIX + filepath + MESH_FILEPATH_SUFFIX;
+
 	Assimp::Importer assimpImporter;
-	const aiScene* assimpScene = assimpImporter.ReadFile(filepath, aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices);
+	const aiScene* assimpScene = assimpImporter.ReadFile(meshFilepath, aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices);
 
 	if (!assimpScene || assimpScene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !assimpScene->mRootNode)
 	{
-		PRINT_WARN("MESH-> {0} failed to load", filepath);
+		PRINT_WARN("MESH-> {0} failed to load", meshFilepath);
 		return;
 	}
 
@@ -109,18 +113,18 @@ void Mesh::ParseMesh(const std::string& filepath)
 		}
 	}
 
-	m_meshFilePath = filepath;
+	m_resourceFilePath = meshFilepath;
 }
 
 /// <summary>
 /// 2 / 2 of mesh creation
 /// Use parsed mesh data to create OpenGL VBO and EBO buffers
 /// </summary>
-void Mesh::CreateMesh()
+void Mesh::Create()
 {
 	// Create VBO
-	glCall(glGenBuffers(1, &m_meshVBO));
-	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
+	glCall(glGenBuffers(1, &m_OpenGLResourceID));
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_OpenGLResourceID));
 	glCall(glBufferData(GL_ARRAY_BUFFER, m_meshVertices.size() * sizeof(Vertex), &m_meshVertices[0], GL_STATIC_DRAW));
 
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, NO_BUFFER));
@@ -135,13 +139,18 @@ void Mesh::CreateMesh()
 	m_bIsCreated = true;
 }
 
+void Mesh::Reset()
+{
+
+}
+
 /// <summary>
 /// Bind the VBO and EBO to the OpenGL context and the vertex attributes to the currently bound shader
 /// </summary>
-void Mesh::BindMesh()
+void Mesh::Bind()
 {
 	// Bind VBO and EBO
-	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_meshVBO));
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_OpenGLResourceID));
 	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_meshEBO));
 
 	// Bind vertex attributes
@@ -164,7 +173,7 @@ void Mesh::BindMesh()
 /// <summary>
 /// Unbind the VBO and EBO from the OpenGL context
 /// </summary>
-void Mesh::UnbindMesh()
+void Mesh::Unbind()
 {
 	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));

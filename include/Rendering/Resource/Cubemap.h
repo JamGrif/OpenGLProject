@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Rendering/Resource/IResource.h"
+
 enum cubeFaces
 {
 	e_START_OF_CUBEFACE_ENUM	= 0,
@@ -14,7 +16,8 @@ enum cubeFaces
 
 typedef std::array<std::string, 6> CubemapFaces;
 
-class Cubemap
+class Cubemap :
+	public IResource
 {
 public:
 	Cubemap();
@@ -22,16 +25,20 @@ public:
 
 private:
 
-	bool			ParseCubemap(const CubemapFaces& facesFilepath);
-	void			CreateCubemap();
+	virtual void			Parse(const std::string& facesFilepath);
+	virtual void			Parse(const std::string& firstFilepath, const std::string& secondFilepath) {}
 
-	void			BindCubemap();
-	void			UnbindCubemap();
+	virtual void			Create();
+
+	virtual void			Bind();
+	virtual void			Unbind();
+
+	virtual void Reset();
 
 private:
 
 	// OpenGL cubemap index
-	uint32_t		m_cubemapOpenGLID;
+	//uint32_t		m_cubemapOpenGLID;
 
 	// Sampler2D slot in shader
 	int				m_textureSlot;
@@ -42,6 +49,9 @@ private:
 	// Temp storage during parsing and creation
 	unsigned char*	m_localbuffer[6];
 
-	friend class CubemapManager;
+	//bool	m_bIsCreated;
+
+	template<typename Cubemap>
+	friend class ResourceManager;
 };
 

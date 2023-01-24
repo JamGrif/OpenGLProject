@@ -2,8 +2,7 @@
 #include "Rendering/OpenGLFramebuffer.h"
 
 #include "Rendering/OpenGLWindow.h"
-#include "Rendering/OpenGLErrorCheck.h"
-#include "Rendering/Resource/Manager/ShaderManager.h"
+#include "Rendering/Resource/Manager/ResourceManager.h"
 
 #include <GL/glew.h>
 
@@ -63,7 +62,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 
 	// Set framebuffer shader
 	m_shaderID = "screenbufferShader";
-	TheShaderManager::Instance()->AddShader(m_shaderID, "res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
+	ShaderManager::Get()->AddResource(m_shaderID, "res/shaders/framebuffer-vertex.glsl", "res/shaders/framebuffer-fragment.glsl");
 
 	// Create the VBO object the screen will be drawn to
 	glCall(glGenBuffers(1, &m_quadVBO));
@@ -82,11 +81,11 @@ OpenGLFramebuffer::~OpenGLFramebuffer()
 /// </summary>
 void OpenGLFramebuffer::Draw()
 {
-	TheShaderManager::Instance()->BindShaderAtID(m_shaderID);
+	ShaderManager::Get()->BindResourceAtID(m_shaderID);
 
 	// Sets shader values, texture and vertex attributes
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "screenTexture", 0);
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "screenFilter", static_cast<int>(m_screenFilter));
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("screenTexture", 0);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("screenFilter", static_cast<int>(m_screenFilter));
 
 	glCall(glActiveTexture(GL_TEXTURE0));
 	glCall(glBindTexture(GL_TEXTURE_2D, m_frameColourTexture));
@@ -100,7 +99,7 @@ void OpenGLFramebuffer::Draw()
 
 	glCall(glDrawArrays(GL_TRIANGLES, 0, 6));
 
-	TheShaderManager::Instance()->UnbindShaderAtID(m_shaderID);
+	ShaderManager::Get()->UnbindResourceAtID(m_shaderID);
 }
 
 /// <summary>

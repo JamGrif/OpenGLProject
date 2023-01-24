@@ -1,57 +1,58 @@
 #pragma once
 
+#include "Rendering/Resource/IResource.h"
+
 /// <summary>
 /// Tells a Texture object which slot in the shader to use
 /// Numbers correspond to index in the shader file
 /// </summary>
 enum class TextureType
 {
-	UNSET		= -1,
-	DIFFUSE		= 0,
-	SPECULAR	= 1,
-	EMISSION	= 2,
-	NORMAL		= 3,
-	HEIGHT		= 4,
+	UNSET					= -1,
+	START_OF_TEXTURETYPE	= 0,
+	DIFFUSE					= START_OF_TEXTURETYPE,
+	SPECULAR				= 1,
+	EMISSION				= 2,
+	NORMAL					= 3,
+	HEIGHT					= 4,
+	END_OF_TEXTURETYPE
 };
 
 /// <summary>
 /// Encapsulates an OpenGL texture buffer to act as a Texture
 /// </summary>
-class Texture
+class Texture :
+	public IResource
 {
 public:
 	Texture();
 	~Texture();
 
+	void			setTextureType(TextureType type) { m_textureType = type; }
 private:
 
-	void			BindTexture();
-	void			UnbindTexture();
+	virtual void			Bind() override;
+	virtual void			Unbind() override;
 
-	bool			ParseTexture(const std::string& filepath, TextureType textureType);
-	void			CreateTexture();
+	virtual void			Parse(const std::string& filepath) override;
+	virtual void			Parse(const std::string& firstFilepath, const std::string& secondFilepath) {}
+	virtual void			Create() override;
 
-	bool			GetIsCreated() { return m_bIsCreated; }
+	virtual void Reset();
 
 private:
-
-	// OpenGL texture index
-	uint32_t		m_textureOpenGLID;
 
 	// Texture data
 	int				m_textureWidth, m_textureHeight, m_textureBPP;
 
-	std::string		m_textureFilePath;
-
-	// Slot used in shader
+	// sampler2D slot used in shader
 	TextureType		m_textureType;
 
 	// Temp storage during parsing and creation
 	unsigned char*	m_pTempBuffer;
 
-	bool			m_bIsCreated;
-
 	// Ensures only the TextureManager can call functions of a texture object
-	friend class	TextureManager;
+	template<typename Texture>
+	friend class ResourceManager;
 };
 

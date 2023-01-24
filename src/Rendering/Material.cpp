@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "Rendering/Material.h"
 
-#include "Rendering/Resource/Manager/TextureManager.h"
-#include "Rendering/Resource/Manager/ShaderManager.h"
+#include "Rendering/Resource/Manager/ResourceManager.h"
 #include "Scene/SceneCamera.h"
 #include "Scene/SceneLightManager.h"
 #include "Rendering/OpenGLRenderer.h"
@@ -16,52 +15,27 @@ Material::Material(const MaterialLoaderParams& pParams)
 	m_textureMapUsing{ false, false, false, false, false },
 	m_pAppProjectionMatrix(OpenGLRenderer::Instance()->GetProjectionMatrix())
 {
-	// Go through MaterialLoaderParams and set texture values
-	if (pParams.diffuseMapID != NULL_TEXTURE)
+	// Go through MaterialLoaderParams and set each texture type that is used
+	for (int i = static_cast<int>(TextureType::START_OF_TEXTURETYPE); i != static_cast<int>(TextureType::END_OF_TEXTURETYPE); i++)
 	{
-		m_textureMapIDs[static_cast<int>(TextureType::DIFFUSE)] = pParams.diffuseMapID;
-		m_textureMapUsing[static_cast<int>(TextureType::DIFFUSE)] = true;
+		// Check if texture type is used in this material
+		if (pParams.textureMapIDs[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i] != NULL_TEXTURE)
+		{
+			// Set texture ID
+			m_textureMapIDs[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i] = pParams.textureMapIDs[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i];
+			m_textureMapUsing[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i] = true;
 
-		TheTextureManager::Instance()->AddTexture(pParams.diffuseMapID, TextureType::DIFFUSE);
-	}
-
-	if (pParams.specularMapID != NULL_TEXTURE)
-	{
-		m_textureMapIDs[static_cast<int>(TextureType::SPECULAR)] = pParams.specularMapID;
-		m_textureMapUsing[static_cast<int>(TextureType::SPECULAR)] = true;
-
-		TheTextureManager::Instance()->AddTexture(pParams.specularMapID, TextureType::SPECULAR);
-	}
-
-	if (pParams.normalMapID != NULL_TEXTURE)
-	{
-		m_textureMapIDs[static_cast<int>(TextureType::NORMAL)] = pParams.normalMapID;
-		m_textureMapUsing[static_cast<int>(TextureType::NORMAL)] = true;
-
-		TheTextureManager::Instance()->AddTexture(pParams.normalMapID, TextureType::NORMAL);
-	}
-
-	if (pParams.heightMapID != NULL_TEXTURE)
-	{
-		m_textureMapIDs[static_cast<int>(TextureType::HEIGHT)] = pParams.heightMapID;
-		m_textureMapUsing[static_cast<int>(TextureType::HEIGHT)] = true;
-
-		TheTextureManager::Instance()->AddTexture(pParams.heightMapID, TextureType::HEIGHT);
-	}
-
-	if (pParams.emissionMapID != NULL_TEXTURE)
-	{
-		m_textureMapIDs[static_cast<int>(TextureType::EMISSION)] = pParams.emissionMapID;
-		m_textureMapUsing[static_cast<int>(TextureType::EMISSION)] = true;
-
-		TheTextureManager::Instance()->AddTexture(pParams.emissionMapID, TextureType::EMISSION);
+			// Create Texture resource with textureMapID
+			TextureManager::Get()->AddResource(pParams.textureMapIDs[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i]);
+			TextureManager::Get()->GetResourceAtID(pParams.textureMapIDs[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i])->setTextureType(static_cast<TextureType>(static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i));
+		}
 	}
 
 	m_bNormalMapNormalize = pParams.normalMapNormalize;
 	m_heightMapHeight = pParams.heightMapHeight;
 
-	// Use shaderID to read the shader
-	TheShaderManager::Instance()->AddShader(m_shaderID, "res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
+	// Create shader resource with shaderID
+	ShaderManager::Get()->AddResource(m_shaderID, "res/shaders/lightingPassTwo-vertex.glsl", "res/shaders/lightingPassTwo-fragment.glsl");
 }
 
 
@@ -74,62 +48,53 @@ Material::~Material()
 /// </summary>
 void Material::BindMaterial(const glm::mat4& modelMat)
 {
-	// Bind each available texture
-	if (m_textureMapUsing[static_cast<int>(TextureType::DIFFUSE)])
-		TheTextureManager::Instance()->BindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::DIFFUSE)]);
-	
-	if (m_textureMapUsing[static_cast<int>(TextureType::SPECULAR)])
-		TheTextureManager::Instance()->BindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::SPECULAR)]);
-	
-	if (m_textureMapUsing[static_cast<int>(TextureType::NORMAL)])
-		TheTextureManager::Instance()->BindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::NORMAL)]);
-	
-	if (m_textureMapUsing[static_cast<int>(TextureType::HEIGHT)])
-		TheTextureManager::Instance()->BindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::HEIGHT)]);
-	
-	if (m_textureMapUsing[static_cast<int>(TextureType::EMISSION)])
-		TheTextureManager::Instance()->BindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::EMISSION)]);
+	// Bind each used texture
+	for (int i = static_cast<int>(TextureType::START_OF_TEXTURETYPE); i != static_cast<int>(TextureType::END_OF_TEXTURETYPE); i++)
+	{
+		if (m_textureMapUsing[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i])
+			TextureManager::Get()->BindResourceAtID(m_textureMapIDs[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i]);
+	}
 
 	// Bind the materials shader
-	TheShaderManager::Instance()->BindShaderAtID(m_shaderID);
+	ShaderManager::Get()->BindResourceAtID(m_shaderID);
 
 	std::shared_ptr<SceneCamera> tempSceneCamera = m_pSceneCamera.lock();
 	std::shared_ptr<SceneLightManager> tempLightManager = m_pSceneLightManager.lock();
 
 	// Set the values of the vertex shader
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "m_matrix", modelMat);
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "v_matrix", tempSceneCamera->GetViewMatrix());
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "proj_matrix", m_pAppProjectionMatrix);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("m_matrix", modelMat);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("v_matrix", tempSceneCamera->GetViewMatrix());
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("proj_matrix", m_pAppProjectionMatrix);
 
 	// Set the values of the fragment shader
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.diffuse", static_cast<int>(TextureType::DIFFUSE));
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.specular", static_cast<int>(TextureType::SPECULAR));
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.emission", static_cast<int>(TextureType::EMISSION));
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.normal", static_cast<int>(TextureType::NORMAL));
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.height", static_cast<int>(TextureType::HEIGHT));
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.diffuse", static_cast<int>(TextureType::DIFFUSE));
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.specular", static_cast<int>(TextureType::SPECULAR));
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.emission", static_cast<int>(TextureType::EMISSION));
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.normal", static_cast<int>(TextureType::NORMAL));
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.height", static_cast<int>(TextureType::HEIGHT));
 
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.specularShininess", 48.0f);
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.normalizeTex", m_bNormalMapNormalize);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.specularShininess", 48.0f);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.normalizeTex", m_bNormalMapNormalize);
 
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.usingEmission", m_textureMapUsing[static_cast<int>(TextureType::EMISSION)]);
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.usingNormal", m_textureMapUsing[static_cast<int>(TextureType::NORMAL)]);
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.usingHeight", m_textureMapUsing[static_cast<int>(TextureType::HEIGHT)]);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.usingEmission", m_textureMapUsing[static_cast<int>(TextureType::EMISSION)]);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.usingNormal", m_textureMapUsing[static_cast<int>(TextureType::NORMAL)]);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.usingHeight", m_textureMapUsing[static_cast<int>(TextureType::HEIGHT)]);
 
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "material.heightAmount", m_heightMapHeight);
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.heightAmount", m_heightMapHeight);
 
 	// Camera Position
-	TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "viewPos", tempSceneCamera->GetPosition());
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("viewPos", tempSceneCamera->GetPosition());
 
 	// Apply directional light values to shader
 	if (tempLightManager->GetCurrentDirectionalLights() > 0) // Ensure a directional light exists
 	{
 		std::shared_ptr<DirectionalLight> tempDirectionalLight = tempLightManager->GetDirectionalLight(0).lock();
 
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "dLight.ambient", tempDirectionalLight->m_ambient);
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "dLight.diffuse", tempDirectionalLight->m_diffuse);
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "dLight.specular", tempDirectionalLight->m_specular);
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "dLight.direction", tempDirectionalLight->m_direction);
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "dLight.lightActive", tempDirectionalLight->m_bLightActive);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("dLight.ambient", tempDirectionalLight->m_ambient);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("dLight.diffuse", tempDirectionalLight->m_diffuse);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("dLight.specular", tempDirectionalLight->m_specular);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("dLight.direction", tempDirectionalLight->m_direction);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("dLight.lightActive", tempDirectionalLight->m_bLightActive);
 	}
 
 	// Apply point light(s) values to shader
@@ -140,15 +105,15 @@ void Material::BindMaterial(const glm::mat4& modelMat)
 			std::string s = std::to_string(i);
 			std::shared_ptr<PointLight> tempPointLight = tempLightManager->GetPointLight(i).lock();
 
-			TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "pLight[" + s + "].ambient", tempPointLight->m_ambient);
-			TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "pLight[" + s + "].diffuse", tempPointLight->m_diffuse);
-			TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "pLight[" + s + "].specular", tempPointLight->m_specular);
+			ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("pLight[" + s + "].ambient", tempPointLight->m_ambient);
+			ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("pLight[" + s + "].diffuse", tempPointLight->m_diffuse);
+			ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("pLight[" + s + "].specular", tempPointLight->m_specular);
 
-			TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "pLight[" + s + "].position", tempPointLight->m_position);
-			TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "pLight[" + s + "].constant", tempPointLight->m_constant);
-			TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "pLight[" + s + "].linear", tempPointLight->m_linear);
-			TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "pLight[" + s + "].quadratic", tempPointLight->m_quadratic);
-			TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "pLight[" + s + "].lightActive", tempPointLight->m_bLightActive);
+			ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("pLight[" + s + "].position", tempPointLight->m_position);
+			ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("pLight[" + s + "].constant", tempPointLight->m_constant);
+			ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("pLight[" + s + "].linear", tempPointLight->m_linear);
+			ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("pLight[" + s + "].quadratic", tempPointLight->m_quadratic);
+			ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("pLight[" + s + "].lightActive", tempPointLight->m_bLightActive);
 		}
 	}
 
@@ -157,21 +122,21 @@ void Material::BindMaterial(const glm::mat4& modelMat)
 	{
 		std::shared_ptr<SpotLight> tempSpotLight = tempLightManager->GetSpotLight(0).lock();
 
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.ambient", tempSpotLight->m_ambient);
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.diffuse", tempSpotLight->m_diffuse);
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.specular", tempSpotLight->m_specular);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.ambient", tempSpotLight->m_ambient);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.diffuse", tempSpotLight->m_diffuse);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.specular", tempSpotLight->m_specular);
 
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.position", tempSceneCamera->GetPosition());
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.direction", tempSceneCamera->GetFront());
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.position", tempSceneCamera->GetPosition());
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.direction", tempSceneCamera->GetFront());
 
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.cutOff", glm::cos(glm::radians(tempSpotLight->m_cutOff)));
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.outerCutOff", glm::cos(glm::radians(tempSpotLight->m_outerCutOff)));
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.cutOff", glm::cos(glm::radians(tempSpotLight->m_cutOff)));
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.outerCutOff", glm::cos(glm::radians(tempSpotLight->m_outerCutOff)));
 
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.constant", tempSpotLight->m_constant);
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.linear", tempSpotLight->m_linear);
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.quadratic", tempSpotLight->m_quadratic);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.constant", tempSpotLight->m_constant);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.linear", tempSpotLight->m_linear);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.quadratic", tempSpotLight->m_quadratic);
 
-		TheShaderManager::Instance()->SetUniformAtID(m_shaderID, "sLight.lightActive", tempSpotLight->m_bLightActive);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.lightActive", tempSpotLight->m_bLightActive);
 	}
 }
 
@@ -181,22 +146,13 @@ void Material::BindMaterial(const glm::mat4& modelMat)
 void Material::UnbindMaterial()
 {
 	// Bind each available texture
-	if (m_textureMapUsing[static_cast<int>(TextureType::DIFFUSE)])
-		TheTextureManager::Instance()->UnbindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::DIFFUSE)]);
-
-	if (m_textureMapUsing[static_cast<int>(TextureType::SPECULAR)])
-		TheTextureManager::Instance()->UnbindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::SPECULAR)]);
-
-	if (m_textureMapUsing[static_cast<int>(TextureType::NORMAL)])
-		TheTextureManager::Instance()->UnbindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::NORMAL)]);
-
-	if (m_textureMapUsing[static_cast<int>(TextureType::HEIGHT)])
-		TheTextureManager::Instance()->UnbindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::HEIGHT)]);
-
-	if (m_textureMapUsing[static_cast<int>(TextureType::EMISSION)])
-		TheTextureManager::Instance()->UnbindTextureAtID(m_textureMapIDs[static_cast<int>(TextureType::EMISSION)]);
+	for (int i = static_cast<int>(TextureType::START_OF_TEXTURETYPE); i != static_cast<int>(TextureType::END_OF_TEXTURETYPE); i++)
+	{
+		if (m_textureMapUsing[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i])
+			TextureManager::Get()->UnbindResourceAtID(m_textureMapIDs[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i]);
+	}
 	
-	TheShaderManager::Instance()->UnbindShaderAtID(m_shaderID);
+	ShaderManager::Get()->UnbindResourceAtID(m_shaderID);
 }
 
 
