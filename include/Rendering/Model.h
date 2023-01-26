@@ -25,7 +25,7 @@ public:
 	void			UpdateModel();
 	void			DrawModel();
 
-	void			SetModelPointers(SceneCamera* pSceneCamera);
+	void			SetModelPointers(std::weak_ptr<SceneCamera> pSceneCamera);
 
 	inline void		SetMatrixValues();
 
@@ -48,7 +48,7 @@ private:
 	glm::mat4		m_rMat;		// Rotation
 	glm::mat4		m_sMat;		// Scale
 
-	SceneCamera* m_pSceneCamera;
+	std::weak_ptr<SceneCamera> m_pSceneCamera;
 
 	const glm::mat4& m_programProjectionMatrix;
 };

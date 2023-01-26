@@ -16,15 +16,12 @@ Application::~Application()
 {
 	TheOpenGLRenderer::Instance()->Clean();
 
-	m_loadedScene = nullptr;
-
-	m_UI = nullptr;
-
 	TheOpenGLWindow::Instance()->Clean();
 }
 
 /// <summary>
 /// Initializes OpenGL libraries, creates the window, enables rendering options and creates class objects
+/// Called once at program start
 /// </summary>
 bool Application::AppInit()
 {
@@ -41,15 +38,12 @@ bool Application::AppInit()
 	InputHandler::Instance()->Init();
 
 	// Initialize the UI
-	m_UI = std::make_unique<UI>(false, m_loadedScene);
+	m_UI = std::make_unique<UI>(false);
 
 	// Create Scene object and set initial scene
-	if (!SetScene(e_jamieTest)) 
-	{
-		// Scene failed to load
+	if (!SetScene(SceneName::jamieTest)) 
 		return false;
-	}
-
+	
 	return true;
 }
 
@@ -69,6 +63,9 @@ void Application::AppLoop()
 	}
 }
 
+/// <summary>
+/// User input functions of the application
+/// </summary>
 void Application::HandleInput()
 {
 	// Check if user wants to toggle UI visibility
@@ -78,18 +75,24 @@ void Application::HandleInput()
 	}
 }
 
+/// <summary>
+/// Update functions of the application
+/// </summary>
 void Application::UpdateApp()
 {
 	m_loadedScene->UpdateScene();
 
-	if (m_UI->GetUiVisible())
+	if (m_UI && m_UI->GetUiVisible())
 	{
 		// Check if loaded scene needs to change
-		if (m_UI->GetSceneNum() != 0)
-			SetScene(m_UI->GetSceneNum());
+		if (m_UI->GetCurrentSceneName() != SceneName::UNSET_SCENE)
+			SetScene(m_UI->GetCurrentSceneName());
 	}
 }
 
+/// <summary>
+/// Render functions of the application
+/// </summary>
 void Application::RenderApp()
 {
 	TheOpenGLRenderer::Instance()->StartOfFrame();
@@ -106,52 +109,45 @@ void Application::RenderApp()
 /// <summary>
 /// Function changes the scene to specified scene number, unloads the currently loaded scene and refreshes the UI light buttons
 /// </summary>
-/// <param name="newSceneNumber">Specified scene to change to (use sceneNames enum)</param>
-bool Application::SetScene(int newSceneNumber)
+bool Application::SetScene(SceneName newSceneNumber)
 {
-	std::string newSceneFilePath = "";
-	switch (newSceneNumber)
-	{
-	case e_FMPscene:
-		newSceneFilePath = "res/scenes/FMPscene.xml";
-		break;
-	case e_jamieTest:
-		newSceneFilePath = "res/scenes/jamieTest.xml";
-		break;
-	case e_lightTest:
-		newSceneFilePath = "res/scenes/lightTest.xml";
-		break;
-	case e_materialTest:
-		newSceneFilePath = "res/scenes/materialTest.xml";
-		break;
-	case e_shadowTest:
-		newSceneFilePath = "res/scenes/shadowTest.xml";
-		break;
-	default:
-		PRINT_WARN("Specified sceneNumber is out of range:{0}", newSceneNumber);
-		return false;
-	}
+	std::string newSceneFilename = "";
 
-	
-	if (m_loadedScene)
+	switch (static_cast<int>(newSceneNumber))
 	{
-		if (newSceneFilePath == m_loadedScene->GetSceneName())
-		{
-			// Scene is already loaded
+		case static_cast<int>(SceneName::FMPscene):
+			newSceneFilename = "FMPscene";
+			break;
+		case static_cast<int>(SceneName::jamieTest):
+			newSceneFilename = "jamieTest";
+			break;
+		case static_cast<int>(SceneName::lightTest):
+			newSceneFilename = "lightTest";
+			break;
+		case static_cast<int>(SceneName::materialTest):
+			newSceneFilename = "materialTest";
+			break;
+		case static_cast<int>(SceneName::shadowTest):
+			newSceneFilename = "shadowTest";
+			break;
+		default:
+			PRINT_WARN("Specified sceneNumber is out of range:{0}", static_cast<int>(newSceneNumber));
 			return false;
-		}
 	}
 
-	m_loadedScene = nullptr;
-	m_UI->UpdateSceneHandle(nullptr);
-	m_loadedScene = std::make_shared<Scene>(newSceneFilePath);
+	// Stop reloading current scene
+	if (m_loadedScene)
+		if (newSceneFilename == m_loadedScene->GetSceneName())
+			return false;
+
+	m_loadedScene = std::make_shared<Scene>(newSceneFilename);
 
 	if (m_loadedScene->LoadScene())
 	{
-		// Scene successfully loaded
 		if (m_UI)
 			m_UI->UpdateSceneHandle(m_loadedScene);
 
+		// Scene successfully loaded
 		return true;
 	}
 

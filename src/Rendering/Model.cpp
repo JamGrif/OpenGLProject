@@ -16,10 +16,8 @@ Model::Model(const ModelLoaderParams& pParams)
 	m_rotation(pParams.rotX, pParams.rotY, pParams.rotZ),
 	m_scale(pParams.scaleX, pParams.scaleY, pParams.scaleZ),
 	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f },
-	m_pSceneCamera(nullptr), m_programProjectionMatrix(TheOpenGLRenderer::Instance()->GetProjectionMatrix())
+	m_programProjectionMatrix(TheOpenGLRenderer::Instance()->GetProjectionMatrix())
 {
-	// Use the meshID to create initial mesh
-	MeshManager::Get()->AddResource(m_meshID);
 }
 
 Model::~Model()
@@ -54,7 +52,7 @@ void Model::DrawModel()
 /// <summary>
 /// Set the pointers the model uses from the scene
 /// </summary>
-void Model::SetModelPointers(SceneCamera* pSceneCamera)
+void Model::SetModelPointers(std::weak_ptr<SceneCamera> pSceneCamera)
 {
 	m_pSceneCamera = pSceneCamera;
 }
@@ -77,6 +75,6 @@ void Model::SetMatrixValues()
 	m_mMat = m_tMat * m_rMat * m_sMat;
 
 	// Set new view matrix
-	m_vMat = m_pSceneCamera->GetViewMatrix();
+	m_vMat = m_pSceneCamera.lock()->GetViewMatrix();
 }
 

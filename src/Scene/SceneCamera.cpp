@@ -13,7 +13,7 @@ constexpr float Default_SENSITIVTY = 0.25f;
 
 SceneCamera::SceneCamera(glm::vec3 position)
     : m_position(position), m_front(0.0f, 0.0f, -1.0f), m_up(0.0f,1.0f,0.0f), m_right(0.0f,0.0f,0.0f), m_worldUp(m_up), m_lookAt(1.0f),
-	m_yaw(Default_YAW), m_pitch(Default_PITCH), m_movementSpeed(Default_SPEED), m_mouseSensitivity(Default_SENSITIVTY), m_cameraMoved(false)
+	m_yaw(Default_YAW), m_pitch(Default_PITCH), m_movementSpeed(Default_SPEED), m_mouseSensitivity(Default_SENSITIVTY), m_bCameraMoved(false)
 {
 	// Initialize default values
 	UpdateCameraVectors();
@@ -29,16 +29,16 @@ SceneCamera::~SceneCamera()
 /// </summary>
 void SceneCamera::Update()
 {
-	m_cameraMoved = false;
+	m_bCameraMoved = false;
 
 	if (InputHandler::Instance()->GetKeyPressed(Keyboard::W))
-		ProcessKeyboard(Camera_Movement::FORWARD);
+		ProcessKeyboard(CameraMovement::FORWARD);
 	if (InputHandler::Instance()->GetKeyPressed(Keyboard::S))
-		ProcessKeyboard(Camera_Movement::BACKWARD);
+		ProcessKeyboard(CameraMovement::BACKWARD);
 	if (InputHandler::Instance()->GetKeyPressed(Keyboard::A))
-		ProcessKeyboard(Camera_Movement::LEFT);
+		ProcessKeyboard(CameraMovement::LEFT);
 	if (InputHandler::Instance()->GetKeyPressed(Keyboard::D))
-		ProcessKeyboard(Camera_Movement::RIGHT);
+		ProcessKeyboard(CameraMovement::RIGHT);
 
     if (InputHandler::Instance()->GetKeyPressed(Keyboard::R))
 		PRINT_TRACE("Position x - {0}, Position y - {1}, Position z - {2}", m_position.x, m_position.y, m_position.z);
@@ -55,8 +55,8 @@ void SceneCamera::Update()
 			ProcessMouse(static_cast<float>(x), static_cast<float>(y));
 	}
     
-	// Calculate lookAt matrix
-	if (m_cameraMoved)
+	// Calculate lookAt matrix if camera has moved this frame
+	if (m_bCameraMoved)
 		UpdateLookatMatrix();
 }
 
@@ -74,22 +74,22 @@ void SceneCamera::SetPosition(const glm::vec3& newPos)
 /// <summary>
 /// Moves the camera depending on user keyboard input
 /// </summary>
-void SceneCamera::ProcessKeyboard(Camera_Movement direction)
+void SceneCamera::ProcessKeyboard(CameraMovement direction)
 {
-	m_cameraMoved = true;
+	m_bCameraMoved = true;
 	float velocity = m_movementSpeed * static_cast<float>(ApplicationClock::GetDeltaTime());
 
     // Multiple if statements to allow multiple keys pressed down
-    if (direction == Camera_Movement::FORWARD)
+    if (direction == CameraMovement::FORWARD)
 		m_position += m_front * velocity;
     
-    if (direction == Camera_Movement::BACKWARD)
+    if (direction == CameraMovement::BACKWARD)
 		m_position -= m_front * velocity;
     
-    if (direction == Camera_Movement::LEFT)
+    if (direction == CameraMovement::LEFT)
 		m_position -= m_right * velocity;
     
-    if (direction == Camera_Movement::RIGHT)
+    if (direction == CameraMovement::RIGHT)
 		m_position += m_right * velocity;
 }
 
@@ -98,7 +98,7 @@ void SceneCamera::ProcessKeyboard(Camera_Movement direction)
 /// </summary>
 void SceneCamera::ProcessMouse(float xOffset, float yOffset)
 {
-	m_cameraMoved = true;
+	m_bCameraMoved = true;
 
 	// Clamp speed
 	if (xOffset > 100)
