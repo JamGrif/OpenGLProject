@@ -1,12 +1,13 @@
 #pragma once
 
-enum sceneNames
+enum class SceneName
 {
-	e_FMPscene		= 1,
-	e_jamieTest		= 2,
-	e_lightTest		= 3,
-	e_materialTest	= 4,
-	e_shadowTest	= 5
+	UNSET_SCENE		= 0,
+	FMPscene		= 1,
+	jamieTest		= 2,
+	lightTest		= 3,
+	materialTest	= 4,
+	shadowTest		= 5
 };
 
 // Forward Declarations
@@ -17,45 +18,45 @@ class Model;
 class UI
 {
 public:
-	UI(bool uiVisible, std::shared_ptr<Scene> loadedScene);
+	UI(bool uiVisible);
 	~UI();
 
-	void	RenderUI();
+	void		RenderUI();
 
-	void	ToggleUI();
+	void		ToggleUI();
 
-	bool	GetUiVisible() const { return m_uiVisible; }
-	int		GetSceneNum() const { return m_sceneNum; }
-	int		GetFilterNum() const { return m_appPostProcess; }
+	bool		GetUiVisible() const { return m_uiVisible; }
+	SceneName	GetCurrentSceneName() const { return m_currentSceneName; }
+	int			GetFilterNum() const { return m_appPostProcess; }
 
-	void	UpdateSceneHandle(std::shared_ptr<Scene> newLoadedScene);
+	void		UpdateSceneHandle(std::weak_ptr<Scene> newLoadedScene);
 
 private:
 
 	// Scene stuff
-	void	SceneOptionsPanel();
-	void	ControlsPanel();
-	void	PerformanceMetricsPanel();
+	void		SceneOptionsPanel();
+	void		ControlsPanel();
+	void		PerformanceMetricsPanel();
 
-	void	UpdateSceneInformation();
+	void		UpdateSceneInformation();
 
-	bool	m_uiVisible;
+	bool		m_uiVisible;
 
-	int		m_sceneNum; 
+	SceneName	m_currentSceneName; 
 
-	bool	m_directionalLightInScene; // Indicates if the button to toggle the light should be visible or not
-	bool	m_directionalLightActiveButton;
+	bool		m_bDirectionalLightInScene; // Indicates if the button to toggle the light should be visible or not
+	bool		m_bDirectionalLightActiveButton;
 
-	bool	m_spotLightInScene;
-	bool	m_spotLightActiveButton;
+	bool		m_bSpotLightInScene;
+	bool		m_bSpotLightActiveButton;
 
-	int		m_totalPointLights;
-	bool	m_pointLightInScene[4];
-	bool	m_pointLightActiveButton[4];
+	int			m_totalPointLights;
+	bool		m_bPointLightInScene[4];
+	bool		m_bPointLightActiveButton[4];
 
-	int		m_appPostProcess;
+	int			m_appPostProcess;
 
 	// Cached scene handle
-	std::shared_ptr<Scene>					m_sceneHandle;
+	std::weak_ptr<Scene>	m_sceneHandle;
 };
 

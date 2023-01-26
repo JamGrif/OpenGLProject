@@ -83,7 +83,8 @@ void Material::BindMaterial(const glm::mat4& modelMat)
 	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.heightAmount", m_heightMapHeight);
 
 	// Camera Position
-	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("viewPos", tempSceneCamera->GetPosition());
+	Vector3D temp{ tempSceneCamera->GetPosition().x, tempSceneCamera->GetPosition().y, tempSceneCamera->GetPosition().z };
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("viewPos", temp);
 
 	// Apply directional light values to shader
 	if (tempLightManager->GetCurrentDirectionalLights() > 0) // Ensure a directional light exists
@@ -126,8 +127,10 @@ void Material::BindMaterial(const glm::mat4& modelMat)
 		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.diffuse", tempSpotLight->m_diffuse);
 		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.specular", tempSpotLight->m_specular);
 
-		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.position", tempSceneCamera->GetPosition());
-		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.direction", tempSceneCamera->GetFront());
+		Vector3D tempPos{ tempSceneCamera->GetPosition().x, tempSceneCamera->GetPosition().y, tempSceneCamera->GetPosition().z };
+		Vector3D tempFront{ tempSceneCamera->GetFront().x, tempSceneCamera->GetFront().y, tempSceneCamera->GetFront().z };
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.position", tempPos);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.direction", tempFront);
 
 		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.cutOff", glm::cos(glm::radians(tempSpotLight->m_cutOff)));
 		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.outerCutOff", glm::cos(glm::radians(tempSpotLight->m_outerCutOff)));

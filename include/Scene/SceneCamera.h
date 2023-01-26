@@ -3,7 +3,7 @@
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 
-enum class Camera_Movement
+enum class CameraMovement
 {
 	FORWARD		= 0,
 	BACKWARD	= 1,
@@ -28,11 +28,12 @@ public:
     
 private:
 
-	inline void			ProcessKeyboard(Camera_Movement direction);
+	inline void			ProcessKeyboard(CameraMovement direction);
 	inline void			ProcessMouse(float xOffset, float yOffset);
 
 	inline void			UpdateCameraVectors();
-	inline void			UpdateLookatMatrix();
+
+	inline void UpdateLookatMatrix();
 
     // Camera Attributes
     glm::vec3			m_position;
@@ -51,5 +52,5 @@ private:
 	float				m_movementSpeed;
 	float				m_mouseSensitivity;
 
-	bool				m_cameraMoved;
+	bool				m_bCameraMoved;
 };

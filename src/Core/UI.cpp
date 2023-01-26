@@ -12,36 +12,35 @@
 #include "Core/InputHandler.h"
 #include "Rendering/OpenGLRenderer.h"
 
-// Flags for each ImGui window used
-static ImGuiWindowFlags commonResizeFlags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
-static ImGuiWindowFlags commonFlags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
-static ImGuiWindowFlags debugFlags = ImGuiWindowFlags_NoCollapse;
+#include <iostream>
 
-UI::UI(bool uiVisible, std::shared_ptr<Scene> loadedScene)
-	:m_uiVisible(uiVisible), m_sceneHandle(loadedScene), m_sceneNum(0),
-	m_directionalLightInScene(false), m_directionalLightActiveButton(true),
-	m_spotLightInScene(false), m_spotLightActiveButton(true),
-	m_totalPointLights(0), m_pointLightInScene{ false, false, false, false }, m_pointLightActiveButton{ true, true, true, true },
-	m_appPostProcess(0)
+// Flags for each ImGui window used
+static constexpr ImGuiWindowFlags commonResizeFlags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
+static constexpr ImGuiWindowFlags commonFlags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
+static constexpr ImGuiWindowFlags debugFlags = ImGuiWindowFlags_NoCollapse;
+
+UI::UI(bool uiVisible)
+	:m_uiVisible(uiVisible),
+	m_bDirectionalLightInScene(false), m_bDirectionalLightActiveButton(true),
+	m_bSpotLightInScene(false), m_bSpotLightActiveButton(true),
+	m_totalPointLights(0), m_bPointLightInScene{ false, false, false, false }, m_bPointLightActiveButton{ true, true, true, true },
+	m_appPostProcess(0), m_currentSceneName(SceneName::UNSET_SCENE)
 {
 	PRINT_TRACE("UI Initialized");
 
-	// Enable or Disable the mouse depending on UI visibility
+	// Set initial mouse visibility
 	m_uiVisible ? InputHandler::Instance()->EnableMouse() : InputHandler::Instance()->DisableMouse();
-
-	// Check the version
-	IMGUI_CHECKVERSION();
 
 	// Create the imgui context
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	(void)io;
 
-	ImGuiStyle* style = &ImGui::GetStyle();
-	style->WindowRounding = 5.0f;
-	style->FrameRounding = 4.0f;
-	style->ScrollbarSize = 15.0f;
-	style->ScrollbarRounding = 9.0f;
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowRounding = 5.0f;
+	style.FrameRounding = 4.0f;
+	style.ScrollbarSize = 15.0f;
+	style.ScrollbarRounding = 9.0f;
 
 	// Connect ImGui to GLFW window
 	ImGui_ImplGlfw_InitForOpenGL(TheOpenGLWindow::Instance()->GetWindowPtr(), true);
@@ -73,11 +72,7 @@ void UI::RenderUI()
 	SceneOptionsPanel();
 	ControlsPanel();
 	PerformanceMetricsPanel();
-	//sceneEntitiesPanel();
 
-	//if (m_isEntitySelected)
-	//	entityPanel();
-	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
@@ -97,14 +92,9 @@ void UI::ToggleUI()
 /// <summary>
 /// Updates the cached pointer to the currently loaded scene
 /// </summary>
-/// <param name="newLoadedScene">Pointer to the new scene</param>
-void UI::UpdateSceneHandle(std::shared_ptr<Scene> newLoadedScene)
+void UI::UpdateSceneHandle(std::weak_ptr<Scene> newLoadedScene)
 {
 	m_sceneHandle = newLoadedScene;
-
-	// If newLoadedScene was set to be null then don't update any information
-	if (!newLoadedScene)
-		return;
 
 	UpdateSceneInformation();
 }
@@ -115,64 +105,63 @@ void UI::UpdateSceneHandle(std::shared_ptr<Scene> newLoadedScene)
 void UI::SceneOptionsPanel()
 {
 	// Reset variable
-	m_sceneNum = 0;
+	m_currentSceneName = SceneName::UNSET_SCENE;
 
 	ImGui::Begin("Scene Options:", NULL, commonFlags);
 
 	ImGui::Text("Change Scene:");
 	if (ImGui::Button("FMPscene.txt"))
-	{
-		m_sceneNum = e_FMPscene;
-	}
+		m_currentSceneName = SceneName::FMPscene;
+	
 	if (ImGui::Button("jamieTest.txt"))
-	{
-		m_sceneNum = e_jamieTest;
-	}
+		m_currentSceneName = SceneName::jamieTest;
+	
 	if (ImGui::Button("lightTest.txt"))
-	{
-		m_sceneNum = e_lightTest;
-	}
+		m_currentSceneName = SceneName::lightTest;
+	
 	if (ImGui::Button("materialTest.txt"))
-	{
-		m_sceneNum = e_materialTest;
-	}
+		m_currentSceneName = SceneName::materialTest;
+	
 	if (ImGui::Button("shadowTest.txt"))
-	{
-		m_sceneNum = e_shadowTest;
-	}
-
+		m_currentSceneName = SceneName::shadowTest;
+	
 	ImGui::Text("Toggle Active Lights:");
 
-	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle->GetSceneLightManager();
+	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle.lock()->GetSceneLightManager();
 
-	if (m_directionalLightInScene)
+	PRINT_TRACE("d{0}", sceneLM->GetCurrentDirectionalLights());
+	PRINT_TRACE("p{0}", sceneLM->GetCurrentPointLights());
+	PRINT_TRACE("s{0}", sceneLM->GetCurrentSpotLights());
+
+	if (m_bDirectionalLightInScene)
 	{
+		PRINT_TRACE("Hi");
 		// There is a directionalLight in scene so show button and act on button presses
-		ImGui::Checkbox("DirectionalLight", &m_directionalLightActiveButton);
+		ImGui::Checkbox("DirectionalLight", &m_bDirectionalLightActiveButton);
 
 		// Set the active state of the DirectionalLight depending on the check box status
-		sceneLM->GetDirectionalLight(0).lock()->m_bLightActive = m_directionalLightActiveButton ? true : false;
+		sceneLM->GetDirectionalLight(0).lock()->m_bLightActive = m_bDirectionalLightActiveButton ? true : false;
 
 	}
 
-	if (m_spotLightInScene)
+	if (m_bSpotLightInScene)
 	{
 		// There is a spotLight in scene so show button and act on button presses
-		ImGui::Checkbox("SpotLight", &m_spotLightActiveButton);
+		ImGui::Checkbox("SpotLight", &m_bSpotLightActiveButton);
 
 		// Set the active state of the SpotLight depending on the check box status
-		sceneLM->GetSpotLight(0).lock()->m_bLightActive = m_spotLightActiveButton ? true : false;
+		sceneLM->GetSpotLight(0).lock()->m_bLightActive = m_bSpotLightActiveButton ? true : false;
 	}
 
 	for (int i = 0; i < m_totalPointLights; i++)
 	{
-		if (m_pointLightInScene[i])
+		if (m_bPointLightInScene[i])
 		{
 			std::string nameTemp = "PointLight" + std::to_string(i);
-			ImGui::Checkbox(nameTemp.c_str(), &m_pointLightActiveButton[i]);
+			ImGui::Checkbox(nameTemp.c_str(), &m_bPointLightActiveButton[i]);
 
 			// Set the active state of the pointLight depending on the check box status
-			sceneLM->GetPointLight(i).lock()->m_bLightActive = m_pointLightActiveButton[i] ? true : false;
+			sceneLM->GetPointLight(i).lock()->m_bLightActive = m_bPointLightActiveButton[i] ? true : false;
 		}
 	}
 
@@ -240,13 +229,13 @@ void UI::PerformanceMetricsPanel()
 void UI::UpdateSceneInformation()
 {
 	// Get the new scene light manager
-	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle->GetSceneLightManager();
+	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle.lock()->GetSceneLightManager();
 
 	// Test whether there is a directionalLight in the scene
-	m_directionalLightInScene = sceneLM->GetCurrentDirectionalLights() > 0 ? true : false;
+	m_bDirectionalLightInScene = sceneLM->GetCurrentDirectionalLights() > 0 ? true : false;
 
 	// Test whether there is a spotLight in the scene
-	m_spotLightInScene = sceneLM->GetCurrentSpotLights() > 0 ? true : false;
+	m_bSpotLightInScene = sceneLM->GetCurrentSpotLights() > 0 ? true : false;
 
 	enum
 	{
@@ -258,8 +247,8 @@ void UI::UpdateSceneInformation()
 
 	// Test how many point lights are in the scene
 	m_totalPointLights = sceneLM->GetCurrentPointLights();
-	m_pointLightInScene[e_FirstPointLight] = m_totalPointLights >= 1 ? true : false;
-	m_pointLightInScene[e_SecondPointLight] = m_totalPointLights >= 2 ? true : false;
-	m_pointLightInScene[e_ThirdPointLight] = m_totalPointLights >= 3 ? true : false;
-	m_pointLightInScene[e_FourthPointLight] = m_totalPointLights >= 4 ? true : false;
+	m_bPointLightInScene[e_FirstPointLight] = m_totalPointLights >= 1 ? true : false;
+	m_bPointLightInScene[e_SecondPointLight] = m_totalPointLights >= 2 ? true : false;
+	m_bPointLightInScene[e_ThirdPointLight] = m_totalPointLights >= 3 ? true : false;
+	m_bPointLightInScene[e_FourthPointLight] = m_totalPointLights >= 4 ? true : false;
 }

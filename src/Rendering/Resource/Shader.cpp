@@ -203,9 +203,9 @@ void Shader::SetUniform(const std::string& uniformName, float value)
 /// <summary>
 /// Set a vector3 uniform value at uniformName
 /// </summary>
-void Shader::SetUniform(const std::string& uniformName, const glm::vec3& value)
+void Shader::SetUniform(const std::string& uniformName, const Vector3D& value)
 {
-	glCall(glUniform3f(GetUniformLocation(uniformName), value.x, value.y, value.z));
+	glCall(glUniform3f(GetUniformLocation(uniformName), value.GetX(), value.GetY(), value.GetZ()));
 }
 
 /// <summary>
