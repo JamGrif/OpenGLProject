@@ -2,23 +2,26 @@
 
 #include <glm/vec3.hpp>
 
+template <typename T>
+class MiniLightManager;
+
 struct LightLoaderParams
 {
-	glm::vec3 ambient{ 0.0f, 0.0f, 0.0f };
-	glm::vec3 diffuse{ 0.0f, 0.0f, 0.0f };
-	glm::vec3 specular{ 0.0f, 0.0f, 0.0f };
+	Vector3D ambient{ 0.0f, 0.0f, 0.0f };
+	Vector3D diffuse{ 0.0f, 0.0f, 0.0f };
+	Vector3D specular{ 0.0f, 0.0f, 0.0f };
 };
 
 struct PointLoaderParams
 	: public virtual LightLoaderParams
 {
-	glm::vec3 position{ 0.0f, 0.0f, 0.0f };
+	Vector3D position{ 0.0f, 0.0f, 0.0f };
 };
 
 struct DirectionalLoaderParams
 	: public virtual LightLoaderParams
 {
-	glm::vec3 direction{ 0.0f, 0.0f, 0.0f };
+	Vector3D direction{ 0.0f, 0.0f, 0.0f };
 };
 
 struct SpotLoaderParams
@@ -34,9 +37,9 @@ struct BaseLight
 	{
 	}
 
-	glm::vec3	m_ambient;
-	glm::vec3	m_diffuse;
-	glm::vec3	m_specular;
+	Vector3D	m_ambient{ 0,0,0 };
+	Vector3D	m_diffuse{ 0,0,0 };
+	Vector3D	m_specular{ 0,0,0 };
 
 	bool		m_bLightActive; // Toggles whether entities should take lighting information from this light or not
 
@@ -53,7 +56,7 @@ struct PointLight :
 		delete pParams;
 	}
 
-	glm::vec3	m_position;
+	Vector3D	m_position{ 0,0,0 };
 
 	// Point light attenuation
 	float		m_constant;
@@ -73,7 +76,7 @@ struct DirectionalLight :
 		delete pParams;
 	}
 
-	glm::vec3	m_direction;
+	Vector3D	m_direction{ 0,0,0 };
 
 protected:
 	DirectionalLight() {}
@@ -109,21 +112,21 @@ public:
 	~SceneLightManager();
 
 	// Directional Lights
-	void							SetDirectionalLight(float x, float y, float z, int index = 0);
+	void							SetDirectionalLight(Vector3D position, int index = 0);
 	void							AddDirectionalLight(DirectionalLoaderParams* pParams);
 	std::weak_ptr<DirectionalLight>	GetDirectionalLight(int index = 0) const;
 
 	inline unsigned int				GetCurrentDirectionalLights() const { return static_cast<unsigned int>(m_sceneDirectionalLights.size()); }
 
 	// Point Lights
-	void							SetPointLight(float x, float y, float z, int index = 0);
+	void							SetPointLight(Vector3D position, int index = 0);
 	void							AddPointLight(PointLoaderParams* pParams);
 	std::weak_ptr<PointLight>		GetPointLight(int index = 0) const;
 
 	inline unsigned int				GetCurrentPointLights() const { return static_cast<unsigned int>(m_scenePointLights.size()); }
 
 	// Spot Lights
-	void							SetSpotLight(float x, float y, float z, int index = 0);
+	void							SetSpotLight(Vector3D position, int index = 0);
 	void							AddSpotLight(SpotLoaderParams* pParams);
 	std::weak_ptr<SpotLight>		GetSpotLight(int index = 0) const;
 
@@ -142,5 +145,51 @@ private:
 	// Spot Lights
 	std::vector<std::shared_ptr<SpotLight>> m_sceneSpotLights;
 	const unsigned int				m_maxSpotLights;
+
+	MiniLightManager<DirectionalLight>* m_miniDirManager;
+};
+
+template <typename T>
+class MiniLightManager
+{
+public:
+	MiniLightManager() {}
+	~MiniLightManager() {}
+
+	template <typename P>
+	void AddLight(P* pParams)
+	{
+		// Ensure new Lights don't exceed the maximum amount allowed
+		if (m_sceneLights.size() < m_maxLights)
+		{
+			m_sceneLights.emplace_back(std::make_shared<T>(pParams));
+		}
+	}
+
+	std::weak_ptr<T>				GetLight(int index = 0)
+	{
+		// No directional lights exists
+		if (m_sceneLights.size() == 0)
+		{
+			return {};
+		}
+
+		// Ensure index number is valid
+		if (index <= m_sceneLights.size())
+		{
+			return m_sceneLights.at(index);
+		}
+
+		return {};
+	}
+
+	inline unsigned int				GetCurrentLights() const { return static_cast<unsigned int>(m_sceneLights.size()); }
+
+private:
+
+	std::vector<std::shared_ptr<T>> m_sceneLights;
+	unsigned int				m_maxLights = 1;
+
+
 };
 

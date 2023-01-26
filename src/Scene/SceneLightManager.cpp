@@ -10,6 +10,7 @@ SceneLightManager::SceneLightManager()
 	m_maxPointLights(DEFAULT_POINT_LIGHT_AMOUNT),
 	m_maxSpotLights(DEFAULT_SPOT_LIGHT_AMOUNT)
 {
+	m_miniDirManager = new MiniLightManager<DirectionalLight>;
 }
 
 SceneLightManager::~SceneLightManager()
@@ -19,13 +20,11 @@ SceneLightManager::~SceneLightManager()
 /// <summary>
 /// Sets the XYZ direction of a specified directional light
 /// </summary>
-void SceneLightManager::SetDirectionalLight(float x, float y, float z, int index)
+void SceneLightManager::SetDirectionalLight(Vector3D position, int index)
 {
 	if (m_sceneDirectionalLights.at(index))
 	{
-		m_sceneDirectionalLights.at(index)->m_direction.x = x;
-		m_sceneDirectionalLights.at(index)->m_direction.y = y;
-		m_sceneDirectionalLights.at(index)->m_direction.z = z;
+		m_sceneDirectionalLights.at(index)->m_direction = position;
 	}
 }
 
@@ -38,7 +37,7 @@ void SceneLightManager::AddDirectionalLight(DirectionalLoaderParams* pParams)
 	}
 	else
 	{
-		PRINT_WARN("LIGHTMANAGER-> Can't create new directional light with direction {0} , {1} , {2}", pParams->direction.x, pParams->direction.y, pParams->direction.z);
+		PRINT_WARN("LIGHTMANAGER-> Can't create new directional light with direction {0} , {1} , {2}", pParams->direction.GetX(), pParams->direction.GetY(), pParams->direction.GetZ());
 	}
 }
 
@@ -72,13 +71,11 @@ std::weak_ptr<DirectionalLight> SceneLightManager::GetDirectionalLight(int index
 /// <param name="y"></param>
 /// <param name="z"></param>
 /// <param name="index">Index of the light within the point light vector</param>
-void SceneLightManager::SetPointLight(float x, float y, float z, int index)
+void SceneLightManager::SetPointLight(Vector3D position, int index)
 {
 	if (m_scenePointLights.at(index))
 	{
-		m_scenePointLights.at(index)->m_position.x = x;
-		m_scenePointLights.at(index)->m_position.y = y;
-		m_scenePointLights.at(index)->m_position.z = z;
+		m_scenePointLights.at(index)->m_position = position;
 	}
 }
 
@@ -92,7 +89,7 @@ void SceneLightManager::AddPointLight(PointLoaderParams* pParams)
 	}
 	else
 	{
-		PRINT_WARN("LIGHTMANAGER-> Can't create new point light with direction {0} , {1} , {2}", pParams->position.x, pParams->position.y, pParams->position.z);
+		PRINT_WARN("LIGHTMANAGER-> Can't create new point light with direction {0} , {1} , {2}", pParams->position.GetX(), pParams->position.GetY(), pParams->position.GetZ());
 	}
 }
 
@@ -118,13 +115,12 @@ std::weak_ptr<PointLight> SceneLightManager::GetPointLight(int index) const
 
 /// <summary>
 /// Set the position of a specified spot light
-void SceneLightManager::SetSpotLight(float x, float y, float z, int index)
+/// </summary>
+void SceneLightManager::SetSpotLight(Vector3D position, int index)
 {
 	if (m_sceneSpotLights.at(index))
 	{
-		m_sceneSpotLights.at(index)->m_position.x = x;
-		m_sceneSpotLights.at(index)->m_position.y = y;
-		m_sceneSpotLights.at(index)->m_position.z = z;
+		m_sceneSpotLights.at(index)->m_position = position;
 	}
 }
 
@@ -138,7 +134,7 @@ void SceneLightManager::AddSpotLight(SpotLoaderParams* pParams)
 	}
 	else
 	{
-		PRINT_WARN("LIGHTMANAGER-> Can't create spot light at {0} , {1} , {2}", pParams->position.x, pParams->position.y, pParams->position.z);
+		PRINT_WARN("LIGHTMANAGER-> Can't create spot light at {0} , {1} , {2}", pParams->position.GetX(), pParams->position.GetY(), pParams->position.GetZ());
 	}
 }
 
@@ -161,8 +157,3 @@ std::weak_ptr<SpotLight> SceneLightManager::GetSpotLight(int index) const
 
 	return {};
 }
-
-
-
-
-

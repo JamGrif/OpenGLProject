@@ -13,7 +13,7 @@ public:
 
 	void			SetUniform(const std::string& uniformName, int value);
 	void			SetUniform(const std::string& uniformName, float value);
-	void			SetUniform(const std::string& uniformName, const glm::vec3& value);
+	void			SetUniform(const std::string& uniformName, const Vector3D& value);
 	void			SetUniform(const std::string& uniformName, const glm::vec4& value);
 	void			SetUniform(const std::string& uniformName, const glm::mat3& value);
 	void			SetUniform(const std::string& uniformName, const glm::mat4& value);
