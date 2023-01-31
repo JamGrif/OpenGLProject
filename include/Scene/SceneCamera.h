@@ -15,8 +15,8 @@ enum class CameraMovement
 class SceneCamera
 {
 public:
-	SceneCamera(glm::vec3 position = glm::vec3(0.0f, 2.0f, 0.0f));
-    ~SceneCamera();
+	SceneCamera(Vector3D position = Vector3D(0.0f, 2.0f, 0.0f));
+	~SceneCamera();
 
     void				Update();
 

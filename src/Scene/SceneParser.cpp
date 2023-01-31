@@ -67,8 +67,7 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 		}
 	}
 
-	const auto processor_count = std::thread::hardware_concurrency();
-	PRINT_TRACE("number of threads {0}", processor_count);
+	//PRINT_TRACE("number of threads {0}", std::thread::hardware_concurrency());
 
 	// Parse all the assets used in scene
 	PerformanceTimer parseTimer("Asset Parsing");
@@ -90,7 +89,7 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 	// Add the cubemap that the Skybox will use
 	CubemapManager::Get()->AddResource(m_tempSkyCubemapID);
 
-	parseTimer.stop();
+	parseTimer.Stop();
 
 	// Create all assets used in scene
 	PerformanceTimer creationTimer("Asset Creation");
@@ -99,7 +98,7 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 	MeshManager::Get()->CreateAllResources();
 	CubemapManager::Get()->CreateAllResources();
 
-	creationTimer.stop();
+	creationTimer.Stop();
 
 	return true;
 }
@@ -184,61 +183,47 @@ void SceneParser::ParseLightsNode(const TiXmlElement* pLightsRoot, std::shared_p
 		std::string_view type = lightNode->Attribute("type");
 		if (type == "direction")
 		{
-			DirectionalLoaderParams* tempParams = new DirectionalLoaderParams;
+			//DirectionalLoaderParams* tempParams = new DirectionalLoaderParams;
+
+			std::shared_ptr<DirectionalLoaderParams> tempParams = std::make_shared<DirectionalLoaderParams>();
 
 			ParseBaseLight(lightNode, tempParams);
 
-			float a, b, c;
-
-			lightNode->QueryFloatAttribute("dirX", &a);
-			lightNode->QueryFloatAttribute("dirY", &b);
-			lightNode->QueryFloatAttribute("dirZ", &c);
-
-			Vector3D temp{ a,b,c };
-
-			tempParams->direction = temp;
+			lightNode->QueryFloatAttribute("dirX", &tempParams->direction.SetX());
+			lightNode->QueryFloatAttribute("dirY", &tempParams->direction.SetY());
+			lightNode->QueryFloatAttribute("dirZ", &tempParams->direction.SetZ());
 
 			sceneLightManager->AddDirectionalLight(tempParams);
 		}
 		else if (type == "point")
 		{
-			PointLoaderParams* tempParams = new PointLoaderParams;
+			//PointLoaderParams* tempParams = new PointLoaderParams;
+
+			std::shared_ptr<PointLoaderParams> tempParams = std::make_shared<PointLoaderParams>();
 
 			ParseBaseLight(lightNode, tempParams);
 
-			float a, b, c;
+			lightNode->QueryFloatAttribute("posX", &tempParams->position.SetX());
+			lightNode->QueryFloatAttribute("posY", &tempParams->position.SetY());
+			lightNode->QueryFloatAttribute("posZ", &tempParams->position.SetZ());
 
-			lightNode->QueryFloatAttribute("posX", &a);
-			lightNode->QueryFloatAttribute("posY", &b);
-			lightNode->QueryFloatAttribute("posZ", &c);
-
-			Vector3D temp{ a,b,c };
-
-			tempParams->position = temp;
-			
 			sceneLightManager->AddPointLight(tempParams);
 		}
 		else if (type == "spot")
 		{
-			SpotLoaderParams* tempParams = new SpotLoaderParams;
+			//SpotLoaderParams* tempParams = new SpotLoaderParams;
+
+			std::shared_ptr<SpotLoaderParams> tempParams = std::make_shared<SpotLoaderParams>();
 
 			ParseBaseLight(lightNode, tempParams);
 
-			float a, b, c, d, e, f;
+			lightNode->QueryFloatAttribute("posX", &tempParams->position.SetX());
+			lightNode->QueryFloatAttribute("posY", &tempParams->position.SetY());
+			lightNode->QueryFloatAttribute("posZ", &tempParams->position.SetZ());
 
-			lightNode->QueryFloatAttribute("posX", &a);
-			lightNode->QueryFloatAttribute("posY", &b);
-			lightNode->QueryFloatAttribute("posZ", &c);
-
-			lightNode->QueryFloatAttribute("dirX", &d);
-			lightNode->QueryFloatAttribute("dirY", &e);
-			lightNode->QueryFloatAttribute("dirZ", &f);
-
-			Vector3D temp1{ a,b,c };
-			Vector3D temp2{ d,e,f };
-
-			tempParams->position = temp1;
-			tempParams->direction = temp2;
+			lightNode->QueryFloatAttribute("dirX", &tempParams->direction.SetX());
+			lightNode->QueryFloatAttribute("dirY", &tempParams->direction.SetY());
+			lightNode->QueryFloatAttribute("dirZ", &tempParams->direction.SetZ());
 
 			sceneLightManager->AddSpotLight(tempParams);
 		}
@@ -285,30 +270,17 @@ void SceneParser::ParseModelsNode(const TiXmlElement* pModelRoot, SceneModels& s
 /// <summary>
 /// Fill out the base light loading parameters - all lights share these common values
 /// </summary>
-void SceneParser::ParseBaseLight(const TiXmlElement* lightNode, LightLoaderParams* pParams)
+void SceneParser::ParseBaseLight(const TiXmlElement* lightNode, std::shared_ptr<LightLoaderParams> pParams)
 {
+	lightNode->QueryFloatAttribute("ambR", &pParams->ambient.SetX());
+	lightNode->QueryFloatAttribute("ambG", &pParams->ambient.SetY());
+	lightNode->QueryFloatAttribute("ambB", &pParams->ambient.SetZ());
 
-	float a, b, c, d, e, f, g, h, i;
-	
-	lightNode->QueryFloatAttribute("ambR", &a);
-	lightNode->QueryFloatAttribute("ambG", &b);
-	lightNode->QueryFloatAttribute("ambB", &c);
+	lightNode->QueryFloatAttribute("difR", &pParams->diffuse.SetX());
+	lightNode->QueryFloatAttribute("difG", &pParams->diffuse.SetY());
+	lightNode->QueryFloatAttribute("difB", &pParams->diffuse.SetZ());
 
-	lightNode->QueryFloatAttribute("difR", &d);
-	lightNode->QueryFloatAttribute("difG", &e);
-	lightNode->QueryFloatAttribute("difB", &f);
-
-	lightNode->QueryFloatAttribute("speR", &g);
-	lightNode->QueryFloatAttribute("speG", &h);
-	lightNode->QueryFloatAttribute("speB", &i);
-
-
-	Vector3D temp1{ a,b,c };
-	Vector3D temp2{ d,e,f };
-	Vector3D temp3{ g,h,i };
-
-	pParams->ambient = temp1;
-	pParams->diffuse = temp2;
-	pParams->specular = temp3;
-
+	lightNode->QueryFloatAttribute("speR", &pParams->specular.SetX());
+	lightNode->QueryFloatAttribute("speG", &pParams->specular.SetY());
+	lightNode->QueryFloatAttribute("speB", &pParams->specular.SetZ());
 }

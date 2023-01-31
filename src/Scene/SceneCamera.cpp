@@ -11,8 +11,9 @@ constexpr float Default_PITCH = 0.0f;
 constexpr float Default_SPEED = 14.0f;
 constexpr float Default_SENSITIVTY = 0.25f;
 
-SceneCamera::SceneCamera(glm::vec3 position)
-    : m_position(position), m_front(0.0f, 0.0f, -1.0f), m_up(0.0f,1.0f,0.0f), m_right(0.0f,0.0f,0.0f), m_worldUp(m_up), m_lookAt(1.0f),
+SceneCamera::SceneCamera(Vector3D position)
+	: m_position(glm::vec3(position.GetX(), position.GetY(), position.GetZ())),
+	m_front(0.0f, 0.0f, -1.0f), m_up(0.0f, 1.0f, 0.0f), m_right(0.0f, 0.0f, 0.0f), m_worldUp(m_up), m_lookAt(1.0f),
 	m_yaw(Default_YAW), m_pitch(Default_PITCH), m_movementSpeed(Default_SPEED), m_mouseSensitivity(Default_SENSITIVTY), m_bCameraMoved(false)
 {
 	// Initialize default values
@@ -31,24 +32,24 @@ void SceneCamera::Update()
 {
 	m_bCameraMoved = false;
 
-	if (InputHandler::Instance()->GetKeyPressed(Keyboard::W))
+	if (InputHandler::Get()->GetKeyPressed(Keyboard::W))
 		ProcessKeyboard(CameraMovement::FORWARD);
-	if (InputHandler::Instance()->GetKeyPressed(Keyboard::S))
+	if (InputHandler::Get()->GetKeyPressed(Keyboard::S))
 		ProcessKeyboard(CameraMovement::BACKWARD);
-	if (InputHandler::Instance()->GetKeyPressed(Keyboard::A))
+	if (InputHandler::Get()->GetKeyPressed(Keyboard::A))
 		ProcessKeyboard(CameraMovement::LEFT);
-	if (InputHandler::Instance()->GetKeyPressed(Keyboard::D))
+	if (InputHandler::Get()->GetKeyPressed(Keyboard::D))
 		ProcessKeyboard(CameraMovement::RIGHT);
 
-    if (InputHandler::Instance()->GetKeyPressed(Keyboard::R))
+    if (InputHandler::Get()->GetKeyPressed(Keyboard::R))
 		PRINT_TRACE("Position x - {0}, Position y - {1}, Position z - {2}", m_position.x, m_position.y, m_position.z);
     
 	// Only check for mouse movement if cursor is disabled
-	if (!InputHandler::Instance()->GetMouseEnabled())
+	if (!InputHandler::Get()->GetMouseEnabled())
 	{
 		// Get mouse movement
 		double x, y;
-		InputHandler::Instance()->GetMouseMoved(x, y);
+		InputHandler::Get()->GetMouseMoved(x, y);
 
 		// Only process mouse movement if mouse has been moved
 		if (x != 0 || y != 0)
@@ -77,7 +78,7 @@ void SceneCamera::SetPosition(const glm::vec3& newPos)
 void SceneCamera::ProcessKeyboard(CameraMovement direction)
 {
 	m_bCameraMoved = true;
-	float velocity = m_movementSpeed * static_cast<float>(ApplicationClock::GetDeltaTime());
+	float velocity = m_movementSpeed * static_cast<float>(ApplicationClock::Get()->GetDeltaTime());
 
     // Multiple if statements to allow multiple keys pressed down
     if (direction == CameraMovement::FORWARD)
@@ -103,11 +104,12 @@ void SceneCamera::ProcessMouse(float xOffset, float yOffset)
 	// Clamp speed
 	if (xOffset > 100)
 		xOffset = 100;
+	else if (xOffset < -100)
+		xOffset = -100;
+
 	if (yOffset > 100)
 		yOffset = 100;
-	if (xOffset < -100)
-		xOffset = -100;
-	if (yOffset < -100)
+	else if (yOffset < -100)
 		yOffset = -100;
 	
 	// Ensure mouse only moves by the sensitivity

@@ -13,7 +13,7 @@ static const char* NULL_TEXTURE = "null";
 Material::Material(const MaterialLoaderParams& pParams)
 	:m_shaderID("lightingShader"),
 	m_textureMapUsing{ false, false, false, false, false },
-	m_pAppProjectionMatrix(OpenGLRenderer::Instance()->GetProjectionMatrix())
+	m_pAppProjectionMatrix(OpenGLRenderer::Get()->GetProjectionMatrix())
 {
 	// Go through MaterialLoaderParams and set each texture type that is used
 	for (int i = static_cast<int>(TextureType::START_OF_TEXTURETYPE); i != static_cast<int>(TextureType::END_OF_TEXTURETYPE); i++)
@@ -83,8 +83,8 @@ void Material::BindMaterial(const glm::mat4& modelMat)
 	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("material.heightAmount", m_heightMapHeight);
 
 	// Camera Position
-	Vector3D temp{ tempSceneCamera->GetPosition().x, tempSceneCamera->GetPosition().y, tempSceneCamera->GetPosition().z };
-	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("viewPos", temp);
+	const Vector3D cameraPosition{ tempSceneCamera->GetPosition().x, tempSceneCamera->GetPosition().y, tempSceneCamera->GetPosition().z };
+	ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("viewPos", cameraPosition);
 
 	// Apply directional light values to shader
 	if (tempLightManager->GetCurrentDirectionalLights() > 0) // Ensure a directional light exists
@@ -122,15 +122,14 @@ void Material::BindMaterial(const glm::mat4& modelMat)
 	if (tempLightManager->GetCurrentSpotLights() > 0) // Ensure a spot light exists
 	{
 		std::shared_ptr<SpotLight> tempSpotLight = tempLightManager->GetSpotLight(0).lock();
+		Vector3D cameraFront{ tempSceneCamera->GetFront().x, tempSceneCamera->GetFront().y, tempSceneCamera->GetFront().z };
 
 		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.ambient", tempSpotLight->m_ambient);
 		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.diffuse", tempSpotLight->m_diffuse);
 		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.specular", tempSpotLight->m_specular);
 
-		Vector3D tempPos{ tempSceneCamera->GetPosition().x, tempSceneCamera->GetPosition().y, tempSceneCamera->GetPosition().z };
-		Vector3D tempFront{ tempSceneCamera->GetFront().x, tempSceneCamera->GetFront().y, tempSceneCamera->GetFront().z };
-		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.position", tempPos);
-		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.direction", tempFront);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.position", cameraPosition);
+		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.direction", cameraFront);
 
 		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.cutOff", glm::cos(glm::radians(tempSpotLight->m_cutOff)));
 		ShaderManager::Get()->GetResourceAtID(m_shaderID)->SetUniform("sLight.outerCutOff", glm::cos(glm::radians(tempSpotLight->m_outerCutOff)));
@@ -148,7 +147,7 @@ void Material::BindMaterial(const glm::mat4& modelMat)
 /// </summary>
 void Material::UnbindMaterial()
 {
-	// Bind each available texture
+	// Unbind each available texture
 	for (int i = static_cast<int>(TextureType::START_OF_TEXTURETYPE); i != static_cast<int>(TextureType::END_OF_TEXTURETYPE); i++)
 	{
 		if (m_textureMapUsing[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i])
@@ -158,7 +157,9 @@ void Material::UnbindMaterial()
 	ShaderManager::Get()->UnbindResourceAtID(m_shaderID);
 }
 
-
+/// <summary>
+/// Sets the scene specific pointers of the materials
+/// </summary>
 void Material::SetScenePointers(std::weak_ptr<SceneLightManager> pSceneLightManager, std::weak_ptr<SceneCamera> pSceneCamera)
 {
 	m_pSceneLightManager = pSceneLightManager;

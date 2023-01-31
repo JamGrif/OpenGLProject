@@ -10,6 +10,7 @@ Vector3D::Vector3D(float x, float y, float z)
 
 float Vector3D::Length()
 {
+	// Calculate Pythagoras Theorem
 	return static_cast<float>(sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z)));
 }
 

@@ -4,7 +4,7 @@
 
 /// <summary>
 /// Represents a vector in 3D space
-/// X, Y and Zaxis
+/// X, Y and Z axis
 /// </summary>
 class Vector3D
 {
@@ -16,10 +16,14 @@ public:
 	float		GetZ() const { return m_z; }
 
 	void		SetX(float x) { m_x = x; }
-	void		SetY(float y) { m_y = y; }
-	void		SetZ(float z) { m_z = z; }
+	float&		SetX() { return m_x; }
 
-	// Pythagoras Theorem
+	void		SetY(float y) { m_y = y; }
+	float&		SetY() { return m_y; }
+
+	void		SetZ(float z) { m_z = z; }
+	float&		SetZ() { return m_z; }
+
 	float		Length();
 
 	// Add together two vectors to return a new one
@@ -34,14 +38,6 @@ public:
 
 		return v1;
 	}
-
-	/*
-		With these two functions you can add two vectors together using standard addition operators:
-		Vector2D v1(10, 11);
-		Vector2D v2(35, 25);
-		v1 += v2;
-		Vector2D v3 = v1 + v2;
-	*/
 
 	// Multiply vector by a scalar number
 	Vector3D	operator* (float scalar);
