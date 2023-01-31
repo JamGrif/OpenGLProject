@@ -14,32 +14,32 @@ public:
 	bool		Init(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen);
 	bool		Clean();
 
-	GLFWwindow* GetWindowPtr() const;
+	GLFWwindow* GetGLFWWindow() const { return m_pWindow; }
 
 	bool		ShouldClose() const;
 
 	void		SetWindowIcon(const std::string& iconPath) const;
 	void		SetWindowTitle(const std::string& newTitle) const;
 
-	int			GetWindowWidth() const;
-	int			GetWindowHeight() const;
-	float		GetAspectRatio() const;
+	int			GetWindowWidth() const { return m_currentWindowWidth; }
+	int			GetWindowHeight() const { return m_currentWindowHeight; }
+	float		GetAspectRatio() const { return m_aspectRatio; }
 
-	static OpenGLWindow* Instance()
+	static OpenGLWindow* Get() // Get instance
 	{
 		static OpenGLWindow* s_pInstance = new OpenGLWindow;
 		return s_pInstance;
 	}
 
 private:
-	OpenGLWindow() :m_currentWindowWidth(0), m_currentWindowHeight(0), m_aspectRatio(0), m_window(nullptr) {};
-	~OpenGLWindow() {};
+	OpenGLWindow() :m_currentWindowWidth(0), m_currentWindowHeight(0), m_aspectRatio(0), m_pWindow(nullptr) {}
+	~OpenGLWindow() {}
 
 	uint32_t	m_currentWindowWidth;
 	uint32_t	m_currentWindowHeight;
 	float		m_aspectRatio;
 
-	GLFWwindow* m_window;
+	GLFWwindow* m_pWindow;
 
 };
 typedef OpenGLWindow TheOpenGLWindow;

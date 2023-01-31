@@ -8,7 +8,7 @@
 
 OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 	:m_FBO(0), m_frameColourTexture(0), m_RBO(0), m_quadVBO(0), m_screenFilter(ScreenFilter::Default),
-	m_screenWidth(TheOpenGLWindow::Instance()->GetWindowWidth()), m_screenHeight(TheOpenGLWindow::Instance()->GetWindowHeight())
+	m_screenWidth(TheOpenGLWindow::Get()->GetWindowWidth()), m_screenHeight(TheOpenGLWindow::Get()->GetWindowHeight())
 {
 	glCall(glGenFramebuffers(1, &m_FBO));
 	glCall(glGenRenderbuffers(1, &m_RBO));

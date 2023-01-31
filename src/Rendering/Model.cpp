@@ -16,7 +16,7 @@ Model::Model(const ModelLoaderParams& pParams)
 	m_rotation(pParams.rotX, pParams.rotY, pParams.rotZ),
 	m_scale(pParams.scaleX, pParams.scaleY, pParams.scaleZ),
 	m_mMat{ 1.0f }, m_vMat{ 1.0f }, m_tMat{ 1.0f }, m_rMat{ 1.0f }, m_sMat{ 1.0f },
-	m_programProjectionMatrix(TheOpenGLRenderer::Instance()->GetProjectionMatrix())
+	m_programProjectionMatrix(TheOpenGLRenderer::Get()->GetProjectionMatrix())
 {
 }
 
@@ -42,7 +42,7 @@ void Model::DrawModel()
 	MeshManager::Get()->BindResourceAtID(m_meshID);
 	
 	// Draw ----
-	TheOpenGLRenderer::Instance()->Draw(MeshManager::Get()->GetResourceAtID(m_meshID)->GetIndicesCount());
+	TheOpenGLRenderer::Get()->Draw(MeshManager::Get()->GetResourceAtID(m_meshID)->GetIndicesCount());
 
 	// Unbind material and mesh
 	MeshManager::Get()->UnbindResourceAtID(m_meshID);

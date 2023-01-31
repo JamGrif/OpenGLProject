@@ -23,10 +23,10 @@ bool	InputHandler::m_mouseEnabled = false;
 /// </summary>
 void InputHandler::Init()
 {
-	glfwSetKeyCallback(TheOpenGLWindow::Instance()->GetWindowPtr(), KEYCALLBACK);
-	glfwSetCursorPosCallback(TheOpenGLWindow::Instance()->GetWindowPtr(), MOUSECALLBACK);
+	glfwSetKeyCallback(TheOpenGLWindow::Get()->GetGLFWWindow(), KEYCALLBACK);
+	glfwSetCursorPosCallback(TheOpenGLWindow::Get()->GetGLFWWindow(), MOUSECALLBACK);
 
-	glfwSetInputMode(TheOpenGLWindow::Instance()->GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(TheOpenGLWindow::Get()->GetGLFWWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 /// <summary>
@@ -109,8 +109,8 @@ void InputHandler::EnableMouse()
 
     m_mouseEnabled = true;
 
-	glfwSetInputMode(TheOpenGLWindow::Instance()->GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	glfwSetCursorPos(TheOpenGLWindow::Instance()->GetWindowPtr(), TheOpenGLWindow::Instance()->GetWindowWidth() / 2, TheOpenGLWindow::Instance()->GetWindowHeight() / 2);
+	glfwSetInputMode(TheOpenGLWindow::Get()->GetGLFWWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetCursorPos(TheOpenGLWindow::Get()->GetGLFWWindow(), TheOpenGLWindow::Get()->GetWindowWidth() / 2, TheOpenGLWindow::Get()->GetWindowHeight() / 2);
 
 	// Reset any lingering mouse movement
 	m_xOffset = 0;
@@ -127,7 +127,7 @@ void InputHandler::DisableMouse()
 
     m_mouseEnabled = false;
 
-    glfwSetInputMode(TheOpenGLWindow::Instance()->GetWindowPtr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(TheOpenGLWindow::Get()->GetGLFWWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// Reset any lingering mouse movement
 	m_xOffset = 0;

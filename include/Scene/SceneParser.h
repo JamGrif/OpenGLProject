@@ -33,7 +33,7 @@ private:
 	void ParseFirstHalfMaterials();
 	void ParseSecondHalfMaterials();
 
-	void ParseBaseLight(const TiXmlElement* lightNode, LightLoaderParams* pParams);
+	void ParseBaseLight(const TiXmlElement* lightNode, std::shared_ptr<LightLoaderParams> pParams);
 
 	PendingMaterialPool m_firstMatMap;
 	PendingMaterialPool m_secondMatMap;

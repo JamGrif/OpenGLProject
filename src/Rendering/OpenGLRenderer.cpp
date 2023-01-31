@@ -28,7 +28,7 @@ bool OpenGLRenderer::Init()
 		return false;
 	}
 
-	TheOpenGLWindow::Instance()->Init(1920, 1080, "OpenGL - Jamie", false);
+	TheOpenGLWindow::Get()->Init(1920, 1080, "OpenGL - Jamie", false);
 
 	// GLEW
 	glewExperimental = GL_TRUE;
@@ -59,15 +59,15 @@ bool OpenGLRenderer::Init()
 	glCall(glEnable(GL_MULTISAMPLE));
 
 	// Build applications projection matrix
-	m_projMatrix = glm::perspective(glm::radians(75.0f), TheOpenGLWindow::Instance()->GetAspectRatio(), 0.01f, 1000.0f);
+	m_projMatrix = glm::perspective(glm::radians(75.0f), TheOpenGLWindow::Get()->GetAspectRatio(), 0.01f, 1000.0f);
 
 	// Build applications VAO
 	glCall(glGenVertexArrays(1, &m_appVAO));
 	glCall(glBindVertexArray(m_appVAO));
 
 	// Create the apps Frame buffers
-	m_sceneFilterFramebuffer = std::make_unique<OpenGLFramebuffer>(false);
-	m_sceneMSAAFrameBuffer = std::make_unique<OpenGLFramebuffer>(true);
+	m_pSceneFilterFramebuffer = std::make_unique<OpenGLFramebuffer>(false);
+	m_pSceneMSAAFrameBuffer = std::make_unique<OpenGLFramebuffer>(true);
 
 	return true;
 }
@@ -89,25 +89,25 @@ void OpenGLRenderer::StartOfFrame() const
 	glCall(glfwPollEvents());
 
 	// Bind MSAA for object drawing
-	if (m_sceneMSAAFrameBuffer)
-		m_sceneMSAAFrameBuffer->BindFramebuffer();
+	if (m_pSceneMSAAFrameBuffer)
+		m_pSceneMSAAFrameBuffer->BindFramebuffer();
 }
 
 void OpenGLRenderer::EndOfFrame() const
 {
 	// Reads from the MSAA buffer and writes it to the Filter buffer
-	if (m_sceneMSAAFrameBuffer && m_sceneFilterFramebuffer)
+	if (m_pSceneMSAAFrameBuffer && m_pSceneFilterFramebuffer)
 	{
-		m_sceneMSAAFrameBuffer->BindReadFramebuffer();
-		m_sceneFilterFramebuffer->BindWriteFramebuffer();
-		m_sceneMSAAFrameBuffer->CopyToFramebuffer();
-		m_sceneMSAAFrameBuffer->UnbindFramebuffer();
+		m_pSceneMSAAFrameBuffer->BindReadFramebuffer();
+		m_pSceneFilterFramebuffer->BindWriteFramebuffer();
+		m_pSceneMSAAFrameBuffer->CopyToFramebuffer();
+		m_pSceneMSAAFrameBuffer->UnbindFramebuffer();
 
 		// Draw screen filter to buffer
-		m_sceneFilterFramebuffer->Draw();
+		m_pSceneFilterFramebuffer->Draw();
 	}
 
-	glCall(glfwSwapBuffers(TheOpenGLWindow::Instance()->GetWindowPtr()));
+	glCall(glfwSwapBuffers(TheOpenGLWindow::Get()->GetGLFWWindow()));
 }
 
 /// <summary>
@@ -138,19 +138,19 @@ void OpenGLRenderer::SetScreenFilter(ScreenFilter newFilter)
 	switch (newFilter)
 	{
 	case ScreenFilter::Default:
-		m_sceneFilterFramebuffer->SetFrameFilter(ScreenFilter::Default);
+		m_pSceneFilterFramebuffer->SetFrameFilter(ScreenFilter::Default);
 		break;
 	case ScreenFilter::Inverse:
-		m_sceneFilterFramebuffer->SetFrameFilter(ScreenFilter::Inverse);
+		m_pSceneFilterFramebuffer->SetFrameFilter(ScreenFilter::Inverse);
 		break;
 	case ScreenFilter::Greyscale:
-		m_sceneFilterFramebuffer->SetFrameFilter(ScreenFilter::Greyscale);
+		m_pSceneFilterFramebuffer->SetFrameFilter(ScreenFilter::Greyscale);
 		break;
 	case ScreenFilter::EdgeDetection:
-		m_sceneFilterFramebuffer->SetFrameFilter(ScreenFilter::EdgeDetection);
+		m_pSceneFilterFramebuffer->SetFrameFilter(ScreenFilter::EdgeDetection);
 		break;
 	case ScreenFilter::Weird:
-		m_sceneFilterFramebuffer->SetFrameFilter(ScreenFilter::Weird);
+		m_pSceneFilterFramebuffer->SetFrameFilter(ScreenFilter::Weird);
 		break;
 	default:
 		PRINT_WARN("Specified filterNumber is out of range:{0}", static_cast<int>(newFilter));

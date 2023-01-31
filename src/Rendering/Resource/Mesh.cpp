@@ -34,11 +34,9 @@ struct Vertex
 	glm::vec3 Bitangent;
 };
 
-
 Mesh::Mesh()
-	:IResource(), m_meshEBO(-1)
+	:IResource(), m_meshEBO(NO_BUFFER)
 {
-	PRINT_INFO("mesh created");
 }
 
 Mesh::~Mesh()
@@ -49,8 +47,6 @@ Mesh::~Mesh()
 
 	glCall(glDeleteBuffers(1, &m_OpenGLResourceID));
 	glCall(glDeleteBuffers(1, &m_meshEBO));
-
-	PRINT_WARN("mesh deleted");
 }
 
 /// <summary>

@@ -20,7 +20,7 @@ public:
 	void		DisableMouse();
 	bool		GetMouseEnabled() { return m_mouseEnabled; }
 
-	static InputHandler* Instance()
+	static InputHandler* Get()
 	{
 		static InputHandler* s_pInstance = new InputHandler;
 		return s_pInstance;

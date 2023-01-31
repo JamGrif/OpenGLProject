@@ -8,7 +8,7 @@
 #include "Scene/SceneCamera.h"
 
 SceneSky::SceneSky(const std::string& cubemapID)
-	:m_cubemapID(cubemapID), m_shaderID("skyShader"), m_projectionMatrix(TheOpenGLRenderer::Instance()->GetProjectionMatrix())
+	:m_cubemapID(cubemapID), m_shaderID("skyShader"), m_projectionMatrix(TheOpenGLRenderer::Get()->GetProjectionMatrix())
 {
 	ShaderManager::Get()->AddResource(m_shaderID, "res/shaders/sky-vertex.glsl", "res/shaders/sky-fragment.glsl");
 	//TheCubemapManager::Instance()->addCubemap(cubemapID);
@@ -44,7 +44,7 @@ void SceneSky::DrawSky()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	
 	// Draw
-	TheOpenGLRenderer::Instance()->DrawCubemap(36);
+	TheOpenGLRenderer::Get()->DrawCubemap(36);
 
 	// Post-draw cleanup
 	ShaderManager::Get()->UnbindResourceAtID(m_shaderID);

@@ -102,7 +102,6 @@ void Texture::Create()
 
 void Texture::Reset()
 {
-
 }
 
 /// <summary>

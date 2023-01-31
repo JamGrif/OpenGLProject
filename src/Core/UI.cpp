@@ -15,9 +15,9 @@
 #include <iostream>
 
 // Flags for each ImGui window used
-static constexpr ImGuiWindowFlags commonResizeFlags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
-static constexpr ImGuiWindowFlags commonFlags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
-static constexpr ImGuiWindowFlags debugFlags = ImGuiWindowFlags_NoCollapse;
+static constexpr ImGuiWindowFlags COMMON_RESIZE_FLAGS = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
+static constexpr ImGuiWindowFlags COMMON_FLAGS = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
+static constexpr ImGuiWindowFlags DEBUG_FLAGS = ImGuiWindowFlags_NoCollapse;
 
 UI::UI(bool uiVisible)
 	:m_uiVisible(uiVisible),
@@ -29,7 +29,7 @@ UI::UI(bool uiVisible)
 	PRINT_TRACE("UI Initialized");
 
 	// Set initial mouse visibility
-	m_uiVisible ? InputHandler::Instance()->EnableMouse() : InputHandler::Instance()->DisableMouse();
+	m_uiVisible ? InputHandler::Get()->EnableMouse() : InputHandler::Get()->DisableMouse();
 
 	// Create the imgui context
 	ImGui::CreateContext();
@@ -43,7 +43,7 @@ UI::UI(bool uiVisible)
 	style.ScrollbarRounding = 9.0f;
 
 	// Connect ImGui to GLFW window
-	ImGui_ImplGlfw_InitForOpenGL(TheOpenGLWindow::Instance()->GetWindowPtr(), true);
+	ImGui_ImplGlfw_InitForOpenGL(TheOpenGLWindow::Get()->GetGLFWWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 460");
 
 	// Set ImGui colour style
@@ -86,7 +86,7 @@ void UI::ToggleUI()
 	m_uiVisible = !m_uiVisible;
 
 	// Toggle mouse depending on UI visibility
-	m_uiVisible ? InputHandler::Instance()->EnableMouse() : InputHandler::Instance()->DisableMouse();
+	m_uiVisible ? InputHandler::Get()->EnableMouse() : InputHandler::Get()->DisableMouse();
 }
 
 /// <summary>
@@ -107,7 +107,7 @@ void UI::SceneOptionsPanel()
 	// Reset variable
 	m_currentSceneName = SceneName::UNSET_SCENE;
 
-	ImGui::Begin("Scene Options:", NULL, commonFlags);
+	ImGui::Begin("Scene Options:", NULL, COMMON_FLAGS);
 
 	ImGui::Text("Change Scene:");
 	if (ImGui::Button("FMPscene.txt"))
@@ -129,13 +129,12 @@ void UI::SceneOptionsPanel()
 
 	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle.lock()->GetSceneLightManager();
 
-	PRINT_TRACE("d{0}", sceneLM->GetCurrentDirectionalLights());
-	PRINT_TRACE("p{0}", sceneLM->GetCurrentPointLights());
-	PRINT_TRACE("s{0}", sceneLM->GetCurrentSpotLights());
+	//PRINT_TRACE("d{0}", sceneLM->GetCurrentDirectionalLights());
+	//PRINT_TRACE("p{0}", sceneLM->GetCurrentPointLights());
+	//PRINT_TRACE("s{0}", sceneLM->GetCurrentSpotLights());
 
 	if (m_bDirectionalLightInScene)
 	{
-		PRINT_TRACE("Hi");
 		// There is a directionalLight in scene so show button and act on button presses
 		ImGui::Checkbox("DirectionalLight", &m_bDirectionalLightActiveButton);
 
@@ -171,23 +170,23 @@ void UI::SceneOptionsPanel()
 	ImGui::Text("Change Post-Processing Filter:");
 	if (ImGui::Button("Normal"))
 	{
-		TheOpenGLRenderer::Instance()->SetScreenFilter(ScreenFilter::Default);
+		TheOpenGLRenderer::Get()->SetScreenFilter(ScreenFilter::Default);
 	}
 	if (ImGui::Button("Inverse"))
 	{
-		TheOpenGLRenderer::Instance()->SetScreenFilter(ScreenFilter::Inverse);
+		TheOpenGLRenderer::Get()->SetScreenFilter(ScreenFilter::Inverse);
 	}
 	if (ImGui::Button("Greyscale"))
 	{
-		TheOpenGLRenderer::Instance()->SetScreenFilter(ScreenFilter::Greyscale);
+		TheOpenGLRenderer::Get()->SetScreenFilter(ScreenFilter::Greyscale);
 	}
 	if (ImGui::Button("Edge Detection"))
 	{
-		TheOpenGLRenderer::Instance()->SetScreenFilter(ScreenFilter::EdgeDetection);
+		TheOpenGLRenderer::Get()->SetScreenFilter(ScreenFilter::EdgeDetection);
 	}
 	if (ImGui::Button("???"))
 	{
-		TheOpenGLRenderer::Instance()->SetScreenFilter(ScreenFilter::Weird);
+		TheOpenGLRenderer::Get()->SetScreenFilter(ScreenFilter::Weird);
 	}
 
 	ImGui::End();
@@ -198,7 +197,7 @@ void UI::SceneOptionsPanel()
 /// </summary>
 void UI::ControlsPanel()
 {
-	ImGui::Begin("Controls:", NULL, commonResizeFlags);
+	ImGui::Begin("Controls:", NULL, COMMON_RESIZE_FLAGS);
 
 	ImGui::Text("W/A/S/D to move around the camera");
 	ImGui::Text("Moving the mouse moves the front facing vector of the camera");
@@ -212,13 +211,13 @@ void UI::ControlsPanel()
 /// </summary>
 void UI::PerformanceMetricsPanel()
 {
-	std::string fps = "FPS: " + std::to_string(ApplicationClock::GetFrameCount());
-	std::string delta = "Delta Time: " + std::to_string(ApplicationClock::GetDeltaTime());
+	std::string fpsDisplay = "FPS: " + std::to_string(ApplicationClock::Get()->GetFrameCount());
+	std::string deltaDisplay = "Delta Time: " + std::to_string(ApplicationClock::Get()->GetDeltaTime());
 
-	ImGui::Begin("Performance Metrics:", NULL, commonResizeFlags);
+	ImGui::Begin("Performance Metrics:", NULL, COMMON_RESIZE_FLAGS);
 
-	ImGui::Text(fps.c_str());
-	ImGui::Text(delta.c_str());
+	ImGui::Text(fpsDisplay.c_str());
+	ImGui::Text(deltaDisplay.c_str());
 
 	ImGui::End();
 }

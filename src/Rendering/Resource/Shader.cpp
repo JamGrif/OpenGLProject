@@ -123,7 +123,6 @@ void Shader::Parse(const std::string& vertexPath, const std::string& fragmentPat
 		vShaderStream << vShaderFile.rdbuf();
 		fShaderStream << fShaderFile.rdbuf();
 
-		// Convert stream into string
 		vertexShaderCode = vShaderStream.str();
 		fragmentShaderCode = fShaderStream.str();
 

@@ -23,7 +23,7 @@ public:
 
 	void				SetScreenFilter(ScreenFilter newFilter);
 
-	static OpenGLRenderer* Instance()
+	static OpenGLRenderer* Get() // Get instance
 	{
 		static OpenGLRenderer* s_pInstance = new OpenGLRenderer;
 		return s_pInstance;
@@ -37,7 +37,7 @@ private:
 
 	uint32_t			m_appVAO;
 
-	std::unique_ptr<OpenGLFramebuffer>	m_sceneMSAAFrameBuffer;		// Scene is drawn to this buffer with MSAA applied
-	std::unique_ptr<OpenGLFramebuffer>	m_sceneFilterFramebuffer;	// Recieves info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen
+	std::unique_ptr<OpenGLFramebuffer>	m_pSceneMSAAFrameBuffer;	// Scene is drawn to this buffer with MSAA applied
+	std::unique_ptr<OpenGLFramebuffer>	m_pSceneFilterFramebuffer;	// Receives info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen
 };
 typedef OpenGLRenderer TheOpenGLRenderer;
