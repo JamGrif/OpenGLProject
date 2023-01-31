@@ -2,28 +2,41 @@
 
 #include <chrono>
 
+/// <summary>
+/// Global timer for the application
+/// Ticked every frame and can return application's delta time
+/// </summary>
 class ApplicationClock
 {
 public:
 
-	static void		Init();
-	static void		Tick();
+	void	Init();
+	void	Tick();
 
-	static double	GetDeltaTime() { return m_deltaTime; }
-	static int		GetFrameCount() { return m_frameCountToDisplay; }
+	double	GetDeltaTime() { return m_deltaTime; }
+	int		GetFrameCount() { return m_frameCountToDisplay; }
+
+	static ApplicationClock* Get() // Get instance
+	{
+		static ApplicationClock* s_pInstance = new ApplicationClock;
+		return s_pInstance;
+	}
 
 private:
 
-	// Delta time
-	static double	m_deltaTime;
-	static double	m_lastFrame;
+	double	m_deltaTime;
+	double	m_lastFrame;
 
-	static double	m_previousTime;
-	static int		m_frameCount;
-	static int		m_frameCountToDisplay;
-	static double	m_currentFrame;
+	double	m_previousTime;
+	int		m_frameCount;
+	int		m_frameCountToDisplay;
+	double	m_currentFrame;
 
-	ApplicationClock();
+	ApplicationClock() :
+		m_deltaTime(0.0), m_lastFrame(0.0), m_previousTime(0.0),
+		m_frameCount(0), m_frameCountToDisplay(0), m_currentFrame(0.0) {}
+	~ApplicationClock() {}
+	ApplicationClock(const ApplicationClock&) = delete;
 };
 
 
@@ -34,15 +47,16 @@ private:
 class PerformanceTimer
 {
 public:
+
 	PerformanceTimer(const char* tag = "");
 	~PerformanceTimer();
 
-	void		stop();
+	void		Stop();
 
 private:
 	std::chrono::time_point<std::chrono::high_resolution_clock> m_startTimepoint;
 
 	const char* m_tag;
-	bool		m_stopped;
+	bool		m_bStopped;
 };
 

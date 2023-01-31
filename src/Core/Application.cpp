@@ -14,9 +14,9 @@ Application::Application()
 
 Application::~Application()
 {
-	TheOpenGLRenderer::Instance()->Clean();
+	TheOpenGLRenderer::Get()->Clean();
 
-	TheOpenGLWindow::Instance()->Clean();
+	TheOpenGLWindow::Get()->Clean();
 }
 
 /// <summary>
@@ -25,19 +25,15 @@ Application::~Application()
 /// </summary>
 bool Application::AppInit()
 {
-	// Initialize logger
+	// Initialize all systems used by application
 	Log::Init();
 
-	// Initialize OpenGL renderer
-	TheOpenGLRenderer::Instance()->Init();
+	TheOpenGLRenderer::Get()->Init();
 
-	// Initialize the applications clock
-	ApplicationClock::Init();
+	ApplicationClock::Get()->Init();
 
-	// Initialize input
-	InputHandler::Instance()->Init();
+	InputHandler::Get()->Init();
 
-	// Initialize the UI
 	m_UI = std::make_unique<UI>(false);
 
 	// Create Scene object and set initial scene
@@ -53,9 +49,9 @@ bool Application::AppInit()
 /// </summary>
 void Application::AppLoop()
 {
-	while (!TheOpenGLWindow::Instance()->ShouldClose())
+	while (!TheOpenGLWindow::Get()->ShouldClose())
 	{
-		ApplicationClock::Tick();
+		ApplicationClock::Get()->Tick();
 
 		HandleInput();
 		UpdateApp();
@@ -69,10 +65,8 @@ void Application::AppLoop()
 void Application::HandleInput()
 {
 	// Check if user wants to toggle UI visibility
-	if (InputHandler::Instance()->GetKeyPressedOnce(Keyboard::Q))
-	{
+	if (InputHandler::Get()->GetKeyPressedOnce(Keyboard::Q))
 		m_UI->ToggleUI();
-	}
 }
 
 /// <summary>
@@ -95,7 +89,7 @@ void Application::UpdateApp()
 /// </summary>
 void Application::RenderApp()
 {
-	TheOpenGLRenderer::Instance()->StartOfFrame();
+	TheOpenGLRenderer::Get()->StartOfFrame();
 
 	if (m_loadedScene)
 		m_loadedScene->DrawScene();
@@ -103,7 +97,7 @@ void Application::RenderApp()
 	if (m_UI->GetUiVisible())
 		m_UI->RenderUI();
 	
-	TheOpenGLRenderer::Instance()->EndOfFrame();
+	TheOpenGLRenderer::Get()->EndOfFrame();
 }
 
 /// <summary>
@@ -136,9 +130,8 @@ bool Application::SetScene(SceneName newSceneNumber)
 	}
 
 	// Stop reloading current scene
-	if (m_loadedScene)
-		if (newSceneFilename == m_loadedScene->GetSceneName())
-			return false;
+	if (m_loadedScene && newSceneFilename == m_loadedScene->GetSceneName())
+		return false;
 
 	m_loadedScene = std::make_shared<Scene>(newSceneFilename);
 
