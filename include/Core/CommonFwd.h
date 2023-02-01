@@ -39,7 +39,10 @@ typedef std::string ResourceID;
 struct Vertex;
 
 typedef std::vector<Vertex> MeshVertices;
-typedef std::vector<unsigned int> MeshIndices;
+typedef std::vector<uint32_t> MeshIndices;
 
 // Shader
-typedef std::unordered_map<std::string, int> UniformCache;
+typedef std::unordered_map<std::string, uint32_t> UniformCache;
+
+// UI
+class Scene;

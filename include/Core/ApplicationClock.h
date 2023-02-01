@@ -10,11 +10,11 @@ class ApplicationClock
 {
 public:
 
-	void	Init();
-	void	Tick();
+	void		Init();
+	void		Tick();
 
-	double	GetDeltaTime() { return m_deltaTime; }
-	int		GetFrameCount() { return m_frameCountToDisplay; }
+	double		GetDeltaTime() { return m_deltaTime; }
+	int			GetFrameCount() { return m_frameCountToDisplay; }
 
 	static ApplicationClock* Get() // Get instance
 	{
@@ -24,13 +24,13 @@ public:
 
 private:
 
-	double	m_deltaTime;
-	double	m_lastFrame;
+	double		m_deltaTime;
+	double		m_lastFrame;
 
-	double	m_previousTime;
-	int		m_frameCount;
-	int		m_frameCountToDisplay;
-	double	m_currentFrame;
+	double		m_previousTime;
+	uint16_t	m_frameCount;
+	uint16_t	m_frameCountToDisplay;
+	double		m_currentFrame;
 
 	ApplicationClock() :
 		m_deltaTime(0.0), m_lastFrame(0.0), m_previousTime(0.0),

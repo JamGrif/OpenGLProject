@@ -9,6 +9,7 @@
 class Vector3D
 {
 public:
+	Vector3D();
 	Vector3D(float x, float y, float z);
 
 	float		GetX() const { return m_x; }

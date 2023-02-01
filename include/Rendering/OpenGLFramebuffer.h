@@ -3,11 +3,11 @@
 enum class ScreenFilter
 {
 	START_OF_FILTER_ENUM    = 0,
-	Default			= 1,
-	Inverse			= 2,
-	Greyscale		= 3,
-	EdgeDetection	= 4,
-	Weird			= 5,
+	Default					= 1,
+	Inverse					= 2,
+	Greyscale				= 3,
+	EdgeDetection			= 4,
+	Weird					= 5,
 	END_OF_FILTER_ENUM
 };
 
@@ -30,12 +30,10 @@ public:
 
 	void			SetFrameFilter(ScreenFilter index);
 
-	unsigned int	GetFBO() const;
-
 private:
 	float m_quadVertices[24] =
 	{
-		//Pos		//Texcoords
+		 // Pos		  // Texcoords
 		-1.0f,  1.0f,  0.0f, 1.0f,
 		-1.0f, -1.0f,  0.0f, 0.0f,
 		 1.0f, -1.0f,  1.0f, 0.0f,
@@ -45,16 +43,16 @@ private:
 		 1.0f,  1.0f,  1.0f, 1.0f
 	};
 
-	unsigned int	m_FBO;
-	unsigned int	m_frameColourTexture;
-	unsigned int	m_RBO;
+	uint32_t		m_FBO;
+	uint32_t		m_frameColourTexture;
+	uint32_t		m_RBO;
 	
-	unsigned int	m_quadVBO;
+	uint32_t		m_quadVBO;
 
-	ScreenFilter				m_screenFilter;
+	ScreenFilter	m_screenFilter;
 
-	unsigned int	m_screenWidth, m_screenHeight;
+	uint16_t		m_screenWidth, m_screenHeight;
 
-	std::string m_shaderID;
+	ResourceID		m_shaderID;
 };
 

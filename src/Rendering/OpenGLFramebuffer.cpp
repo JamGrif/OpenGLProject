@@ -156,11 +156,3 @@ void OpenGLFramebuffer::SetFrameFilter(ScreenFilter index)
 	
 	m_screenFilter = index;
 }
-
-/// <summary>
-/// Returns the Framebuffer Object (FBO)
-/// </summary>
-unsigned int OpenGLFramebuffer::GetFBO() const
-{
-	return m_FBO;
-}

@@ -70,6 +70,6 @@ private:
          1.0f, -1.0f,  1.0f
     };
 
-    unsigned int m_skyboxVBO;
+    uint32_t m_skyboxVBO;
 };
 

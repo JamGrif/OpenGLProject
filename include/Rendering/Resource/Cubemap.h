@@ -25,31 +25,26 @@ public:
 
 private:
 
-	virtual void			Parse(const std::string& facesFilepath);
-	virtual void			Parse(const std::string& firstFilepath, const std::string& secondFilepath) {}
+	virtual void	Parse(const std::string& facesFilepath);
+	virtual void	Parse(const std::string& firstFilepath, const std::string& secondFilepath) {}
 
-	virtual void			Create();
+	virtual void	Create();
 
-	virtual void			Bind();
-	virtual void			Unbind();
+	virtual void	Bind();
+	virtual void	Unbind();
 
-	virtual void Reset();
+	virtual void	Reset();
 
 private:
 
-	// OpenGL cubemap index
-	//uint32_t		m_cubemapOpenGLID;
-
 	// Sampler2D slot in shader
-	int				m_textureSlot;
+	int32_t			m_textureSlot;
 
 	// Cubemap face data
-	int				m_width[6], m_height[6], m_BPP[6];
+	int32_t			m_width[6], m_height[6], m_BPP[6];
 
 	// Temp storage during parsing and creation
 	unsigned char*	m_localbuffer[6];
-
-	//bool	m_bIsCreated;
 
 	template<typename Cubemap>
 	friend class ResourceManager;

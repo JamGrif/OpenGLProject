@@ -29,8 +29,8 @@ public:
 private:
 
 	// Keyboard
-	static bool	m_keys[1024];
-	static int		m_lastKey;
+	static bool		m_keys[1024];
+	static uint16_t	m_lastKey;
 
 	// Mouse
 	static double	m_lastX;

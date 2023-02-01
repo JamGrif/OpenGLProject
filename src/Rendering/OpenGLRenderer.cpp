@@ -9,6 +9,13 @@
 
 #include <glm/ext/matrix_clip_space.hpp>
 
+static constexpr int DEFAULT_WINDOW_WIDTH = 1920;
+static constexpr int DEFAULT_WINDOW_HEIGHT = 1080;
+
+static constexpr float NEAR_PLANE = 0.01f;
+static constexpr float FAR_PLANE = 1000.0f;
+
+static constexpr float FOV = 90.0f;
 
 OpenGLRenderer::OpenGLRenderer()
 	:m_projMatrix{ 1.0f }, m_appVAO(0)
@@ -28,7 +35,7 @@ bool OpenGLRenderer::Init()
 		return false;
 	}
 
-	TheOpenGLWindow::Get()->Init(1920, 1080, "OpenGL - Jamie", false);
+	TheOpenGLWindow::Get()->Init(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, "OpenGL - Jamie", false);
 
 	// GLEW
 	glewExperimental = GL_TRUE;
@@ -41,10 +48,6 @@ bool OpenGLRenderer::Init()
 	PRINT_TRACE("Vendor is {0}", glGetString(GL_VENDOR));
 	PRINT_TRACE("Renderer is {0}", glGetString(GL_RENDERER));
 	PRINT_TRACE("Version is {0}", glGetString(GL_VERSION));
-
-	/*
-		Set OpenGL Context Settings
-	*/
 
 	// Depth Buffer
 	glCall(glEnable(GL_DEPTH_TEST));
@@ -59,7 +62,7 @@ bool OpenGLRenderer::Init()
 	glCall(glEnable(GL_MULTISAMPLE));
 
 	// Build applications projection matrix
-	m_projMatrix = glm::perspective(glm::radians(75.0f), TheOpenGLWindow::Get()->GetAspectRatio(), 0.01f, 1000.0f);
+	m_projMatrix = glm::perspective(glm::radians(FOV), TheOpenGLWindow::Get()->GetAspectRatio(), NEAR_PLANE, FAR_PLANE);
 
 	// Build applications VAO
 	glCall(glGenVertexArrays(1, &m_appVAO));
@@ -76,7 +79,6 @@ bool OpenGLRenderer::Clean()
 {
 	if (m_appVAO)
 		glDeleteVertexArrays(1, &m_appVAO);
-
 
 	glCall(glfwTerminate());
 
@@ -111,28 +113,36 @@ void OpenGLRenderer::EndOfFrame() const
 }
 
 /// <summary>
-/// Assumes all appropriate meshes, shaders and textures have been binded correctly
+/// Draws any bound texture and mesh buffers with the bound shader
 /// </summary>
-/// <param name="indicesCount"></param>
 void OpenGLRenderer::Draw(size_t indicesCount) const
 {
-	glCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indicesCount), GL_UNSIGNED_INT, 0));
+	glCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indicesCount), GL_UNSIGNED_INT, NULL));
 }
 
+/// <summary>
+/// Draws using the cubemap shader
+/// </summary>
 void OpenGLRenderer::DrawCubemap(size_t vertexCount) const
 {
 	// Disables writing to the depth buffer
 	glCall(glDepthFunc(GL_LEQUAL));
-	glCall(glDrawArrays(GL_TRIANGLES, 0, 36));
+	glCall(glDrawArrays(GL_TRIANGLES, NULL, static_cast<GLsizei>(vertexCount)));
 	glCall(glDepthFunc(GL_LESS));
 }
 
+/// <summary>
+/// Uses bound tessellation shader objects to render
+/// </summary>
 void OpenGLRenderer::DrawTerrain(size_t vertexCount) const
 {
 	glCall(glPatchParameteri(GL_PATCH_VERTICES, static_cast<GLsizei>(vertexCount)));
-	glCall(glDrawArrays(GL_PATCHES, 0, static_cast<GLsizei>(vertexCount)));
+	glCall(glDrawArrays(GL_PATCHES, NULL, static_cast<GLsizei>(vertexCount)));
 }
 
+/// <summary>
+/// Changes the screen filer applied
+/// </summary>
 void OpenGLRenderer::SetScreenFilter(ScreenFilter newFilter)
 {
 	switch (newFilter)

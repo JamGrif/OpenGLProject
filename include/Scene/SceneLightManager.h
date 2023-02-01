@@ -112,21 +112,21 @@ public:
 	void							AddDirectionalLight(std::shared_ptr<DirectionalLoaderParams> pParams);
 	std::weak_ptr<DirectionalLight>	GetDirectionalLight(unsigned int index) const;
 
-	unsigned int					GetCurrentDirectionalLights() const { return static_cast<unsigned int>(m_sceneDirectionalLights.size()); }
+	uint8_t							GetCurrentDirectionalLights() const { return static_cast<uint8_t>(m_sceneDirectionalLights.size()); }
 
 	// Point Lights
 	void							SetPointLight(Vector3D position, unsigned int index);
 	void							AddPointLight(std::shared_ptr<PointLoaderParams> pParams);
 	std::weak_ptr<PointLight>		GetPointLight(unsigned int index) const;
 
-	unsigned int					GetCurrentPointLights() const { return static_cast<unsigned int>(m_scenePointLights.size()); }
+	uint8_t							GetCurrentPointLights() const { return static_cast<uint8_t>(m_scenePointLights.size()); }
 
 	// Spot Lights
 	void							SetSpotLight(Vector3D position, unsigned int index);
 	void							AddSpotLight(std::shared_ptr<SpotLoaderParams> pParams);
 	std::weak_ptr<SpotLight>		GetSpotLight(unsigned int index) const;
 
-	unsigned int					GetCurrentSpotLights() const{ return static_cast<unsigned int>(m_sceneSpotLights.size()); }
+	uint8_t							GetCurrentSpotLights() const{ return static_cast<uint8_t>(m_sceneSpotLights.size()); }
 
 private:
 

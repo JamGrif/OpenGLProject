@@ -19,8 +19,8 @@ public:
 	void		SetWindowIcon(const std::string& iconPath) const;
 	void		SetWindowTitle(const std::string& newTitle) const;
 
-	int			GetWindowWidth() const { return m_currentWindowWidth; }
-	int			GetWindowHeight() const { return m_currentWindowHeight; }
+	uint16_t	GetWindowWidth() const { return m_currentWindowWidth; }
+	uint16_t	GetWindowHeight() const { return m_currentWindowHeight; }
 	float		GetAspectRatio() const { return m_aspectRatio; }
 
 	static OpenGLWindow* Get() // Get instance
@@ -33,8 +33,8 @@ private:
 	OpenGLWindow() :m_currentWindowWidth(0), m_currentWindowHeight(0), m_aspectRatio(0), m_pWindow(nullptr) {}
 	~OpenGLWindow() {}
 
-	uint32_t	m_currentWindowWidth;
-	uint32_t	m_currentWindowHeight;
+	uint16_t	m_currentWindowWidth;
+	uint16_t	m_currentWindowHeight;
 	float		m_aspectRatio;
 
 	GLFWwindow* m_pWindow;

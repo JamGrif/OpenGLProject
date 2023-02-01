@@ -6,17 +6,17 @@
 #include <GLFW/glfw3.h>
 
 // Keyboard
-bool	InputHandler::m_keys[1024];
-int		InputHandler::m_lastKey = 0;
+bool		InputHandler::m_keys[1024];
+uint16_t	InputHandler::m_lastKey = 0;
 
 // Mouse
-double	InputHandler::m_lastX = 0;
-double	InputHandler::m_lastY = 0;
-bool	InputHandler::m_firstMouse = true;
-double	InputHandler::m_xOffset = 0;
-double	InputHandler::m_yOffset = 0;
+double		InputHandler::m_lastX = 0;
+double		InputHandler::m_lastY = 0;
+bool		InputHandler::m_firstMouse = true;
+double		InputHandler::m_xOffset = 0;
+double		InputHandler::m_yOffset = 0;
 
-bool	InputHandler::m_mouseEnabled = false;
+bool		InputHandler::m_mouseEnabled = false;
 
 /// <summary>
 /// Initializes the input of the program by setting up the input callbacks
