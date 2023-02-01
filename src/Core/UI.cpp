@@ -12,8 +12,6 @@
 #include "Core/InputHandler.h"
 #include "Rendering/OpenGLRenderer.h"
 
-#include <iostream>
-
 // Flags for each ImGui window used
 static constexpr ImGuiWindowFlags COMMON_RESIZE_FLAGS = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
 static constexpr ImGuiWindowFlags COMMON_FLAGS = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;

@@ -24,7 +24,7 @@ public:
 protected:
 
 	// Internal OpenGL index for resource
-	uint32_t		m_OpenGLResourceID;
+	OpenGLIndex		m_OpenGLResourceID;
 
 	bool			m_bIsCreated;
 

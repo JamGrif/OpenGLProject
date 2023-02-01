@@ -258,6 +258,7 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
   <ItemGroup>
     <ClInclude Include="dependencies\tinyXML\include\tinyXML\tinystr.h" />
     <ClInclude Include="dependencies\tinyXML\include\tinyXML\tinyxml.h" />
+    <ClInclude Include="include\Core\CommonFwd.h" />
     <ClInclude Include="include\Rendering\Resource\Cubemap.h" />
     <ClInclude Include="dependencies\stb_image\include\stb_image\stb_image.h" />
     <ClInclude Include="include\Core\Log.h" />

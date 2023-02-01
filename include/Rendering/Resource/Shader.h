@@ -32,21 +32,13 @@ private:
 
 	inline int		GetUniformLocation(const std::string& uniformName);
 
-	//bool			GetCreated() { return m_bCreated; }
-
 private:
 
-	//uint32_t						m_shaderProgram;
-
-	//bool							m_bCreated;
-
-	// Cache for uniform locations
-	std::unordered_map<std::string, int> m_uniformLocationCache;
+	UniformCache m_uniformLocationCache;
 
 	std::string vertexShaderCode;
 	std::string fragmentShaderCode;
 
-	
 	template<typename Shader>
 	friend class ResourceManager;
 };

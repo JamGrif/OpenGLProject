@@ -7,11 +7,10 @@
 #include "Rendering/OpenGLRenderer.h"
 #include "Scene/SceneCamera.h"
 
-SceneSky::SceneSky(const std::string& cubemapID)
+SceneSky::SceneSky(const ResourceID& cubemapID)
 	:m_cubemapID(cubemapID), m_shaderID("skyShader"), m_projectionMatrix(TheOpenGLRenderer::Get()->GetProjectionMatrix())
 {
 	ShaderManager::Get()->AddResource(m_shaderID, "res/shaders/sky-vertex.glsl", "res/shaders/sky-fragment.glsl");
-	//TheCubemapManager::Instance()->addCubemap(cubemapID);
 
 	// Skybox uses its own VBO and attribute system to allow the use of a custom cube
 	glGenBuffers(1, &m_skyboxVBO);

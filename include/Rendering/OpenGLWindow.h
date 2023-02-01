@@ -1,7 +1,5 @@
 #pragma once
 
-// Forward Declarations
-struct GLFWwindow;
 
 /// <summary>
 /// A wrapper class around the GLFWwindow variable, providing a way to create and destroy one, 

@@ -2,10 +2,6 @@
 
 #include "glm/mat4x4.hpp"
 
-class Shader;
-class SceneCamera;
-class SceneLightManager;
-
 struct MaterialLoaderParams
 {
 	std::string textureMapIDs[5];

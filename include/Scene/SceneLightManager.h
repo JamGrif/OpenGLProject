@@ -96,10 +96,6 @@ struct SpotLight :
 	const float	m_outerCutOff;
 };
 
-typedef std::vector<std::shared_ptr<DirectionalLight>>	SceneDirectionalLights;
-typedef std::vector<std::shared_ptr<PointLight>>		ScenePointLights;
-typedef std::vector<std::shared_ptr<SpotLight>>			SceneSpotLights;
-
 /// <summary>
 /// Manager for all three light types that can be present in scene
 /// Handles creation and deletation of lights and provides utility functions to use them

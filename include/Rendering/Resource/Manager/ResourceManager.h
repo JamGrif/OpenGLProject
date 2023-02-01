@@ -6,6 +6,8 @@
 #include "Rendering/Resource/Cubemap.h"
 #include "Rendering/Resource/Shader.h"
 
+
+
 /// <summary>
 /// Encapsulates and abstracts the creation, deletion and usage of a Resource object providing a consistent interface
 /// Mesh, Texture, Cubemap and Shader objects can only be used through this class
@@ -19,7 +21,7 @@ public:
 	/// 1 / 2 of resource creation
 	/// Adds a new resource and parses its data file
 	/// </summary>
-	bool AddResource(const std::string& resourceID)
+	bool AddResource(const ResourceID& resourceID)
 	{
 		// Check if resource with ID already exists
 		if (m_resourcePool.find(resourceID) != m_resourcePool.end())
@@ -38,7 +40,7 @@ public:
 	/// 1 / 2 of resource creation
 	/// Adds a new resource and parses its data file
 	/// </summary>
-	bool AddResource(const std::string& resourceID, const std::string& vertexPath, const std::string& fragmentPath)
+	bool AddResource(const ResourceID& resourceID, const std::string& vertexPath, const std::string& fragmentPath)
 	{
 		// Check if resource with ID already exists
 		if (m_resourcePool.find(resourceID) != m_resourcePool.end())
@@ -70,7 +72,7 @@ public:
 	/// <summary>
 	/// Bind resource at resourceID to the OpenGL context
 	/// </summary>
-	void BindResourceAtID(const std::string& resourceID)
+	void BindResourceAtID(const ResourceID& resourceID)
 	{
 		if (m_resourcePool.count(resourceID))
 		{
@@ -81,7 +83,7 @@ public:
 	/// <summary>
 	/// Unbind resource at resourceID from the OpenGL context
 	/// </summary> 
-	void UnbindResourceAtID(const std::string& resourceID)
+	void UnbindResourceAtID(const ResourceID& resourceID)
 	{
 		if (m_resourcePool.count(resourceID))
 		{
@@ -92,7 +94,7 @@ public:
 	/// <summary>
 	/// Return the resource at resourceID allowing public functions to be called on that resource
 	/// </summary>
-	std::shared_ptr<T> GetResourceAtID(const std::string& resourceID)
+	std::shared_ptr<T> GetResourceAtID(const ResourceID& resourceID)
 	{
 		if (m_resourcePool.count(resourceID))
 		{
@@ -127,7 +129,7 @@ public:
 	}
 private:
 
-	std::unordered_map<std::string, std::shared_ptr<T>> m_resourcePool;
+	std::unordered_map<ResourceID, std::shared_ptr<T>> m_resourcePool;
 
 	ResourceManager() {}
 	~ResourceManager() {}

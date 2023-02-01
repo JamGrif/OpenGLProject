@@ -35,7 +35,7 @@ private:
 
 	glm::mat4			m_projMatrix;
 
-	uint32_t			m_appVAO;
+	OpenGLIndex			m_appVAO;
 
 	std::unique_ptr<OpenGLFramebuffer>	m_pSceneMSAAFrameBuffer;	// Scene is drawn to this buffer with MSAA applied
 	std::unique_ptr<OpenGLFramebuffer>	m_pSceneFilterFramebuffer;	// Receives info from the MSAAframebuffer which then draws onto a quad which gets displayed to the screen

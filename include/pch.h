@@ -7,6 +7,8 @@
 #include <vector>
 #include <unordered_map>
 
+#include "Core/CommonFwd.h"
+
 #include "Core/Log.h"
 #include "Core/ApplicationClock.h"
 #include "Core/Vector3D.h"
