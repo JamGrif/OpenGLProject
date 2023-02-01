@@ -20,24 +20,24 @@ public:
 
 private:
 
-	virtual void Parse(const std::string& filepath) {}
-	virtual void Parse(const std::string& vertexPath, const std::string& fragmentPath);
-	virtual void Create();
+	virtual void	Parse(const std::string& filepath) {}
+	virtual void	Parse(const std::string& vertexPath, const std::string& fragmentPath);
+	virtual void	Create();
 
-	virtual void Bind();
-	virtual void Unbind();
+	virtual void	Bind();
+	virtual void	Unbind();
 
-	virtual void Reset();
+	virtual void	Reset();
 
 
 	inline int		GetUniformLocation(const std::string& uniformName);
 
 private:
 
-	UniformCache m_uniformLocationCache;
+	UniformCache	m_uniformLocationCache;
 
-	std::string vertexShaderCode;
-	std::string fragmentShaderCode;
+	std::string		vertexShaderCode;
+	std::string		fragmentShaderCode;
 
 	template<typename Shader>
 	friend class ResourceManager;

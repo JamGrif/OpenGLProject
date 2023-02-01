@@ -76,7 +76,7 @@ void Application::UpdateApp()
 {
 	m_loadedScene->UpdateScene();
 
-	if (m_UI && m_UI->GetUiVisible())
+	if (m_UI && m_UI->GetVisible())
 	{
 		// Check if loaded scene needs to change
 		if (m_UI->GetCurrentSceneName() != SceneName::UNSET_SCENE)
@@ -94,7 +94,7 @@ void Application::RenderApp()
 	if (m_loadedScene)
 		m_loadedScene->DrawScene();
 
-	if (m_UI->GetUiVisible())
+	if (m_UI->GetVisible())
 		m_UI->RenderUI();
 	
 	TheOpenGLRenderer::Get()->EndOfFrame();

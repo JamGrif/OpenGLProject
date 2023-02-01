@@ -27,5 +27,5 @@ private:
 	PendingMaterialPool m_firstMatMap;
 	PendingMaterialPool m_secondMatMap;
 
-	std::string m_tempSkyCubemapID;
+	ResourceID m_tempSkyCubemapID;
 };

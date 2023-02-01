@@ -8,5 +8,4 @@ IResource::IResource()
 
 IResource::~IResource()
 {
-
 }

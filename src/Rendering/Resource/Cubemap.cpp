@@ -1,21 +1,19 @@
 #include "pch.h"
 #include "Rendering/Resource/Cubemap.h"
 
-#include "Rendering/OpenGLErrorCheck.h"
-
 #include "stb_image/stb_image.h"
 
 #include <GL/glew.h>
 
 static constexpr int NO_CUBEMAP = 0;
 
-static const std::string CUBEMAP_FILEPATH_PREFIX = "res/textures/sky/";
-static const std::string CUBEMAP_FILEPATH_SUFFIX_RIGHT = "_right.png";
-static const std::string CUBEMAP_FILEPATH_SUFFIX_LEFT = "_left.png";
-static const std::string CUBEMAP_FILEPATH_SUFFIX_TOP = "_top.png";
+static const std::string CUBEMAP_FILEPATH_PREFIX		= "res/textures/sky/";
+static const std::string CUBEMAP_FILEPATH_SUFFIX_RIGHT	= "_right.png";
+static const std::string CUBEMAP_FILEPATH_SUFFIX_LEFT	= "_left.png";
+static const std::string CUBEMAP_FILEPATH_SUFFIX_TOP	= "_top.png";
 static const std::string CUBEMAP_FILEPATH_SUFFIX_BOTTOM = "_bottom.png";
-static const std::string CUBEMAP_FILEPATH_SUFFIX_FRONT = "_front.png";
-static const std::string CUBEMAP_FILEPATH_SUFFIX_BACK = "_back.png";
+static const std::string CUBEMAP_FILEPATH_SUFFIX_FRONT	= "_front.png";
+static const std::string CUBEMAP_FILEPATH_SUFFIX_BACK	= "_back.png";
 
 Cubemap::Cubemap()
 	:IResource(), m_textureSlot(0), m_width{ 0,0,0,0,0,0 }, m_height{ 0,0,0,0,0,0 }, m_BPP{ 0,0,0,0,0,0 },

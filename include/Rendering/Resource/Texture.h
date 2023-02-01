@@ -31,19 +31,19 @@ public:
 	void			setTextureType(TextureType type) { m_textureType = type; }
 private:
 
-	virtual void			Bind() override;
-	virtual void			Unbind() override;
+	virtual void	Bind() override;
+	virtual void	Unbind() override;
 
-	virtual void			Parse(const std::string& filepath) override;
-	virtual void			Parse(const std::string& firstFilepath, const std::string& secondFilepath) {}
-	virtual void			Create() override;
+	virtual void	Parse(const std::string& filepath) override;
+	virtual void	Parse(const std::string& firstFilepath, const std::string& secondFilepath) {}
+	virtual void	Create() override;
 
-	virtual void Reset();
+	virtual void	Reset();
 
 private:
 
 	// Texture data
-	int				m_textureWidth, m_textureHeight, m_textureBPP;
+	int32_t			m_textureWidth, m_textureHeight, m_textureBPP;
 
 	// sampler2D slot used in shader
 	TextureType		m_textureType;

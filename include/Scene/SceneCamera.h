@@ -33,7 +33,7 @@ private:
 
 	inline void			UpdateCameraVectors();
 
-	inline void UpdateLookatMatrix();
+	inline void			UpdateLookatMatrix();
 
     // Camera Attributes
     glm::vec3			m_position;

@@ -16,6 +16,12 @@ static constexpr uint8_t STRCMP_SUCCESS = 0;
 static const std::string SCENE_FILEPATH_PREFIX = "res/scenes/";
 static const std::string SCENE_FILEPATH_SUFFIX = ".xml";
 
+static const char* SKY_ATTRIBUTE = "skyid";
+
+static const char* MATERIALS_ELEMENT = "materials";
+static const char* LIGHTS_ELEMENT = "lights";
+static const char* MODELS_ELEMENT = "models";
+
 SceneParser::SceneParser()
 {
 }
@@ -32,37 +38,37 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 	}
 
 	// Store <scene> node
-	TiXmlElement* pRoot = levelDocument.RootElement();
+	TiXmlElement* pFileRoot = levelDocument.RootElement();
 
 	// Create sky using skyid as the cubemap filename
-	*sceneSky = std::make_shared<SceneSky>(pRoot->Attribute("skyid"));
-	m_tempSkyCubemapID = pRoot->Attribute("skyid");
+	*sceneSky = std::make_shared<SceneSky>(pFileRoot->Attribute(SKY_ATTRIBUTE));
+	m_tempSkyCubemapID = pFileRoot->Attribute(SKY_ATTRIBUTE);
 
-	TiXmlElement* materialRoot = nullptr;
-	TiXmlElement* lightRoot = nullptr;
-	TiXmlElement* modelRoot = nullptr;
+	TiXmlElement* materialElement = nullptr;
+	TiXmlElement* lightElement = nullptr;
+	TiXmlElement* modelElement = nullptr;
 
 	// Loop through all <scene> elements
-	for (TiXmlElement* e = pRoot->FirstChildElement(); e != NULL; e = e->NextSiblingElement())
+	for (TiXmlElement* currentElement = pFileRoot->FirstChildElement(); currentElement != NULL; currentElement = currentElement->NextSiblingElement())
 	{
-		// <materials> node
-		if (strcmp(e->Value(), "materials") == STRCMP_SUCCESS)
+		// <materials> element
+		if (strcmp(currentElement->Value(), MATERIALS_ELEMENT) == STRCMP_SUCCESS)
 		{
-			materialRoot = e;
+			materialElement = currentElement;
 			continue;
 		}
 
-		// <lights> node
-		if (strcmp(e->Value(), "lights") == STRCMP_SUCCESS)
+		// <lights> element
+		if (strcmp(currentElement->Value(), LIGHTS_ELEMENT) == STRCMP_SUCCESS)
 		{
-			lightRoot = e;
+			lightElement = currentElement;
 			continue;
 		}
 
-		// <models> node
-		if (strcmp(e->Value(), "models") == STRCMP_SUCCESS)
+		// <models> element
+		if (strcmp(currentElement->Value(), MODELS_ELEMENT) == STRCMP_SUCCESS)
 		{
-			modelRoot = e;
+			modelElement = currentElement;
 			continue;
 		}
 	}
@@ -72,19 +78,19 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 	// Parse all the assets used in scene
 	PerformanceTimer parseTimer("Asset Parsing");
 
-	ParseMaterialsNode(materialRoot);
+	ParseMaterialsNode(materialElement);
 
 	// Load all textures and meshes concurrently
 	std::thread	firstMaterialThread(&SceneParser::ParseFirstHalfMaterials, this);
 	std::thread secondMaterialThread(&SceneParser::ParseSecondHalfMaterials, this);
-	std::thread modelThread(&SceneParser::ParseModelsNode, this, std::ref(modelRoot), std::ref(sceneModels));
+	std::thread modelThread(&SceneParser::ParseModelsNode, this, std::ref(modelElement), std::ref(sceneModels));
 
 	firstMaterialThread.join();
 	secondMaterialThread.join();
 	modelThread.join();
 
 	// Add scene lights to the light manager
-	ParseLightsNode(lightRoot, sceneLightManager);
+	ParseLightsNode(lightElement, sceneLightManager);
 
 	// Add the cubemap that the Skybox will use
 	CubemapManager::Get()->AddResource(m_tempSkyCubemapID);
@@ -93,6 +99,7 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 
 	// Create all assets used in scene
 	PerformanceTimer creationTimer("Asset Creation");
+
 	ShaderManager::Get()->CreateAllResources();
 	TextureManager::Get()->CreateAllResources();
 	MeshManager::Get()->CreateAllResources();
@@ -106,12 +113,12 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 /// <summary>
 /// Parse the <materials> node
 /// </summary>
-void SceneParser::ParseMaterialsNode(const TiXmlElement* pMaterialsRoot)
+void SceneParser::ParseMaterialsNode(const TiXmlElement* pMaterialsElement)
 {
 	bool bInsertInFirst = true;
 
 	// Loop through all elements of <materials> node
-	for (const TiXmlElement* materialNode = pMaterialsRoot->FirstChildElement(); materialNode != NULL; materialNode = materialNode->NextSiblingElement())
+	for (const TiXmlElement* materialNode = pMaterialsElement->FirstChildElement(); materialNode != NULL; materialNode = materialNode->NextSiblingElement())
 	{
 		// Ensure element is a <material> element
 		if (strcmp(materialNode->Value(), "material") != STRCMP_SUCCESS)
@@ -170,60 +177,54 @@ void SceneParser::ParseSecondHalfMaterials()
 /// <summary>
 /// Parse the <lights> node
 /// </summary>
-void SceneParser::ParseLightsNode(const TiXmlElement* pLightsRoot, std::shared_ptr<SceneLightManager>& sceneLightManager)
+void SceneParser::ParseLightsNode(const TiXmlElement* pLightsElement, std::shared_ptr<SceneLightManager>& sceneLightManager)
 {
 	// Loop through all elements of <lights> node
-	for (const TiXmlElement* lightNode = pLightsRoot->FirstChildElement(); lightNode != NULL; lightNode = lightNode->NextSiblingElement())
+	for (const TiXmlElement* lightElement = pLightsElement->FirstChildElement(); lightElement != NULL; lightElement = lightElement->NextSiblingElement())
 	{
 		// Ensure element is a <light>
-		if (strcmp(lightNode->Value(), "light") != STRCMP_SUCCESS)
+		if (strcmp(lightElement->Value(), "light") != STRCMP_SUCCESS)
 			continue;
 		
 		// Create light depending on what type it is
-		std::string_view type = lightNode->Attribute("type");
+		std::string_view type = lightElement->Attribute("type");
 		if (type == "direction")
 		{
-			//DirectionalLoaderParams* tempParams = new DirectionalLoaderParams;
-
 			std::shared_ptr<DirectionalLoaderParams> tempParams = std::make_shared<DirectionalLoaderParams>();
 
-			ParseBaseLight(lightNode, tempParams);
+			ParseBaseLight(lightElement, tempParams);
 
-			lightNode->QueryFloatAttribute("dirX", &tempParams->direction.SetX());
-			lightNode->QueryFloatAttribute("dirY", &tempParams->direction.SetY());
-			lightNode->QueryFloatAttribute("dirZ", &tempParams->direction.SetZ());
+			lightElement->QueryFloatAttribute("dirX", &tempParams->direction.SetX());
+			lightElement->QueryFloatAttribute("dirY", &tempParams->direction.SetY());
+			lightElement->QueryFloatAttribute("dirZ", &tempParams->direction.SetZ());
 
 			sceneLightManager->AddDirectionalLight(tempParams);
 		}
 		else if (type == "point")
 		{
-			//PointLoaderParams* tempParams = new PointLoaderParams;
-
 			std::shared_ptr<PointLoaderParams> tempParams = std::make_shared<PointLoaderParams>();
 
-			ParseBaseLight(lightNode, tempParams);
+			ParseBaseLight(lightElement, tempParams);
 
-			lightNode->QueryFloatAttribute("posX", &tempParams->position.SetX());
-			lightNode->QueryFloatAttribute("posY", &tempParams->position.SetY());
-			lightNode->QueryFloatAttribute("posZ", &tempParams->position.SetZ());
+			lightElement->QueryFloatAttribute("posX", &tempParams->position.SetX());
+			lightElement->QueryFloatAttribute("posY", &tempParams->position.SetY());
+			lightElement->QueryFloatAttribute("posZ", &tempParams->position.SetZ());
 
 			sceneLightManager->AddPointLight(tempParams);
 		}
 		else if (type == "spot")
 		{
-			//SpotLoaderParams* tempParams = new SpotLoaderParams;
-
 			std::shared_ptr<SpotLoaderParams> tempParams = std::make_shared<SpotLoaderParams>();
 
-			ParseBaseLight(lightNode, tempParams);
+			ParseBaseLight(lightElement, tempParams);
 
-			lightNode->QueryFloatAttribute("posX", &tempParams->position.SetX());
-			lightNode->QueryFloatAttribute("posY", &tempParams->position.SetY());
-			lightNode->QueryFloatAttribute("posZ", &tempParams->position.SetZ());
+			lightElement->QueryFloatAttribute("posX", &tempParams->position.SetX());
+			lightElement->QueryFloatAttribute("posY", &tempParams->position.SetY());
+			lightElement->QueryFloatAttribute("posZ", &tempParams->position.SetZ());
 
-			lightNode->QueryFloatAttribute("dirX", &tempParams->direction.SetX());
-			lightNode->QueryFloatAttribute("dirY", &tempParams->direction.SetY());
-			lightNode->QueryFloatAttribute("dirZ", &tempParams->direction.SetZ());
+			lightElement->QueryFloatAttribute("dirX", &tempParams->direction.SetX());
+			lightElement->QueryFloatAttribute("dirY", &tempParams->direction.SetY());
+			lightElement->QueryFloatAttribute("dirZ", &tempParams->direction.SetZ());
 
 			sceneLightManager->AddSpotLight(tempParams);
 		}
@@ -233,32 +234,37 @@ void SceneParser::ParseLightsNode(const TiXmlElement* pLightsRoot, std::shared_p
 /// <summary>
 /// Parse the <models> node
 /// </summary>
-void SceneParser::ParseModelsNode(const TiXmlElement* pModelRoot, SceneModels& sceneModels)
+void SceneParser::ParseModelsNode(const TiXmlElement* pModelElement, SceneModels& sceneModels)
 {
+	unsigned int x = 0;
 	// Loop through all the elements of <models> node
-	for (const TiXmlElement* modelNode = pModelRoot->FirstChildElement(); modelNode != NULL; modelNode = modelNode->NextSiblingElement())
+	for (const TiXmlElement* modelElement = pModelElement->FirstChildElement(); modelElement != NULL; modelElement = modelElement->NextSiblingElement())
 	{
 		// Ensure element is a <model>
-		if (strcmp(modelNode->Value(), "model") != STRCMP_SUCCESS)
+		if (strcmp(modelElement->Value(), "model") != STRCMP_SUCCESS)
 			continue;
 
 		// Fill out initial value of a model from XML scene data
 		ModelLoaderParams tempLoaderParams;
 
-		modelNode->QueryStringAttribute("material", &tempLoaderParams.materialID);
-		modelNode->QueryStringAttribute("mesh",		&tempLoaderParams.meshID);
+		const char* name = "Model ";
+		tempLoaderParams.modelID = name + std::to_string(++x);
+		PRINT_ERROR("{0}", tempLoaderParams.modelID);
 
-		modelNode->QueryFloatAttribute("posX",		&tempLoaderParams.posX);
-		modelNode->QueryFloatAttribute("posY",		&tempLoaderParams.posY);
-		modelNode->QueryFloatAttribute("posZ",		&tempLoaderParams.posZ);
+		modelElement->QueryStringAttribute("material", &tempLoaderParams.materialID);
+		modelElement->QueryStringAttribute("mesh",		&tempLoaderParams.meshID);
+
+		modelElement->QueryFloatAttribute("posX",		&tempLoaderParams.position.SetX());
+		modelElement->QueryFloatAttribute("posY",		&tempLoaderParams.position.SetY());
+		modelElement->QueryFloatAttribute("posZ",		&tempLoaderParams.position.SetZ());
 		
-		modelNode->QueryFloatAttribute("rotX",		&tempLoaderParams.rotX);
-		modelNode->QueryFloatAttribute("rotY",		&tempLoaderParams.rotY);
-		modelNode->QueryFloatAttribute("rotZ",		&tempLoaderParams.rotZ);
+		modelElement->QueryFloatAttribute("rotX",		&tempLoaderParams.rotation.SetX());
+		modelElement->QueryFloatAttribute("rotY",		&tempLoaderParams.rotation.SetY());
+		modelElement->QueryFloatAttribute("rotZ",		&tempLoaderParams.rotation.SetZ());
 
-		modelNode->QueryFloatAttribute("scaleX",	&tempLoaderParams.scaleX);
-		modelNode->QueryFloatAttribute("scaleY",	&tempLoaderParams.scaleY);
-		modelNode->QueryFloatAttribute("scaleZ",	&tempLoaderParams.scaleZ);
+		modelElement->QueryFloatAttribute("scaleX", &tempLoaderParams.scale.SetX());
+		modelElement->QueryFloatAttribute("scaleY", &tempLoaderParams.scale.SetY());
+		modelElement->QueryFloatAttribute("scaleZ", &tempLoaderParams.scale.SetZ());
 		
 		sceneModels.emplace_back(std::make_unique<Model>(tempLoaderParams));
 
