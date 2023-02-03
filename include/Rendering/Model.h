@@ -4,13 +4,11 @@
 
 struct ModelLoaderParams
 {
+	std::string modelID;
+
 	Vector3D position;
 	Vector3D rotation;
 	Vector3D scale;
-
-	//float posX, posY, posZ;			// Starting position of model
-	//float rotX, rotY, rotZ;			// Starting rotation of model
-	//float scaleX, scaleY, scaleZ;	// Starting scale of model
 
 	std::string materialID;			// ID of material that the model will use
 	ResourceID meshID;				// ID of mesh that the model will use
@@ -28,9 +26,16 @@ public:
 
 	void			SetModelPointers(std::weak_ptr<SceneCamera> pSceneCamera);
 
+	const std::string& getModelID() const { return m_modelID; }
+
+private:
+
 	inline void		SetMatrixValues();
 
 private:
+
+	// Unique ID of model - generated when model is created
+	std::string m_modelID;
 
 	// For MeshManager - The mesh this model uses
 	ResourceID		m_meshID;

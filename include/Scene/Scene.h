@@ -1,14 +1,19 @@
 #pragma once
 
-class Model;
+enum class SceneName
+{
+	UNSET_SCENE = 0,
+	FMPscene = 1,
+	jamieTest = 2,
+	lightTest = 3,
+	materialTest = 4,
+	shadowTest = 5
+};
 
-class SceneCamera;
-class SceneLightManager;
-class SceneSky;
-
-typedef std::vector<std::unique_ptr<Model>> SceneModels;
-
-// Class that contains all the objects of a loaded level. Loops through them every frame, updating and drawing them
+/// <summary>
+/// Encapsulates all the objects of a loaded .xml scene file
+/// Loops through the objects every frame updating and drawing them
+/// </summary>
 class Scene
 {
 public:
@@ -22,6 +27,16 @@ public:
 
 	const std::string&					GetSceneName() { return m_sceneFilename; }
 	const std::shared_ptr<SceneLightManager>& GetSceneLightManager() { return m_sceneLightManager; }
+
+	std::shared_ptr<Model> getModelAtIndex(unsigned int index)
+	{
+		if (index < m_sceneModels.size())
+			return m_sceneModels[index];
+		else
+			return {};
+	}
+
+	size_t getNumberOfModels() { return m_sceneModels.size(); }
 
 private:
 

@@ -44,9 +44,7 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 	*sceneSky = std::make_shared<SceneSky>(pFileRoot->Attribute(SKY_ATTRIBUTE));
 	m_tempSkyCubemapID = pFileRoot->Attribute(SKY_ATTRIBUTE);
 
-	TiXmlElement* materialElement = nullptr;
-	TiXmlElement* lightElement = nullptr;
-	TiXmlElement* modelElement = nullptr;
+	const TiXmlElement* pMaterialElement = nullptr, * pLightElement = nullptr, * pModelElement = nullptr;
 
 	// Loop through all <scene> elements
 	for (TiXmlElement* currentElement = pFileRoot->FirstChildElement(); currentElement != NULL; currentElement = currentElement->NextSiblingElement())
@@ -54,21 +52,21 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 		// <materials> element
 		if (strcmp(currentElement->Value(), MATERIALS_ELEMENT) == STRCMP_SUCCESS)
 		{
-			materialElement = currentElement;
+			pMaterialElement = currentElement;
 			continue;
 		}
 
 		// <lights> element
 		if (strcmp(currentElement->Value(), LIGHTS_ELEMENT) == STRCMP_SUCCESS)
 		{
-			lightElement = currentElement;
+			pLightElement = currentElement;
 			continue;
 		}
 
 		// <models> element
 		if (strcmp(currentElement->Value(), MODELS_ELEMENT) == STRCMP_SUCCESS)
 		{
-			modelElement = currentElement;
+			pModelElement = currentElement;
 			continue;
 		}
 	}
@@ -78,19 +76,19 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 	// Parse all the assets used in scene
 	PerformanceTimer parseTimer("Asset Parsing");
 
-	ParseMaterialsNode(materialElement);
+	ParseMaterialsNode(pMaterialElement);
 
 	// Load all textures and meshes concurrently
 	std::thread	firstMaterialThread(&SceneParser::ParseFirstHalfMaterials, this);
 	std::thread secondMaterialThread(&SceneParser::ParseSecondHalfMaterials, this);
-	std::thread modelThread(&SceneParser::ParseModelsNode, this, std::ref(modelElement), std::ref(sceneModels));
+	std::thread modelThread(&SceneParser::ParseModelsNode, this, std::ref(pModelElement), std::ref(sceneModels));
 
 	firstMaterialThread.join();
 	secondMaterialThread.join();
 	modelThread.join();
 
 	// Add scene lights to the light manager
-	ParseLightsNode(lightElement, sceneLightManager);
+	ParseLightsNode(pLightElement, sceneLightManager);
 
 	// Add the cubemap that the Skybox will use
 	CubemapManager::Get()->AddResource(m_tempSkyCubemapID);
@@ -247,9 +245,7 @@ void SceneParser::ParseModelsNode(const TiXmlElement* pModelElement, SceneModels
 		// Fill out initial value of a model from XML scene data
 		ModelLoaderParams tempLoaderParams;
 
-		const char* name = "Model ";
-		tempLoaderParams.modelID = name + std::to_string(++x);
-		PRINT_ERROR("{0}", tempLoaderParams.modelID);
+		tempLoaderParams.modelID = "Model " + std::to_string(x++);
 
 		modelElement->QueryStringAttribute("material", &tempLoaderParams.materialID);
 		modelElement->QueryStringAttribute("mesh",		&tempLoaderParams.meshID);
@@ -266,7 +262,7 @@ void SceneParser::ParseModelsNode(const TiXmlElement* pModelElement, SceneModels
 		modelElement->QueryFloatAttribute("scaleY", &tempLoaderParams.scale.SetY());
 		modelElement->QueryFloatAttribute("scaleZ", &tempLoaderParams.scale.SetZ());
 		
-		sceneModels.emplace_back(std::make_unique<Model>(tempLoaderParams));
+		sceneModels.emplace_back(std::make_shared<Model>(tempLoaderParams));
 
 		// Use the meshID to create initial mesh
 		MeshManager::Get()->AddResource(tempLoaderParams.meshID);
