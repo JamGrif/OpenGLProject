@@ -4,6 +4,8 @@
 
 typedef uint32_t OpenGLIndex;
 
+typedef int ImGuiWindowFlags;
+
 // OpenGLWindow
 struct GLFWwindow;
 
@@ -14,7 +16,7 @@ class SceneSky;
 
 class Model;
 
-typedef std::vector<std::unique_ptr<Model>> SceneModels;
+typedef std::vector<std::shared_ptr<Model>> SceneModels;
 
 // Material
 struct MaterialLoaderParams;

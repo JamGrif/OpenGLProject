@@ -1,62 +1,31 @@
 #pragma once
 
-enum class SceneName
-{
-	UNSET_SCENE		= 0,
-	FMPscene		= 1,
-	jamieTest		= 2,
-	lightTest		= 3,
-	materialTest	= 4,
-	shadowTest		= 5
-};
+class IPanel;
 
-// Forward Declarations
-class Scene;
-class Model;
+enum class SceneName;
 
-// A wrapper around imGui to display UI elements to the window
+/// <summary>
+/// A wrapper around ImGui to display UI elements to the screen
+/// </summary>
 class UI
 {
 public:
-	UI(bool uiVisible);
+	UI(bool bVisible);
 	~UI();
 
 	void		RenderUI();
 
 	void		ToggleUI();
 
-	bool		GetUiVisible() const { return m_uiVisible; }
-	SceneName	GetCurrentSceneName() const { return m_currentSceneName; }
-	int			GetFilterNum() const { return m_appPostProcess; }
+	bool		GetVisible() const { return m_bVisible; }
+	SceneName	GetCurrentSceneName() const;
 
 	void		UpdateSceneHandle(std::weak_ptr<Scene> newLoadedScene);
 
 private:
 
-	// Scene stuff
-	void		SceneOptionsPanel();
-	void		ControlsPanel();
-	void		PerformanceMetricsPanel();
+	bool		m_bVisible;
 
-	void		UpdateSceneInformation();
-
-	bool		m_uiVisible;
-
-	SceneName	m_currentSceneName; 
-
-	bool		m_bDirectionalLightInScene; // Indicates if the button to toggle the light should be visible or not
-	bool		m_bDirectionalLightActiveButton;
-
-	bool		m_bSpotLightInScene;
-	bool		m_bSpotLightActiveButton;
-
-	int			m_totalPointLights;
-	bool		m_bPointLightInScene[4];
-	bool		m_bPointLightActiveButton[4];
-
-	int			m_appPostProcess;
-
-	// Cached scene handle
-	std::weak_ptr<Scene>	m_sceneHandle;
+	std::vector<IPanel*> m_allPanels;
 };
 

@@ -177,6 +177,8 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\UI\ModelDataPanel.cpp" />
+    <ClCompile Include="src\UI\ControlPanel.cpp" />
     <ClCompile Include="dependencies\tinyXML\src\tinystr.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -193,6 +195,10 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\UI\IPanel.cpp" />
+    <ClCompile Include="src\UI\SceneModelsPanel.cpp" />
+    <ClCompile Include="src\UI\PerformancePanel.cpp" />
+    <ClCompile Include="src\UI\OptionsPanel.cpp" />
     <ClCompile Include="src\Rendering\Resource\IResource.cpp" />
     <ClCompile Include="src\Rendering\Resource\Shader.cpp" />
     <ClCompile Include="src\Rendering\Resource\Mesh.cpp" />
@@ -256,6 +262,7 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClCompile Include="src\Core\Vector3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\UI\ControlPanel.h" />
     <ClInclude Include="dependencies\tinyXML\include\tinyXML\tinystr.h" />
     <ClInclude Include="dependencies\tinyXML\include\tinyXML\tinyxml.h" />
     <ClInclude Include="include\Core\CommonFwd.h" />
@@ -283,6 +290,10 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClInclude Include="include\Rendering\Resource\Mesh.h" />
     <ClInclude Include="include\Rendering\Resource\Manager\ResourceManager.h" />
     <ClInclude Include="include\Rendering\Resource\IResource.h" />
+    <ClInclude Include="include\UI\IPanel.h" />
+    <ClInclude Include="include\UI\SceneModelsPanel.h" />
+    <ClInclude Include="include\UI\PerformancePanel.h" />
+    <ClInclude Include="include\UI\ModelDataPanel.h" />
     <ClInclude Include="res\icon\resource.h" />
     <ClInclude Include="include\Scene\SceneLightManager.h" />
     <ClInclude Include="include\Core\Application.h" />
@@ -295,6 +306,7 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
     <ClInclude Include="include\Rendering\Resource\Texture.h" />
     <ClInclude Include="include\Rendering\Resource\Shader.h" />
     <ClInclude Include="include\Core\Vector3D.h" />
+    <ClInclude Include="include\UI\OptionsPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\icon\Icon.ico" />
