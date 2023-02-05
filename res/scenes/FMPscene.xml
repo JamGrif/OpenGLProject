@@ -29,7 +29,8 @@
 		<material id="hieroglyphsExample" diffuseid="hieroglyphs_diff" specularid="hieroglyphs_spec" normalid="hieroglyphs_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
 		<material id="metalExample" diffuseid="metalHammer_diff" specularid="metalHammer_spec" normalid="metalHammer_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
 		<material id="skullExample" diffuseid="skullGround_diff" specularid="skullGround_spec" normalid="skullGround_norm" normalmapNormalize="1.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
-		<material id="rockExample" diffuseid="rock_diff" specularid="rock_spec" normalid="rock_norm" normalmapNormalize="1.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="skullExampleNull" diffuseid="skullGround_diff" specularid="skullGround_spec" normalid="null" normalmapNormalize="1.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="rockExample" diffuseid="rock_diff" specularid="rock_spec" normalid="rock_norm" normalmapNormalize="1.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
 		<material id="concrete2Example" diffuseid="concrete2_diff" specularid="concrete2_spec" normalid="concrete2_norm" normalmapNormalize="1.0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
 		<material id="sign1" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign1_emis"/>
 		<material id="sign2" diffuseid="sign_diff" specularid="sign_spec" normalid="sign_norm" normalmapNormalize="0.0" heightid="null" heightmapHeight="0.0" emissionid="signs/sign2_emis"/>
@@ -198,7 +199,7 @@
 		<model material="sandExample" mesh="plane" posX="-12.0" posY="-1.25" posZ="-4.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
 		<model material="lavaExample" mesh="plane" posX="-24.0" posY="-1.25" posZ="2.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
 		<model material="hieroglyphsExample" mesh="plane" posX="-18.0" posY="-1.25" posZ="2.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
-		<model material="metalExample" mesh="plane" posX="-18.0" posY="-1.25" posZ="8.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+		<model material="skullExampleNull" mesh="plane" posX="-18.0" posY="-1.25" posZ="8.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
 		<model material="skullExample" mesh="plane" posX="-24.0" posY="-1.25" posZ="8.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
 		<model material="rockExample" mesh="plane" posX="-12.0" posY="-1.25" posZ="2.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
 		<model material="concrete2Example" mesh="plane" posX="-12.0" posY="-1.25" posZ="8.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>

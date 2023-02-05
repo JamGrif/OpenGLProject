@@ -5,7 +5,8 @@
 		<material id="wood" diffuseid="stairs_diff" specularid="stairs_spec" normalid="stairs_norm" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
 		<material id="box" diffuseid="crate_diff" specularid="crate_spec" normalid="crate_norm" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
 		<material id="bestwall" diffuseid="woodWall_diff" specularid="woodWall_spec" normalid="woodWall_norm" normalmapNormalize="0" heightid="woodWall_height" heightmapHeight="0.04" emissionid="null"/>
-		<material id="lava" diffuseid="lava_diff" specularid="lava_spec" normalid="lava_norm" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="lava_emis"/>
+		<material id="lava" diffuseid="lava_diff" specularid="lava_spec" normalid="lava_norm" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+    <material id="lavaNull" diffuseid="lava_diff" specularid="lava_spec" normalid="null" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
 	</materials>
 	<lights>
 		<light type="direction" ambR="0.2" ambG="0.2" ambB="0.2" difR="0.5" difG="0.5" difB="0.5" speR="0.3" speG="0.3" speB="0.3" dirX="-2.0" dirY="-2.0" dirZ="-1.0"/>
@@ -51,6 +52,7 @@
 		<model material="wood" mesh="plane" posX="-3.0" posY="-1.5" posZ="-15.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
 		<model material="bestwall" mesh="wall" posX="-9.0" posY="4.8" posZ="-9.0" rotX="90.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
 		<model material="lava" mesh="plane" posX="-24.0" posY="-1.25" posZ="-2.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+    <model material="lavaNull" mesh="plane" posX="-24.0" posY="-1.25" posZ="-8.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
 		<model material="box" mesh="crate" posX="0.0" posY="-0.5" posZ="-7.5" rotX="0.0" rotY="0.0" rotZ="-90.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
 	</models>
 </scene>
