@@ -64,9 +64,11 @@ void SceneCamera::Update()
 /// <summary>
 /// Updates the cameras positions
 /// </summary>
-void SceneCamera::SetPosition(const glm::vec3& newPos)
+void SceneCamera::SetPosition(const Vector3D& newPos)
 {
-	m_position = newPos;
+	m_position.x = newPos.GetX();
+	m_position.y = newPos.GetY();
+	m_position.z = newPos.GetZ();
 
 	UpdateCameraVectors();
 	UpdateLookatMatrix();

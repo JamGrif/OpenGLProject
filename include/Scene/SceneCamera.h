@@ -24,7 +24,7 @@ public:
 	const glm::vec3&	GetPosition() const { return m_position; }
 	const glm::vec3&	GetFront() const { return m_front; }
 
-	void				SetPosition(const glm::vec3& newPos);
+	void				SetPosition(const Vector3D& newPos);
     
 private:
 

@@ -148,6 +148,11 @@ void Scene::DrawScene()
 		m_sceneSky->DrawSky();
 }
 
+void Scene::SetSceneCameraPosition(Vector3D newPosition)
+{
+	m_sceneCamera->SetPosition(newPosition);
+}
+
 /// <summary>
 /// Alters the lights position or colour every frame depending on which scene is loaded
 /// ------ Need to be redone ------
