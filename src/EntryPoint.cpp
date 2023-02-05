@@ -7,13 +7,13 @@ int WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPT
 	// Enable console
 	AllocConsole();
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+	MoveWindow(GetConsoleWindow(), -900, 200, 900, 500, TRUE);
 
 	std::unique_ptr<Application> app = std::make_unique<Application>();
 	
 	if (app->AppInit())
-	{
 		app->AppLoop();
-	}
+	
 
 	return 0;
 }
