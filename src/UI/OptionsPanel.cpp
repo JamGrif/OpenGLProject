@@ -7,12 +7,12 @@
 #include "Scene/SceneLightManager.h"
 #include "Scene/Scene.h"
 
-OptionsPanel::OptionsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag)
-	:IPanel(panelName, imGuiWindowFlag),
+OptionsPanel::OptionsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible)
+	:IPanel(panelName, imGuiWindowFlag, bVisible),
 	m_bDirectionalLightInScene(false), m_bDirectionalLightActiveButton(true),
 	m_bSpotLightInScene(false), m_bSpotLightActiveButton(true),
 	m_totalPointLights(0), m_bPointLightInScene{ false, false, false, false }, m_bPointLightActiveButton{ true, true, true, true },
-	m_currentSceneName(SceneName::UNSET_SCENE)
+	m_selectedSceneName(SceneName::UNSET_SCENE)
 {
 }
 
@@ -20,32 +20,42 @@ OptionsPanel::~OptionsPanel()
 {
 }
 
+/// <summary>
+/// Inherited from IPanel
+/// Unused in this class
+/// </summary>
+void OptionsPanel::Update()
+{
+}
+
+/// <summary>
+/// Inherited from IPanel
+/// Displays all the buttons and checkboxes for the user to manipulate the scene
+/// </summary>
 void OptionsPanel::Render()
 {
-	StartOfFrame();
-
 	// Reset variable
-	m_currentSceneName = SceneName::UNSET_SCENE;
+	m_selectedSceneName = SceneName::UNSET_SCENE;
 	
 	ImGui::Text("Change Scene:");
 	if (ImGui::Button("FMPscene.txt"))
-		m_currentSceneName = SceneName::FMPscene;
+		m_selectedSceneName = SceneName::FMPscene;
 	
 	if (ImGui::Button("jamieTest.txt"))
-		m_currentSceneName = SceneName::jamieTest;
+		m_selectedSceneName = SceneName::jamieTest;
 	
 	if (ImGui::Button("lightTest.txt"))
-		m_currentSceneName = SceneName::lightTest;
+		m_selectedSceneName = SceneName::lightTest;
 	
 	if (ImGui::Button("materialTest.txt"))
-		m_currentSceneName = SceneName::materialTest;
+		m_selectedSceneName = SceneName::materialTest;
 	
 	if (ImGui::Button("shadowTest.txt"))
-		m_currentSceneName = SceneName::shadowTest;
+		m_selectedSceneName = SceneName::shadowTest;
 	
 	ImGui::Text("Toggle Active Lights:");
 	
-	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle.lock()->GetSceneLightManager();
+	std::shared_ptr<SceneLightManager> sceneLM = m_pSceneHandle.lock()->GetSceneLightManager().lock();
 	
 	if (m_bDirectionalLightInScene)
 	{
@@ -94,36 +104,39 @@ void OptionsPanel::Render()
 	
 	if (ImGui::Button("???"))
 		TheOpenGLRenderer::Get()->SetScreenFilter(ScreenFilter::Weird);
-
-	EndOfFrame();
 }
 
+/// <summary>
+/// Inherited from IPanel
+/// Sets up the available light checkboxes depending on which ones are present in scene 
+/// </summary>
 void OptionsPanel::SceneChange()
 {
 	// Get new scene lightmanager
-	std::shared_ptr<SceneLightManager> sceneLM = m_sceneHandle.lock()->GetSceneLightManager();
-
-	// Check if directionalLight in scene
-	m_bDirectionalLightInScene = sceneLM->GetCurrentDirectionalLights() > 0 ? true : false;
-
-	// Check if spotLight in scene
-	m_bSpotLightInScene = sceneLM->GetCurrentSpotLights() > 0 ? true : false;
-
-	// Reset status of each array element only if some are set
-	if (m_totalPointLights > 0)
-	{
-		for (int i = 0; i < m_totalPointLights; i++)
-		{
-			m_bPointLightInScene[i] = false;
-		}
-	}
+	std::shared_ptr<SceneLightManager> pLightManager = m_pSceneHandle.lock()->GetSceneLightManager().lock();
 
 	// Check how many point lights in scene
-	m_totalPointLights = sceneLM->GetCurrentPointLights();
+	m_totalPointLights = pLightManager->GetCurrentPointLights();
 
-	// Set status for number of point lights
+	// Check if directionalLight in scene
+	m_bDirectionalLightInScene = pLightManager->GetCurrentDirectionalLights() > 0 ? true : false;
+
+	// Check if spotLight in scene
+	m_bSpotLightInScene = pLightManager->GetCurrentSpotLights() > 0 ? true : false;
+
+	// Check if each pointLight in scene
 	for (int i = 0; i < m_totalPointLights; i++)
 	{
 		m_bPointLightInScene[i] = true;
 	}
+
+	// Reset status of each light checkbox
+	for (int i = 0; i < m_totalPointLights; i++)
+	{
+		m_bPointLightActiveButton[i] = true;
+	}
+
+	m_bDirectionalLightActiveButton = true;
+	m_bSpotLightActiveButton = true;
+
 }

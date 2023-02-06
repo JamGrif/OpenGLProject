@@ -5,12 +5,12 @@ class PerformancePanel :
 	public IPanel
 {
 public:
-	PerformancePanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag);
+	PerformancePanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible);
 	~PerformancePanel();
 
-	void Render() override;
-
-	void SceneChange() override;
+	virtual void Update() override;
+	virtual void Render() override;
+	virtual void SceneChange() override;
 
 private:
 };

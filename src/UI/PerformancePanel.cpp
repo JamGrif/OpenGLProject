@@ -3,8 +3,8 @@
 
 #include "imgui.h"
 
-PerformancePanel::PerformancePanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag)
-	:IPanel(panelName, imGuiWindowFlag)
+PerformancePanel::PerformancePanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible)
+	:IPanel(panelName, imGuiWindowFlag, bVisible)
 {
 }
 
@@ -12,21 +12,29 @@ PerformancePanel::~PerformancePanel()
 {
 }
 
-void PerformancePanel::Render()
+/// <summary>
+/// Inherited from IPanel
+/// Unused in this class
+/// </summary>
+void PerformancePanel::Update()
 {
-	StartOfFrame();
-
-	ImGui::Text("FPS:");
-	ImGui::SameLine();
-	ImGui::Text(std::to_string(ApplicationClock::Get()->GetFrameCount()).c_str());
-
-	ImGui::Text("Delta Time:");
-	ImGui::SameLine();
-	ImGui::Text(std::to_string(ApplicationClock::Get()->GetDeltaTime()).c_str());
-
-	EndOfFrame();
 }
 
+/// <summary>
+/// Inherited from IPanel
+/// Displays data from the application clock
+/// </summary>
+void PerformancePanel::Render()
+{
+	ImGui::Text("FPS: %i", ApplicationClock::Get()->GetFrameCount());
+
+	ImGui::Text("Delta Time: %f", ApplicationClock::Get()->GetDeltaTime());
+}
+
+/// <summary>
+/// Inherited from IPanel
+/// Unused in this class
+/// </summary>
 void PerformancePanel::SceneChange()
 {
 }

@@ -5,12 +5,12 @@ class ControlPanel :
 	public IPanel
 {
 public:
-	ControlPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag);
+	ControlPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible);
 	~ControlPanel();
 
-	void Render() override; 
-
-	void SceneChange() override;
+	virtual void Update() override;
+	virtual void Render() override; 
+	virtual void SceneChange() override;
 
 private:
 };

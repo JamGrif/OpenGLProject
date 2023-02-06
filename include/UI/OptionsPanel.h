@@ -7,27 +7,29 @@ class OptionsPanel :
     public IPanel
 {
 public:
-	OptionsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag);
+	OptionsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible);
 	~OptionsPanel();
 
-	void Render() override;
+	virtual void Update() override;
+	virtual void Render() override;
+	virtual void SceneChange() override;
 
-	void SceneChange() override;
-
-	SceneName GetCurrentSceneName() { return m_currentSceneName; }
+	SceneName GetSelectedSceneName() { return m_selectedSceneName; }
 
 private:
 
-	SceneName	m_currentSceneName;
+	SceneName	m_selectedSceneName;
 
-	bool		m_bDirectionalLightInScene; // Indicates if the button to toggle the light should be visible or not
-	bool		m_bDirectionalLightActiveButton;
-
+	// Indicates if the button to toggle the light should be visible or not
+	bool		m_bDirectionalLightInScene;
 	bool		m_bSpotLightInScene;
+	bool		m_bPointLightInScene[4];
+
+	// Toggle state of each light button (if active)
+	bool		m_bDirectionalLightActiveButton;
 	bool		m_bSpotLightActiveButton;
+	bool		m_bPointLightActiveButton[4];
 
 	uint8_t		m_totalPointLights;
-	bool		m_bPointLightInScene[4];
-	bool		m_bPointLightActiveButton[4];
 };
 

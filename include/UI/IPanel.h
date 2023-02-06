@@ -1,5 +1,6 @@
 #pragma once
 
+// Flag for rendering panel
 enum class RenderFlag
 {
 	COMMON_RESIZE_FLAGS = 0,
@@ -10,29 +11,36 @@ enum class RenderFlag
 class IPanel
 {
 public:
-	IPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag);
+	IPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible);
 	virtual ~IPanel();
 
-	void StartOfFrame();
-	void EndOfFrame();
+	// What the panel updates every frame
+	virtual void Update() = 0;
 
-	const std::string& getPanelName() const { return m_panelName; }
-	ImGuiWindowFlags getFlag() const { return m_imGuiWindowFlag; }
-
-	// What the panel does every frame
+	// What the panel renders every frame
 	virtual void Render() = 0;
 
-	// What the panel does when the scene changes
+	// What the panel does when scene changes
 	virtual void SceneChange() = 0;
 
-	virtual void updateSceneHandle(std::weak_ptr<Scene> sceneHandle) { m_sceneHandle = sceneHandle; }
+	const std::string&	GetPanelName() const { return m_panelName; }
+	ImGuiWindowFlags	GetFlag() const { return m_imGuiWindowFlag; }
+	bool				GetVisible() const { return m_bVisible; }
+
+	virtual void UpdateSceneHandle(std::weak_ptr<Scene> pSceneHandle) { m_pSceneHandle = pSceneHandle; }
 
 protected:
 
+	// Label of panel when rendered
 	std::string m_panelName;
 
+	// Rendering flag for panel
 	ImGuiWindowFlags m_imGuiWindowFlag;
 
-	std::weak_ptr<Scene>	m_sceneHandle;
+	// The currently loaded scene
+	std::weak_ptr<Scene>	m_pSceneHandle;
+
+	// Whether the panel will be rendered
+	bool m_bVisible;
 };
 

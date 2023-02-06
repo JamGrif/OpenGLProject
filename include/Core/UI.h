@@ -17,15 +17,16 @@ public:
 
 	void		ToggleUI();
 
-	bool		GetVisible() const { return m_bVisible; }
 	SceneName	GetCurrentSceneName() const;
 
 	void		UpdateSceneHandle(std::weak_ptr<Scene> newLoadedScene);
 
 private:
 
-	bool		m_bVisible;
+	// Each panel the UI will update and render every frame
+	std::vector<std::shared_ptr<IPanel>> m_allPanels;
 
-	std::vector<IPanel*> m_allPanels;
+	// Whether the panels of the UI will be updated and rendered
+	bool		m_bVisible;
 };
 

@@ -5,17 +5,24 @@ class SceneModelsPanel :
     public IPanel
 {
 public:
-	SceneModelsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag);
+	SceneModelsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible);
 	~SceneModelsPanel();
 
-	virtual void Render() override;
+	virtual void	Update() override;
+	virtual void	Render() override;
+	virtual void	SceneChange() override;
 
-	virtual void SceneChange() override;
+	int				GetSelectedModelIndex() { return m_selectedModelIndex; }
+	bool			GetUpdatedSelectedModel() { return m_bNewSelectedModel; }
 
-	unsigned int GetSelectedModelIndex() { return m_selectedModelIndex; }
+	void			ClearSelectedModelIndex() { m_selectedModelIndex = -1; }
 
 private:
 
-	unsigned int m_selectedModelIndex;
+	// Index of the currently selected model in the SceneModels in Scene
+	int				m_selectedModelIndex;
+
+	// Whether a Model button has been pressed and the ModelData panel needs to be updated
+	bool			m_bNewSelectedModel;
 };
 

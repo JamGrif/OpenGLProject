@@ -2,28 +2,35 @@
 #include "UI/IPanel.h"
 
 class SceneModelsPanel;
+struct SelectedModelCache;
 
 class ModelDataPanel :
     public IPanel
 {
 public:
-	ModelDataPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, SceneModelsPanel* pSceneModelPanel);
+	ModelDataPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, std::weak_ptr<SceneModelsPanel> pSceneModelPanel);
 	~ModelDataPanel();
 
+	virtual void Update() override;
 	virtual void Render() override;
-
 	virtual void SceneChange() override;
-
 
 private:
 
-	void ClearSelectedEntity();
+	void SetupModelCache();
+	void ClearModelCache();
 
-	SceneModelsPanel* m_pSceneModelPanel;
+	void DeleteModel_BUTTON();
+	void GotoModel_BUTTON(const Vector3D& newPos);
+	void ClosePanel_BUTTON();
 
+	// Pointer to the SceneModels panel
+	// Lets this panel check if a new model has been selected
+	std::weak_ptr<SceneModelsPanel> m_pSceneModelPanel;
 
-	bool m_bVisible;
-	unsigned int m_selectedModelIndex;
+	std::unique_ptr<SelectedModelCache> m_pModelCache;
 
+	// Index of the currently selected model in the SceneModels in Scene
+	int m_selectedModelIndex;
 };
 
