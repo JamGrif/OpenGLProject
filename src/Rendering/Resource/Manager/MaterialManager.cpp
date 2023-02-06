@@ -11,7 +11,7 @@ bool MaterialManager::CreateMaterial(const std::string& materialID, const Materi
 		return false;
 
 	// Create material and insert into materialMap
-	m_materialMap.insert({ materialID, std::make_unique<Material>(pParams) });
+	m_materialMap.insert({ materialID, std::make_shared<Material>(pParams) });
 
 	return true;
 }

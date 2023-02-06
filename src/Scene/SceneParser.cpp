@@ -234,7 +234,8 @@ void SceneParser::ParseLightsNode(const TiXmlElement* pLightsElement, std::share
 /// </summary>
 void SceneParser::ParseModelsNode(const TiXmlElement* pModelElement, SceneModels& sceneModels)
 {
-	unsigned int x = 0;
+	std::unordered_multimap<std::string, std::string> tempMap;
+
 	// Loop through all the elements of <models> node
 	for (const TiXmlElement* modelElement = pModelElement->FirstChildElement(); modelElement != NULL; modelElement = modelElement->NextSiblingElement())
 	{
@@ -245,9 +246,7 @@ void SceneParser::ParseModelsNode(const TiXmlElement* pModelElement, SceneModels
 		// Fill out initial value of a model from XML scene data
 		ModelLoaderParams tempLoaderParams;
 
-		tempLoaderParams.modelID = "Model " + std::to_string(x++);
-
-		modelElement->QueryStringAttribute("material", &tempLoaderParams.materialID);
+		modelElement->QueryStringAttribute("material",	&tempLoaderParams.materialID);
 		modelElement->QueryStringAttribute("mesh",		&tempLoaderParams.meshID);
 
 		modelElement->QueryFloatAttribute("posX",		&tempLoaderParams.position.SetX());
@@ -258,10 +257,14 @@ void SceneParser::ParseModelsNode(const TiXmlElement* pModelElement, SceneModels
 		modelElement->QueryFloatAttribute("rotY",		&tempLoaderParams.rotation.SetY());
 		modelElement->QueryFloatAttribute("rotZ",		&tempLoaderParams.rotation.SetZ());
 
-		modelElement->QueryFloatAttribute("scaleX", &tempLoaderParams.scale.SetX());
-		modelElement->QueryFloatAttribute("scaleY", &tempLoaderParams.scale.SetY());
-		modelElement->QueryFloatAttribute("scaleZ", &tempLoaderParams.scale.SetZ());
-		
+		modelElement->QueryFloatAttribute("scaleX",		&tempLoaderParams.scale.SetX());
+		modelElement->QueryFloatAttribute("scaleY",		&tempLoaderParams.scale.SetY());
+		modelElement->QueryFloatAttribute("scaleZ",		&tempLoaderParams.scale.SetZ());
+
+		// Set models ID as number of times the mesh has currently been used in the scene
+		tempMap.insert({ tempLoaderParams.meshID , tempLoaderParams.meshID });
+		tempLoaderParams.modelID = tempLoaderParams.meshID + " " + std::to_string(tempMap.count(tempLoaderParams.meshID));
+
 		sceneModels.emplace_back(std::make_shared<Model>(tempLoaderParams));
 
 		// Use the meshID to create initial mesh

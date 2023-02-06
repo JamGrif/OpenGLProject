@@ -109,7 +109,7 @@ void Mesh::Parse(const std::string& filepath)
 		}
 	}
 
-	m_resourceFilePath = meshFilepath;
+	m_resourceFilepath = meshFilepath;
 }
 
 /// <summary>

@@ -12,6 +12,8 @@ static constexpr int NO_TEXTURE = 0;
 static const std::string TEXTURE_FILEPATH_PREFIX = "res/textures/";
 static const std::string TEXTURE_FILEPATH_SUFFIX = ".png";
 
+static const char* STBI_ERROR_MESSAGE = "can't fopen";
+
 Texture::Texture()
 	:IResource(), m_textureWidth(0), m_textureHeight(0), m_textureBPP(0),
 	m_textureType(TextureType::UNSET), m_pTempBuffer(nullptr)
@@ -40,18 +42,16 @@ void Texture::Parse(const std::string& filepath)
 	m_pTempBuffer = stbi_load(textureFilepath.c_str(), &m_textureWidth, &m_textureHeight, &m_textureBPP, DESIRED_TEXTURE_CHANNELS);
 
 	// Check result
-	if (stbi_failure_reason() == "can't fopen")
+	if (stbi_failure_reason() == STBI_ERROR_MESSAGE)
 	{
-		PRINT_WARN("TEXTURE-> {0} failed to parse texture", m_resourceFilePath);
+		PRINT_WARN("TEXTURE-> {0} failed to parse texture", m_resourceFilepath);
 		stbi_image_free(m_pTempBuffer);
 
 		return;
 	}
 
-	m_resourceFilePath = textureFilepath;
-	//m_textureType = textureType;
-
-	//return true;
+	m_resourceID = filepath;
+	m_resourceFilepath = textureFilepath;
 }
 
 /// <summary>
