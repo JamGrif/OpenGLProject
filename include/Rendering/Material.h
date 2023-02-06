@@ -2,6 +2,11 @@
 
 #include "glm/mat4x4.hpp"
 
+typedef std::array<bool, 5> MaterialUsingTextures;
+typedef std::array<ResourceID, 5> MaterialTextures;
+
+const std::string EMPTY_TEXTURE_ID = "";
+
 struct MaterialLoaderParams
 {
 	std::string textureMapIDs[5];
@@ -20,6 +25,14 @@ public:
 	Material(const MaterialLoaderParams& pParams);
 	~Material();
 
+	/// <summary>
+	/// Returns the IDs of all textures the materials uses
+	/// </summary>
+	const MaterialTextures& GetAllTextureIDs()
+	{
+		return m_textureMapIDs;
+	}
+
 private:
 
 	void		BindMaterial(const glm::mat4& modelMat);
@@ -33,8 +46,8 @@ private:
 	std::string m_shaderID;
 
 	// Textures the material uses
-	std::string m_textureMapIDs[5];
-	bool		m_textureMapUsing[5] = { false,false,false,false,false };
+	MaterialUsingTextures	m_textureMapUsing;
+	MaterialTextures m_textureMapIDs;
 
 	// Rendering data
 	bool		m_bNormalMapNormalize;

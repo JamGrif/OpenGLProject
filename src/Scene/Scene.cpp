@@ -70,10 +70,9 @@ static void resetSceneValues()
 }
 
 Scene::Scene(const std::string& sceneFilename)
-	:m_sceneFilename(sceneFilename), m_sceneCamera(nullptr), m_sceneLightManager(nullptr)
+	:m_sceneFilename(sceneFilename)
 {
-
-	resetSceneValues();
+	//resetSceneValues();
 }
  
 Scene::~Scene()
@@ -84,6 +83,7 @@ Scene::~Scene()
 	TextureManager::Get()->ClearAllResources();
 	ShaderManager::Get()->ResetAllResources();
 	CubemapManager::Get()->ClearAllResources();
+
 	TheMaterialManager::Instance()->ClearAllMaterials();
 
 	PRINT_INFO("SCENE->{0} has unloaded sucessfully", m_sceneFilename);
@@ -119,20 +119,19 @@ bool Scene::LoadScene()
 }
 
 /// <summary>
-/// Updates scene models, lights and camera
+/// Update scene models and camera
 /// </summary>
 void Scene::UpdateScene()
 {
-	UpdateSceneLight();
+	//UpdateSceneLight();
 
 	m_sceneCamera->Update();
 
-	for (const auto& m : m_sceneModels)
+	for (const auto& model : m_sceneModels)
 	{
-		m->UpdateModel();
+		model->UpdateModel();
 	}
 }
-
 
 /// <summary>
 /// Draw all scene models and the sky
@@ -146,6 +145,21 @@ void Scene::DrawScene()
 
 	if (m_sceneSky)
 		m_sceneSky->DrawSky();
+}
+
+std::weak_ptr<Model> Scene::GetModelAtIndex(unsigned int index)
+{
+	if (index < m_sceneModels.size())
+		return m_sceneModels[index];
+	else
+		return {};
+}
+
+
+void Scene::DeleteModelAtIndex(unsigned int index)
+{
+	if (index < m_sceneModels.size())
+		m_sceneModels.erase(m_sceneModels.begin() + index);
 }
 
 void Scene::SetSceneCameraPosition(Vector3D newPosition)

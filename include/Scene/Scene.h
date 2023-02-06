@@ -1,7 +1,5 @@
 #pragma once
 
-class Model;
-
 enum class SceneName
 {
 	UNSET_SCENE = 0,
@@ -27,20 +25,15 @@ public:
 	void								UpdateScene();
 	void								DrawScene();
 
+	void								SetSceneCameraPosition(Vector3D newPosition);
+
 	const std::string&					GetSceneName() { return m_sceneFilename; }
-	const std::shared_ptr<SceneLightManager>& GetSceneLightManager() { return m_sceneLightManager; }
+	std::weak_ptr<SceneLightManager>	GetSceneLightManager() { return m_sceneLightManager; }
 
-	std::weak_ptr<Model> getModelAtIndex(unsigned int index)
-	{
-		if (index < m_sceneModels.size())
-			return m_sceneModels[index];
-		else
-			return {};
-	}
+	std::weak_ptr<Model>				GetModelAtIndex(unsigned int index);
+	void								DeleteModelAtIndex(unsigned int index);
+	size_t								GetNumberOfModels() { return m_sceneModels.size(); }
 
-	size_t getNumberOfModels() { return m_sceneModels.size(); }
-
-	void SetSceneCameraPosition(Vector3D newPosition);
 
 private:
 
@@ -55,6 +48,4 @@ private:
 
 	// All models used in scene
 	SceneModels	m_sceneModels;
-
-
 };

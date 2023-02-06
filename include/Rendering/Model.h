@@ -28,6 +28,13 @@ public:
 
 	const std::string& getModelID() const { return m_modelID; }
 
+	const Vector3D& GetPosition() const { return m_position; }
+	const Vector3D& GetRotation() const { return m_rotation; }
+	const Vector3D& GetScale() const { return m_scale; }
+
+	const ResourceID& GetMeshID() const { return m_meshID; }
+	const std::string& GetMaterialID() const { return m_materialID; }
+
 private:
 
 	inline void		SetMatrixValues();

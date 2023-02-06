@@ -19,7 +19,11 @@ public:
 	virtual void	Create() = 0;
 	virtual void	Reset() = 0;
 
+	OpenGLIndex		GetOpenGLID() { return m_OpenGLResourceID; }
 	bool			GetCreated() { return m_bIsCreated; }
+
+	const ResourceID& GetResourceID() { return m_resourceID; }
+	const std::string& GetFilepath() { return m_resourceFilepath; }
 
 protected:
 
@@ -28,7 +32,9 @@ protected:
 
 	bool			m_bIsCreated;
 
-	std::string		m_resourceFilePath;
+	// ID used by the ResourceManager to retrieve this object
+	ResourceID		m_resourceID;
 
+	std::string		m_resourceFilepath;
 };
 
