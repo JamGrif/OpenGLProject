@@ -1,50 +1,24 @@
 #pragma once
 
-// Forward declares all common typedefs and classes/structs used across project
+// Forward declares typedefs and classes/structs that are used in various files
 
+// ResourceManager
+typedef std::string ResourceID;
+
+// Internal OpenGL buffer index
 typedef uint32_t OpenGLIndex;
 
 typedef int ImGuiWindowFlags;
 
-// OpenGLWindow
-struct GLFWwindow;
-
 // Scene
+class Scene;
 class SceneCamera;
 class SceneLightManager;
 class SceneSky;
 
 class Model;
-
 typedef std::vector<std::shared_ptr<Model>> SceneModels;
 
 // Material
-struct MaterialLoaderParams;
-
-typedef std::unordered_map<std::string, MaterialLoaderParams> PendingMaterialPool;
-
-// LightManager
-struct DirectionalLight;
-struct PointLight;
-struct SpotLight;
-
-struct LightLoaderParams;
-
-typedef std::vector<std::shared_ptr<DirectionalLight>>	SceneDirectionalLights;
-typedef std::vector<std::shared_ptr<PointLight>>		ScenePointLights;
-typedef std::vector<std::shared_ptr<SpotLight>>			SceneSpotLights;
-
-// ResourceManager
-typedef std::string ResourceID;
-
-// Mesh
-struct Vertex;
-
-typedef std::vector<Vertex> MeshVertices;
-typedef std::vector<uint32_t> MeshIndices;
-
-// Shader
-typedef std::unordered_map<std::string, uint32_t> UniformCache;
-
-// UI
-class Scene;
+constexpr int MATERIAL_TEXTURE_SLOTS = 5;
+typedef std::array<ResourceID, MATERIAL_TEXTURE_SLOTS> MaterialTextures;
