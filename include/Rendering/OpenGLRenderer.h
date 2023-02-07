@@ -5,6 +5,9 @@
 // Required for ScreenFilters enum
 #include "Rendering/OpenGLFramebuffer.h"
 
+/// <summary>
+/// Interface for rendering buffers that are bound to the OpenGL context
+/// </summary>
 class OpenGLRenderer
 {
 public:

@@ -2,6 +2,10 @@
 
 #include "spdlog/logger.h"
 
+/// <summary>
+/// Logging system that prints text to the console
+/// Provides four different printing types which affect colour of text
+/// </summary>
 class Log
 {
 public:

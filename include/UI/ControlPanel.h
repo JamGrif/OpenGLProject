@@ -1,6 +1,9 @@
 #pragma once
 #include "UI/IPanel.h"
 
+/// <summary>
+/// Displays the keyboard and mouse controls to move the SceneCamera
+/// </summary>
 class ControlPanel :
 	public IPanel
 {
@@ -14,4 +17,3 @@ public:
 
 private:
 };
-

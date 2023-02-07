@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 
 constexpr static float ONE_SECOND = 1.0;
 

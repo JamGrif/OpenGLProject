@@ -7,10 +7,7 @@
 
 #include "Rendering/OpenGLWindow.h"
 #include "Scene/Scene.h"
-//#include "Scene/SceneLightManager.h"
-//#include "Rendering/Model.h"
 #include "Core/InputHandler.h"
-//#include "Rendering/OpenGLRenderer.h"
 
 #include "UI/OptionsPanel.h"
 #include "UI/ControlPanel.h"

@@ -55,4 +55,3 @@ private:
 	template<typename Texture>
 	friend class ResourceManager;
 };
-

@@ -1,6 +1,9 @@
 #pragma once
 #include "UI/IPanel.h"
 
+/// <summary>
+/// Displays the current FPS and delta time of the application
+/// </summary>
 class PerformancePanel :
 	public IPanel
 {
@@ -14,4 +17,3 @@ public:
 
 private:
 };
-

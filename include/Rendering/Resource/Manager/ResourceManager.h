@@ -6,8 +6,6 @@
 #include "Rendering/Resource/Cubemap.h"
 #include "Rendering/Resource/Shader.h"
 
-
-
 /// <summary>
 /// Encapsulates and abstracts the creation, deletion and usage of a Resource object providing a consistent interface
 /// Mesh, Texture, Cubemap and Shader objects can only be used through this class

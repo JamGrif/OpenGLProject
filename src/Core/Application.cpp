@@ -74,7 +74,8 @@ void Application::HandleInput()
 /// </summary>
 void Application::UpdateApp()
 {
-	m_loadedScene->UpdateScene();
+	if (m_loadedScene)
+		m_loadedScene->UpdateScene();
 
 	if (m_UI)
 	{
@@ -92,7 +93,7 @@ void Application::RenderApp()
 	TheOpenGLRenderer::Get()->StartOfFrame();
 
 	if (m_loadedScene)
-		m_loadedScene->DrawScene();
+		m_loadedScene->RenderScene();
 
 	if (m_UI)
 		m_UI->RenderUI();
@@ -129,7 +130,7 @@ bool Application::SetScene(SceneName newSceneNumber)
 			return false;
 	}
 
-	// Stop reloading current scene
+	// Prevent reloading current scene
 	if (m_loadedScene && newSceneFilename == m_loadedScene->GetSceneName())
 		return false;
 

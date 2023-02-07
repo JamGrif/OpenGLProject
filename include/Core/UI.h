@@ -5,7 +5,7 @@ class IPanel;
 enum class SceneName;
 
 /// <summary>
-/// A wrapper around ImGui to display UI elements to the screen
+/// A wrapper around ImGui to display various UI panels to the screen
 /// </summary>
 class UI
 {
@@ -29,4 +29,3 @@ private:
 	// Whether the panels of the UI will be updated and rendered
 	bool		m_bVisible;
 };
-

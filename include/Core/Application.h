@@ -1,8 +1,7 @@
 #pragma once
 
-class UI;
-class Scene;
 enum class SceneName;
+class UI;
 
 /// <summary>
 /// Abstracts the program out of main.cpp, encapsulating the entire program
@@ -28,4 +27,3 @@ private:
 
 	std::shared_ptr<Scene>	m_loadedScene;
 };
-

@@ -59,4 +59,3 @@ private:
 	const char* m_tag;
 	bool		m_bStopped;
 };
-

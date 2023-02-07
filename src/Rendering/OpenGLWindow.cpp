@@ -5,7 +5,7 @@
 
 #include "stb_image/stb_image.h"
 
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 
 static constexpr int OPENGL_MAJOR_VERSION = 4;
 static constexpr int OPENGL_MINOR_VERSION = 6;

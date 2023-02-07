@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Rendering/Resource/Mesh.h"
 
-#include <assimp/Importer.hpp>		// Importer interface
-#include <assimp/scene.h>			// Output data structure
-#include <assimp/postprocess.h>		// Post-processing flags
+#include "assimp/Importer.hpp"		// Importer interface
+#include "assimp/scene.h"			// Output data structure
+#include "assimp/postprocess.h"		// Post-processing flags
 
-#include <glm/vec2.hpp>
-#include <glm/vec3.hpp>
+#include "glm/vec2.hpp"
+#include "glm/vec3.hpp"
 
-#include <GL/glew.h>
+#include "GL/glew.h"
 
 static constexpr int NO_BUFFER = 0;
 
@@ -55,7 +55,6 @@ Mesh::~Mesh()
 /// </summary>
 void Mesh::Parse(const std::string& filepath)
 {
-
 	std::string meshFilepath = MESH_FILEPATH_PREFIX + filepath + MESH_FILEPATH_SUFFIX;
 
 	Assimp::Importer assimpImporter;
@@ -137,7 +136,6 @@ void Mesh::Create()
 
 void Mesh::Reset()
 {
-
 }
 
 /// <summary>

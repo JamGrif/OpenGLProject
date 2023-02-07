@@ -4,7 +4,7 @@
 #include "Rendering/OpenGLWindow.h"
 #include "Rendering/Resource/Manager/ResourceManager.h"
 
-#include <GL/glew.h>
+#include "GL/glew.h"
 
 OpenGLFramebuffer::OpenGLFramebuffer(bool multisampled)
 	:m_FBO(0), m_frameColourTexture(0), m_RBO(0), m_quadVBO(0), m_screenFilter(ScreenFilter::Default),

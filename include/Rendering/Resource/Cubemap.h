@@ -16,6 +16,9 @@ enum cubeFaces
 
 typedef std::array<std::string, 6> CubemapFaces;
 
+/// <summary>
+/// Encapsulates an OpenGL texture buffer to act as a Cubemap
+/// </summary>
 class Cubemap :
 	public IResource
 {
@@ -49,4 +52,3 @@ private:
 	template<typename Cubemap>
 	friend class ResourceManager;
 };
-

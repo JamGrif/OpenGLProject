@@ -11,7 +11,9 @@ enum class CameraMovement
 	RIGHT		= 3
 };
 
-// Camera class used to provide view matrix and allows input to alter position
+/// <summary>
+/// Provides a view matrix for rendering that can be manipulated on user input
+/// </summary>
 class SceneCamera
 {
 public:

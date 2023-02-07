@@ -6,7 +6,7 @@
 #include "Scene/SceneLightManager.h"
 #include "Rendering/OpenGLRenderer.h"
 
-#include <glm\gtc\matrix_transform.hpp>
+#include "glm\gtc\matrix_transform.hpp"
 
 static const char* NULL_TEXTURE = "null";
 

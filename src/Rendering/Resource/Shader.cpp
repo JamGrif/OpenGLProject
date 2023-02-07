@@ -3,9 +3,9 @@
 
 #include "Rendering/OpenGLErrorCheck.h"
 
-#include <glm\gtc\type_ptr.hpp>
+#include "glm\gtc\type_ptr.hpp"
 
-#include <GL/glew.h>
+#include "GL/glew.h"
 
 #include <fstream>
 #include <sstream>

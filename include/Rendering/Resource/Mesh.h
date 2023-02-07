@@ -2,10 +2,10 @@
 
 #include "Rendering/Resource/IResource.h"
 
-
+struct Vertex;
 
 /// <summary>
-/// Encapsulates an OpenGL VBO and EBO buffer
+/// Encapsulates an OpenGL VBO and EBO buffer to act as a mesh
 /// </summary>
 class Mesh :
 	public IResource
@@ -32,10 +32,12 @@ private:
 
 	uint32_t		m_meshEBO;
 
+	typedef std::vector<Vertex> MeshVertices;
 	MeshVertices	m_meshVertices;
+
+	typedef std::vector<uint32_t> MeshIndices;
 	MeshIndices		m_meshIndices;
 
 	template<typename Mesh>
 	friend class ResourceManager;
 };
-

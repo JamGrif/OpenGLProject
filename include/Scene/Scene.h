@@ -23,7 +23,7 @@ public:
 	bool								LoadScene();
 
 	void								UpdateScene();
-	void								DrawScene();
+	void								RenderScene();
 
 	void								SetSceneCameraPosition(Vector3D newPosition);
 
@@ -33,7 +33,6 @@ public:
 	std::weak_ptr<Model>				GetModelAtIndex(unsigned int index);
 	void								DeleteModelAtIndex(unsigned int index);
 	size_t								GetNumberOfModels() { return m_sceneModels.size(); }
-
 
 private:
 
@@ -47,5 +46,5 @@ private:
 	std::shared_ptr<SceneSky>			m_sceneSky;
 
 	// All models used in scene
-	SceneModels	m_sceneModels;
+	SceneModels							m_sceneModels;
 };

@@ -3,7 +3,7 @@
 
 #include "Scene/SceneLightManager.h"
 
-#include <glm\gtc\matrix_transform.hpp>
+#include "glm\gtc\matrix_transform.hpp"
 
 #include "Rendering/Resource/Manager/MaterialManager.h"
 #include "Rendering/Resource/Manager/ResourceManager.h"

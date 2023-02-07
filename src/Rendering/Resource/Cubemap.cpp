@@ -1,9 +1,8 @@
 #include "pch.h"
 #include "Rendering/Resource/Cubemap.h"
 
+#include "GL/glew.h"
 #include "stb_image/stb_image.h"
-
-#include <GL/glew.h>
 
 static constexpr int NO_CUBEMAP = 0;
 

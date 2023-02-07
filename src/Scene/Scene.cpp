@@ -136,7 +136,7 @@ void Scene::UpdateScene()
 /// <summary>
 /// Draw all scene models and the sky
 /// </summary>
-void Scene::DrawScene()
+void Scene::RenderScene()
 {
 	for (const auto& m : m_sceneModels)
 	{

@@ -5,6 +5,7 @@
 
 typedef std::unordered_map<std::string, std::shared_ptr<Material>> MaterialPool;
 
+
 /// <summary>
 /// Encapsulates and abstracts the creation, deletion and usage of material objects
 /// Materials can only be used through this class
@@ -12,22 +13,18 @@ typedef std::unordered_map<std::string, std::shared_ptr<Material>> MaterialPool;
 class MaterialManager
 {
 public:
-	bool CreateMaterial(const std::string& materialID, const MaterialLoaderParams& pParams);
+	bool			CreateMaterial(const std::string& materialID, const MaterialLoaderParams& pParams);
 
-	void BindMaterialAtID(const std::string& materialID, const glm::mat4& modelMat);
-	void UnbindMaterialAtID(const std::string& materialID);
+	void			BindMaterialAtID(const std::string& materialID, const glm::mat4& modelMat);
+	void			UnbindMaterialAtID(const std::string& materialID);
 
-	void ClearAllMaterials();
+	void			ClearAllMaterials();
 
-	void SetAllMaterialScenePointers(std::weak_ptr<SceneLightManager> pSceneLightManager, std::weak_ptr<SceneCamera> pSceneCamera);
+	void			SetAllMaterialScenePointers(std::weak_ptr<SceneLightManager> pSceneLightManager, std::weak_ptr<SceneCamera> pSceneCamera);
 
 	std::weak_ptr<Material> GetMaterialAtID(const std::string& materialID)
 	{
-		if (m_materialMap.count(materialID))
-		{
-			return m_materialMap.at(materialID);
-		}
-		return {};
+		return m_materialMap.count(materialID) ? m_materialMap.at(materialID) : nullptr;
 	}
 
 	static MaterialManager* Instance()
@@ -37,7 +34,7 @@ public:
 	}
 private:
 
-	MaterialPool m_materialMap;
+	MaterialPool	m_materialMap;
 
 	MaterialManager() {}
 	~MaterialManager() {}

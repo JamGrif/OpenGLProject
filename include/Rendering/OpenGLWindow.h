@@ -1,8 +1,9 @@
 #pragma once
 
+struct GLFWwindow;
 
 /// <summary>
-/// A wrapper class around the GLFWwindow variable, providing a way to create and destroy one, 
+/// A wrapper class around GLFWwindow object, providing a way to create and destroy one, 
 /// along with utility functions and a way to check its status.
 /// </summary>
 class OpenGLWindow
@@ -30,6 +31,7 @@ public:
 	}
 
 private:
+
 	OpenGLWindow() :m_currentWindowWidth(0), m_currentWindowHeight(0), m_aspectRatio(0), m_pWindow(nullptr) {}
 	~OpenGLWindow() {}
 
@@ -38,6 +40,5 @@ private:
 	float		m_aspectRatio;
 
 	GLFWwindow* m_pWindow;
-
 };
 typedef OpenGLWindow TheOpenGLWindow;

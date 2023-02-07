@@ -3,7 +3,7 @@
 
 #include "Rendering/OpenGLWindow.h"
 
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 
 // Keyboard
 bool		InputHandler::m_keys[1024];

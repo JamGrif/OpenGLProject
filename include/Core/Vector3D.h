@@ -1,9 +1,7 @@
 #pragma once
 
-#pragma once
-
 /// <summary>
-/// Represents a vector in 3D space
+/// Represents a position in 3D space
 /// X, Y and Z axis
 /// </summary>
 class Vector3D
@@ -43,7 +41,7 @@ public:
 	// Multiply vector by a scalar number
 	Vector3D	operator* (float scalar);
 
-	Vector3D& operator*= (float scalar);
+	Vector3D&	operator*= (float scalar);
 
 	// Subtraction of two vectors
 	Vector3D	operator- (const Vector3D& v2) const;
@@ -60,7 +58,7 @@ public:
 	// Divide by a scaler number
 	Vector3D	operator/ (float scalar);
 
-	Vector3D& operator /= (float scalar);
+	Vector3D&	operator /= (float scalar);
 
 	// Normalize a vector
 	void		Normalize();
@@ -70,4 +68,3 @@ private:
 	float m_y;
 	float m_z;
 };
-
