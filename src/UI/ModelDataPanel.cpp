@@ -10,6 +10,8 @@
 
 #include "imgui.h"
 
+static const std::string EMPTY_TEXTURE_ID = "";
+
 /// <summary>
 /// Cache system that ensures data about a model is fetched once when first selected
 /// The panel will use this struct to print data about a model
@@ -17,27 +19,27 @@
 /// </summary>
 struct SelectedModelCache
 {
-	SelectedModelCache() { PRINT_INFO("cache created"); }
-	~SelectedModelCache() { PRINT_INFO("cache destroyed"); }
+	//SelectedModelCache() { PRINT_INFO("cache created"); }
+	//~SelectedModelCache() { PRINT_INFO("cache destroyed"); }
 
 	Vector3D position;
 	Vector3D rotation;
 	Vector3D scale;
 
-	std::weak_ptr<Model> tempModel;
+	// Pointer to the actual model in SceneModels vector in Scene
+	std::weak_ptr<Model> pModel;
 
 	std::string modelID;
 	std::string meshID;
 	std::string materialID;
 
-	ResourceID materialTextureIDs[5];
-	std::string materialTextureFilepaths[5];
-	OpenGLIndex materialTextureOpenGLIDs[5]{ 0,0,0,0,0 };
+	ResourceID materialTextureIDs[MATERIAL_TEXTURE_SLOTS];
+	std::string materialTextureFilepaths[MATERIAL_TEXTURE_SLOTS];
+	OpenGLIndex materialTextureOpenGLIDs[MATERIAL_TEXTURE_SLOTS]{ 0,0,0,0,0 };
 };
 
-
 ModelDataPanel::ModelDataPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, std::weak_ptr<SceneModelsPanel> pSceneModelPanel)
-	:IPanel(panelName, imGuiWindowFlag, bVisible), m_pSceneModelPanel(pSceneModelPanel), m_selectedModelIndex(-1)
+	:IPanel(panelName, imGuiWindowFlag, bVisible), m_pSceneModelPanel(pSceneModelPanel), m_selectedModelIndex(NO_MODEL_SELECTED)
 {
 }
 
@@ -78,7 +80,7 @@ void ModelDataPanel::Render()
 
 	// Display the buttons
 	if (ImGui::Button("goto model"))
-		GotoModel_BUTTON(m_pModelCache->tempModel.lock()->GetPosition());
+		GotoModel_BUTTON(m_pModelCache->pModel.lock()->GetPosition());
 
 	ImGui::SameLine(90.5f);
 
@@ -99,10 +101,13 @@ void ModelDataPanel::Render()
 	ImGui::Separator();
 
 	static bool bTransformHeaderState = true;
+	static bool bMeshHeaderState = true;
+	static bool bMaterialHeaderState = true;
+
+	// Display models transform header
 	ImGui::SetNextTreeNodeOpen(bTransformHeaderState);
 	if (bTransformHeaderState = ImGui::CollapsingHeader("Transform"))
 	{
-		// Display the models transform data
 		ImGui::Text("Position X: %.2f Y: %.2f Z: %.2f ", m_pModelCache->position.GetX(), m_pModelCache->position.GetY(), m_pModelCache->position.GetZ());
 		ImGui::Text("Rotation X: %.2f  Y: %.2f  Z: %.2f ", m_pModelCache->rotation.GetX(), m_pModelCache->rotation.GetY(), m_pModelCache->rotation.GetZ());
 		ImGui::Text("Scale	X: %.2f  Y: %.2f  Z: %.2f ", m_pModelCache->scale.GetX(), m_pModelCache->scale.GetY(), m_pModelCache->scale.GetZ());
@@ -110,26 +115,26 @@ void ModelDataPanel::Render()
 
 	ImGui::Separator();
 
-	static bool bMeshHeaderState = true;
+	// Display the models mesh header
 	ImGui::SetNextTreeNodeOpen(bMeshHeaderState);
 	if (bMeshHeaderState = ImGui::CollapsingHeader("Mesh"))
 	{
-		// Display the models mesh ID
 		ImGui::Text("Mesh ID: %s", m_pModelCache->meshID.c_str());
 	}
 
 	ImGui::Separator();
 
-	static bool bMaterialHeaderState = true;
+	// Display the models material header
 	ImGui::SetNextTreeNodeOpen(bMaterialHeaderState);
 	if (bMaterialHeaderState = ImGui::CollapsingHeader("Material"))
 	{
-		// Display the models material ID
 		ImGui::Text("Material ID: %s", m_pModelCache->materialID.c_str());
 
-		// Display the ID, filepath and image of each texture the material the model uses
-		for (unsigned int i = 0; i < 5; i++)
+		ImGui::Separator();
+
+		for (unsigned int i = 0; i < MATERIAL_TEXTURE_SLOTS; i++)
 		{
+			// Display the ID, filepath and image of each texture the material the model uses
 			if (m_pModelCache->materialTextureIDs[i] != EMPTY_TEXTURE_ID)
 			{
 				ImGui::Text("Texture ID: %s", m_pModelCache->materialTextureIDs[i].c_str());
@@ -159,28 +164,29 @@ void ModelDataPanel::SetupModelCache()
 {
 	m_pModelCache = std::make_unique<SelectedModelCache>();
 
-	m_pModelCache->tempModel = m_pSceneHandle.lock()->GetModelAtIndex(m_selectedModelIndex).lock();
+	m_pModelCache->pModel = m_pSceneHandle.lock()->GetModelAtIndex(m_selectedModelIndex).lock();
 
-	m_pModelCache->modelID = m_pModelCache->tempModel.lock()->getModelID();
+	m_pModelCache->modelID		= m_pModelCache->pModel.lock()->GetModelID();
 
-	m_pModelCache->position = m_pModelCache->tempModel.lock()->GetPosition();
-	m_pModelCache->rotation = m_pModelCache->tempModel.lock()->GetRotation();
-	m_pModelCache->scale = m_pModelCache->tempModel.lock()->GetScale();
+	m_pModelCache->position		= m_pModelCache->pModel.lock()->GetPosition();
+	m_pModelCache->rotation		= m_pModelCache->pModel.lock()->GetRotation();
+	m_pModelCache->scale		= m_pModelCache->pModel.lock()->GetScale();
 
-	m_pModelCache->meshID = m_pModelCache->tempModel.lock()->GetMeshID();
+	m_pModelCache->meshID		= m_pModelCache->pModel.lock()->GetMeshID();
 
-	m_pModelCache->materialID = m_pModelCache->tempModel.lock()->GetMaterialID();
+	m_pModelCache->materialID	= m_pModelCache->pModel.lock()->GetMaterialID();
 
-	auto tempMaterial = MaterialManager::Instance()->GetMaterialAtID(m_pModelCache->tempModel.lock()->GetMaterialID()).lock();
-	auto tempMaterialTexturesIDs = tempMaterial->GetAllTextureIDs();
+	// Get the IDs of all textures the material uses
+	std::shared_ptr<Material> tempMaterial		= MaterialManager::Instance()->GetMaterialAtID(m_pModelCache->pModel.lock()->GetMaterialID()).lock();
+	MaterialTextures tempMaterialTexturesIDs	= tempMaterial->GetAllTextureIDs();
 
-	for (unsigned int i = 0; i < 5; i++)
+	for (unsigned int i = 0; i < MATERIAL_TEXTURE_SLOTS; i++)
 	{
 		if (tempMaterialTexturesIDs.at(i) != EMPTY_TEXTURE_ID)
 		{
-			m_pModelCache->materialTextureIDs[i] = TextureManager::Get()->GetResourceAtID(tempMaterialTexturesIDs.at(i))->GetResourceID();
-			m_pModelCache->materialTextureFilepaths[i] = TextureManager::Get()->GetResourceAtID(tempMaterialTexturesIDs.at(i))->GetFilepath();
-			m_pModelCache->materialTextureOpenGLIDs[i] = TextureManager::Get()->GetResourceAtID(tempMaterialTexturesIDs.at(i))->GetOpenGLID();
+			m_pModelCache->materialTextureIDs[i]		= TextureManager::Get()->GetResourceAtID(tempMaterialTexturesIDs.at(i))->GetResourceID();
+			m_pModelCache->materialTextureFilepaths[i]	= TextureManager::Get()->GetResourceAtID(tempMaterialTexturesIDs.at(i))->GetFilepath();
+			m_pModelCache->materialTextureOpenGLIDs[i]	= TextureManager::Get()->GetResourceAtID(tempMaterialTexturesIDs.at(i))->GetOpenGLID();
 		}
 		else
 		{
@@ -211,7 +217,7 @@ void ModelDataPanel::DeleteModel_BUTTON()
 
 	// Delete any stored data of model
 	ClearModelCache();
-	m_selectedModelIndex = -1;
+	m_selectedModelIndex = NO_MODEL_SELECTED;
 	m_pSceneModelPanel.lock()->ClearSelectedModelIndex();
 }
 
@@ -234,6 +240,7 @@ void ModelDataPanel::GotoModel_BUTTON(const Vector3D& newPos)
 void ModelDataPanel::ClosePanel_BUTTON()
 {
 	ClearModelCache();
-	m_selectedModelIndex = -1;
+
+	m_selectedModelIndex = NO_MODEL_SELECTED;
 	m_pSceneModelPanel.lock()->ClearSelectedModelIndex();
 }

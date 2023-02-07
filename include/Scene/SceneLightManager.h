@@ -2,37 +2,53 @@
 
 #include <glm/vec3.hpp>
 
-struct LightLoaderParams
+/// <summary>
+/// Base class loading parameters which are passed to an ILight object on construction to set initial values
+/// </summary>
+struct ILightLoaderParams
 {
 	Vector3D ambient{ 0.0f, 0.0f, 0.0f };
 	Vector3D diffuse{ 0.0f, 0.0f, 0.0f };
 	Vector3D specular{ 0.0f, 0.0f, 0.0f };
 };
 
-struct PointLoaderParams
-	: public virtual LightLoaderParams
-{
-	Vector3D position{ 0.0f, 0.0f, 0.0f };
-};
-
+/// <summary>
+/// Loading parameters for a directional light
+/// </summary>
 struct DirectionalLoaderParams
-	: public virtual LightLoaderParams
+	: public virtual ILightLoaderParams
 {
 	Vector3D direction{ 0.0f, 0.0f, 0.0f };
 };
 
+/// <summary>
+/// Loading parameters for a point light
+/// </summary>
+struct PointLoaderParams
+	: public virtual ILightLoaderParams
+{
+	Vector3D position{ 0.0f, 0.0f, 0.0f };
+};
+
+/// <summary>
+/// Loading parameters for a spot light
+/// Uses data from both DirectionalLoaderParams and PointLoaderParams
+/// </summary>
 struct SpotLoaderParams
 	: public PointLoaderParams, public DirectionalLoaderParams
 {
 };
 
-// Base class for all 3 light types
-struct BaseLight
+/// <summary>
+/// Base class for all three light types
+/// Directional - Point - Spot
+/// </summary>
+struct ILight
 {
-	BaseLight(std::shared_ptr<LightLoaderParams> pParams)
+	ILight(std::shared_ptr<ILightLoaderParams> pParams)
 		:m_ambient(pParams->ambient), m_diffuse(pParams->diffuse), m_specular(pParams->specular), m_bLightActive(true)
 	{}
-	~BaseLight()
+	~ILight()
 	{}
 
 	Vector3D	m_ambient{ 0,0,0 };
@@ -42,14 +58,14 @@ struct BaseLight
 	bool		m_bLightActive; // Toggles whether entities should take lighting information from this light or not
 
 protected:
-	BaseLight() {}
+	ILight() {}
 };
 
 struct PointLight : 
-	public virtual BaseLight
+	public virtual ILight
 {
 	PointLight(std::shared_ptr<PointLoaderParams> pParams)
-		:BaseLight(pParams), m_position(pParams->position), m_constant(1.0f), m_linear(0.07f), m_quadratic(0.017f)
+		:ILight(pParams), m_position(pParams->position), m_constant(1.0f), m_linear(0.07f), m_quadratic(0.017f)
 	{}
 
 	Vector3D	m_position{ 0,0,0 };
@@ -64,10 +80,10 @@ protected:
 };
 
 struct DirectionalLight :
-	public virtual BaseLight
+	public virtual ILight
 {
 	DirectionalLight(std::shared_ptr<DirectionalLoaderParams> pParams)
-		:BaseLight(pParams), m_direction(pParams->direction)
+		:ILight(pParams), m_direction(pParams->direction)
 	{}
 
 	Vector3D	m_direction{ 0,0,0 };
@@ -80,7 +96,7 @@ struct SpotLight :
 	public PointLight, public DirectionalLight
 {
 	SpotLight(std::shared_ptr<SpotLoaderParams> pParams)
-		:BaseLight(pParams), m_cutOff(4.5f), m_outerCutOff(25.5f)
+		:ILight(pParams), m_cutOff(4.5f), m_outerCutOff(25.5f)
 	{
 		m_position = pParams->position;
 		m_direction = pParams->direction;
@@ -98,7 +114,7 @@ struct SpotLight :
 
 /// <summary>
 /// Manager for all three light types that can be present in scene
-/// Handles creation and deletation of lights and provides utility functions to use them
+/// Handles lifetime of lights and provides utility functions to use them
 /// Directional - Point - Spot light types
 /// </summary>
 class SceneLightManager
@@ -131,14 +147,17 @@ public:
 private:
 
 	// Directional Lights
+	typedef std::vector<std::shared_ptr<DirectionalLight>> SceneDirectionalLights;
 	SceneDirectionalLights			m_sceneDirectionalLights;
 	const unsigned int				m_maxDirectionalLights;
 
 	// Point Lights
+	typedef std::vector<std::shared_ptr<PointLight>> ScenePointLights;
 	ScenePointLights				m_scenePointLights;
 	const unsigned int				m_maxPointLights;
 
 	// Spot Lights
+	typedef std::vector<std::shared_ptr<SpotLight>> SceneSpotLights;
 	SceneSpotLights					m_sceneSpotLights;
 	const unsigned int				m_maxSpotLights;
 };

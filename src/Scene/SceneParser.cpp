@@ -42,7 +42,7 @@ bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& 
 
 	// Create sky using skyid as the cubemap filename
 	*sceneSky = std::make_shared<SceneSky>(pFileRoot->Attribute(SKY_ATTRIBUTE));
-	m_tempSkyCubemapID = pFileRoot->Attribute(SKY_ATTRIBUTE);
+	ResourceID m_tempSkyCubemapID = pFileRoot->Attribute(SKY_ATTRIBUTE);
 
 	const TiXmlElement* pMaterialElement = nullptr, * pLightElement = nullptr, * pModelElement = nullptr;
 
@@ -275,7 +275,7 @@ void SceneParser::ParseModelsNode(const TiXmlElement* pModelElement, SceneModels
 /// <summary>
 /// Fill out the base light loading parameters - all lights share these common values
 /// </summary>
-void SceneParser::ParseBaseLight(const TiXmlElement* lightNode, std::shared_ptr<LightLoaderParams> pParams)
+void SceneParser::ParseBaseLight(const TiXmlElement* lightNode, std::shared_ptr<ILightLoaderParams> pParams)
 {
 	lightNode->QueryFloatAttribute("ambR", &pParams->ambient.SetX());
 	lightNode->QueryFloatAttribute("ambG", &pParams->ambient.SetY());

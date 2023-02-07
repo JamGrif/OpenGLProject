@@ -4,6 +4,9 @@
 
 #include <glm/mat4x4.hpp>
 
+/// <summary>
+/// Encapsulates an OpenGL program to act as a shader
+/// </summary>
 class Shader :
 	public IResource
 {
@@ -29,15 +32,15 @@ private:
 
 	virtual void	Reset();
 
-
 	inline int		GetUniformLocation(const std::string& uniformName);
 
 private:
 
-	UniformCache	m_uniformLocationCache;
-
 	std::string		vertexShaderCode;
 	std::string		fragmentShaderCode;
+
+	typedef std::unordered_map<std::string, uint32_t> UniformCache;
+	UniformCache	m_uniformLocationCache;
 
 	template<typename Shader>
 	friend class ResourceManager;

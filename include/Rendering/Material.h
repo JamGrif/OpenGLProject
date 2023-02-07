@@ -2,17 +2,18 @@
 
 #include "glm/mat4x4.hpp"
 
-typedef std::array<bool, 5> MaterialUsingTextures;
-typedef std::array<ResourceID, 5> MaterialTextures;
-
-const std::string EMPTY_TEXTURE_ID = "";
-
+/// <summary>
+/// Material loading parameters which are passed to a Material object on construction to set initial values
+/// </summary>
 struct MaterialLoaderParams
 {
-	std::string textureMapIDs[5];
+	std::string textureMapIDs[MATERIAL_TEXTURE_SLOTS];
 
-	bool		normalMapNormalize;	// Should the normal map be normalized in the fragment shader?
-	float		heightMapHeight;	// Height to draw the height map within fragment shader
+	// Should normal map be normalized in fragment shader?
+	bool		normalMapNormalize;
+
+	// Height to render the height map within fragment shader
+	float		heightMapHeight;	
 };
 
 /// <summary>
@@ -26,7 +27,7 @@ public:
 	~Material();
 
 	/// <summary>
-	/// Returns the IDs of all textures the materials uses
+	/// Return IDs of all textures the materials uses
 	/// </summary>
 	const MaterialTextures& GetAllTextureIDs()
 	{
@@ -35,23 +36,25 @@ public:
 
 private:
 
-	void		BindMaterial(const glm::mat4& modelMat);
-	void		UnbindMaterial();
+	void			BindMaterial(const glm::mat4& modelMat);
+	void			UnbindMaterial();
 
-	void		SetScenePointers(std::weak_ptr<SceneLightManager> pSceneLightManager, std::weak_ptr<SceneCamera> pSceneCamera);
+	void			SetScenePointers(std::weak_ptr<SceneLightManager> pSceneLightManager, std::weak_ptr<SceneCamera> pSceneCamera);
 
 private:
 
 	// Shader the material uses
-	std::string m_shaderID;
+	std::string		m_shaderID;
 
 	// Textures the material uses
-	MaterialUsingTextures	m_textureMapUsing;
+	typedef std::array<bool, MATERIAL_TEXTURE_SLOTS> MaterialUsingTextures;
+	MaterialUsingTextures m_textureMapUsing;
+
 	MaterialTextures m_textureMapIDs;
 
 	// Rendering data
-	bool		m_bNormalMapNormalize;
-	float		m_heightMapHeight;
+	bool			m_bNormalMapNormalize;
+	float			m_heightMapHeight;
 
 	// Cached scene objects
 	std::weak_ptr<SceneLightManager> m_pSceneLightManager;

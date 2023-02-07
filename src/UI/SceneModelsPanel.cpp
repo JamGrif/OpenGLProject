@@ -7,7 +7,7 @@
 #include "Rendering/Model.h"
 
 SceneModelsPanel::SceneModelsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible)
-	:IPanel(panelName, imGuiWindowFlag, bVisible), m_selectedModelIndex(-1), m_bNewSelectedModel(false)
+	:IPanel(panelName, imGuiWindowFlag, bVisible), m_selectedModelIndex(NO_MODEL_SELECTED), m_bNewSelectedModel(false)
 {
 }
 
@@ -39,7 +39,7 @@ void SceneModelsPanel::Render()
 	// Display button for each model in scene
 	for (unsigned int i = 0; i < numOfModels; i++)
 	{
-		if (ImGui::Button(m_pSceneHandle.lock()->GetModelAtIndex(i).lock()->getModelID().c_str()))
+		if (ImGui::Button(m_pSceneHandle.lock()->GetModelAtIndex(i).lock()->GetModelID().c_str()))
 		{
 			// Stops reloading same model data
 			if (m_selectedModelIndex == i)
@@ -57,6 +57,6 @@ void SceneModelsPanel::Render()
 /// </summary>
 void SceneModelsPanel::SceneChange()
 {
-	m_selectedModelIndex = -1;
+	m_selectedModelIndex = NO_MODEL_SELECTED;
 	m_bNewSelectedModel = false;
 }

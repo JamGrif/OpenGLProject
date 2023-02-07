@@ -11,7 +11,10 @@ enum class ScreenFilter
 	END_OF_FILTER_ENUM
 };
 
-//Interface for a framebuffer, allowing it to be written to or read from
+/// <summary>
+/// Interface for an OpenGL framebuffer buffer
+/// Provides utility functions for reading and writing to a framebuffer
+/// </summary>
 class OpenGLFramebuffer
 {
 public:
@@ -43,11 +46,11 @@ private:
 		 1.0f,  1.0f,  1.0f, 1.0f
 	};
 
-	uint32_t		m_FBO;
+	OpenGLIndex		m_FBO;
 	uint32_t		m_frameColourTexture;
-	uint32_t		m_RBO;
+	OpenGLIndex		m_RBO;
 	
-	uint32_t		m_quadVBO;
+	OpenGLIndex		m_quadVBO;
 
 	ScreenFilter	m_screenFilter;
 
@@ -55,4 +58,3 @@ private:
 
 	ResourceID		m_shaderID;
 };
-

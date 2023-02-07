@@ -1,6 +1,12 @@
 #pragma once
 #include "UI/IPanel.h"
 
+const int NO_MODEL_SELECTED = -1;
+
+/// <summary>
+/// Displays buttons showing all models in the SceneModels vector in Scene
+/// Lets user select a button to display its data in the ModelData panel
+/// </summary>
 class SceneModelsPanel :
     public IPanel
 {
@@ -15,7 +21,7 @@ public:
 	int				GetSelectedModelIndex() { return m_selectedModelIndex; }
 	bool			GetUpdatedSelectedModel() { return m_bNewSelectedModel; }
 
-	void			ClearSelectedModelIndex() { m_selectedModelIndex = -1; }
+	void			ClearSelectedModelIndex() { m_selectedModelIndex = NO_MODEL_SELECTED; }
 
 private:
 
@@ -25,4 +31,3 @@ private:
 	// Whether a Model button has been pressed and the ModelData panel needs to be updated
 	bool			m_bNewSelectedModel;
 };
-
