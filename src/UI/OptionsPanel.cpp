@@ -7,8 +7,8 @@
 #include "Scene/SceneLightManager.h"
 #include "Scene/Scene.h"
 
-OptionsPanel::OptionsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible)
-	:IPanel(panelName, imGuiWindowFlag, bVisible),
+OptionsPanel::OptionsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer)
+	:IPanel(panelName, imGuiWindowFlag, bVisible, pScenePointer),
 	m_bDirectionalLightInScene(false), m_bDirectionalLightActiveButton(true),
 	m_bSpotLightInScene(false), m_bSpotLightActiveButton(true),
 	m_totalPointLights(0), m_bPointLightInScene{ false, false, false, false }, m_bPointLightActiveButton{ true, true, true, true },
@@ -55,7 +55,7 @@ void OptionsPanel::Render()
 	
 	ImGui::Text("Toggle Active Lights:");
 	
-	std::shared_ptr<SceneLightManager> sceneLM = m_pSceneHandle.lock()->GetSceneLightManager().lock();
+	std::shared_ptr<SceneLightManager> sceneLM = (*m_pSceneHandle)->GetSceneLightManager().lock();
 	
 	if (m_bDirectionalLightInScene)
 	{
@@ -113,7 +113,7 @@ void OptionsPanel::Render()
 void OptionsPanel::SceneChange()
 {
 	// Get new scene lightmanager
-	std::shared_ptr<SceneLightManager> pLightManager = m_pSceneHandle.lock()->GetSceneLightManager().lock();
+	std::shared_ptr<SceneLightManager> pLightManager = (*m_pSceneHandle)->GetSceneLightManager().lock();
 
 	// Check how many point lights in scene
 	m_totalPointLights = pLightManager->GetCurrentPointLights();

@@ -8,7 +8,7 @@ class ControlPanel :
 	public IPanel
 {
 public:
-	ControlPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible);
+	ControlPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer);
 	~ControlPanel();
 
 	virtual void Update() override;

@@ -3,8 +3,8 @@
 
 #include "imgui.h"
 
-PerformancePanel::PerformancePanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible)
-	:IPanel(panelName, imGuiWindowFlag, bVisible)
+PerformancePanel::PerformancePanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer)
+	:IPanel(panelName, imGuiWindowFlag, bVisible, pScenePointer)
 {
 }
 

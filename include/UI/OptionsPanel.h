@@ -10,7 +10,7 @@ class OptionsPanel :
     public IPanel
 {
 public:
-	OptionsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible);
+	OptionsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer);
 	~OptionsPanel();
 
 	virtual void	Update() override;

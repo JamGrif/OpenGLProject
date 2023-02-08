@@ -38,8 +38,8 @@ struct SelectedModelCache
 	OpenGLIndex materialTextureOpenGLIDs[MATERIAL_TEXTURE_SLOTS]{ 0,0,0,0,0 };
 };
 
-ModelDataPanel::ModelDataPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, std::weak_ptr<SceneModelsPanel> pSceneModelPanel)
-	:IPanel(panelName, imGuiWindowFlag, bVisible), m_pSceneModelPanel(pSceneModelPanel), m_selectedModelIndex(NO_MODEL_SELECTED)
+ModelDataPanel::ModelDataPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer, std::weak_ptr<SceneModelsPanel> pSceneModelPanel)
+	:IPanel(panelName, imGuiWindowFlag, bVisible, pScenePointer), m_pSceneModelPanel(pSceneModelPanel), m_selectedModelIndex(NO_MODEL_SELECTED)
 {
 }
 
@@ -164,7 +164,7 @@ void ModelDataPanel::SetupModelCache()
 {
 	m_pModelCache = std::make_unique<SelectedModelCache>();
 
-	m_pModelCache->pModel = m_pSceneHandle.lock()->GetModelAtIndex(m_selectedModelIndex).lock();
+	m_pModelCache->pModel = (*m_pSceneHandle)->GetModelAtIndex(m_selectedModelIndex);
 
 	m_pModelCache->modelID		= m_pModelCache->pModel.lock()->GetModelID();
 
@@ -213,7 +213,7 @@ void ModelDataPanel::ClearModelCache()
 void ModelDataPanel::DeleteModel_BUTTON()
 {
 	// Delete model
-	m_pSceneHandle.lock()->DeleteModelAtIndex(m_selectedModelIndex);
+	(*m_pSceneHandle)->DeleteModelAtIndex(m_selectedModelIndex);
 
 	// Delete any stored data of model
 	ClearModelCache();
@@ -230,7 +230,7 @@ void ModelDataPanel::GotoModel_BUTTON(const Vector3D& newPos)
 	// Move camera to slightly above model
 	Vector3D temp{ newPos.GetX(), newPos.GetY() + 2.0f, newPos.GetZ() };
 
-	m_pSceneHandle.lock()->SetSceneCameraPosition(temp);
+	(*m_pSceneHandle)->SetSceneCameraPosition(temp);
 }
 
 /// <summary>

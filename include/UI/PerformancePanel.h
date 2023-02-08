@@ -8,7 +8,7 @@ class PerformancePanel :
 	public IPanel
 {
 public:
-	PerformancePanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible);
+	PerformancePanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer);
 	~PerformancePanel();
 
 	virtual void Update() override;

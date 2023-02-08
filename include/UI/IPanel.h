@@ -14,7 +14,7 @@ enum class RenderFlag
 class IPanel
 {
 public:
-	IPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible);
+	IPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer);
 	virtual ~IPanel();
 
 	// What the panel updates every frame
@@ -30,7 +30,7 @@ public:
 	ImGuiWindowFlags		GetFlag() const { return m_imGuiWindowFlag; }
 	bool					GetVisible() const { return m_bVisible; }
 
-	virtual void			UpdateSceneHandle(std::weak_ptr<Scene> pSceneHandle) { m_pSceneHandle = pSceneHandle; }
+	//virtual void			UpdateSceneHandle(std::weak_ptr<Scene> pSceneHandle) { m_pSceneHandle = pSceneHandle; }
 
 protected:
 
@@ -41,7 +41,7 @@ protected:
 	ImGuiWindowFlags		m_imGuiWindowFlag;
 
 	// The currently loaded scene
-	std::weak_ptr<Scene>	m_pSceneHandle;
+	Scene** m_pSceneHandle;
 
 	// Whether the panel will be rendered
 	bool					m_bVisible;

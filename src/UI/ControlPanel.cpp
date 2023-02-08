@@ -3,8 +3,8 @@
 
 #include "imgui.h"
 
-ControlPanel::ControlPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible)
-	:IPanel(panelName, imGuiWindowFlag, bVisible)
+ControlPanel::ControlPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer)
+	:IPanel(panelName, imGuiWindowFlag, bVisible, pScenePointer)
 {
 }
 

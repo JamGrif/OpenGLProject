@@ -10,16 +10,16 @@ enum class SceneName;
 class UI
 {
 public:
-	UI(bool bVisible);
+	UI(bool bVisible, Scene** pScenePointer);
 	~UI();
 
 	void		RenderUI();
 
 	void		ToggleUI();
 
-	SceneName	GetCurrentSceneName() const;
+	SceneName	GetSelectedSceneName() const;
 
-	void		UpdateSceneHandle(std::weak_ptr<Scene> newLoadedScene);
+	void		UpdateSceneHandle();
 
 private:
 

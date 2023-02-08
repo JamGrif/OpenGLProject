@@ -11,7 +11,7 @@ class SceneModelsPanel :
     public IPanel
 {
 public:
-	SceneModelsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible);
+	SceneModelsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer);
 	~SceneModelsPanel();
 
 	virtual void	Update() override;

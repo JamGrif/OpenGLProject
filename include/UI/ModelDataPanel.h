@@ -12,7 +12,7 @@ class ModelDataPanel :
     public IPanel
 {
 public:
-	ModelDataPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, std::weak_ptr<SceneModelsPanel> pSceneModelPanel);
+	ModelDataPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer, std::weak_ptr<SceneModelsPanel> pSceneModelPanel);
 	~ModelDataPanel();
 
 	virtual void						Update() override;

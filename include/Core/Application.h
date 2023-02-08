@@ -25,5 +25,5 @@ private:
 
 	std::unique_ptr<UI>		m_UI;
 
-	std::shared_ptr<Scene>	m_loadedScene;
+	Scene*	m_loadedScene;
 };

@@ -6,8 +6,8 @@
 #include "Scene/Scene.h"
 #include "Rendering/Model.h"
 
-SceneModelsPanel::SceneModelsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible)
-	:IPanel(panelName, imGuiWindowFlag, bVisible), m_selectedModelIndex(NO_MODEL_SELECTED), m_bNewSelectedModel(false)
+SceneModelsPanel::SceneModelsPanel(const std::string& panelName, ImGuiWindowFlags imGuiWindowFlag, bool bVisible, Scene** pScenePointer)
+	:IPanel(panelName, imGuiWindowFlag, bVisible, pScenePointer), m_selectedModelIndex(NO_MODEL_SELECTED), m_bNewSelectedModel(false)
 {
 }
 
@@ -30,7 +30,7 @@ void SceneModelsPanel::Update()
 void SceneModelsPanel::Render()
 {
 	// Get current amount of models in scene
-	unsigned int numOfModels = static_cast<unsigned int>(m_pSceneHandle.lock()->GetNumberOfModels());
+	unsigned int numOfModels = static_cast<unsigned int>((*m_pSceneHandle)->GetNumberOfModels());
 
 	ImGui::Text("There are %i models in scene", numOfModels);
 
@@ -39,7 +39,7 @@ void SceneModelsPanel::Render()
 	// Display button for each model in scene
 	for (unsigned int i = 0; i < numOfModels; i++)
 	{
-		if (ImGui::Button(m_pSceneHandle.lock()->GetModelAtIndex(i).lock()->GetModelID().c_str()))
+		if (ImGui::Button((*m_pSceneHandle)->GetModelAtIndex(i).lock()->GetModelID().c_str()))
 		{
 			// Stops reloading same model data
 			if (m_selectedModelIndex == i)
