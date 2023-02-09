@@ -10,7 +10,7 @@ class OpenGLWindow
 {
 public:
 
-	bool		Init(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen);
+	bool		Init(int windowWidth, int windowHeight, const std::string& windowTitle, bool bFullScreen);
 	bool		Clean();
 
 	GLFWwindow* GetGLFWWindow() const { return m_pWindow; }

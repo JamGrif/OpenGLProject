@@ -65,7 +65,6 @@ void Cubemap::Parse(const std::string& facesFilepath)
 			return;
 		}
 	}
-	//return true;
 }
 
 /// <summary>
@@ -117,7 +116,10 @@ void Cubemap::Unbind()
 	glCall(glBindTexture(GL_TEXTURE_CUBE_MAP, NO_CUBEMAP));
 }
 
+/// <summary>
+/// What the cubemap will do when its reset
+/// Unused in this class
+/// </summary>
 void Cubemap::Reset()
 {
-
 }

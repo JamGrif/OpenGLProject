@@ -26,6 +26,9 @@ SceneParser::SceneParser()
 {
 }
 
+/// <summary>
+/// Parse the .xml scene file at sceneFilepath and fill the SceneModels vector, create all lights through the SceneLightManager and create the sky cubemap at sceneSky
+/// </summary>
 bool SceneParser::ParseSceneFile(const std::string& sceneFilepath, SceneModels& sceneModels, std::shared_ptr<SceneLightManager>& sceneLightManager, std::shared_ptr<SceneSky>* sceneSky)
 {
 	TiXmlDocument levelDocument;

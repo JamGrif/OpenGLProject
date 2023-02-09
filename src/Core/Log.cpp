@@ -6,7 +6,7 @@
 std::shared_ptr<spdlog::logger> Log::s_pLogger;
 
 /// <summary>
-/// Sets the text colour and timestamp, name and log message settings
+/// Sets the text colour, timestamp, name and log message settings
 /// </summary>
 void Log::Init()
 {

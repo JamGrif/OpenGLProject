@@ -20,7 +20,7 @@ static constexpr ImGuiWindowFlags COMMON_RESIZE_FLAGS = ImGuiWindowFlags_AlwaysA
 static constexpr ImGuiWindowFlags COMMON_FLAGS = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
 static constexpr ImGuiWindowFlags DEBUG_FLAGS = ImGuiWindowFlags_NoCollapse;
 
-UI::UI(bool bVisible)
+UI::UI(bool bVisible, Scene** pScenePointer)
 	:m_bVisible(bVisible)
 {
 	// Set initial mouse visibility
@@ -31,9 +31,9 @@ UI::UI(bool bVisible)
 
 	// Specify style of ImGui
 	ImGuiStyle& style = ImGui::GetStyle();
-	style.WindowRounding = 5.0f;
-	style.FrameRounding = 4.0f;
-	style.ScrollbarSize = 15.0f;
+	style.WindowRounding	= 5.0f;
+	style.FrameRounding		= 4.0f;
+	style.ScrollbarSize		= 15.0f;
 	style.ScrollbarRounding = 9.0f;
 
 	// Connect ImGui to GLFW window
@@ -44,11 +44,11 @@ UI::UI(bool bVisible)
 	ImGui::StyleColorsClassic();
 
 	// Create each panel
-	m_allPanels.emplace_back(std::make_shared<ControlPanel>("Controls", COMMON_FLAGS, true));
-	m_allPanels.emplace_back(std::make_shared<PerformancePanel>("Performance Metrics", COMMON_FLAGS, true));
-	m_allPanels.emplace_back(std::make_shared<OptionsPanel>("Scene Options", COMMON_FLAGS, true));
-	m_allPanels.emplace_back(std::make_shared<SceneModelsPanel>("Scene Models", COMMON_FLAGS, true));
-	m_allPanels.emplace_back(std::make_shared<ModelDataPanel>("Model Data", COMMON_FLAGS, false, std::dynamic_pointer_cast<SceneModelsPanel>(m_allPanels.back())));
+	m_allPanels.emplace_back(std::make_shared<ControlPanel>("Controls", COMMON_FLAGS, true, pScenePointer));
+	m_allPanels.emplace_back(std::make_shared<PerformancePanel>("Performance Metrics", COMMON_FLAGS, true, pScenePointer));
+	m_allPanels.emplace_back(std::make_shared<OptionsPanel>("Scene Options", COMMON_FLAGS, true, pScenePointer));
+	m_allPanels.emplace_back(std::make_shared<SceneModelsPanel>("Scene Models", COMMON_FLAGS, true, pScenePointer));
+	m_allPanels.emplace_back(std::make_shared<ModelDataPanel>("Model Data", COMMON_FLAGS, false, pScenePointer, std::dynamic_pointer_cast<SceneModelsPanel>(m_allPanels.back())));
 }
 
 UI::~UI()
@@ -103,7 +103,10 @@ void UI::ToggleUI()
 	m_bVisible ? InputHandler::Get()->EnableMouse() : InputHandler::Get()->DisableMouse();
 }
 
-SceneName UI::GetCurrentSceneName() const
+/// <summary>
+/// Returns which scene button was pressed in Options panel
+/// </summary>
+SceneName UI::GetSelectedSceneName() const
 {
 	for (const auto& panel : m_allPanels)
 	{
@@ -118,11 +121,11 @@ SceneName UI::GetCurrentSceneName() const
 /// <summary>
 /// Update the scene handle of each UI panel
 /// </summary>
-void UI::UpdateSceneHandle(std::weak_ptr<Scene> newLoadedScene)
+void UI::UpdateSceneHandle()
 {
 	for (const auto& panel : m_allPanels)
 	{
-		panel->UpdateSceneHandle(newLoadedScene);
+		//panel->UpdateSceneHandle(newLoadedScene);
 
 		panel->SceneChange();
 	}

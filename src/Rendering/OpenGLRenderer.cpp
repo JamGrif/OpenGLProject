@@ -26,6 +26,9 @@ OpenGLRenderer::~OpenGLRenderer()
 {
 }
 
+/// <summary>
+/// Initialize GLEW and GLFW, set GL capabilities and create the OpenGL window
+/// </summary>
 bool OpenGLRenderer::Init()
 {
 	// GLFW
@@ -75,19 +78,28 @@ bool OpenGLRenderer::Init()
 	return true;
 }
 
+/// <summary>
+/// Delete OpenGL VAO and terminate GLFW
+/// </summary>
+/// <returns></returns>
 bool OpenGLRenderer::Clean()
 {
 	if (m_appVAO)
-		glDeleteVertexArrays(1, &m_appVAO);
+		glCall(glDeleteVertexArrays(1, &m_appVAO));
 
 	glCall(glfwTerminate());
 
 	return true;
 }
 
+/// <summary>
+/// Prepare the application to render a frame
+/// Clear rendering buffers, poll GLFW events and bind the correct framebuffer
+/// </summary>
 void OpenGLRenderer::StartOfFrame() const
 {
-	glCall(glClear(GL_DEPTH_BUFFER_BIT)); // Clear the screen buffers
+	// Clear the screen buffers
+	glCall(glClear(GL_DEPTH_BUFFER_BIT)); 
 	glCall(glfwPollEvents());
 
 	// Bind MSAA for object drawing
@@ -95,6 +107,10 @@ void OpenGLRenderer::StartOfFrame() const
 		m_pSceneMSAAFrameBuffer->BindFramebuffer();
 }
 
+/// <summary>
+/// Finalize the applications rendering of a frame
+/// Copy data to correct framebuffer and swap the screen buffers
+/// </summary>
 void OpenGLRenderer::EndOfFrame() const
 {
 	// Reads from the MSAA buffer and writes it to the Filter buffer

@@ -138,5 +138,4 @@ void OptionsPanel::SceneChange()
 
 	m_bDirectionalLightActiveButton = true;
 	m_bSpotLightActiveButton = true;
-
 }

@@ -14,6 +14,9 @@ Application::Application()
 
 Application::~Application()
 {
+	if (m_loadedScene)
+		delete m_loadedScene;
+
 	TheOpenGLWindow::Get()->Clean();
 
 	TheOpenGLRenderer::Get()->Clean();
@@ -34,7 +37,7 @@ bool Application::AppInit()
 
 	InputHandler::Get()->Init();
 
-	m_UI = std::make_unique<UI>(false);
+	m_UI = std::make_unique<UI>(false, &m_loadedScene);
 
 	// Create Scene object and set initial scene
 	if (!SetScene(SceneName::jamieTest)) 
@@ -80,8 +83,8 @@ void Application::UpdateApp()
 	if (m_UI)
 	{
 		// Check if loaded scene needs to change
-		if (m_UI->GetCurrentSceneName() != SceneName::UNSET_SCENE)
-			SetScene(m_UI->GetCurrentSceneName());
+		if (m_UI->GetSelectedSceneName() != SceneName::UNSET_SCENE)
+			SetScene(m_UI->GetSelectedSceneName());
 	}
 }
 
@@ -134,12 +137,15 @@ bool Application::SetScene(SceneName newSceneNumber)
 	if (m_loadedScene && newSceneFilename == m_loadedScene->GetSceneName())
 		return false;
 
-	m_loadedScene = std::make_shared<Scene>(newSceneFilename);
+	if (m_loadedScene)
+		delete m_loadedScene;
+
+	m_loadedScene = new Scene(newSceneFilename);
 
 	if (m_loadedScene->LoadScene())
 	{
 		if (m_UI)
-			m_UI->UpdateSceneHandle(m_loadedScene);
+			m_UI->UpdateSceneHandle();
 
 		// Scene successfully loaded
 		return true;

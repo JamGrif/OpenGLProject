@@ -13,9 +13,11 @@ Vector3D::Vector3D(float x, float y, float z)
 {
 }
 
+/// <summary>
+/// Use Pythagoras Theorem to calculate length of vector
+/// </summary>
 float Vector3D::Length()
 {
-	// Calculate Pythagoras Theorem
 	return static_cast<float>(sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z)));
 }
 
@@ -57,6 +59,9 @@ Vector3D Vector3D::operator/(float scalar)
 	return Vector3D(m_x / scalar, m_y / scalar, m_z / scalar);
 }
 
+/// <summary>
+/// Normalize the vector
+/// </summary>
 void Vector3D::Normalize()
 {
 	float L = Length();

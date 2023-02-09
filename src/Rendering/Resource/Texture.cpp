@@ -100,6 +100,10 @@ void Texture::Create()
 	m_bIsCreated = true;
 }
 
+/// <summary>
+/// What the texture will do when its reset
+/// Unused in this class
+/// </summary>
 void Texture::Reset()
 {
 }

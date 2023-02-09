@@ -18,7 +18,7 @@ Material::Material(const MaterialLoaderParams& pParams)
 	// Go through MaterialLoaderParams and set each texture type that is used
 	for (int i = static_cast<int>(TextureType::START_OF_TEXTURETYPE); i != static_cast<int>(TextureType::END_OF_TEXTURETYPE); i++)
 	{
-		// Check if texture type is used in this material
+		// Check if texture type is used in material
 		if (pParams.textureMapIDs[static_cast<int>(TextureType::START_OF_TEXTURETYPE) + i] != NULL_TEXTURE)
 		{
 			// Set texture ID
@@ -44,7 +44,7 @@ Material::~Material()
 }
 
 /// <summary>
-/// Binds the material's textures and shader to the OpenGL context and sets all uniform values for the shader
+/// Bind material's textures and shader to the OpenGL context and sets all uniform values for the shader
 /// </summary>
 void Material::BindMaterial(const glm::mat4& modelMat)
 {

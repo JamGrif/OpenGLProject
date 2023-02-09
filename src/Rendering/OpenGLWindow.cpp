@@ -10,10 +10,11 @@
 static constexpr int OPENGL_MAJOR_VERSION = 4;
 static constexpr int OPENGL_MINOR_VERSION = 6;
 
-bool OpenGLWindow::Init(int windowWidth, int windowHeight, const std::string& windowTitle, bool fullScreen)
+/// <summary>
+/// Set GLFW window hints, create the window and set OpenGL context and viewport
+/// </summary>
+bool OpenGLWindow::Init(int windowWidth, int windowHeight, const std::string& windowTitle, bool bFullScreen)
 {
-	
-
 	// Setup window hints
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OPENGL_MAJOR_VERSION);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, OPENGL_MINOR_VERSION);
@@ -21,7 +22,7 @@ bool OpenGLWindow::Init(int windowWidth, int windowHeight, const std::string& wi
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_DECORATED, NULL); // Borderless window
 
-	if (fullScreen)
+	if (bFullScreen)
 		m_pWindow = glfwCreateWindow(windowWidth, windowHeight, windowTitle.c_str(), glfwGetPrimaryMonitor(), NULL);
 	else
 		m_pWindow = glfwCreateWindow(windowWidth, windowHeight, windowTitle.c_str(), NULL, NULL);
@@ -45,6 +46,9 @@ bool OpenGLWindow::Init(int windowWidth, int windowHeight, const std::string& wi
 	return true;
 }
 
+/// <summary>
+/// Destroys the GLFW window object
+/// </summary>
 bool OpenGLWindow::Clean()
 {
 	glfwDestroyWindow(m_pWindow);
@@ -52,6 +56,10 @@ bool OpenGLWindow::Clean()
 	return true;
 }
 
+/// <summary>
+/// Returns whether the GLFW window has recieved a close event
+/// </summary>
+/// <returns></returns>
 bool OpenGLWindow::ShouldClose() const
 {
 	return glfwWindowShouldClose(m_pWindow);
@@ -69,7 +77,7 @@ void OpenGLWindow::SetWindowIcon(const std::string& iconPath) const
 }
 
 /// <summary>
-/// Sets the window title to the specified string text
+/// Sets the window title to the specified string
 /// </summary>
 void OpenGLWindow::SetWindowTitle(const std::string& newTitle) const
 {

@@ -147,6 +147,9 @@ void Scene::RenderScene()
 		m_sceneSky->DrawSky();
 }
 
+/// <summary>
+/// Return the model at index within the SceneModels vector
+/// </summary>
 std::weak_ptr<Model> Scene::GetModelAtIndex(unsigned int index)
 {
 	if (index < m_sceneModels.size())
@@ -155,13 +158,18 @@ std::weak_ptr<Model> Scene::GetModelAtIndex(unsigned int index)
 		return {};
 }
 
-
+/// <summary>
+/// Delete a model at index within the SceneModels vector
+/// </summary>
 void Scene::DeleteModelAtIndex(unsigned int index)
 {
 	if (index < m_sceneModels.size())
 		m_sceneModels.erase(m_sceneModels.begin() + index);
 }
 
+/// <summary>
+/// Move the scene camera to specified position
+/// </summary>
 void Scene::SetSceneCameraPosition(Vector3D newPosition)
 {
 	m_sceneCamera->SetPosition(newPosition);

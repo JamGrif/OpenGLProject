@@ -134,6 +134,10 @@ void Mesh::Create()
 	m_bIsCreated = true;
 }
 
+/// <summary>
+/// What the mesh will do when its reset
+/// Unused in this class
+/// </summary>
 void Mesh::Reset()
 {
 }

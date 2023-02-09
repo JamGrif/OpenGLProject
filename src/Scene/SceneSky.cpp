@@ -23,6 +23,9 @@ SceneSky::~SceneSky()
 	glDeleteBuffers(1, &m_skyboxVBO);
 }
 
+/// <summary>
+/// Render the scene sky by drawing the cubemap
+/// </summary>
 void SceneSky::DrawSky()
 {	
 	// Bind shader

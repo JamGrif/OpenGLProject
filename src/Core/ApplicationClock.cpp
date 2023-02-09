@@ -14,6 +14,7 @@ void ApplicationClock::Init()
 }
 
 /// <summary>
+/// Calculate applications delta time and FPS
 /// Called every frame
 /// </summary>
 void ApplicationClock::Tick()
@@ -57,7 +58,7 @@ PerformanceTimer::~PerformanceTimer()
 }
 
 /// <summary>
-/// Guess what this does
+/// Calculate duration and print out result to console
 /// </summary>
 void PerformanceTimer::Stop()
 {

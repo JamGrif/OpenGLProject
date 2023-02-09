@@ -173,13 +173,13 @@ void Shader::Unbind()
 /// </summary>
 void Shader::Reset()
 {
-	//delete program
+	// Delete internal OpenGL program
 	glCall(glDeleteProgram(m_OpenGLResourceID));
 
 	// Create a new program with parsed shader source code
 	Create();
 
-	// clear uniform location cache
+	// Clear the location cache
 	m_uniformLocationCache.clear();
 }
 

@@ -3,11 +3,17 @@
 
 #include "GL/glew.h" // glew.h must always be the first openGL header to be included (before glfw3.h)
 
+/// <summary>
+/// Loop through OpenGL error checking system until all errors are cleared
+/// </summary>
 void GLClearError()
 {
 	while (glGetError() != GL_NO_ERROR);
 }
 
+/// <summary>
+/// Print out OpenGL related errors from calling glCall()
+/// </summary>
 bool GLLogCall(const char* function, const char* file, int line)
 {
 	while (GLenum error = glGetError())
