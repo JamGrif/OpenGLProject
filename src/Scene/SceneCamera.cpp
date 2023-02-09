@@ -11,6 +11,9 @@ constexpr float Default_PITCH = 0.0f;
 constexpr float Default_SPEED = 14.0f;
 constexpr float Default_SENSITIVTY = 0.25f;
 
+constexpr int CLAMP_LIMIT = 100;
+const float PITCH_LIMIT = 89.0f;
+
 SceneCamera::SceneCamera(Vector3D position)
 	: m_position(glm::vec3(position.GetX(), position.GetY(), position.GetZ())),
 	m_front(0.0f, 0.0f, -1.0f), m_up(0.0f, 1.0f, 0.0f), m_right(0.0f, 0.0f, 0.0f), m_worldUp(m_up), m_lookAt(1.0f),
@@ -103,16 +106,16 @@ void SceneCamera::ProcessMouse(float xOffset, float yOffset)
 {
 	m_bCameraMoved = true;
 
-	// Clamp speed
-	if (xOffset > 100)
-		xOffset = 100;
-	else if (xOffset < -100)
-		xOffset = -100;
+	// Clamp speed by limiting movement speed
+	if (xOffset > CLAMP_LIMIT)
+		xOffset = CLAMP_LIMIT;
+	else if (xOffset < -CLAMP_LIMIT)
+		xOffset = -CLAMP_LIMIT;
 
-	if (yOffset > 100)
-		yOffset = 100;
-	else if (yOffset < -100)
-		yOffset = -100;
+	if (yOffset > CLAMP_LIMIT)
+		yOffset = CLAMP_LIMIT;
+	else if (yOffset < -CLAMP_LIMIT)
+		yOffset = -CLAMP_LIMIT;
 	
 	// Ensure mouse only moves by the sensitivity
     xOffset *= m_mouseSensitivity;
@@ -121,14 +124,14 @@ void SceneCamera::ProcessMouse(float xOffset, float yOffset)
     m_yaw += xOffset;
     m_pitch += yOffset;
     
-	// Constrain pitch from flipping the screen
-	if (m_pitch > 89.0f)
-		m_pitch = 89.0;
+	// Constrain pitch to stop flipping the screen
+	if (m_pitch > PITCH_LIMIT)
+		m_pitch = PITCH_LIMIT;
 
-	if (m_pitch < -89.0f)
-		m_pitch = -89.0f;
+	if (m_pitch < -PITCH_LIMIT)
+		m_pitch = -PITCH_LIMIT;
     
-    // Update Front, Right and Up vectors using the updated Eular angles
+    // Update Front, Right and Up vectors using the updated Euler angles
     UpdateCameraVectors();
 }
 
@@ -149,6 +152,9 @@ void SceneCamera::UpdateCameraVectors()
     m_up = glm::normalize(glm::cross(m_right, m_front));
 }
 
+/// <summary>
+/// Update the camera's lookat matrix after camera movement
+/// </summary>
 void SceneCamera::UpdateLookatMatrix()
 {
 	m_lookAt = glm::lookAt(m_position, m_position + m_front, m_up);
