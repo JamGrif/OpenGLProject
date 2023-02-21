@@ -297,11 +297,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="res\icon\Resource.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="res\shaders\lightingPassTwo-vertex.glsl" />
     <None Include="res\shaders\lightingPassTwo-fragment.glsl" />
     <None Include="res\shaders\lightingPassOne-vertex.glsl" />

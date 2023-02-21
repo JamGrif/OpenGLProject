@@ -127,7 +127,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;JG_DEBUG</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb_image\include;$(SolutionDir)dependencies\assimp\include;$(SolutionDir)dependencies\imgui;$(SolutionDir)dependencies\spdlog\include;$(SolutionDir)\include;$(SolutionDir)dependencies\tinyXML\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\dependencies\GLFW\include;$(SolutionDir)Engine\dependencies\GLEW\include;$(SolutionDir)Engine\dependencies\glm\include;$(SolutionDir)Engine\dependencies\stb_image\include;$(SolutionDir)Engine\dependencies\assimp\include;$(SolutionDir)Engine\Engine\dependencies\imgui;$(SolutionDir)Engine\dependencies\spdlog\include;$(SolutionDir)\Engine\include;$(SolutionDir)dependencies\tinyXML\include</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -153,7 +153,7 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;JG_RELEASE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb_image\include;$(SolutionDir)dependencies\assimp\include;$(SolutionDir)dependencies\imgui;$(SolutionDir)dependencies\spdlog\include;$(SolutionDir)\include;$(SolutionDir)dependencies\tinyXML\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\dependencies\GLFW\include;$(SolutionDir)Engine\dependencies\GLEW\include;$(SolutionDir)Engine\dependencies\glm\include;$(SolutionDir)Engine\dependencies\stb_image\include;$(SolutionDir)Engine\dependencies\assimp\include;$(SolutionDir)Engine\dependencies\imgui;$(SolutionDir)Engine\dependencies\spdlog\include;$(SolutionDir)Engine\include;$(SolutionDir)Engine\dependencies\tinyXML\include</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -170,10 +170,8 @@ xcopy /y /d $(ProjectDir)res $(TargetDir)res /S</Command>
       <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d $(ProjectDir)dependencies\assimp\lib\release\assimp-vc143-mt.dll $(TargetDir)
-mkdir $(TargetDir)res 
-xcopy /y /d $(ProjectDir)res $(TargetDir)res /S
-xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -312,9 +310,6 @@ xcopy /y /d $(ProjectDir)imgui.ini $(TargetDir)</Command>
   <ItemGroup>
     <Image Include="res\icon\Icon.ico" />
     <Image Include="res\textures\jeff.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="res\icon\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic-fragment.glsl" />

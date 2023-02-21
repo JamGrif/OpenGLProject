@@ -1,8 +1,7 @@
-
 #include <iostream>
 #include <windows.h>
 
-#include "C:\Users\jamgr\Desktop\Stuff\dev\OpenGLProject\include\EntryPoint.h"
+#include "EntryPoint.h"
 
 static constexpr int CONSOLE_STARTING_X = -900;
 static constexpr int CONSOLE_STARTING_Y = 200;
