@@ -1,8 +1,8 @@
-![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner1.jpg?raw=true)
+![](https://github.com/JamGrif/OpenGLProject/blob/main/Game/res/media/banner1.jpg?raw=true)
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner4.jpg?raw=true)
+![](https://github.com/JamGrif/OpenGLProject/blob/main/Game/res/media/banner4.jpg?raw=true)
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner6.jpg?raw=true)
+![](https://github.com/JamGrif/OpenGLProject/blob/main/Game/res/media/banner6.jpg?raw=true)
 
 # OpenGL Project
 
@@ -71,8 +71,8 @@ The project should be able to be built straight out of the box as the repository
 
 [stb_image](https://github.com/nothings/stb)
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner5.jpg?raw=true)
+![](https://github.com/JamGrif/OpenGLProject/blob/main/Game/res/media/banner5.jpg?raw=true)
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner2.jpg?raw=true)
+![](https://github.com/JamGrif/OpenGLProject/blob/main/Game/res/media/banner2.jpg?raw=true)
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/res/media/banner3.jpg?raw=true)
+![](https://github.com/JamGrif/OpenGLProject/blob/main/Game/res/media/banner3.jpg?raw=true)
