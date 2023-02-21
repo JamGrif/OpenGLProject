@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "EntryPoint.h"
 
 #include "Core/Application.h"
 
@@ -11,7 +12,7 @@ static constexpr int CONSOLE_HEIGHT		= 500;
 /// <summary>
 /// Entry point for application
 /// </summary>
-int WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine, _In_ int nCmdShow)
+int StartProgram()
 {
 	// Enable console and set initial position
 	AllocConsole();
