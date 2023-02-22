@@ -38,8 +38,7 @@ bool OpenGLWindow::Init(int windowWidth, int windowHeight, const std::string& wi
 	glViewport(NULL, NULL, m_currentWindowWidth, m_currentWindowHeight);
 	m_aspectRatio = (float)m_currentWindowWidth / (float)m_currentWindowHeight;
 
-	// Setup OpenGL window values
-	SetWindowIcon("res/icon/Icon.jpg");
+	// Set initial OpenGL window values
 	glfwSwapInterval(true); // Double buffering
 	glClearColor(0.0, 0.0, 0.0, 1.0); // Sets clear colour
 
@@ -47,7 +46,7 @@ bool OpenGLWindow::Init(int windowWidth, int windowHeight, const std::string& wi
 }
 
 /// <summary>
-/// Destroys the GLFW window object
+/// Destroy GLFW window object
 /// </summary>
 bool OpenGLWindow::Clean()
 {
@@ -57,9 +56,8 @@ bool OpenGLWindow::Clean()
 }
 
 /// <summary>
-/// Returns whether the GLFW window has recieved a close event
+/// Returns whether the GLFW window has received a close event
 /// </summary>
-/// <returns></returns>
 bool OpenGLWindow::ShouldClose() const
 {
 	return glfwWindowShouldClose(m_pWindow);
