@@ -85,9 +85,9 @@ bool OpenGLRenderer::Init()
 bool OpenGLRenderer::Clean()
 {
 	if (m_appVAO)
-		glCall(glDeleteVertexArrays(1, &m_appVAO));
+		glDeleteVertexArrays(1, &m_appVAO);
 
-	glCall(glfwTerminate());
+	glfwTerminate();
 
 	return true;
 }

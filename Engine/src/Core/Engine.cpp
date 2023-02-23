@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Core/Application.h"
+#include "Core/Engine.h"
 
 #include "Core/InputHandler.h"
 #include "Core/UI.h"
@@ -7,15 +7,56 @@
 #include "Rendering/OpenGLWindow.h"
 #include "Rendering/OpenGLRenderer.h"
 
-Application::Application()
+static constexpr int CONSOLE_STARTING_X = -900;
+static constexpr int CONSOLE_STARTING_Y = 200;
+
+static constexpr int CONSOLE_WIDTH = 900;
+static constexpr int CONSOLE_HEIGHT = 500;
+
+// Enable console if debug mode
+#ifdef _DEBUG
+	#include <windows.h>
+	#define startConsole																								\
+		AllocConsole();																									\
+		freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);																\
+		MoveWindow(GetConsoleWindow(), CONSOLE_STARTING_X, CONSOLE_STARTING_Y, CONSOLE_WIDTH, CONSOLE_HEIGHT, TRUE);
+#else
+	#define startConsole
+#endif
+
+static bool ENGINE_STARTED = false;
+
+bool StartEngine()
+{
+	if (ENGINE_STARTED)
+		return false;
+
+	ENGINE_STARTED = true;
+
+	startConsole;
+	Engine* ec = new Engine();
+
+	if (ec->Initialise())
+		ec->Loop();
+
+	delete ec;
+
+	return false;
+}
+
+
+Engine::Engine()
 	:m_UI(nullptr), m_loadedScene(nullptr)
 {
 }
 
-Application::~Application()
+Engine::~Engine()
 {
 	if (m_loadedScene)
 		delete m_loadedScene;
+
+	if (m_UI)
+		delete m_UI;
 
 	TheOpenGLWindow::Get()->Clean();
 
@@ -26,18 +67,18 @@ Application::~Application()
 /// Initializes OpenGL libraries, creates the window, enables rendering options and creates class objects
 /// Called once at program start
 /// </summary>
-bool Application::AppInit()
+bool Engine::Initialise()
 {
 	// Initialize all systems used by application
 	Log::Init();
 
 	TheOpenGLRenderer::Get()->Init();
 
-	ApplicationClock::Get()->Init();
+	EngineClock::Get()->Init();
 
 	InputHandler::Get()->Init();
 
-	m_UI = std::make_unique<UI>(false, &m_loadedScene);
+	m_UI = new UI(false, &m_loadedScene);
 
 	// Create Scene object and set initial scene
 	if (!SetScene(SceneName::jamieTest)) 
@@ -50,11 +91,11 @@ bool Application::AppInit()
 /// Entire loop of program
 /// Called every frame
 /// </summary>
-void Application::AppLoop()
+void Engine::Loop()
 {
 	while (!TheOpenGLWindow::Get()->ShouldClose())
 	{
-		ApplicationClock::Get()->Tick();
+		EngineClock::Get()->Tick();
 
 		HandleInput();
 		UpdateApp();
@@ -65,7 +106,7 @@ void Application::AppLoop()
 /// <summary>
 /// User input functions of the application
 /// </summary>
-void Application::HandleInput()
+void Engine::HandleInput()
 {
 	// Check if user wants to toggle UI visibility
 	if (InputHandler::Get()->GetKeyPressedOnce(Keyboard::Q))
@@ -75,7 +116,7 @@ void Application::HandleInput()
 /// <summary>
 /// Update functions of the application
 /// </summary>
-void Application::UpdateApp()
+void Engine::UpdateApp()
 {
 	if (m_loadedScene)
 		m_loadedScene->UpdateScene();
@@ -91,7 +132,7 @@ void Application::UpdateApp()
 /// <summary>
 /// Render functions of the application
 /// </summary>
-void Application::RenderApp()
+void Engine::RenderApp()
 {
 	TheOpenGLRenderer::Get()->StartOfFrame();
 
@@ -107,7 +148,7 @@ void Application::RenderApp()
 /// <summary>
 /// Function changes the scene to specified scene number, unloads the currently loaded scene and refreshes the UI light buttons
 /// </summary>
-bool Application::SetScene(SceneName newSceneNumber)
+bool Engine::SetScene(SceneName newSceneNumber)
 {
 	std::string newSceneFilename = "";
 

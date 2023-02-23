@@ -26,9 +26,9 @@ void PerformancePanel::Update()
 /// </summary>
 void PerformancePanel::Render()
 {
-	ImGui::Text("FPS: %i", ApplicationClock::Get()->GetFrameCount());
+	ImGui::Text("FPS: %i", EngineClock::Get()->GetFrameCount());
 
-	ImGui::Text("Delta Time: %f", ApplicationClock::Get()->GetDeltaTime());
+	ImGui::Text("Delta Time: %f", EngineClock::Get()->GetDeltaTime());
 }
 
 /// <summary>

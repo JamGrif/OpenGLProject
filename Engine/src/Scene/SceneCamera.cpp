@@ -83,7 +83,7 @@ void SceneCamera::SetPosition(const Vector3D& newPos)
 void SceneCamera::ProcessKeyboard(CameraMovement direction)
 {
 	m_bCameraMoved = true;
-	float velocity = m_movementSpeed * static_cast<float>(ApplicationClock::Get()->GetDeltaTime());
+	float velocity = m_movementSpeed * static_cast<float>(EngineClock::Get()->GetDeltaTime());
 
     // Multiple if statements to allow multiple keys pressed down
     if (direction == CameraMovement::FORWARD)
