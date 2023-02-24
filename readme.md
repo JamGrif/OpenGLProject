@@ -6,11 +6,14 @@
 
 # OpenGL Project
 
-This project is a continuation of my Final Year Project for University where I created a 3D renderer using OpenGL which included a large variety of graphical features.
+This project is a continuation of my Final Year Project for University.  
+The project is a 3D renderer created using OpenGL in C++ using a variety of additional libraries by parsing custom .XML scene files which contains all the requirements and components of a 3D scene. 
 
-I have been further developing this project in my own time for fun by adding new features, fixing bugs and issues, and further abstracting away parts of the program.
+**The project is split into:**  
+- **Engine** project which creates the .lib file and contains the heavy work 
+- **Demo** project which creates the .exe file, by using the Engine.lib, and contains the entry point to the program  
 
-This project is mainly a fun way for me to experiment and test my OpenGL and C++ ability.
+I have been further developing this project in my own time for fun as it is a good way to experiement with and test my OpenGL and C++ ability  
 
 **OLD** Renderer Showcase Video - https://www.youtube.com/watch?v=QOnscYxgrNQ
 
@@ -18,9 +21,12 @@ This project is mainly a fun way for me to experiment and test my OpenGL and C++
 
 **New features over the original FMP version:**  
 - Multithreading for asset loading (textures, meshes & shader sources)  
-- Scene textfile loading during runtime  
-- ImGui interface with a simple scene editor (Change scene, change screen filter, adjust lights status, view and delete entity values)  
+- Scene .XML loading during runtime  
+- Split the project into an Engine .lib and a Demo .exe  
+- ImGui interface with a scene editor (Change scene, change screen filter, adjust lights status, view and delete entity values)  
 - Improved logging with better timer and error handling  
+- Material system and better asset management system (Texture, Mesh, Shader, Cubemap)
+- General bug fixes, optimizations and design pattern implementations  
 
 **Original features:**  
 - ADS Blinn-Phong Light Reflection Model  
@@ -36,24 +42,12 @@ This project is mainly a fun way for me to experiment and test my OpenGL and C++
 - Sprite blending  
 - Mouse + keyboard input with camera movement on all 3 axis  
 
-# Controls
-
-**W/A/S/D** to move around the camera  
-Moving the mouse moves the front facing vector of the camera  
-**1/2/3/4/5** to change the screen filter applied to the drawn frame  
-	1 Normal  
-	2 Inverse  
-	3 Greyscale  
-	4 Edge detection  
-	5 ???  
-**Q** to toggle the UI
-
 # Building
 
-Built exe is available at (ProjectDirectory)->bin->x64->Release/Debug->OpenGL.exe  
+Built exe is available at (SolutionDirectory)->Demo->x64->Release/Debug->Demo.exe  
 Program can only be compiled in 64bit mode in Visual Studio.  
-The Release version is recommended as while both versions are visually the same, the Release version has superior performance and loading times.  
-The project should be able to be built straight out of the box as the repository contains the required dependencies.  
+The Debug version enables the console and console logging, but the Release version has superior performance and loading.    
+The solution should be able to be built straight out-of-the-box.  
 
 **This OpenGL Project is dependant on:**
 
@@ -70,6 +64,18 @@ The project should be able to be built straight out of the box as the repository
 [spdlog](https://github.com/gabime/spdlog)
 
 [stb_image](https://github.com/nothings/stb)
+
+# Controls
+
+**W/A/S/D** to move around the camera  
+Moving the mouse moves the front facing vector of the camera  
+**1/2/3/4/5** to change the screen filter applied to the drawn frame  
+	1 Normal  
+	2 Inverse  
+	3 Greyscale  
+	4 Edge detection  
+	5 ???  
+**Q** to toggle the UI
 
 ![](https://github.com/JamGrif/OpenGLProject/blob/main/media/banner5.jpg?raw=true)
 
