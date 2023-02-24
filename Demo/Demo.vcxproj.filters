@@ -20,12 +20,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="config\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Demo.rc">
+    <ResourceCompile Include="config\Demo.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -35,6 +35,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Demo.aps" />
+    <None Include="config\Demo.aps" />
   </ItemGroup>
 </Project>

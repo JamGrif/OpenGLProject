@@ -115,16 +115,16 @@ xcopy /y /d $(SolutionDir)Demo\config\imguiconfig.ini $(TargetDir)config /S
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="config\resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Demo.rc" />
+    <ResourceCompile Include="config\Demo.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\icon\Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Demo.aps" />
+    <None Include="config\Demo.aps" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

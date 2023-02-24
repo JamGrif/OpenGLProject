@@ -43,9 +43,6 @@ void SceneCamera::Update()
 		ProcessKeyboard(CameraMovement::LEFT);
 	if (InputHandler::Get()->GetKeyPressed(Keyboard::D))
 		ProcessKeyboard(CameraMovement::RIGHT);
-
-    if (InputHandler::Get()->GetKeyPressed(Keyboard::R))
-		PRINT_TRACE("Position x - {0}, Position y - {1}, Position z - {2}", m_position.x, m_position.y, m_position.z);
     
 	// Only check for mouse movement if cursor is disabled
 	if (!InputHandler::Get()->GetMouseEnabled())
