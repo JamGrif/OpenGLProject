@@ -16,12 +16,12 @@ static constexpr int CONSOLE_HEIGHT = 500;
 // Enable console if debug mode
 #ifdef _DEBUG
 	#include <windows.h>
-	#define startConsole																								\
+	#define startConsole()																								\
 		AllocConsole();																									\
 		freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);																\
 		MoveWindow(GetConsoleWindow(), CONSOLE_STARTING_X, CONSOLE_STARTING_Y, CONSOLE_WIDTH, CONSOLE_HEIGHT, TRUE);
 #else
-	#define startConsole
+	#define startConsole()
 #endif
 
 namespace Engine
@@ -35,7 +35,7 @@ namespace Engine
 
 		ENGINE_STARTED = true;
 
-		startConsole;
+		startConsole();
 		EngineMain* em = new EngineMain();
 
 		if (em->Initialise())

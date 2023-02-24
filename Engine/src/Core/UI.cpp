@@ -28,6 +28,7 @@ UI::UI(bool bVisible, Scene** pScenePointer)
 
 	// Create the imgui context
 	ImGui::CreateContext();
+	ImGui::GetIO().IniFilename = "config/imguiconfig.ini";
 
 	// Specify style of ImGui
 	ImGuiStyle& style = ImGui::GetStyle();
