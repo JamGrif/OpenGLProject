@@ -1,36 +1,42 @@
 #pragma once
+/*
+	Engine.h
+	Entry point to the engine
+	Use Engine::StartEngine() to begin
+*/ 
 
 enum class SceneName;
 class UI;
 class Scene;
 
-
-bool StartEngine();
-
-
-/// <summary>
-/// Encapsulates the entire engine
-/// All parts of the engine are initialized, looped through and cleaned from this class
-/// </summary>
-class Engine
+namespace Engine
 {
-private:
-	Engine();
-	~Engine();
+	bool StartEngine();
+
+	/// <summary>
+	/// Encapsulates the entire engine
+	/// All parts of the engine are initialized, looped through and cleaned from this class
+	/// </summary>
+	class EngineMain
+	{
+	private:
+		EngineMain();
+		~EngineMain();
 
 
-	bool					Initialise();
-	void					Loop();
+		bool					Initialise();
+		void					Loop();
 
-	void					HandleInput();
-	void					UpdateApp();
-	void					RenderApp();
+		void					HandleInput();
+		void					UpdateApp();
+		void					RenderApp();
 
-	bool					SetScene(SceneName newSceneNumber);
+		bool					SetScene(SceneName newSceneNumber);
 
-	UI*		m_UI;
+		UI* m_UI;
 
-	Scene*	m_loadedScene;
+		Scene* m_loadedScene;
 
-	friend bool StartEngine();
-};
+		friend bool StartEngine();
+	};
+}
