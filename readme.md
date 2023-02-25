@@ -12,7 +12,7 @@ The project is a 3D renderer created using OpenGL in C++ using a variety of addi
 **The project is split into:**  
 - **Engine** project which creates the .lib file and contains the heavy work 
 - **Demo** project which creates an .exe file, by using the Engine.lib, and is launched by the Launcher to create the OpenGL window
-- **Launcher** project which uses WinForms (C#) to provide a way to specify which inital scene will be loaded when launching the Demo .exe
+- **Launcher** project which uses WinForms (C#) to provide a way to specify which initial scene will be loaded when launching the Demo .exe
 
 I have been further developing this project in my own time for fun as it is a good way to experiement with and test my OpenGL and C++ ability  
 
@@ -21,7 +21,7 @@ I have been further developing this project in my own time for fun as it is a go
 # Features
 
 **New features over the original FMP version:**  
-- WinForms launcher to specify which inital scene will be loaded
+- WinForms launcher to specify which initial scene will be loaded
 - Multithreading for asset loading (textures, meshes & shader sources)  
 - Scene .XML loading during runtime  
 - Split the project into an Engine .lib and a Demo .exe  
