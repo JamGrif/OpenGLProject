@@ -125,6 +125,7 @@ xcopy /y /d $(SolutionDir)Demo\config\imguiconfig.ini $(TargetDir)config /S
   </ItemGroup>
   <ItemGroup>
     <None Include="config\Demo.aps" />
+    <None Include="config\imguiconfig.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

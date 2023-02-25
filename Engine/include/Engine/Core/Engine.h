@@ -9,9 +9,12 @@ enum class SceneName;
 class UI;
 class Scene;
 
+#include <string>
+
 namespace Engine
 {
 	bool StartEngine();
+	void SetInitalScene(const std::string& text);
 
 	/// <summary>
 	/// Encapsulates the entire engine
@@ -24,14 +27,14 @@ namespace Engine
 		~EngineMain();
 
 
-		bool					Initialise();
+		bool					Initialise(const std::string& text);
 		void					Loop();
 
 		void					HandleInput();
 		void					UpdateApp();
 		void					RenderApp();
 
-		bool					SetScene(SceneName newSceneNumber);
+		bool					SetScene(const std::string& sceneName);
 
 		UI* m_UI;
 

@@ -36,5 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config\Demo.aps" />
+    <None Include="config\imguiconfig.ini" />
   </ItemGroup>
 </Project>
