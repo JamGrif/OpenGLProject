@@ -5,30 +5,28 @@ using System.Runtime.InteropServices;
 
 namespace Launcher
 {
-    public partial class Form1 : Form
+    public partial class LauncherForm : Form
     {
-        public Form1()
+        public LauncherForm()
         {
             InitializeComponent();
         }
 
-        private void StartProcess(string? text)
+        private void StartProcess(string startSceneName)
         {
-            string exeFilepath = "Demo.exe";
-            var rest = new ProcessStartInfo()
+            Process? demoProcess = Process.Start(new ProcessStartInfo()
             {
-                FileName = exeFilepath,
+                FileName = "Demo.exe",
                 RedirectStandardOutput = false,
                 UseShellExecute = false,
-                ArgumentList = { text },
-            };
+                ArgumentList = { startSceneName },
+            });
 
-            Process? demoProcess = Process.Start(rest);
-            Console.WriteLine(demoProcess.ProcessName);
+            Console.WriteLine(demoProcess.StartInfo);
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void materialTestButton_Click(object sender, EventArgs e)
         {
             StartProcess("materialTest");
         }
@@ -38,32 +36,27 @@ namespace Launcher
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void shadowTestButton_Click(object sender, EventArgs e)
         {
             StartProcess("shadowTest");
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void lightTestButton_Click(object sender, EventArgs e)
         {
             StartProcess("lightTest");
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void jamieTestButton_Click(object sender, EventArgs e)
         {
             StartProcess("jamieTest");
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void FMPSceneButton_Click(object sender, EventArgs e)
         {
             StartProcess("FMPscene");
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox1_Click_1(object sender, EventArgs e)
         {
 
         }
@@ -78,7 +71,7 @@ namespace Launcher
 
         }
 
-        private void process1_Exited(object sender, EventArgs e)
+        private void pictureBox3_Click(object sender, EventArgs e)
         {
 
         }

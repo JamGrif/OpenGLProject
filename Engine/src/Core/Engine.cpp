@@ -8,7 +8,7 @@
 #include "Rendering/OpenGLRenderer.h"
 
 static constexpr int CONSOLE_STARTING_X = -900;
-static constexpr int CONSOLE_STARTING_Y = 200;
+static constexpr int CONSOLE_STARTING_Y = 525;
 
 static constexpr int CONSOLE_WIDTH = 900;
 static constexpr int CONSOLE_HEIGHT = 500;

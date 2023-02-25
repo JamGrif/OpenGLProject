@@ -4,24 +4,32 @@ namespace Launcher
 {
     internal static class Program
     {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
+#if DEBUG
+        // Acquire Console specific functions
 
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
+        [DllImport("kernel32.dll", SetLastError = true)]
+        //[return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool AllocConsole();
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        internal static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+#endif
+
         [STAThread]
         static void Main()
         {
+
 #if DEBUG
-             AllocConsole();
+            // Enable console if in debug mode
+            AllocConsole();
+            MoveWindow(GetConsoleWindow(), -900, 25, 900, 500, true);
 #endif
 
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            Application.Run(new LauncherForm());
         }
     }
-
-    
 }
