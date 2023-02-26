@@ -63,16 +63,6 @@ namespace Launcher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap testPicture {
-            get {
-                object obj = ResourceManager.GetObject("testPicture", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap WindowBackground {
             get {
                 object obj = ResourceManager.GetObject("WindowBackground", resourceCulture);
