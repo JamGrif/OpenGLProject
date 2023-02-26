@@ -11,7 +11,7 @@
 	#define KeepConsoleOpen() 
 #endif
 
-int wWinMain(_In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ PWSTR pCmdLine, _In_ int nCmdShow)
+int wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int nCmdShow)
 {
 	// Convert PWSTR argument list into std::string
 	std::wstring wideString = pCmdLine;

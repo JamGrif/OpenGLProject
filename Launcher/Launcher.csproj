@@ -25,7 +25,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="res\scenePictures\ScenePicture1.png" />
+    <None Remove="res\scenePictures\ScenePicture2.png" />
+    <None Remove="res\scenePictures\ScenePicture3.png" />
+    <None Remove="res\scenePictures\ScenePicture4.png" />
+    <None Remove="res\scenePictures\ScenePicture5.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="res\icon\Icon2.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="res\scenePictures\ScenePicture1.png" />
+    <EmbeddedResource Include="res\scenePictures\ScenePicture2.png" />
+    <EmbeddedResource Include="res\scenePictures\ScenePicture3.png" />
+    <EmbeddedResource Include="res\scenePictures\ScenePicture4.png" />
+    <EmbeddedResource Include="res\scenePictures\ScenePicture5.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,7 +72,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y /d $(SolutionDir)bin\Demo\x64\$(ConfigurationName) $(TargetDir) /S" />
+    <Exec Command="xcopy /y /d $(SolutionDir)bin\Demo\x64\$(ConfigurationName) $(TargetDir) /S&#xD;&#xA;mkdir $(TargetDir)res&#xD;&#xA;mkdir $(TargetDir)res\scenePictures&#xD;&#xA;xcopy /y /d $(ProjectDir)res\scenePictures $(TargetDir)res\scenePictures /S" />
   </Target>
 
 </Project>

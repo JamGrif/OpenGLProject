@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene skyid="black">
+	<materials>
+		<material id="wood" diffuseid="stairs_diff" specularid="stairs_spec" normalid="stairs_norm" normalmapNormalize="0" heightid="null" heightmapHeight="0.0" emissionid="null"/>
+	</materials>
+	<lights>
+		<light type="point" ambR="0.2" ambG="0.2" ambB="0.2" difR="1.0" difG="1.0" difB="1.0" speR="0.4" speG="0.4" speB="0.4" posX="0.0" posY="3.0" posZ="0.0"/>
+		<light type="spot" ambR="0.0" ambG="0.0" ambB="0.0" difR="0.8" difG="0.8" difB="0.8" speR="1.0" speG="1.0" speB="1.0" posX="0.0" posY="0.0" posZ="0.0" dirX="0.0" dirY="0.0" dirZ="0.0"/>
+	</lights>
+	<models>
+		<model mesh="plane" material="wood" posX="0.0" posY="-1.5" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+		<model mesh="plane" material="wood" posX="6.0" posY="-1.5" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+		<model mesh="plane" material="wood" posX="-6.0" posY="-1.5" posZ="0.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+		<model mesh="plane" material="wood" posX="0.0" posY="-1.5" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+		<model mesh="plane" material="wood" posX="6.0" posY="-1.5" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+		<model mesh="plane" material="wood" posX="-6.0" posY="-1.5" posZ="6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+		<model mesh="plane" material="wood" posX="0.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+		<model mesh="plane" material="wood" posX="6.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+		<model mesh="plane" material="wood" posX="-6.0" posY="-1.5" posZ="-6.0" rotX="0.0" rotY="0.0" rotZ="0.0" scaleX="1.0" scaleY="1.0" scaleZ="1.0"/>
+	</models>
+</scene>
+
