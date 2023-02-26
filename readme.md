@@ -6,8 +6,7 @@
 
 # OpenGL Project
 
-This project is a continuation of my Final Year Project for University.  
-The project is a 3D renderer created using OpenGL in C++ using a variety of additional libraries by parsing custom .XML scene files which contains all the requirements and components of a 3D scene. 
+A C++ 3D renderer in OpenGL, with a variety of additional libraries, which is launched through C# WinForms which includes a large collection of graphical features and more by parsing a custom .xml scene file which contains all the requirements and components of a 3D scene
 
 **The project is split into:**  
 - **Engine** project which creates the .lib file and contains the heavy work 

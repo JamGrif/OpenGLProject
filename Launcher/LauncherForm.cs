@@ -9,11 +9,63 @@ namespace Launcher
 {
     public partial class LauncherForm : Form
     {
+        // List of all selectable Scene files the user can select
+        private List<string> SceneNameList = new List<string>();
+
+        // Which scene name the user has selected in the ListBox
+        private string SceneNameListSelected = string.Empty;
+
         public LauncherForm()
         {
             InitializeComponent();
         }
 
+        // Invoked when the form is loaded
+        private void LauncherForm_Load(object sender, EventArgs e)
+        {
+            string SceneResourcePath = @"res\scenes";
+
+            // Get the filename of all loadable scene files
+            string[] AllSceneFiles = System.IO.Directory.GetFiles(SceneResourcePath, "*.xml");
+            foreach (string file in AllSceneFiles)
+            {
+                // Only store name of each scene file
+                SceneNameList.Add(Path.GetFileNameWithoutExtension(file));
+            }
+
+            // Stops first item in ListBox from being selected by default
+            SceneSelectListBox.SelectedIndexChanged -= SceneSelectListBox_SelectedIndexChanged;
+            SceneSelectListBox.DataSource = SceneNameList;
+            SceneSelectListBox.SelectedIndex = -1;
+            SceneSelectListBox.SelectedIndexChanged += SceneSelectListBox_SelectedIndexChanged;
+
+            LaunchButton.Enabled = false;
+        }
+
+        // Launch button - Start the Demo.exe process
+        private void LaunchButton_Click(object sender, EventArgs e)
+        {
+            // Ensure a scene has been selected
+            if (SceneNameListSelected == string.Empty)
+                return;
+
+            StartProcess(SceneNameListSelected);
+        }
+
+        // ListBox - Store what scene name user has pressed and update picture as appropriate
+        private void SceneSelectListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Ensure valid index
+            if (SceneSelectListBox.SelectedIndex == -1)
+                return;
+
+            // Update index selection
+            SceneNameListSelected = SceneNameList[SceneSelectListBox.SelectedIndex];
+
+            LaunchButton.Enabled = true;
+        }
+
+        // Start Demo.exe with the startSceneName scene
         private void StartProcess(string startSceneName)
         {
             Process? demoProcess = Process.Start(new ProcessStartInfo()
@@ -28,67 +80,14 @@ namespace Launcher
             Console.WriteLine($"Starting Scene: {startSceneName}");
         }
 
-        private void LaunchButton_Click(object sender, EventArgs e)
+        private void GitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (ListStringPressed == null)
-                return;
-
-            StartProcess(ListStringPressed);
+            Process.Start(new ProcessStartInfo("https://github.com/JamGrif") { UseShellExecute = true });
         }
 
-        private void SceneSelect_SelectedIndexChanged(object sender, EventArgs e)
+        private void YouTube_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (SceneSelect.SelectedIndex == -1)
-                return;
-
-            SceneSelectPicture.Visible = true;
-
-            ListStringPressed = SceneNameList[SceneSelect.SelectedIndex];
-
-            // Change picture
-
-            SceneSelectPicture.ImageLocation = SceneImagePath[SceneSelect.SelectedIndex];
-        }
-
-        private List<string>? SceneNameList = null;
-        private List<string>? SceneImagePath = null;
-
-        private string? ListStringPressed = string.Empty;
-
-        private void LauncherForm_Load(object sender, EventArgs e)
-        {
-            string? SceneResourcePath = @"res\scenes";
-
-            string[] files = System.IO.Directory.GetFiles(SceneResourcePath, "*.xml");
-
-            SceneNameList = new List<string>();
-
-            foreach (string item in files)
-            {
-                SceneNameList.Add(Path.GetFileNameWithoutExtension(item));
-            }
-
-            string? SceneImageResourcePath = @"res/scenePictures";
-
-            string[] files2 = System.IO.Directory.GetFiles(SceneImageResourcePath, "*.png");
-            SceneImagePath = new List<string>(files2);
-
-            // Make sure first item is not selected
-            SceneSelect.SelectedIndexChanged -= SceneSelect_SelectedIndexChanged;
-            SceneSelect.DataSource = SceneNameList;
-            SceneSelect.SelectedIndex = -1;
-            SceneSelect.SelectedIndexChanged += SceneSelect_SelectedIndexChanged;
-
-        }
-
-        private void SceneSelectPicture_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
+            Process.Start(new ProcessStartInfo("https://www.youtube.com/@JamGrif") { UseShellExecute = true });
         }
     }
 }
