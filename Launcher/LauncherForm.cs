@@ -34,10 +34,8 @@ namespace Launcher
             }
 
             // Stops first item in ListBox from being selected by default
-            SceneSelectListBox.SelectedIndexChanged -= SceneSelectListBox_SelectedIndexChanged;
-            SceneSelectListBox.DataSource = SceneNameList;
             SceneSelectListBox.SelectedIndex = -1;
-            SceneSelectListBox.SelectedIndexChanged += SceneSelectListBox_SelectedIndexChanged;
+            SceneSelectListBox.DataSource = SceneNameList;
 
             LaunchButton.Enabled = false;
         }
@@ -76,8 +74,11 @@ namespace Launcher
                 ArgumentList = { startSceneName },
             });
 
-            Console.WriteLine($"Process Name: {demoProcess.ProcessName}");
-            Console.WriteLine($"Starting Scene: {startSceneName}");
+            if (demoProcess != null)
+            {
+                Console.WriteLine($"Process Name: {demoProcess.ProcessName}");
+                Console.WriteLine($"Starting Scene: {startSceneName}");
+            }
         }
 
         private void GitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

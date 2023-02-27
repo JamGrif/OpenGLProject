@@ -105,29 +105,12 @@ void UI::ToggleUI()
 }
 
 /// <summary>
-/// Returns which scene button was pressed in Options panel
-/// </summary>
-SceneName UI::GetSelectedSceneName() const
-{
-	for (const auto& panel : m_allPanels)
-	{
-		// Find the OptionsPanel object in the panels vector
-		if (std::dynamic_pointer_cast<OptionsPanel>(panel))
-			return std::dynamic_pointer_cast<OptionsPanel>(panel)->GetSelectedSceneName();
-	}
-
-	return SceneName::UNSET_SCENE;
-}
-
-/// <summary>
 /// Update the scene handle of each UI panel
 /// </summary>
-void UI::UpdateSceneHandle()
+void UI::ChangePanelScene()
 {
 	for (const auto& panel : m_allPanels)
 	{
-		//panel->UpdateSceneHandle(newLoadedScene);
-
 		panel->SceneChange();
 	}
 }

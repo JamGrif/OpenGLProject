@@ -142,13 +142,6 @@ namespace Engine
 	{
 		if (m_loadedScene)
 			m_loadedScene->UpdateScene();
-
-		//if (m_UI)
-		//{
-		//	// Check if loaded scene needs to change
-		//	if (m_UI->GetSelectedSceneName() != SceneName::UNSET_SCENE)
-		//		SetScene(m_UI->GetSelectedSceneName());
-		//}
 	}
 
 	/// <summary>
@@ -168,34 +161,10 @@ namespace Engine
 	}
 
 	/// <summary>
-	/// Function changes the scene to specified scene number, unloads the currently loaded scene and refreshes the UI light buttons
+	/// Changes the scene to specified scene name, unloads the currently loaded scene and refreshes the UI light buttons
 	/// </summary>
 	bool EngineMain::SetScene(const std::string& sceneName)
 	{
-		//std::string newSceneFilename = "";
-		//
-		//switch (static_cast<int>(newSceneNumber))
-		//{
-		//case static_cast<int>(SceneName::FMPscene):
-		//	newSceneFilename = "FMPscene";
-		//	break;
-		//case static_cast<int>(SceneName::jamieTest):
-		//	newSceneFilename = "jamieTest";
-		//	break;
-		//case static_cast<int>(SceneName::lightTest):
-		//	newSceneFilename = "lightTest";
-		//	break;
-		//case static_cast<int>(SceneName::materialTest):
-		//	newSceneFilename = "materialTest";
-		//	break;
-		//case static_cast<int>(SceneName::shadowTest):
-		//	newSceneFilename = "shadowTest";
-		//	break;
-		//default:
-		//	PRINT_WARN("Specified sceneNumber is out of range:{0}", static_cast<int>(newSceneNumber));
-		//	return false;
-		//}
-
 		// Prevent reloading current scene
 		if (m_loadedScene && sceneName == m_loadedScene->GetSceneName())
 			return false;
@@ -208,7 +177,7 @@ namespace Engine
 		if (m_loadedScene->LoadScene())
 		{
 			if (m_UI)
-				m_UI->UpdateSceneHandle();
+				m_UI->ChangePanelScene();
 
 			// Scene successfully loaded
 			return true;

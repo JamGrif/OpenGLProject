@@ -1,15 +1,5 @@
 #pragma once
 
-enum class SceneName
-{
-	UNSET_SCENE = 0,
-	FMPscene = 1,
-	jamieTest = 2,
-	lightTest = 3,
-	materialTest = 4,
-	shadowTest = 5
-};
-
 /// <summary>
 /// Encapsulates all the objects of a loaded .xml scene file
 /// Loops through the objects every frame updating and drawing them

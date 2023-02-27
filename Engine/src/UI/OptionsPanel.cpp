@@ -11,8 +11,7 @@ OptionsPanel::OptionsPanel(const std::string& panelName, ImGuiWindowFlags imGuiW
 	:IPanel(panelName, imGuiWindowFlag, bVisible, pScenePointer),
 	m_bDirectionalLightInScene(false), m_bDirectionalLightActiveButton(true),
 	m_bSpotLightInScene(false), m_bSpotLightActiveButton(true),
-	m_totalPointLights(0), m_bPointLightInScene{ false, false, false, false }, m_bPointLightActiveButton{ true, true, true, true },
-	m_selectedSceneName(SceneName::UNSET_SCENE)
+	m_totalPointLights(0), m_bPointLightInScene{ false, false, false, false }, m_bPointLightActiveButton{ true, true, true, true }
 {
 }
 
@@ -34,25 +33,6 @@ void OptionsPanel::Update()
 /// </summary>
 void OptionsPanel::Render()
 {
-	// Reset variable
-	m_selectedSceneName = SceneName::UNSET_SCENE;
-	
-	ImGui::Text("Change Scene:");
-	if (ImGui::Button("FMPscene.txt"))
-		m_selectedSceneName = SceneName::FMPscene;
-	
-	if (ImGui::Button("jamieTest.txt"))
-		m_selectedSceneName = SceneName::jamieTest;
-	
-	if (ImGui::Button("lightTest.txt"))
-		m_selectedSceneName = SceneName::lightTest;
-	
-	if (ImGui::Button("materialTest.txt"))
-		m_selectedSceneName = SceneName::materialTest;
-	
-	if (ImGui::Button("shadowTest.txt"))
-		m_selectedSceneName = SceneName::shadowTest;
-	
 	ImGui::Text("Toggle Active Lights:");
 	
 	std::shared_ptr<SceneLightManager> sceneLM = (*m_pSceneHandle)->GetSceneLightManager().lock();

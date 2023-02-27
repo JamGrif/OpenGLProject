@@ -2,8 +2,6 @@
 
 class IPanel;
 
-enum class SceneName;
-
 /// <summary>
 /// A wrapper around ImGui to display various UI panels to the screen
 /// </summary>
@@ -17,9 +15,7 @@ public:
 
 	void		ToggleUI();
 
-	SceneName	GetSelectedSceneName() const;
-
-	void		UpdateSceneHandle();
+	void		ChangePanelScene();
 
 private:
 

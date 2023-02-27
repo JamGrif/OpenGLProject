@@ -1,8 +1,6 @@
 #pragma once
 #include "UI/IPanel.h"
 
-enum class SceneName;
-
 /// <summary>
 /// Displays buttons and checkboxes to manipulate the current scene
 /// </summary>
@@ -17,11 +15,7 @@ public:
 	virtual void	Render() override;
 	virtual void	SceneChange() override;
 
-	SceneName		GetSelectedSceneName() { return m_selectedSceneName; }
-
 private:
-
-	SceneName		m_selectedSceneName;
 
 	// Indicates if the button to toggle the light should be visible or not
 	bool			m_bDirectionalLightInScene;

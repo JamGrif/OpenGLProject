@@ -5,7 +5,6 @@
 	Use Engine::StartEngine() to begin
 */ 
 
-enum class SceneName;
 class UI;
 class Scene;
 
