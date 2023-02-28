@@ -15,6 +15,11 @@ A C++ 3D renderer in OpenGL, with a variety of additional libraries, which is la
 
 I have been further developing this project in my own time for fun as it is a good way to experiement with and test my OpenGL and C++ ability  
 
+If you are having problems building the solution as a result of LauncherForm.resx, follow this:  
+1. Move the solution folder to outside the downloads directory  
+2. Unblock LauncherForm.resx file in File Explorer properties window (file found at SolutionDirectory/Launcher/  
+3. Restart Visual Studio  
+
 **OLD** Renderer Showcase Video - https://www.youtube.com/watch?v=QOnscYxgrNQ
 
 # Features
@@ -42,6 +47,8 @@ I have been further developing this project in my own time for fun as it is a go
 - Parallax mapping   
 - Sprite blending  
 - Mouse + keyboard input with camera movement on all 3 axis  
+
+![](https://github.com/JamGrif/OpenGLProject/blob/main/media/banner7.jpg?raw=true)
 
 # Building
 
