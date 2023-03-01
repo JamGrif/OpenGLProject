@@ -13,7 +13,7 @@ A C++ 3D renderer in OpenGL, with a variety of additional libraries, which is la
 - **Demo** project which creates an .exe file, by using the Engine.lib, and is launched by the Launcher to create the OpenGL window
 - **Launcher** project which uses WinForms (C#) to provide a way to specify which initial scene will be loaded when launching the Demo .exe
 
-I have been further developing this project in my own time for fun as it is a good way to experiement with and test my OpenGL and C++ ability  
+I have been further developing this project in my own time for fun as it is a good way to experiement with and test my OpenGL, C++, C# and general softare design ability, while also allowing me to push myself to learn more by implementating new features
 
 If you are having problems building the solution as a result of LauncherForm.resx, follow this:  
 1. Move the solution folder to outside the downloads directory  
