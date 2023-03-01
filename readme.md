@@ -6,7 +6,7 @@
 
 # OpenGL Project
 
-A C++ 3D renderer in OpenGL, with a variety of additional libraries, which is launched through C# WinForms which includes a large collection of graphical features and more by parsing a custom .xml scene file which contains all the requirements and components of a 3D scene
+A C++ 3D renderer in OpenGL, with a variety of additional libraries, which is launched through C# WinForms that includes a large collection of graphical features and more by parsing a custom .xml scene file which contains all the requirements and components of a 3D scene
 
 **The project is split into:**  
 - **Engine** project which creates the .lib file and contains the heavy work 
