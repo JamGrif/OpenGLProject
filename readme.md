@@ -1,8 +1,7 @@
-![](https://github.com/JamGrif/OpenGLProject/blob/main/media/banner1.jpg?raw=true)
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/media/banner4.jpg?raw=true)
+![](media/banner3.jpg)
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/media/banner6.jpg?raw=true)
+![Banner5Test](media/banner5.jpg)
 
 # OpenGL Project
 
@@ -48,7 +47,7 @@ If you are having problems building the solution as a result of LauncherForm.res
 - Sprite blending  
 - Mouse + keyboard input with camera movement on all 3 axis  
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/media/banner7.jpg?raw=true)
+![](media/banner6.jpg)
 
 # Building
 
@@ -85,8 +84,8 @@ Moving the mouse moves the front facing vector of the camera
 	5 ???  
 **Q** to toggle the UI
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/media/banner5.jpg?raw=true)
+![](media/banner4.jpg)
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/media/banner2.jpg?raw=true)
+![](media/banner2.jpg)
 
-![](https://github.com/JamGrif/OpenGLProject/blob/main/media/banner3.jpg?raw=true)
+![](media/banner1.jpg)
