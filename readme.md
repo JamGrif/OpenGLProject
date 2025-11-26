@@ -89,3 +89,14 @@ Moving the mouse moves the front facing vector of the camera
 ![](media/banner2.jpg)
 
 ![](media/banner1.jpg)
+
+# To be done
+
+Fix debug mode
+Add options menu to Launcher
+	Set movement Controls
+	Set if imGui UI is enabled or not by default
+	Set resolution 
+Add windows installer for final build
+	Add Github release package with windows installer
+
