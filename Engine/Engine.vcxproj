@@ -125,7 +125,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;JG_DEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;JG_DEBUG;_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Engine\include\Engine;$(SolutionDir)Engine\dependencies\GLFW\include;$(SolutionDir)Engine\dependencies\GLEW\include;$(SolutionDir)Engine\dependencies\glm\include;$(SolutionDir)Engine\dependencies\stb_image\include;$(SolutionDir)Engine\dependencies\assimp\include;$(SolutionDir)Engine\dependencies\imgui;$(SolutionDir)Engine\dependencies\spdlog\include;$(SolutionDir)Engine\dependencies\tinyXML\include</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
