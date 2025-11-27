@@ -1,13 +1,14 @@
-
-![](media/banner3.jpg)
-test
-![Banner5Test](media/banner5.jpg)
+# [**This project has been archived and further development has been continued here.**  ](https://github.com/JamGrif/OpenGLProjectTwo)  
 
 # OpenGL Project
+  
+![](media/banner3.jpg)
+
+![Banner5Test](media/banner5.jpg)
 
 A C++ 3D renderer in OpenGL, with a variety of additional libraries, which is launched through C# WinForms that includes a large collection of graphical features and more by parsing a custom .xml scene file which contains all the requirements and components of a 3D scene
 
-**The project is split into:**  
+## **The project is split into:**  
 - **Engine** project which creates the .lib file and contains the heavy work 
 - **Demo** project which creates an .exe file, by using the Engine.lib, and is launched by the Launcher to create the OpenGL window
 - **Launcher** project which uses WinForms (C#) to provide a way to specify which initial scene will be loaded when launching the Demo .exe
@@ -23,7 +24,7 @@ If you are having problems building the solution as a result of LauncherForm.res
 
 # Features
 
-**New features over the original FMP version:**  
+## **New features over the original FMP version:**  
 - WinForms launcher to specify which initial scene will be loaded
 - Multithreading for asset loading (textures, meshes & shader sources)  
 - Scene .XML loading during runtime  
@@ -33,7 +34,7 @@ If you are having problems building the solution as a result of LauncherForm.res
 - Material system and better asset management system (Texture, Mesh, Shader, Cubemap)
 - General bug fixes, optimizations and design pattern implementations  
 
-**Original features:**  
+## **Original features:**  
 - ADS Blinn-Phong Light Reflection Model  
 - Diffuse, Specular, Emission, Height & Normal texture maps
 - Coloured lighting from Directional/Point/Spot lights  
@@ -56,7 +57,7 @@ Program can only be compiled in 64bit mode in Visual Studio.
 The Debug version enables the console and console logging, but the Release version has superior performance and loading.    
 The solution should be able to be built straight out-of-the-box.  
 
-**This OpenGL Project is dependant on:**
+## **This OpenGL Project is dependant on:**
 
 [assimp](https://github.com/assimp/assimp)
 
@@ -89,14 +90,3 @@ Moving the mouse moves the front facing vector of the camera
 ![](media/banner2.jpg)
 
 ![](media/banner1.jpg)
-
-# To be done
-
-Fix debug mode
-Add options menu to Launcher
-	Set movement Controls
-	Set if imGui UI is enabled or not by default
-	Set resolution 
-Add windows installer for final build
-	Add Github release package with windows installer
-
